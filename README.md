@@ -20,7 +20,6 @@ O **HealthPlan** é um serviço .NET que fornece gestão completa de planos de s
   - **AccountClaimActions**: Atribuição de permissões a usuários
 - **API RESTful Completa**: CRUD endpoints para todas as entidades
 - **Segurança Avançada**: Hash Argon2, validação de entrada, middleware de segurança
-- **Módulo de Autenticação Dedicado**: Sistema completo de autenticação e autorização isolado
 
 ## 🏗️ Arquitetura
 
@@ -67,42 +66,6 @@ HealthPlan/
 │           ├── Implementation/      # Implementação do UoW
 │           └── Interface/          # Contrato do UoW
 │
-├── Authentication/                   # Módulo de Autenticação
-│   └── Src/
-│       ├── Authentication.API/       # Camada de API de Autenticação
-│       │   ├── Controllers/         # Controllers da API
-│       │   │   ├── AuthenticationController.cs  # Autenticação básica
-│       │   │   ├── ClaimController.cs          # Gerenciamento de claims
-│       │   │   ├── ActionController.cs         # Gerenciamento de ações
-│       │   │   ├── ClaimActionController.cs    # Mapeamento claim-ação
-│       │   │   └── AccountClaimActionController.cs # Permissões de usuários
-│       │   ├── Middleware/          # Middleware customizado
-│       │   ├── Swagger/             # Documentação da API
-│       │   └── Data/                # Contextos do banco de dados
-│       │
-│       └── Authentication.Login/    # Domínio & Lógica de Negócio de Autenticação
-│           ├── Domain/              # Entidades de domínio
-│           │   ├── Implementation/  # Implementações concretas
-│           │   │   ├── Account.cs  # Entidade de usuário
-│           │   │   ├── Claim.cs    # Claims/Permissões
-│           │   │   ├── Action.cs   # Ações do sistema
-│           │   │   ├── ClaimAction.cs # Relação claim-ação
-│           │   │   └── AccountClaimAction.cs # Permissões do usuário
-│           │   └── Interface/      # Interfaces de domínio
-│           ├── Services/           # Serviços de negócio
-│           │   ├── Implementation/ # Implementações de serviços
-│           │   └── Interface/     # Contratos de serviços
-│           ├── Repository/         # Camada de acesso a dados
-│           │   ├── Implementation/ # Implementações de repositórios
-│           │   └── Interface/     # Contratos de repositórios
-│           ├── DTO/               # Objetos de transferência
-│           ├── Infrastructure/    # Configurações de entidade
-│           │   ├── Implementation/ # Mapeamentos EF Core
-│           │   └── Interface/    # Contratos de contexto
-│           └── UnitOfWork/       # Padrão Unit of Work
-│               ├── Implementation/ # Implementação do UoW
-│               └── Interface/    # Contrato do UoW
-│
 └── Foundation.Base/                 # Biblioteca base compartilhada
 │   ├── Domain/                      # Entidades base de domínio
 │   ├── Repository/                  # Padrões de repositório genéricos
@@ -111,34 +74,6 @@ HealthPlan/
 │
 └── Solution/                        # Configuração da solução
 ```
-
-### 🔐 Módulo de Autenticação
-
-O módulo de autenticação foi desenvolvido seguindo os mesmos princípios de Clean Architecture e é completamente isolado do módulo principal de HealthPlan, proporcionando:
-
-#### 🏛️ Estrutura do Módulo Authentication
-
-- **Authentication.API**: Camada de apresentação com endpoints específicos para autenticação
-  - Controllers especializados para autenticação, claims, ações e permissões
-  - Middleware customizado para processamento de tokens
-  - Documentação Swagger específica
-  - Contextos de banco de dados isolados
-
-- **Authentication.Login**: Camada de domínio e lógica de negócio
-  - Entidades de domínio: Account, Claim, Action, ClaimAction, AccountClaimAction
-  - Serviços de negócio para autenticação e autorização
-  - Repositórios especializados para acesso a dados de autenticação
-  - DTOs para transferência de dados
-  - Configurações de infraestrutura para Entity Framework
-  - Padrão Unit of Work para gerenciamento de transações
-
-#### 🎯 Benefícios da Separação
-
-- **Isolamento de Responsabilidades**: Autenticação separada da lógica de negócio principal
-- **Escalabilidade**: Possibilidade de deploy independente do módulo de autenticação
-- **Manutenibilidade**: Facilita atualizações e melhorias no sistema de segurança
-- **Reutilização**: O módulo pode ser reutilizado em outros projetos
-- **Testabilidade**: Testes isolados para funcionalidades de autenticação
 
 ## 🔧 Tecnologias Utilizadas
 
