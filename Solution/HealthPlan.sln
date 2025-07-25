@@ -4,7 +4,7 @@ VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.API", "..\Src\HealthPlan.API\HealthPlan.API.csproj", "{CE1283AA-5CAD-43AB-A973-2162B12096B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Login", "..\Src\HealthPlan.Login\HealthPlan.Login.csproj", "{B56204F9-7AA5-DCD3-A14A-65F0DD219B60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Quote", "..\Src\HealthPlan.Quote\HealthPlan.Quote.csproj", "{B56204F9-7AA5-DCD3-A14A-65F0DD219B60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Tests", "..\Src\HealthPlan.Tests\HealthPlan.Tests.csproj", "{C1F0B2A1-8E3D-4567-9ABC-DEF123456789}"
 EndProject

@@ -19,14 +19,14 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8" />
 		<PackageReference Include="Moq" Version="4.20.69" />
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\HealthPlan.API\HealthPlan.API.csproj" />
-		<ProjectReference Include="..\HealthPlan.Login\HealthPlan.Login.csproj" />
+		<ProjectReference Include="..\HealthPlan.Quote\HealthPlan.Quote.csproj" />
 	</ItemGroup>
 
 </Project>
