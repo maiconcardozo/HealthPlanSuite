@@ -1,0 +1,16 @@
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/bin/Debug/net8.0/HealthPlanSuite.Domain.deps.json
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/bin/Debug/net8.0/HealthPlanSuite.Domain.dll
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/bin/Debug/net8.0/HealthPlanSuite.Domain.pdb
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/bin/Debug/net8.0/Foundation.Base.dll
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/bin/Debug/net8.0/Foundation.Base.pdb
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.csproj.AssemblyReference.cache
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.AssemblyInfoInputs.cache
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.AssemblyInfo.cs
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.csproj.CoreCompileInputs.cache
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.sourcelink.json
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.csproj.CopyComplete
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.dll
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/refint/HealthPlanSuite.Domain.dll
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/HealthPlanSuite.Domain.pdb
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Src/HealthPlanSuite.Domain/obj/Debug/net8.0/ref/HealthPlanSuite.Domain.dll

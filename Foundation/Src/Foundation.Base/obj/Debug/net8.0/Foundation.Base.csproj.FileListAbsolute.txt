@@ -1,0 +1,13 @@
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/bin/Debug/net8.0/Foundation.Base.deps.json
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/bin/Debug/net8.0/Foundation.Base.dll
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/bin/Debug/net8.0/Foundation.Base.pdb
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.csproj.AssemblyReference.cache
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.AssemblyInfoInputs.cache
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.AssemblyInfo.cs
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.csproj.CoreCompileInputs.cache
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.sourcelink.json
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.dll
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/refint/Foundation.Base.dll
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/Foundation.Base.pdb
+/home/runner/work/HealthPlanSuite/HealthPlanSuite/Foundation/Src/Foundation.Base/obj/Debug/net8.0/ref/Foundation.Base.dll

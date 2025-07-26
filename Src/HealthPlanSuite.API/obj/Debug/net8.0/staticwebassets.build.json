@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "m+nRcb1iBkO0ZkmnOMvLqZQ/8ia3/jcr2iatSwD5mvA=",
+  "Source": "HealthPlanSuite.API",
+  "BasePath": "_content/HealthPlanSuite.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
