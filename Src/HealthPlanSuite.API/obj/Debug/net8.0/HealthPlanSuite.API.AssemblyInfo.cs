@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HealthPlanSuite.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8eeaa6b0524d5745be4ccc92463df98b62df1fc5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9526f6aa82a3ec837de1ef57ced795ef2e9e6678")]
 [assembly: System.Reflection.AssemblyProductAttribute("HealthPlanSuite.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HealthPlanSuite.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

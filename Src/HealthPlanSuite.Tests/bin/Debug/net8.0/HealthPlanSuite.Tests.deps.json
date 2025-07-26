@@ -105,15 +105,15 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/8.0.11": {},
-      "Microsoft.EntityFrameworkCore.Relational/8.0.2": {
+      "Microsoft.EntityFrameworkCore.Relational/8.0.11": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "8.0.11",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll": {
-            "assemblyVersion": "8.0.2.0",
-            "fileVersion": "8.0.224.6803"
+            "assemblyVersion": "8.0.11.0",
+            "fileVersion": "8.0.1124.52104"
           }
         }
       },
@@ -611,7 +611,7 @@
       },
       "Pomelo.EntityFrameworkCore.MySql/8.0.2": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Relational": "8.0.2",
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.11",
           "MySqlConnector": "2.3.5"
         },
         "runtime": {
@@ -1366,6 +1366,7 @@
           "FluentValidation": "11.9.0",
           "Foundation.Base": "1.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.11",
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.11",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2"
         },
         "runtime": {
@@ -1450,12 +1451,12 @@
       "path": "microsoft.entityframeworkcore.analyzers/8.0.11",
       "hashPath": "microsoft.entityframeworkcore.analyzers.8.0.11.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Relational/8.0.2": {
+    "Microsoft.EntityFrameworkCore.Relational/8.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-NoGfcq2OPw0z8XAPf74YFwGlTKjedWdsIEJqq4SvKcPjcu+B+/XDDNrDRxTvILfz4Ug8POSF49s1jz1JvUqTAg==",
-      "path": "microsoft.entityframeworkcore.relational/8.0.2",
-      "hashPath": "microsoft.entityframeworkcore.relational.8.0.2.nupkg.sha512"
+      "sha512": "sha512-3TuuW3i5I4Ro0yoaHmi2MqEDGObOVuhLaMEnd/heaLB1fcvm4fu4PevmC4BOWnI0vo176AIlV5o4rEQciLoohw==",
+      "path": "microsoft.entityframeworkcore.relational/8.0.11",
+      "hashPath": "microsoft.entityframeworkcore.relational.8.0.11.nupkg.sha512"
     },
     "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
       "type": "package",

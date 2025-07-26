@@ -153,10 +153,10 @@
           "lib/netstandard2.0/_._": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Relational/8.0.2": {
+      "Microsoft.EntityFrameworkCore.Relational/8.0.11": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "8.0.2",
+          "Microsoft.EntityFrameworkCore": "8.0.11",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
         },
         "compile": {
@@ -2306,6 +2306,7 @@
           "FluentValidation": "11.9.0",
           "Foundation.Base": "1.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.11",
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.11",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2"
         },
         "compile": {
@@ -2574,17 +2575,18 @@
         "microsoft.entityframeworkcore.analyzers.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Relational/8.0.2": {
-      "sha512": "NoGfcq2OPw0z8XAPf74YFwGlTKjedWdsIEJqq4SvKcPjcu+B+/XDDNrDRxTvILfz4Ug8POSF49s1jz1JvUqTAg==",
+    "Microsoft.EntityFrameworkCore.Relational/8.0.11": {
+      "sha512": "3TuuW3i5I4Ro0yoaHmi2MqEDGObOVuhLaMEnd/heaLB1fcvm4fu4PevmC4BOWnI0vo176AIlV5o4rEQciLoohw==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.relational/8.0.2",
+      "path": "microsoft.entityframeworkcore.relational/8.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
+        "PACKAGE.md",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Relational.xml",
-        "microsoft.entityframeworkcore.relational.8.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.relational.8.0.11.nupkg.sha512",
         "microsoft.entityframeworkcore.relational.nuspec"
       ]
     },
