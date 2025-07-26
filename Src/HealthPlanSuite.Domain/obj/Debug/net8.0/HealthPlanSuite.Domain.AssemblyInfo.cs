@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HealthPlanSuite.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8eeaa6b0524d5745be4ccc92463df98b62df1fc5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84a703086225336e20e31b83bd9a415cb767eb58")]
 [assembly: System.Reflection.AssemblyProductAttribute("HealthPlanSuite.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HealthPlanSuite.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
