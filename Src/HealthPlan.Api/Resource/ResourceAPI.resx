@@ -414,6 +414,69 @@
   <data name="DocumentationDeleteAccountClaimAction" xml:space="preserve">
     <value>Removes an account claim action association from the system.</value>
   </data>
+  <data name="GetHealthInsuranceOperators" xml:space="preserve">
+    <value>Get all health insurance operators</value>
+  </data>
+  <data name="DocumentationGetHealthInsuranceOperators" xml:space="preserve">
+    <value>Retrieves all available health insurance operators in the system.</value>
+  </data>
+  <data name="HealthInsuranceOperatorsRetrievedSuccessfully" xml:space="preserve">
+    <value>Health insurance operators retrieved successfully.</value>
+  </data>
+  <data name="AnUnexpectedErrorOccurredHealthInsuranceOperatorsCouldNotBeRetrieved" xml:space="preserve">
+    <value>An unexpected error occurred and the health insurance operators could not be retrieved.</value>
+  </data>
+  <data name="GetHealthInsuranceOperatorById" xml:space="preserve">
+    <value>Get health insurance operator by ID</value>
+  </data>
+  <data name="DocumentationGetHealthInsuranceOperatorById" xml:space="preserve">
+    <value>Retrieves a specific health insurance operator by its unique identifier.</value>
+  </data>
+  <data name="HealthInsuranceOperatorRetrievedSuccessfully" xml:space="preserve">
+    <value>Health insurance operator retrieved successfully.</value>
+  </data>
+  <data name="HealthInsuranceOperatorNotFound" xml:space="preserve">
+    <value>Health insurance operator not found.</value>
+  </data>
+  <data name="AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeRetrieved" xml:space="preserve">
+    <value>An unexpected error occurred and the health insurance operator could not be retrieved.</value>
+  </data>
+  <data name="AddHealthInsuranceOperator" xml:space="preserve">
+    <value>Add new health insurance operator</value>
+  </data>
+  <data name="DocumentationAddHealthInsuranceOperator" xml:space="preserve">
+    <value>Creates a new health insurance operator with the provided information.</value>
+  </data>
+  <data name="HealthInsuranceOperatorCreatedSuccessfully" xml:space="preserve">
+    <value>Health insurance operator created successfully.</value>
+  </data>
+  <data name="AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeInserted" xml:space="preserve">
+    <value>An unexpected error occurred and the health insurance operator could not be inserted.</value>
+  </data>
+  <data name="UpdateHealthInsuranceOperator" xml:space="preserve">
+    <value>Update health insurance operator</value>
+  </data>
+  <data name="DocumentationUpdateHealthInsuranceOperator" xml:space="preserve">
+    <value>Updates an existing health insurance operator with the provided information.</value>
+  </data>
+  <data name="HealthInsuranceOperatorUpdatedSuccessfully" xml:space="preserve">
+    <value>Health insurance operator updated successfully.</value>
+  </data>
+  <data name="AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeUpdated" xml:space="preserve">
+    <value>An unexpected error occurred and the health insurance operator could not be updated.</value>
+  </data>
+  <data name="DeleteHealthInsuranceOperator" xml:space="preserve">
+    <value>Delete health insurance operator</value>
+  </data>
+  <data name="DocumentationDeleteHealthInsuranceOperator" xml:space="preserve">
+    <value>Removes a health insurance operator from the system by its unique identifier.</value>
+  </data>
+  <data name="HealthInsuranceOperatorDeletedSuccessfully" xml:space="preserve">
+    <value>Health insurance operator deleted successfully.</value>
+  </data>
+  <data name="AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeDeleted" xml:space="preserve">
+    <value>An unexpected error occurred and the health insurance operator could not be deleted.</value>
+  </data>
 
 
 </root>

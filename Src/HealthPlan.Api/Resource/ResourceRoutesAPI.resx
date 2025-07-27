@@ -183,4 +183,19 @@
   <data name="DeleteAccountClaimAction" xml:space="preserve">
     <value>DeleteAccountClaimAction/{id}</value>
   </data>
+  <data name="GetHealthInsuranceOperators" xml:space="preserve">
+    <value>GetHealthInsuranceOperators</value>
+  </data>
+  <data name="GetHealthInsuranceOperatorById" xml:space="preserve">
+    <value>GetHealthInsuranceOperatorById/{id}</value>
+  </data>
+  <data name="AddHealthInsuranceOperator" xml:space="preserve">
+    <value>AddHealthInsuranceOperator</value>
+  </data>
+  <data name="UpdateHealthInsuranceOperator" xml:space="preserve">
+    <value>UpdateHealthInsuranceOperator/{id}</value>
+  </data>
+  <data name="DeleteHealthInsuranceOperator" xml:space="preserve">
+    <value>DeleteHealthInsuranceOperator/{id}</value>
+  </data>
 </root>

@@ -923,5 +923,194 @@ namespace Authentication.API.Resource {
                 return ResourceManager.GetString("UserNotAuthorized", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all health insurance operators.
+        /// </summary>
+        public static string GetHealthInsuranceOperators {
+            get {
+                return ResourceManager.GetString("GetHealthInsuranceOperators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieves all available health insurance operators in the system..
+        /// </summary>
+        public static string DocumentationGetHealthInsuranceOperators {
+            get {
+                return ResourceManager.GetString("DocumentationGetHealthInsuranceOperators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health insurance operators retrieved successfully..
+        /// </summary>
+        public static string HealthInsuranceOperatorsRetrievedSuccessfully {
+            get {
+                return ResourceManager.GetString("HealthInsuranceOperatorsRetrievedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred and the health insurance operators could not be retrieved..
+        /// </summary>
+        public static string AnUnexpectedErrorOccurredHealthInsuranceOperatorsCouldNotBeRetrieved {
+            get {
+                return ResourceManager.GetString("AnUnexpectedErrorOccurredHealthInsuranceOperatorsCouldNotBeRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get health insurance operator by ID.
+        /// </summary>
+        public static string GetHealthInsuranceOperatorById {
+            get {
+                return ResourceManager.GetString("GetHealthInsuranceOperatorById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieves a specific health insurance operator by its unique identifier..
+        /// </summary>
+        public static string DocumentationGetHealthInsuranceOperatorById {
+            get {
+                return ResourceManager.GetString("DocumentationGetHealthInsuranceOperatorById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health insurance operator retrieved successfully..
+        /// </summary>
+        public static string HealthInsuranceOperatorRetrievedSuccessfully {
+            get {
+                return ResourceManager.GetString("HealthInsuranceOperatorRetrievedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health insurance operator not found..
+        /// </summary>
+        public static string HealthInsuranceOperatorNotFound {
+            get {
+                return ResourceManager.GetString("HealthInsuranceOperatorNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred and the health insurance operator could not be retrieved..
+        /// </summary>
+        public static string AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeRetrieved {
+            get {
+                return ResourceManager.GetString("AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new health insurance operator.
+        /// </summary>
+        public static string AddHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("AddHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a new health insurance operator with the provided information..
+        /// </summary>
+        public static string DocumentationAddHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("DocumentationAddHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health insurance operator created successfully..
+        /// </summary>
+        public static string HealthInsuranceOperatorCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("HealthInsuranceOperatorCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred and the health insurance operator could not be inserted..
+        /// </summary>
+        public static string AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeInserted {
+            get {
+                return ResourceManager.GetString("AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeInserted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update health insurance operator.
+        /// </summary>
+        public static string UpdateHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("UpdateHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates an existing health insurance operator with the provided information..
+        /// </summary>
+        public static string DocumentationUpdateHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("DocumentationUpdateHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health insurance operator updated successfully..
+        /// </summary>
+        public static string HealthInsuranceOperatorUpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("HealthInsuranceOperatorUpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred and the health insurance operator could not be updated..
+        /// </summary>
+        public static string AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeUpdated {
+            get {
+                return ResourceManager.GetString("AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete health insurance operator.
+        /// </summary>
+        public static string DeleteHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("DeleteHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes a health insurance operator from the system by its unique identifier..
+        /// </summary>
+        public static string DocumentationDeleteHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("DocumentationDeleteHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health insurance operator deleted successfully..
+        /// </summary>
+        public static string HealthInsuranceOperatorDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("HealthInsuranceOperatorDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred and the health insurance operator could not be deleted..
+        /// </summary>
+        public static string AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeDeleted {
+            get {
+                return ResourceManager.GetString("AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeDeleted", resourceCulture);
+            }
+        }
     }
 }

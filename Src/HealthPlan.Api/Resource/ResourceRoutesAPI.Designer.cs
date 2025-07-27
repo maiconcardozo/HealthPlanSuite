@@ -257,5 +257,50 @@ namespace Authentication.API.Resource {
                 return ResourceManager.GetString("DeleteAccountClaimAction", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GetHealthInsuranceOperators.
+        /// </summary>
+        public static string GetHealthInsuranceOperators {
+            get {
+                return ResourceManager.GetString("GetHealthInsuranceOperators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GetHealthInsuranceOperatorById/{id}.
+        /// </summary>
+        public static string GetHealthInsuranceOperatorById {
+            get {
+                return ResourceManager.GetString("GetHealthInsuranceOperatorById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AddHealthInsuranceOperator.
+        /// </summary>
+        public static string AddHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("AddHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpdateHealthInsuranceOperator/{id}.
+        /// </summary>
+        public static string UpdateHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("UpdateHealthInsuranceOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeleteHealthInsuranceOperator/{id}.
+        /// </summary>
+        public static string DeleteHealthInsuranceOperator {
+            get {
+                return ResourceManager.GetString("DeleteHealthInsuranceOperator", resourceCulture);
+            }
+        }
     }
 }
