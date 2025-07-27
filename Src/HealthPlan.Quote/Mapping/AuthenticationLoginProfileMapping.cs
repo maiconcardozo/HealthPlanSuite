@@ -40,6 +40,12 @@ namespace Authentication.Login.Mapping
             CreateMap<AccountClaimAction, AccountClaimActionPayLoadDTO>();
             CreateMap<AccountClaimAction, AccountClaimActionResponseDTO>();
             CreateMap<AccountClaimActionResponseDTO, AccountClaimAction>();
+
+            // HealthInsuranceOperator mappings
+            CreateMap<HealthPlan.Quote.DTO.HealthPlan.HealthInsuranceOperatorPayLoadDTO, HealthPlan.Quote.Domain.HealthPlan.Implementation.HealthInsuranceOperator>();
+            CreateMap<HealthPlan.Quote.Domain.HealthPlan.Implementation.HealthInsuranceOperator, HealthPlan.Quote.DTO.HealthPlan.HealthInsuranceOperatorPayLoadDTO>();
+            CreateMap<HealthPlan.Quote.Domain.HealthPlan.Implementation.HealthInsuranceOperator, HealthPlan.Quote.DTO.HealthPlan.HealthInsuranceOperatorResponseDTO>();
+            CreateMap<HealthPlan.Quote.DTO.HealthPlan.HealthInsuranceOperatorResponseDTO, HealthPlan.Quote.Domain.HealthPlan.Implementation.HealthInsuranceOperator>();
         }
     }
 }

@@ -1,11 +1,18 @@
+using Authentication.API.Resource;
+using Authentication.API.Swagger;
+using Authentication.Login.Mapping;
+using Foundation.Base.Util;
 using HealthPlan.Quote.DTO.HealthPlan;
+using HealthPlan.Quote.Domain.HealthPlan.Implementation;
 using HealthPlan.Quote.Services.HealthPlan.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace HealthPlan.Api.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("[controller]")]
     public class HealthInsuranceOperatorController : ControllerBase
     {
         private readonly IHealthInsuranceOperatorService _service;
@@ -15,33 +22,37 @@ namespace HealthPlan.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet(HealthInsuranceOperatorRoutes.GetHealthInsuranceOperators)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(List<HealthInsuranceOperatorResponseDTO>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorListResponseExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public async Task<IActionResult> GetAll()
         {
             try
             {
                 var operators = _service.GetAll();
-                var response = operators.Select(o => new HealthInsuranceOperatorResponseDTO
-                {
-                    Id = o.Id,
-                    Name = o.Name,
-                    CNPJ = o.CNPJ,
-                    Website = o.Website,
-                    Phone = o.Phone,
-                    CreatedAt = o.CreatedAt,
-                    UpdatedAt = o.UpdatedAt
-                }).ToList();
-
+                var response = operators.Select(o => AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(o)).ToList();
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    new { message = "An error occurred while retrieving health insurance operators.", error = ex.Message });
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorsCouldNotBeRetrieved);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet(HealthInsuranceOperatorRoutes.GetHealthInsuranceOperatorById)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(HealthInsuranceOperatorResponseDTO))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorResponseExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -49,85 +60,78 @@ namespace HealthPlan.Api.Controllers
                 var @operator = _service.GetById(id);
                 if (@operator == null)
                 {
-                    return NotFound(new { message = "Health insurance operator not found." });
+                    var notFoundProblemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.HealthInsuranceOperatorNotFound);
+                    return NotFound(notFoundProblemDetails);
                 }
 
-                var response = new HealthInsuranceOperatorResponseDTO
-                {
-                    Id = @operator.Id,
-                    Name = @operator.Name,
-                    CNPJ = @operator.CNPJ,
-                    Website = @operator.Website,
-                    Phone = @operator.Phone,
-                    CreatedAt = @operator.CreatedAt,
-                    UpdatedAt = @operator.UpdatedAt
-                };
-
+                var response = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(@operator);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    new { message = "An error occurred while retrieving the health insurance operator.", error = ex.Message });
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeRetrieved);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] HealthInsuranceOperatorPayLoadDTO dto)
+        [HttpPost(HealthInsuranceOperatorRoutes.AddHealthInsuranceOperator)]
+        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(HealthInsuranceOperatorResponseDTO))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status201Created, typeof(HealthInsuranceOperatorResponseExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
+        public async Task<IActionResult> Create([FromBody] HealthInsuranceOperatorPayLoadDTO dto, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = await ValidationHelper.ValidateEntityAsync(dto, serviceProvider, this);
+            if (validationResult != null)
+                return validationResult;
+
+            var @operator = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperator>(dto);
+
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var @operator = new HealthPlan.Quote.Domain.HealthPlan.Implementation.HealthInsuranceOperator
-                {
-                    Name = dto.Name,
-                    CNPJ = dto.CNPJ,
-                    Website = dto.Website,
-                    Phone = dto.Phone
-                };
-
                 var created = _service.Add(@operator);
-
-                var response = new HealthInsuranceOperatorResponseDTO
-                {
-                    Id = created.Id,
-                    Name = created.Name,
-                    CNPJ = created.CNPJ,
-                    Website = created.Website,
-                    Phone = created.Phone,
-                    CreatedAt = created.CreatedAt,
-                    UpdatedAt = created.UpdatedAt
-                };
-
+                var response = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(created);
                 return CreatedAtAction(nameof(GetById), new { id = created.Id }, response);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    new { message = "An error occurred while creating the health insurance operator.", error = ex.Message });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message);
+                return BadRequest(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeInserted);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] HealthInsuranceOperatorPayLoadDTO dto)
+        [HttpPut(HealthInsuranceOperatorRoutes.UpdateHealthInsuranceOperator)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(HealthInsuranceOperatorResponseDTO))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorResponseExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
+        public async Task<IActionResult> Update(int id, [FromBody] HealthInsuranceOperatorPayLoadDTO dto, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = await ValidationHelper.ValidateEntityAsync(dto, serviceProvider, this);
+            if (validationResult != null)
+                return validationResult;
+
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
                 var existing = _service.GetById(id);
                 if (existing == null)
                 {
-                    return NotFound(new { message = "Health insurance operator not found." });
+                    var notFoundProblemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.HealthInsuranceOperatorNotFound);
+                    return NotFound(notFoundProblemDetails);
                 }
 
+                // Update the existing entity with new values
                 existing.Name = dto.Name;
                 existing.CNPJ = dto.CNPJ;
                 existing.Website = dto.Website;
@@ -135,27 +139,29 @@ namespace HealthPlan.Api.Controllers
 
                 _service.Update(existing);
 
-                var response = new HealthInsuranceOperatorResponseDTO
-                {
-                    Id = existing.Id,
-                    Name = existing.Name,
-                    CNPJ = existing.CNPJ,
-                    Website = existing.Website,
-                    Phone = existing.Phone,
-                    CreatedAt = existing.CreatedAt,
-                    UpdatedAt = existing.UpdatedAt
-                };
-
+                var response = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(existing);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    new { message = "An error occurred while updating the health insurance operator.", error = ex.Message });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message);
+                return BadRequest(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeUpdated);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete(HealthInsuranceOperatorRoutes.DeleteHealthInsuranceOperator)]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -163,16 +169,22 @@ namespace HealthPlan.Api.Controllers
                 var existing = _service.GetById(id);
                 if (existing == null)
                 {
-                    return NotFound(new { message = "Health insurance operator not found." });
+                    var notFoundProblemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.HealthInsuranceOperatorNotFound);
+                    return NotFound(notFoundProblemDetails);
                 }
 
                 _service.Delete(id);
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                    new { message = "An error occurred while deleting the health insurance operator.", error = ex.Message });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message);
+                return BadRequest(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeDeleted);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
     }
