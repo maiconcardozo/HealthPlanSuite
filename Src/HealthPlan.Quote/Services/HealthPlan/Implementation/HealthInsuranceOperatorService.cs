@@ -1,51 +1,62 @@
 using HealthPlan.Quote.Domain.HealthPlan.Implementation;
-using HealthPlan.Quote.Repository.HealthPlan.Interface;
 using HealthPlan.Quote.Services.HealthPlan.Interface;
+using HealthPlan.Quote.UnitOfWork.Interface;
 
 namespace HealthPlan.Quote.Services.HealthPlan.Implementation
 {
     public class HealthInsuranceOperatorService : IHealthInsuranceOperatorService
     {
-        private readonly IHealthInsuranceOperatorRepository _repository;
+        private readonly IHealthPlanUnitOfWork _unitOfWork;
 
-        public HealthInsuranceOperatorService(IHealthInsuranceOperatorRepository repository)
+        public HealthInsuranceOperatorService(IHealthPlanUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<HealthInsuranceOperator> GetAll()
         {
-            return _repository.GetAll();
+            return _unitOfWork.HealthInsuranceOperatorRepository.GetAll();
         }
 
         public HealthInsuranceOperator? GetById(int id)
         {
-            return _repository.GetById(id);
+            return _unitOfWork.HealthInsuranceOperatorRepository.GetById(id);
         }
 
         public HealthInsuranceOperator? GetByCNPJ(string cnpj)
         {
-            return _repository.GetByCNPJ(cnpj);
+            return _unitOfWork.HealthInsuranceOperatorRepository.GetByCNPJ(cnpj);
         }
 
         public IEnumerable<HealthInsuranceOperator> GetByName(string name)
         {
-            return _repository.GetByName(name);
+            return _unitOfWork.HealthInsuranceOperatorRepository.GetByName(name);
         }
 
         public HealthInsuranceOperator Add(HealthInsuranceOperator healthOperator)
         {
-            return _repository.Add(healthOperator);
+            HealthInsuranceOperator result = null;
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                result = _unitOfWork.HealthInsuranceOperatorRepository.Add(healthOperator);
+            });
+            return result;
         }
 
         public void Update(HealthInsuranceOperator healthOperator)
         {
-            _repository.Update(healthOperator);
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                _unitOfWork.HealthInsuranceOperatorRepository.Update(healthOperator);
+            });
         }
 
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                _unitOfWork.HealthInsuranceOperatorRepository.Delete(id);
+            });
         }
     }
 }

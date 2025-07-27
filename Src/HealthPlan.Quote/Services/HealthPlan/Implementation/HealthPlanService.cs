@@ -1,61 +1,72 @@
 using HealthPlan.Quote.Domain.HealthPlan.Implementation;
-using HealthPlan.Quote.Repository.HealthPlan.Interface;
 using HealthPlan.Quote.Services.HealthPlan.Interface;
+using HealthPlan.Quote.UnitOfWork.Interface;
 
 namespace HealthPlan.Quote.Services.HealthPlan.Implementation
 {
     public class HealthPlanService : IHealthPlanService
     {
-        private readonly IHealthPlanRepository _repository;
+        private readonly IHealthPlanUnitOfWork _unitOfWork;
 
-        public HealthPlanService(IHealthPlanRepository repository)
+        public HealthPlanService(IHealthPlanUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<Domain.HealthPlan.Implementation.HealthPlan> GetAll()
         {
-            return _repository.GetAll();
+            return _unitOfWork.HealthPlanRepository.GetAll();
         }
 
         public Domain.HealthPlan.Implementation.HealthPlan? GetById(int id)
         {
-            return _repository.GetById(id);
+            return _unitOfWork.HealthPlanRepository.GetById(id);
         }
 
         public IEnumerable<Domain.HealthPlan.Implementation.HealthPlan> GetByOperatorId(int operatorId)
         {
-            return _repository.GetByOperatorId(operatorId);
+            return _unitOfWork.HealthPlanRepository.GetByOperatorId(operatorId);
         }
 
         public IEnumerable<Domain.HealthPlan.Implementation.HealthPlan> GetByPlanTypeId(int planTypeId)
         {
-            return _repository.GetByPlanTypeId(planTypeId);
+            return _unitOfWork.HealthPlanRepository.GetByPlanTypeId(planTypeId);
         }
 
         public IEnumerable<Domain.HealthPlan.Implementation.HealthPlan> GetByName(string name)
         {
-            return _repository.GetByName(name);
+            return _unitOfWork.HealthPlanRepository.GetByName(name);
         }
 
         public IEnumerable<Domain.HealthPlan.Implementation.HealthPlan> GetWithCoverage()
         {
-            return _repository.GetWithCoverage();
+            return _unitOfWork.HealthPlanRepository.GetWithCoverage();
         }
 
         public Domain.HealthPlan.Implementation.HealthPlan Add(Domain.HealthPlan.Implementation.HealthPlan healthPlan)
         {
-            return _repository.Add(healthPlan);
+            Domain.HealthPlan.Implementation.HealthPlan result = null;
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                result = _unitOfWork.HealthPlanRepository.Add(healthPlan);
+            });
+            return result;
         }
 
         public void Update(Domain.HealthPlan.Implementation.HealthPlan healthPlan)
         {
-            _repository.Update(healthPlan);
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                _unitOfWork.HealthPlanRepository.Update(healthPlan);
+            });
         }
 
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                _unitOfWork.HealthPlanRepository.Delete(id);
+            });
         }
     }
 }

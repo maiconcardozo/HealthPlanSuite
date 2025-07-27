@@ -22,6 +22,38 @@ namespace Foundation.Base.UnitOfWork.Implementation
             return _context.SaveChanges();
         }
 
+        public void ExecuteInTransaction(Action action)
+        {
+            using var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                action();
+                SaveChanges();
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+
+        public async Task ExecuteInTransactionAsync(Func<Task> action)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                await action();
+                await SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

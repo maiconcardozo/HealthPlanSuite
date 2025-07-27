@@ -2,6 +2,8 @@ using HealthPlan.Quote.Repository.HealthPlan.Implementation;
 using HealthPlan.Quote.Repository.HealthPlan.Interface;
 using HealthPlan.Quote.Services.HealthPlan.Implementation;
 using HealthPlan.Quote.Services.HealthPlan.Interface;
+using HealthPlan.Quote.UnitOfWork.Implementation;
+using HealthPlan.Quote.UnitOfWork.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HealthPlan.Quote.Extensions
@@ -20,11 +22,18 @@ namespace HealthPlan.Quote.Extensions
             services.AddScoped<IHealthEstablishmentRepository, HealthEstablishmentRepository>();
             services.AddScoped<IPlanCoverageRepository, PlanCoverageRepository>();
 
+            // Register Unit of Work
+            services.AddScoped<IHealthPlanUnitOfWork, HealthPlanUnitOfWork>();
+
             // Register services
             services.AddScoped<IHealthInsuranceOperatorService, HealthInsuranceOperatorService>();
             services.AddScoped<IHealthPlanService, HealthPlanService>();
             services.AddScoped<IPriceTableService, PriceTableService>();
-            // Note: Add other service implementations as they are created
+            services.AddScoped<IAgeRangeService, AgeRangeService>();
+            services.AddScoped<IPlanTypeService, PlanTypeService>();
+            services.AddScoped<IPlanAdjustmentService, PlanAdjustmentService>();
+            services.AddScoped<IHealthEstablishmentService, HealthEstablishmentService>();
+            services.AddScoped<IPlanCoverageService, PlanCoverageService>();
 
             return services;
         }
