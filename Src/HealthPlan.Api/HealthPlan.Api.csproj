@@ -44,7 +44,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Authentication.Login\Authentication.Login.csproj" />
+		<ProjectReference Include="..\HealthPlan.Quote\HealthPlan.Quote.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
