@@ -2,10 +2,11 @@
 using Authentication.Login.UnitOfWork.Interface;
 using Foundation.Base.UnitOfWork.Implementation;
 using Microsoft.EntityFrameworkCore;
+using UnitOfWorkBase = Foundation.Base.UnitOfWork.Implementation.UnitOfWork;
 
 namespace Authentication.Login.UnitOfWork.Implementation
 {
-    public class LoginUnitOfWork : BaseUnitOfWork, ILoginUnitOfWork
+    public class LoginUnitOfWork : UnitOfWorkBase, ILoginUnitOfWork
     {
         public IAccountRepository AccountRepository { get; }
         public IClaimRepository ClaimRepository { get; }
