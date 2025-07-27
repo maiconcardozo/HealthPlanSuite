@@ -8,8 +8,8 @@ namespace HealthPlan.Quote.Services.HealthPlan.Interface
         HealthInsuranceOperator? GetById(int id);
         HealthInsuranceOperator? GetByCNPJ(string cnpj);
         IEnumerable<HealthInsuranceOperator> GetByName(string name);
-        HealthInsuranceOperator Add(HealthInsuranceOperator operator);
-        void Update(HealthInsuranceOperator operator);
+        HealthInsuranceOperator Add(HealthInsuranceOperator healthOperator);
+        void Update(HealthInsuranceOperator healthOperator);
         void Delete(int id);
     }
 }

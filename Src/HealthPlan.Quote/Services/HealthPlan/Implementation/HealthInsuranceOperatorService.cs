@@ -33,14 +33,14 @@ namespace HealthPlan.Quote.Services.HealthPlan.Implementation
             return _repository.GetByName(name);
         }
 
-        public HealthInsuranceOperator Add(HealthInsuranceOperator @operator)
+        public HealthInsuranceOperator Add(HealthInsuranceOperator healthOperator)
         {
-            return _repository.Add(@operator);
+            return _repository.Add(healthOperator);
         }
 
-        public void Update(HealthInsuranceOperator @operator)
+        public void Update(HealthInsuranceOperator healthOperator)
         {
-            _repository.Update(@operator);
+            _repository.Update(healthOperator);
         }
 
         public void Delete(int id)
