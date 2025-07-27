@@ -1,61 +1,72 @@
 using HealthPlan.Quote.Domain.HealthPlan.Implementation;
-using HealthPlan.Quote.Repository.HealthPlan.Interface;
 using HealthPlan.Quote.Services.HealthPlan.Interface;
+using HealthPlan.Quote.UnitOfWork.Interface;
 
 namespace HealthPlan.Quote.Services.HealthPlan.Implementation
 {
     public class PriceTableService : IPriceTableService
     {
-        private readonly IPriceTableRepository _repository;
+        private readonly IHealthPlanUnitOfWork _unitOfWork;
 
-        public PriceTableService(IPriceTableRepository repository)
+        public PriceTableService(IHealthPlanUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<PriceTable> GetAll()
         {
-            return _repository.GetAll();
+            return _unitOfWork.PriceTableRepository.GetAll();
         }
 
         public PriceTable? GetById(int id)
         {
-            return _repository.GetById(id);
+            return _unitOfWork.PriceTableRepository.GetById(id);
         }
 
         public IEnumerable<PriceTable> GetByHealthPlanId(int healthPlanId)
         {
-            return _repository.GetByHealthPlanId(healthPlanId);
+            return _unitOfWork.PriceTableRepository.GetByHealthPlanId(healthPlanId);
         }
 
         public IEnumerable<PriceTable> GetByAgeRangeId(int ageRangeId)
         {
-            return _repository.GetByAgeRangeId(ageRangeId);
+            return _unitOfWork.PriceTableRepository.GetByAgeRangeId(ageRangeId);
         }
 
         public IEnumerable<PriceTable> GetActivePrices(int healthPlanId, DateTime date)
         {
-            return _repository.GetActivePrices(healthPlanId, date);
+            return _unitOfWork.PriceTableRepository.GetActivePrices(healthPlanId, date);
         }
 
         public PriceTable? GetCurrentPrice(int healthPlanId, int ageRangeId)
         {
-            return _repository.GetCurrentPrice(healthPlanId, ageRangeId);
+            return _unitOfWork.PriceTableRepository.GetCurrentPrice(healthPlanId, ageRangeId);
         }
 
         public PriceTable Add(PriceTable priceTable)
         {
-            return _repository.Add(priceTable);
+            PriceTable result = null;
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                result = _unitOfWork.PriceTableRepository.Add(priceTable);
+            });
+            return result;
         }
 
         public void Update(PriceTable priceTable)
         {
-            _repository.Update(priceTable);
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                _unitOfWork.PriceTableRepository.Update(priceTable);
+            });
         }
 
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            _unitOfWork.ExecuteInTransaction(() =>
+            {
+                _unitOfWork.PriceTableRepository.Delete(id);
+            });
         }
     }
 }
