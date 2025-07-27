@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HealthPlan.Quote")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac42e4bcd5aaf89d801399d684bb317d693cfa2b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+479fcc502c7d60154d0413f9f7a2bc082e853e8e")]
 [assembly: System.Reflection.AssemblyProductAttribute("HealthPlan.Quote")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HealthPlan.Quote")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -28,9 +28,9 @@ namespace HealthPlan.Quote.Services.HealthPlan.Implementation
             return _unitOfWork.AgeRangeRepository.GetByAge(age);
         }
 
-        public IEnumerable<AgeRange> GetActiveRanges()
+        public IEnumerable<AgeRange> GetByAgeRange(int minAge, int maxAge)
         {
-            return _unitOfWork.AgeRangeRepository.GetActiveRanges();
+            return _unitOfWork.AgeRangeRepository.GetByAgeRange(minAge, maxAge);
         }
 
         public AgeRange Add(AgeRange ageRange)

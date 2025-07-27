@@ -28,14 +28,14 @@ namespace HealthPlan.Quote.Services.HealthPlan.Implementation
             return _unitOfWork.PlanCoverageRepository.GetByHealthPlanId(healthPlanId);
         }
 
-        public IEnumerable<PlanCoverage> GetByCoverageType(string coverageType)
+        public IEnumerable<PlanCoverage> GetByHealthEstablishmentId(int healthEstablishmentId)
         {
-            return _unitOfWork.PlanCoverageRepository.GetByCoverageType(coverageType);
+            return _unitOfWork.PlanCoverageRepository.GetByHealthEstablishmentId(healthEstablishmentId);
         }
 
-        public IEnumerable<PlanCoverage> GetBySpecialty(string specialty)
+        public bool ExistsCoverage(int healthPlanId, int healthEstablishmentId)
         {
-            return _unitOfWork.PlanCoverageRepository.GetBySpecialty(specialty);
+            return _unitOfWork.PlanCoverageRepository.ExistsCoverage(healthPlanId, healthEstablishmentId);
         }
 
         public PlanCoverage Add(PlanCoverage planCoverage)

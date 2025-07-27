@@ -23,14 +23,9 @@ namespace HealthPlan.Quote.Services.HealthPlan.Implementation
             return _unitOfWork.PlanTypeRepository.GetById(id);
         }
 
-        public PlanType? GetByName(string name)
+        public IEnumerable<PlanType> GetByDescription(string description)
         {
-            return _unitOfWork.PlanTypeRepository.GetByName(name);
-        }
-
-        public IEnumerable<PlanType> GetByCategory(string category)
-        {
-            return _unitOfWork.PlanTypeRepository.GetByCategory(category);
+            return _unitOfWork.PlanTypeRepository.GetByDescription(description);
         }
 
         public PlanType Add(PlanType planType)

@@ -28,14 +28,14 @@ namespace HealthPlan.Quote.Services.HealthPlan.Implementation
             return _unitOfWork.PlanAdjustmentRepository.GetByHealthPlanId(healthPlanId);
         }
 
-        public IEnumerable<PlanAdjustment> GetByEffectiveDate(DateTime effectiveDate)
+        public IEnumerable<PlanAdjustment> GetByDateRange(DateTime startDate, DateTime endDate)
         {
-            return _unitOfWork.PlanAdjustmentRepository.GetByEffectiveDate(effectiveDate);
+            return _unitOfWork.PlanAdjustmentRepository.GetByDateRange(startDate, endDate);
         }
 
-        public PlanAdjustment? GetCurrentAdjustment(int healthPlanId)
+        public IEnumerable<PlanAdjustment> GetByAdjustmentType(string adjustmentType)
         {
-            return _unitOfWork.PlanAdjustmentRepository.GetCurrentAdjustment(healthPlanId);
+            return _unitOfWork.PlanAdjustmentRepository.GetByAdjustmentType(adjustmentType);
         }
 
         public PlanAdjustment Add(PlanAdjustment planAdjustment)
