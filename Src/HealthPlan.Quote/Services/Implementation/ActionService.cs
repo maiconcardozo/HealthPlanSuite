@@ -2,6 +2,7 @@
 using Authentication.Login.Repository.Interface;
 using Authentication.Login.Services.Interface;
 using System.Collections.Generic;
+using ActionEntity = Authentication.Login.Domain.Implementation.Action;
 
 namespace Authentication.Login.Services.Implementation
 {
@@ -14,15 +15,15 @@ namespace Authentication.Login.Services.Implementation
             _actionRepository = actionRepository;
         }
 
-        public IEnumerable<Action> GetAll() => _actionRepository.GetAll();
+        public IEnumerable<ActionEntity> GetAll() => _actionRepository.GetAll();
 
-        public Action? GetById(int id) => _actionRepository.GetById(id);
+        public ActionEntity? GetById(int id) => _actionRepository.GetById(id);
 
-        public Action? GetByName(string name) => _actionRepository.GetByName(name);
+        public ActionEntity? GetByName(string name) => _actionRepository.GetByName(name);
 
-        public void AddAction(Action action) => _actionRepository.Add(action);
+        public void AddAction(ActionEntity action) => _actionRepository.Add(action);
 
-        public void UpdateAction(Action action) => _actionRepository.Update(action);
+        public void UpdateAction(ActionEntity action) => _actionRepository.Update(action);
 
         public void DeleteAction(int id)
         {

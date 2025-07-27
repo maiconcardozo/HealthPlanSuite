@@ -3,7 +3,7 @@ using Foundation.Base.UnitOfWork.Interface;
 
 namespace Authentication.Login.UnitOfWork.Interface
 {
-    public interface ILoginUnitOfWork : IBaseUnitOfWork
+    public interface ILoginUnitOfWork : IUnitOfWork
     {
         IAccountRepository AccountRepository { get; }
         IClaimRepository ClaimRepository { get; }

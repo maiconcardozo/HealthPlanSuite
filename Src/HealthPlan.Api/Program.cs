@@ -5,6 +5,7 @@ using Authentication.Login.Domain.Interface;
 using Authentication.Login.DTO;
 using Authentication.Login.Extensions;
 using Authentication.Login.Util;
+using HealthPlan.Quote.Extensions;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
@@ -19,6 +20,7 @@ var appsettings = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddAuthenticationLoginServices(Authentication.API.Helper.Utils.GetConnectionString(appsettings));
+builder.Services.AddHealthPlanServices(); // Add health plan services
 builder.Services.AddControllers();
 builder.Services.AddTransient<FluentValidation.IValidator<AccountPayLoadDTO>, AccountPayloadValidator>();
 builder.Services.AddEndpointsApiExplorer();
