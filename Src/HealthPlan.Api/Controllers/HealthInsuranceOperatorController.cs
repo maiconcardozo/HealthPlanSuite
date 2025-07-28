@@ -23,9 +23,11 @@ namespace HealthPlan.Api.Controllers
         [HttpGet(HealthInsuranceOperatorRoutes.GetHealthInsuranceOperators)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(List<HealthInsuranceOperatorResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorListResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult GetAll()
         {
@@ -60,10 +62,12 @@ namespace HealthPlan.Api.Controllers
         [HttpGet(HealthInsuranceOperatorRoutes.GetHealthInsuranceOperatorById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(HealthInsuranceOperatorResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult GetById(int id)
@@ -111,9 +115,11 @@ namespace HealthPlan.Api.Controllers
         [HttpPost(HealthInsuranceOperatorRoutes.AddHealthInsuranceOperator)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(HealthInsuranceOperatorResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status201Created, typeof(HealthInsuranceOperatorResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult Create([FromBody] HealthInsuranceOperatorPayLoadDTO dto)
         {
@@ -181,10 +187,12 @@ namespace HealthPlan.Api.Controllers
         [HttpPut(HealthInsuranceOperatorRoutes.UpdateHealthInsuranceOperator)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(HealthInsuranceOperatorResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult Update(int id, [FromBody] HealthInsuranceOperatorPayLoadDTO dto)
@@ -264,9 +272,11 @@ namespace HealthPlan.Api.Controllers
         [HttpDelete(HealthInsuranceOperatorRoutes.DeleteHealthInsuranceOperator)]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult Delete(int id)

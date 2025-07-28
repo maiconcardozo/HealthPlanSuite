@@ -93,6 +93,20 @@ namespace HealthPlan.API.Swagger
         }
     }
 
+    public class ProblemDetailsUnauthorizedExample : IExamplesProvider<ProblemDetails>
+    {
+        public ProblemDetails GetExamples()
+        {
+            return new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = "Unauthorized",
+                Status = 401,
+                Detail = "Authentication is required to access this resource."
+            };
+        }
+    }
+
     public class ProblemDetailsInternalServerErrorExample : IExamplesProvider<ProblemDetails>
     {
         public ProblemDetails GetExamples()
