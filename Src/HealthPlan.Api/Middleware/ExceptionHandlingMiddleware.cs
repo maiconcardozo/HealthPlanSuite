@@ -31,7 +31,7 @@ namespace HealthPlan.API.Middleware
                 var problemDetails = new ProblemDetails
                 {
                     Status = StatusCodes.Status500InternalServerError,
-                    Title = ResourceFoundation.AnUnhandledExceptionOccurred,
+                    Title = "An unhandled exception occurred",
                     Detail = ex.Message
                 };
 
