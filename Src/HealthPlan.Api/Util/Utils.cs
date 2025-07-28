@@ -1,4 +1,4 @@
-namespace Authentication.API.Helper
+namespace HealthPlan.API.Helper
 {
     public static class Utils
     {
@@ -6,12 +6,6 @@ namespace Authentication.API.Helper
         {
             var configuration = appsettings.Build();
             return configuration.GetConnectionString(connectionName);
-        }
-
-        internal static IConfigurationSection GetJwtSettings(IConfigurationBuilder appsettings)
-        {
-            var configuration = appsettings.Build();
-            return configuration.GetSection("JwtSettings");
         }
     }
 }

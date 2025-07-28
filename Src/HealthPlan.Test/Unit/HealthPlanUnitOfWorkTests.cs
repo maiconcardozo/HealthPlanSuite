@@ -86,7 +86,7 @@ namespace HealthPlan.Test.Unit
             { 
                 Id = 1, 
                 Name = "Test Plan",
-                OperatorId = 1
+                HealthInsuranceOperatorId = 1
             };
 
             // Setup mocks
@@ -120,7 +120,7 @@ namespace HealthPlan.Test.Unit
                 Id = 1, 
                 HealthPlanId = 1,
                 AgeRangeId = 1,
-                Price = 100.50m
+                MonthlyFee = 100.50m
             };
 
             // Setup mocks
@@ -135,7 +135,7 @@ namespace HealthPlan.Test.Unit
             // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(1);
-            result.Price.Should().Be(100.50m);
+            result.MonthlyFee.Should().Be(100.50m);
             
             // Verify that ExecuteInTransaction was called
             mockUnitOfWork.Verify(x => x.ExecuteInTransaction(It.IsAny<Action>()), Times.Once);

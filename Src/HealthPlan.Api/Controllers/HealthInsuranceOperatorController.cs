@@ -1,7 +1,5 @@
-using Authentication.API.Resource;
-using Authentication.API.Swagger;
-using Authentication.Login.Mapping;
-using Foundation.Base.Util;
+using HealthPlan.API.Resource;
+using HealthPlan.API.Swagger;
 using HealthPlan.Quote.DTO.HealthPlan;
 using HealthPlan.Quote.Domain.HealthPlan.Implementation;
 using HealthPlan.Quote.Services.HealthPlan.Interface;
@@ -25,21 +23,38 @@ namespace HealthPlan.Api.Controllers
         [HttpGet(HealthInsuranceOperatorRoutes.GetHealthInsuranceOperators)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(List<HealthInsuranceOperatorResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorListResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
             try
             {
                 var operators = _service.GetAll();
-                var response = operators.Select(o => AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(o)).ToList();
+                var response = operators.Select(o => new HealthInsuranceOperatorResponseDTO
+                {
+                    Id = o.Id,
+                    Name = o.Name,
+                    CNPJ = o.CNPJ,
+                    Website = o.Website,
+                    Phone = o.Phone,
+                    CreatedAt = o.CreatedAt,
+                    UpdatedAt = o.UpdatedAt
+                }).ToList();
                 return Ok(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorsCouldNotBeRetrieved);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                    Title = "Internal Server Error",
+                    Status = 500,
+                    Detail = "An error occurred while processing your request."
+                };
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
@@ -47,29 +62,52 @@ namespace HealthPlan.Api.Controllers
         [HttpGet(HealthInsuranceOperatorRoutes.GetHealthInsuranceOperatorById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(HealthInsuranceOperatorResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> GetById(int id)
+        public IActionResult GetById(int id)
         {
             try
             {
                 var @operator = _service.GetById(id);
                 if (@operator == null)
                 {
-                    var notFoundProblemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.HealthInsuranceOperatorNotFound);
+                    var notFoundProblemDetails = new ProblemDetails
+                    {
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                        Title = "Not Found",
+                        Status = 404,
+                        Detail = "Health insurance operator not found."
+                    };
                     return NotFound(notFoundProblemDetails);
                 }
 
-                var response = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(@operator);
+                var response = new HealthInsuranceOperatorResponseDTO
+                {
+                    Id = @operator.Id,
+                    Name = @operator.Name,
+                    CNPJ = @operator.CNPJ,
+                    Website = @operator.Website,
+                    Phone = @operator.Phone,
+                    CreatedAt = @operator.CreatedAt,
+                    UpdatedAt = @operator.UpdatedAt
+                };
                 return Ok(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeRetrieved);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                    Title = "Internal Server Error",
+                    Status = 500,
+                    Detail = "An error occurred while processing your request."
+                };
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
@@ -77,32 +115,71 @@ namespace HealthPlan.Api.Controllers
         [HttpPost(HealthInsuranceOperatorRoutes.AddHealthInsuranceOperator)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(HealthInsuranceOperatorResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status201Created, typeof(HealthInsuranceOperatorResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> Create([FromBody] HealthInsuranceOperatorPayLoadDTO dto, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult Create([FromBody] HealthInsuranceOperatorPayLoadDTO dto)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(dto, serviceProvider, this);
-            if (validationResult != null)
-                return validationResult;
+            if (dto == null)
+            {
+                var badRequestProblemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                    Title = "Bad Request",
+                    Status = 400,
+                    Detail = "The request body is invalid."
+                };
+                return BadRequest(badRequestProblemDetails);
+            }
 
-            var @operator = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperator>(dto);
+            var @operator = new HealthInsuranceOperator
+            {
+                Name = dto.Name,
+                CNPJ = dto.CNPJ,
+                Website = dto.Website,
+                Phone = dto.Phone,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
 
             try
             {
                 var created = _service.Add(@operator);
-                var response = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(created);
+                var response = new HealthInsuranceOperatorResponseDTO
+                {
+                    Id = created.Id,
+                    Name = created.Name,
+                    CNPJ = created.CNPJ,
+                    Website = created.Website,
+                    Phone = created.Phone,
+                    CreatedAt = created.CreatedAt,
+                    UpdatedAt = created.UpdatedAt
+                };
                 return CreatedAtAction(nameof(GetById), new { id = created.Id }, response);
             }
             catch (InvalidOperationException ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                    Title = "Bad Request",
+                    Status = 400,
+                    Detail = ex.Message
+                };
                 return BadRequest(problemDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeInserted);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                    Title = "Internal Server Error",
+                    Status = 500,
+                    Detail = "An error occurred while processing your request."
+                };
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
@@ -110,24 +187,40 @@ namespace HealthPlan.Api.Controllers
         [HttpPut(HealthInsuranceOperatorRoutes.UpdateHealthInsuranceOperator)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(HealthInsuranceOperatorResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthInsuranceOperatorResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> Update(int id, [FromBody] HealthInsuranceOperatorPayLoadDTO dto, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult Update(int id, [FromBody] HealthInsuranceOperatorPayLoadDTO dto)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(dto, serviceProvider, this);
-            if (validationResult != null)
-                return validationResult;
+            if (dto == null)
+            {
+                var badRequestProblemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                    Title = "Bad Request",
+                    Status = 400,
+                    Detail = "The request body is invalid."
+                };
+                return BadRequest(badRequestProblemDetails);
+            }
 
             try
             {
                 var existing = _service.GetById(id);
                 if (existing == null)
                 {
-                    var notFoundProblemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.HealthInsuranceOperatorNotFound);
+                    var notFoundProblemDetails = new ProblemDetails
+                    {
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                        Title = "Not Found",
+                        Status = 404,
+                        Detail = "Health insurance operator not found."
+                    };
                     return NotFound(notFoundProblemDetails);
                 }
 
@@ -136,20 +229,42 @@ namespace HealthPlan.Api.Controllers
                 existing.CNPJ = dto.CNPJ;
                 existing.Website = dto.Website;
                 existing.Phone = dto.Phone;
+                existing.UpdatedAt = DateTime.UtcNow;
 
                 _service.Update(existing);
 
-                var response = AuthenticationLoginProfileMapperInitializer.Mapper.Map<HealthInsuranceOperatorResponseDTO>(existing);
+                var response = new HealthInsuranceOperatorResponseDTO
+                {
+                    Id = existing.Id,
+                    Name = existing.Name,
+                    CNPJ = existing.CNPJ,
+                    Website = existing.Website,
+                    Phone = existing.Phone,
+                    CreatedAt = existing.CreatedAt,
+                    UpdatedAt = existing.UpdatedAt
+                };
                 return Ok(response);
             }
             catch (InvalidOperationException ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                    Title = "Bad Request",
+                    Status = 400,
+                    Detail = ex.Message
+                };
                 return BadRequest(problemDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeUpdated);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                    Title = "Internal Server Error", 
+                    Status = 500,
+                    Detail = "An error occurred while processing your request."
+                };
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
@@ -157,19 +272,27 @@ namespace HealthPlan.Api.Controllers
         [HttpDelete(HealthInsuranceOperatorRoutes.DeleteHealthInsuranceOperator)]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {
                 var existing = _service.GetById(id);
                 if (existing == null)
                 {
-                    var notFoundProblemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.HealthInsuranceOperatorNotFound);
+                    var notFoundProblemDetails = new ProblemDetails
+                    {
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                        Title = "Not Found",
+                        Status = 404,
+                        Detail = "Health insurance operator not found."
+                    };
                     return NotFound(notFoundProblemDetails);
                 }
 
@@ -178,12 +301,24 @@ namespace HealthPlan.Api.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                    Title = "Bad Request",
+                    Status = 400,
+                    Detail = ex.Message
+                };
                 return BadRequest(problemDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.AnUnexpectedErrorOccurredHealthInsuranceOperatorCouldNotBeDeleted);
+                var problemDetails = new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                    Title = "Internal Server Error",
+                    Status = 500,
+                    Detail = "An error occurred while processing your request."
+                };
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }

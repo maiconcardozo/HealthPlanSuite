@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Authentication.API.Data
+namespace HealthPlan.API.Data
 {
     public class ApiContextDevelopment : BaseApiContext
     {

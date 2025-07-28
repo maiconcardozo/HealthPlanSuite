@@ -1,10 +1,9 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Authentication.API.Resource;
-using Foundation.Base.Resource;
+using HealthPlan.API.Resource;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Authentication.API.Middleware
+namespace HealthPlan.API.Middleware
 {
     public class ExceptionHandlingMiddleware
     {
@@ -32,7 +31,7 @@ namespace Authentication.API.Middleware
                 var problemDetails = new ProblemDetails
                 {
                     Status = StatusCodes.Status500InternalServerError,
-                    Title = ResourceFoundation.AnUnhandledExceptionOccurred,
+                    Title = "An unhandled exception occurred",
                     Detail = ex.Message
                 };
 
