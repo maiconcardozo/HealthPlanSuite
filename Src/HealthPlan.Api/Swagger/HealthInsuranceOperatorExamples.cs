@@ -2,7 +2,7 @@ using HealthPlan.Quote.DTO.HealthPlan;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Authentication.API.Swagger
+namespace HealthPlan.API.Swagger
 {
     public class HealthInsuranceOperatorResponseExample : IExamplesProvider<HealthInsuranceOperatorResponseDTO>
     {
@@ -62,6 +62,56 @@ namespace Authentication.API.Swagger
                     UpdatedAt = DateTime.UtcNow.AddDays(-3)
                 }
             };
+        }
+    }
+
+    public class ProblemDetailsBadRequestExample : IExamplesProvider<ProblemDetails>
+    {
+        public ProblemDetails GetExamples()
+        {
+            return new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = "Bad Request",
+                Status = 400,
+                Detail = "The request is invalid."
+            };
+        }
+    }
+
+    public class ProblemDetailsNotFoundExample : IExamplesProvider<ProblemDetails>
+    {
+        public ProblemDetails GetExamples()
+        {
+            return new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",  
+                Title = "Not Found",
+                Status = 404,
+                Detail = "The requested resource was not found."
+            };
+        }
+    }
+
+    public class ProblemDetailsInternalServerErrorExample : IExamplesProvider<ProblemDetails>
+    {
+        public ProblemDetails GetExamples()
+        {
+            return new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                Title = "Internal Server Error", 
+                Status = 500,
+                Detail = "An error occurred while processing your request."
+            };
+        }
+    }
+
+    public class SuccessDetailsExample : IExamplesProvider<object>
+    {
+        public object GetExamples()
+        {
+            return new { success = true, message = "Operation completed successfully" };
         }
     }
 }

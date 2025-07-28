@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Authentication.API.Resource {
+namespace HealthPlan.API.Resource {
     using System;
     
     

@@ -44,7 +44,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Foundation\Src\Foundation.Base\Foundation.Base.csproj" />
 		<ProjectReference Include="..\HealthPlan.Quote\HealthPlan.Quote.csproj" />
 	</ItemGroup>
 

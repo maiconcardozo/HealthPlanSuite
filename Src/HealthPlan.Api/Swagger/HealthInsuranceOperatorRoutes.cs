@@ -1,6 +1,6 @@
-using Authentication.API.Resource;
+using HealthPlan.API.Resource;
 
-namespace Authentication.API.Swagger
+namespace HealthPlan.API.Swagger
 {
     public static class HealthInsuranceOperatorRoutes
     {

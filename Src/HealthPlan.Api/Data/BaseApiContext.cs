@@ -1,9 +1,8 @@
-﻿using Authentication.Login.Infrastructure.Data;
-using HealthPlan.Quote.Infrastructure.HealthPlan.Data;
+﻿using HealthPlan.Quote.Infrastructure.HealthPlan.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Authentication.API.Data
+namespace HealthPlan.API.Data
 {
     public abstract class BaseApiContext : DbContext
     {
@@ -28,7 +27,6 @@ namespace Authentication.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            LoginContext.LoadModel(modelBuilder);
             HealthPlanContext.LoadModel(modelBuilder);
         }
     }

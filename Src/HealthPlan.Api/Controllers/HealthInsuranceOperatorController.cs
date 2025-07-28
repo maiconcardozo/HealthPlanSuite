@@ -1,7 +1,5 @@
-using Authentication.API.Resource;
-using Authentication.API.Swagger;
-using Authentication.Login.Mapping;
-using Foundation.Base.Util;
+using HealthPlan.API.Resource;
+using HealthPlan.API.Swagger;
 using HealthPlan.Quote.DTO.HealthPlan;
 using HealthPlan.Quote.Domain.HealthPlan.Implementation;
 using HealthPlan.Quote.Services.HealthPlan.Interface;

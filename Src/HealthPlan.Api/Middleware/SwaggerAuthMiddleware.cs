@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 
-namespace Authentication.API.Middleware
+namespace HealthPlan.API.Middleware
 {
     public class SwaggerAuthMiddleware
     {
