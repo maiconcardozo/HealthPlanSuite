@@ -1,0 +1,8 @@
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.csproj.AssemblyReference.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.Resource.ResourceLogin.resources
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.csproj.GenerateResource.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.AssemblyInfoInputs.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.AssemblyInfo.cs
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.csproj.CoreCompileInputs.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Quote\obj\Release\net8.0\HealthPlan.Quote.sourcelink.json

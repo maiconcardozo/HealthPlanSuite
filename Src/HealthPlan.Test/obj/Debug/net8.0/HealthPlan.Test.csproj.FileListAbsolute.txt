@@ -1,0 +1,9 @@
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\bin\Debug\net8.0\.msCoverageSourceRootsMapping_HealthPlan.Test
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\bin\Debug\net8.0\CoverletSourceRootsMapping_HealthPlan.Test
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\obj\Debug\net8.0\HealthPlan.Test.csproj.AssemblyReference.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\obj\Debug\net8.0\MvcTestingAppManifest.json
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\obj\Debug\net8.0\HealthPlan.Test.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\obj\Debug\net8.0\HealthPlan.Test.AssemblyInfoInputs.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\obj\Debug\net8.0\HealthPlan.Test.AssemblyInfo.cs
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\obj\Debug\net8.0\HealthPlan.Test.csproj.CoreCompileInputs.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Test\obj\Debug\net8.0\HealthPlan.Test.sourcelink.json

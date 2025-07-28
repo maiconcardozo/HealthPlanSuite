@@ -1,0 +1,11 @@
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.csproj.AssemblyReference.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.Resource.ResourceAPI.resources
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.Resource.ResourceRoutesAPI.resources
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.csproj.GenerateResource.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.AssemblyInfoInputs.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.AssemblyInfo.cs
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.csproj.CoreCompileInputs.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\maico\Source\Repos\HealthPlanSuite\Src\HealthPlan.Api\obj\Debug\net8.0\HealthPlan.Api.sourcelink.json
