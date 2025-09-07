@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/HealthPlan.Api.props" />
-</Project>
