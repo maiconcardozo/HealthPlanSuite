@@ -339,6 +339,348 @@ The project includes automated CI/CD pipeline support:
 - Provides code coverage and security scanning
 
 **For other CI systems:**
-- Use `./test.sh` (Linux) or `./test.bat` (Windows) as the main test command
+- Use `./scripts/test.sh` (Linux) or `./scripts/test.bat` (Windows) as the main test command
 - Ensure .NET 9.0 SDK is installed in the CI environment
 - Configure artifact collection for test results in `TestResults/` directory
+
+## 🚀 Quick Usage (Development)
+
+> **💡 Development Focus**: All examples prioritize development configurations and practices to facilitate the developer experience.
+
+### 1. Database Configuration (Development)
+
+Update the connection string in `appsettings.Development.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=CleanTemplateDB;Uid=your_user;Pwd=your_password;"
+  },
+  "JwtSettings": {
+    "Issuer": "CleanTemplate",
+    "Audience": "CleanTemplateClients",
+    "SecretKey": "your-secret-key-minimum-32-characters",
+    "ExpirationMinutes": 60
+  }
+}
+```
+
+### 2. Initializing the Database
+
+```bash
+cd Src/CleanTemplate.API
+dotnet ef database update --context ApiContextDevelopment
+```
+
+### 3. JWT Configuration for Development
+
+```csharp
+// Program.cs - Development-specific configuration
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+        
+        // Development-specific configuration
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+        }
+        
+        // JWT configuration for development
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+                };
+                
+                #if DEBUG
+                // Debug-specific configurations
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine($"Token validated for: {context.Principal?.Identity?.Name}");
+                        return Task.CompletedTask;
+                    }
+                };
+                #endif
+            });
+        
+        var app = builder.Build();
+        
+        // Development-specific middleware
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+        
+        app.Run();
+    }
+}
+```
+
+### 4. Installation Verification
+
+- 🌐 **API Endpoint**: https://localhost:7001
+- 📖 **API Documentation**: https://localhost:7001 (automatically redirects to Swagger UI)
+- ❤️ **Health Check**: https://localhost:7001/health
+
+### 🌍 Language Support
+
+The API supports internationalization with English and Portuguese languages:
+
+- **English**: Access with `?culture=en` (e.g., `https://localhost:7001/?culture=en`)
+- **Portuguese**: Access with `?culture=pt-BR` (e.g., `https://localhost:7001/?culture=pt-BR`)
+
+The selected language is automatically saved as a cookie and will persist for all subsequent requests, including Swagger UI documentation. This ensures that both the API responses and Swagger documentation appear in your preferred language.
+
+## 📚 Main Components
+
+### 🏛️ API Layer
+
+- **`CleanEntityController`**: Main controller for CRUD operations
+- **`Middleware`**: Custom middleware for logging and request handling
+
+### 🔐 Services Layer
+
+- **`ICleanEntityService`**: Interface for business services
+- **`CleanEntityService`**: Business services implementation
+
+### 🗃️ Repository Layer
+
+- **`ICleanEntityRepository`**: Interface for data access
+- **`CleanEntityRepository`**: Implementation with CRUD operations
+
+### 🛠️ Utilities
+
+- **`Entity`**: Base entity class from Foundation.Base
+- **`Repository<T>`**: Generic repository pattern implementation
+
+## 🔐 Security
+
+The service includes robust security features:
+
+```csharp
+using Foundation.Base.Util;
+
+// Password hashing with Argon2 (if implemented)
+string passwordHash = StringHelper.ComputeArgon2Hash("myPassword123");
+
+// Password verification
+bool isValidPassword = StringHelper.VerifyArgon2Hash("myPassword123", passwordHash);
+```
+
+## ✅ Validation
+
+Native integration with FluentValidation:
+
+```csharp
+using FluentValidation;
+
+public class CleanEntityRequestValidator : AbstractValidator<CleanEntityRequest>
+{
+    public CleanEntityRequestValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.Description).MaximumLength(500).WithMessage("Description must not exceed 500 characters");
+    }
+}
+
+// In the controller
+var validationResult = await ValidationHelper.ValidateEntityAsync(request, serviceProvider, this);
+if (validationResult != null) return validationResult;
+```
+
+## 🌐 API Endpoints
+
+### Main CleanEntity Endpoints
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| **GET** | `/api/CleanEntity` | 📋 List all entities | ❌ |
+| **GET** | `/api/CleanEntity/{id}` | 🔍 Get entity by ID | ❌ |
+| **POST** | `/api/CleanEntity` | ➕ Create new entity | ❌ |
+| **PUT** | `/api/CleanEntity/{id}` | ✏️ Update entity | ❌ |
+| **DELETE** | `/api/CleanEntity/{id}` | ❌ Delete entity | ❌ |
+| **GET** | `/health` | ❤️ Health check | ❌ |
+
+### 📖 Detailed Documentation
+
+### 🚀 **For Developers (START HERE)**
+- **[Quick Start Guide](docs/QUICK_START.md)** - **5-minute setup from zero to running API**
+- **[Development Guide](docs/DEVELOPMENT.md)** - **Complete development workflow and best practices**
+
+### 📚 **Technical Documentation**
+- [Service Architecture](docs/ARCHITECTURE.md) - Clean Architecture patterns and design decisions
+- [Complete API Reference](docs/API.md) - Detailed endpoint documentation
+- [Deployment Guide](docs/DEPLOYMENT.md) - Production deployment strategies
+- [Practical Examples](docs/EXAMPLES.md) - Real-world integration examples
+
+### 🛠️ **Development Resources**
+- [Code Documentation Standards](docs/CODE_DOCUMENTATION.md) - XML comments and inline documentation guidelines
+- [Troubleshooting Guide](docs/TROUBLESHOOTING.md) - Common issues and solutions
+- [Testing Guide](docs/TESTING.md) - Unit and integration testing strategies
+
+> **🎯 Important**: New to the project? Start with the [Quick Start Guide](docs/QUICK_START.md) for immediate results, then explore the [Development Guide](docs/DEVELOPMENT.md) for comprehensive understanding!
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read the [contribution guide](CONTRIBUTING.md) before submitting pull requests.
+
+### Contribution Environment Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/maiconcardozo/CleanTemplateRepository.git
+cd CleanTemplateRepository
+
+# Install dependencies (requires .NET 9.0 SDK)
+dotnet restore Solution/CleanTemplate.sln
+
+# Build the project
+dotnet build Solution/CleanTemplate.sln --configuration Debug
+
+# Run in development mode
+dotnet run --project Src/CleanTemplate.API
+
+# Run tests using convenience scripts (recommended)
+scripts/build.sh verify          # Linux/Mac - runs build and tests
+scripts/build.bat verify         # Windows - runs build and tests
+```
+
+## 🧪 Running Tests
+
+The project includes a comprehensive test suite following TDD architecture with convenient scripts for easy execution:
+
+### 🎯 Quick Test Execution (Recommended)
+
+**Single Command Test Execution:**
+```bash
+# Universal test command (works in any environment)
+scripts/build.sh verify         # Linux/Mac
+scripts/build.bat verify        # Windows
+
+# Alternative: Direct dotnet command
+dotnet test Solution/CleanTemplate.sln
+```
+
+**Using convenience scripts (advanced options):**
+```bash
+# Using convenience scripts (easiest method)
+scripts/run-tests.sh all          # Linux/Mac - runs all tests
+scripts/run-tests.bat all         # Windows - runs all tests
+
+# Available script options:
+scripts/run-tests.sh unit         # Run only unit tests
+scripts/run-tests.sh integration  # Run only integration tests  
+scripts/run-tests.sh coverage     # Run with code coverage
+scripts/run-tests.sh verbose      # Run with detailed output
+scripts/run-tests.sh watch        # Run in watch mode (continuous)
+scripts/run-tests.sh clean        # Clean, rebuild, then test
+scripts/run-tests.sh help         # Show all available options
+```
+
+### 🔧 Manual Test Commands
+
+```bash
+# Run all tests
+dotnet test Solution/CleanTemplate.sln
+
+# Run tests with verbosity
+dotnet test Solution/CleanTemplate.sln --verbosity normal
+
+# Run integration tests only
+dotnet test --filter "FullyQualifiedName~Integration"
+
+# Run unit tests only
+dotnet test --filter "FullyQualifiedName~Unit"
+
+# Run with code coverage
+dotnet test Solution/CleanTemplate.sln --collect:"XPlat Code Coverage"
+```
+
+### 📊 Test Status & Coverage
+
+- ✅ **Total Tests**: Comprehensive test coverage
+- ✅ **Coverage Target**: > 80% code coverage  
+- ✅ **Test Framework**: xUnit with FluentAssertions
+- ✅ **Database**: In-memory database for isolation
+- ✅ **CI/CD Integration**: Automated pipeline with GitHub Actions
+
+## 🔄 Continuous Integration
+
+The project includes a comprehensive CI/CD pipeline using GitHub Actions that automatically:
+
+### 🚀 Automated Pipeline Features
+
+**On every push and pull request:**
+- ✅ **Build Verification**: Compiles the project in Release mode with .NET 9.0
+- ✅ **Test Execution**: Runs all tests and generates reports
+- ✅ **Code Quality**: Enforces coding standards and SOLID principles
+- ✅ **Else Statement Prevention**: Blocks if/else patterns in favor of conditional expressions
+- ✅ **SOLID Principles Enforcement**: Validates adherence to clean code principles
+- ✅ **Security Scanning**: Checks for vulnerable and deprecated packages
+- ✅ **Coverage Reports**: Generates code coverage analysis
+- ✅ **Artifact Storage**: Preserves test results and coverage data
+
+### 📊 Code Quality Standards
+
+The project enforces strict code quality rules that **will fail the build** if violated:
+
+#### 🚫 Blocked Patterns (Build will fail):
+```csharp
+// ❌ NOT ALLOWED - if/else return statements
+if (condition)
+    return "true";
+else
+    return "false";
+
+// ❌ NOT ALLOWED - if/else assignments  
+if (condition)
+    result = "true";
+else
+    result = "false";
+```
+
+#### ✅ Required Patterns:
+```csharp
+// ✅ REQUIRED - Use conditional expressions instead
+return condition ? "true" : "false";
+
+// ✅ REQUIRED - Use conditional expressions for assignments
+result = condition ? "true" : "false";
+```
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## 👨‍💻 Author
+
+**Maicon Cardozo**
+- GitHub: [@maiconcardozo](https://github.com/maiconcardozo)
+
+## 📞 Support
+
+For questions, suggestions, or to report issues:
+- Open an [issue](https://github.com/maiconcardozo/CleanTemplateRepository/issues)
+- Contact through GitHub
+
+---
+
+⭐ If this project was useful to you, please consider giving it a star!
