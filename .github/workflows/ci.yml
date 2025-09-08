@@ -14,7 +14,7 @@ env:
 jobs:
   build-and-test:
     name: Build and Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: Checkout code
@@ -23,10 +23,27 @@ jobs:
     - name: Setup .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: | 
+          8.0.x
+          9.0.x
+        dotnet-quality: 'ga'
+        
+    - name: Install .NET 9.0 if needed
+      run: |
+        if ! dotnet --version 2>/dev/null | grep -q "^9\."; then
+          echo "Installing .NET 9.0 using install script..."
+          curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 9.0.100 --install-dir ~/.dotnet
+          echo "$HOME/.dotnet" >> $GITHUB_PATH
+          export PATH="$HOME/.dotnet:$PATH"
+        fi
     
     - name: Verify .NET version
-      run: dotnet --version
+      run: |
+        echo "Checking .NET installation..."
+        dotnet --info
+        dotnet --version
+        echo "Available SDKs:"
+        dotnet --list-sdks
     
     - name: Cache NuGet packages
       uses: actions/cache@v4
@@ -124,7 +141,7 @@ jobs:
 
   lint:
     name: Code Quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build-and-test
     
     steps:
@@ -134,7 +151,10 @@ jobs:
     - name: Setup .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: |
+          8.0.x
+          9.0.x
+        dotnet-quality: 'ga'
     
     - name: Cache NuGet packages
       uses: actions/cache@v4
@@ -173,7 +193,7 @@ jobs:
       
   security-scan:
     name: Security Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build-and-test
     
     steps:
@@ -183,7 +203,10 @@ jobs:
     - name: Setup .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: |
+          8.0.x
+          9.0.x
+        dotnet-quality: 'ga'
         
     - name: Cache NuGet packages
       uses: actions/cache@v4
@@ -206,7 +229,7 @@ jobs:
 
   build-info:
     name: Build Information
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: Checkout code
@@ -215,7 +238,10 @@ jobs:
     - name: Setup .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: |
+          8.0.x
+          9.0.x
+        dotnet-quality: 'ga'
         
     - name: Display build information
       run: |
