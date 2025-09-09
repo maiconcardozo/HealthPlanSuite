@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
-using CleanTemplate.Application.Domain.Implementation;
+using HealthPlan.Quote.Domain.Implementation;
 
-namespace CleanTemplate.Application.Services.Interface
+namespace HealthPlan.Quote.Services.Interface
 {
     /// <summary>
     /// Service interface for CleanEntity management operations.

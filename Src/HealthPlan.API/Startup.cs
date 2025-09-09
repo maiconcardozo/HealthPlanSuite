@@ -1,14 +1,14 @@
 using System.Reflection;
-using CleanTemplate.API.Data;
-using CleanTemplate.API.Resource;
-using CleanTemplate.API.Services;
-using CleanTemplate.API.Swagger;
-using CleanTemplate.Application.Constants;
-using CleanTemplate.Application.Extensions;
+using HealthPlan.API.Data;
+using HealthPlan.API.Resource;
+using HealthPlan.API.Services;
+using HealthPlan.API.Swagger;
+using HealthPlan.Quote.Constants;
+using HealthPlan.Quote.Extensions;
 using Microsoft.AspNetCore.Localization;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace CleanTemplate.API
+namespace HealthPlan.API
 {
     /// <summary>
     /// Classe responsável pela configuração inicial da aplicação ASP.NET Core.
@@ -79,7 +79,7 @@ namespace CleanTemplate.API
             // ==============================
             // AUTENTICAÇÃO & DOMÍNIO
             // ==============================
-            services.AddAuthenticationLoginServices(CleanTemplate.API.Helper.Utils.GetConnectionString(appsettings));
+            services.AddAuthenticationLoginServices(HealthPlan.API.Helper.Utils.GetConnectionString(appsettings));
 
             // ==============================
             // CONTROLLERS & VALIDAÇÃO
@@ -154,7 +154,7 @@ namespace CleanTemplate.API
             // ==============================
             // SEGURANÇA & STATIC FILES
             // ==============================
-            app.UseMiddleware<CleanTemplate.API.Middleware.SwaggerAuthMiddleware>();
+            app.UseMiddleware<HealthPlan.API.Middleware.SwaggerAuthMiddleware>();
             app.UseStaticFiles();
             app.UseHttpsRedirection();
 
@@ -166,7 +166,7 @@ namespace CleanTemplate.API
             // ==============================
             // CULTURE COOKIE FROM QUERY (deve vir ANTES da localização!)
             // ==============================
-            app.UseMiddleware<CleanTemplate.API.Middleware.CultureCookieFromQueryMiddleware>();
+            app.UseMiddleware<HealthPlan.API.Middleware.CultureCookieFromQueryMiddleware>();
 
             // ==============================
             // LOCALIZAÇÃO (deve vir ANTES do Swagger!)
@@ -191,7 +191,7 @@ namespace CleanTemplate.API
             // ==============================
             // EXCEÇÕES
             // ==============================
-            app.UseMiddleware<CleanTemplate.API.Middleware.ExceptionHandlingMiddleware>();
+            app.UseMiddleware<HealthPlan.API.Middleware.ExceptionHandlingMiddleware>();
 
             // ==============================
             // ROTEAMENTO & AUTORIZAÇÃO

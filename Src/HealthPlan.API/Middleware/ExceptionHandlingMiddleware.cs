@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Text.Json;
-using CleanTemplate.API.Resource;
+using HealthPlan.API.Resource;
 using Foundation.Base.Resource;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanTemplate.API.Middleware
+namespace HealthPlan.API.Middleware
 {
     public class ExceptionHandlingMiddleware
     {

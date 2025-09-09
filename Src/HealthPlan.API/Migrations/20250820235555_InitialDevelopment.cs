@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CleanTemplate.API.Migrations
+namespace HealthPlan.API.Migrations
 {
     /// <inheritdoc />
     public partial class InitialDevelopment : Migration

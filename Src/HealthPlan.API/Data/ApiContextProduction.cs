@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace CleanTemplate.API.Data
+namespace HealthPlan.API.Data
 {
     public class ApiContextProduction : BaseApiContext
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CleanTemplate.Application.Resource {
+namespace HealthPlan.Quote.Resource {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CleanTemplate.Application.Resource {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CleanTemplate.Application.Resource.ResourceLogin", typeof(ResourceLogin).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HealthPlan.Quote.Resource.ResourceLogin", typeof(ResourceLogin).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

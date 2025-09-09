@@ -1,8 +1,8 @@
-﻿using CleanTemplate.Application.Domain.Implementation;
-using CleanTemplate.Application.DTO;
+﻿using HealthPlan.Quote.Domain.Implementation;
+using HealthPlan.Quote.DTO;
 using AutoMapper;
 
-namespace CleanTemplate.Application.Mapping
+namespace HealthPlan.Quote.Mapping
 {
     public class CleanTemplateApplicationMapping : Profile
     {

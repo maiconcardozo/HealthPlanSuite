@@ -1,8 +1,8 @@
-using CleanTemplate.Application.Domain.Implementation;
+using HealthPlan.Quote.Domain.Implementation;
 using FluentAssertions;
 using Xunit;
 
-namespace CleanTemplate.Tests.Unit
+namespace HealthPlan.Test.Unit
 {
     /// <summary>
     /// Unit tests for the CleanEntity domain model.
@@ -164,7 +164,7 @@ namespace CleanTemplate.Tests.Unit
             var cleanEntity = new CleanEntity();
 
             // Assert
-            cleanEntity.Should().BeAssignableTo<CleanTemplate.Application.Domain.Interface.ICleanEntity>();
+            cleanEntity.Should().BeAssignableTo<HealthPlan.Quote.Domain.Interface.ICleanEntity>();
         }
 
         [Fact]

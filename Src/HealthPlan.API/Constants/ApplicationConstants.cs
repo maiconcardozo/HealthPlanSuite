@@ -1,4 +1,4 @@
-namespace CleanTemplate.API.Constants
+namespace HealthPlan.API.Constants
 {
     public static class ApplicationConstants
     {

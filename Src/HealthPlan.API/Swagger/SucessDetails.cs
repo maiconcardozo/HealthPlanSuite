@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace CleanTemplate.API.Swagger
+namespace HealthPlan.API.Swagger
 {
     public class SucessDetails : ProblemDetails
     {

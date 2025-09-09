@@ -1,7 +1,7 @@
-using CleanTemplate.Application.Domain.Implementation;
+using HealthPlan.Quote.Domain.Implementation;
 using Foundation.Base.Repository.Interface;
 
-namespace CleanTemplate.Application.Repository.Interface
+namespace HealthPlan.Quote.Repository.Interface
 {
     /// <summary>
     /// Repository interface for CleanEntity management operations.

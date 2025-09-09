@@ -1,15 +1,15 @@
-using CleanTemplate.Application.Infrastructure.Data;
-using CleanTemplate.Application.Repository.Implementation;
-using CleanTemplate.Application.Repository.Interface;
-using CleanTemplate.Application.Services.Implementation;
-using CleanTemplate.Application.Services.Interface;
-using CleanTemplate.Application.UnitOfWork.Implementation;
-using CleanTemplate.Application.UnitOfWork.Interface;
+using HealthPlan.Quote.Infrastructure.Data;
+using HealthPlan.Quote.Repository.Implementation;
+using HealthPlan.Quote.Repository.Interface;
+using HealthPlan.Quote.Services.Implementation;
+using HealthPlan.Quote.Services.Interface;
+using HealthPlan.Quote.UnitOfWork.Implementation;
+using HealthPlan.Quote.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql;
 
-namespace CleanTemplate.Application.Extensions
+namespace HealthPlan.Quote.Extensions
 {
     public static class AuthenticationLoginServiceCollectionExtensions
     {

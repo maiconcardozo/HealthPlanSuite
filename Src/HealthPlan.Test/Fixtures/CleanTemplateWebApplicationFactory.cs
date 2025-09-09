@@ -2,11 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
-using CleanTemplate.Application.Infrastructure.Data;
-using CleanTemplate.Application.Domain.Implementation;
+using HealthPlan.Quote.Infrastructure.Data;
+using HealthPlan.Quote.Domain.Implementation;
 using Microsoft.Extensions.Configuration;
 
-namespace CleanTemplate.Tests.Fixtures;
+namespace HealthPlan.Test.Fixtures;
 
 public class CleanTemplateWebApplicationFactory : WebApplicationFactory<Program>
 {

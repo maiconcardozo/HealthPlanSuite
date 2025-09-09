@@ -1,7 +1,7 @@
-﻿using CleanTemplate.API.Resource;
+﻿using HealthPlan.API.Resource;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace CleanTemplate.API.Swagger
+namespace HealthPlan.API.Swagger
 {
     public static class SuccessResponseExampleFactory
     {

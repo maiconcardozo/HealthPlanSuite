@@ -1,10 +1,10 @@
-using CleanTemplate.Application.Constants;
-using CleanTemplate.Application.Domain.Implementation;
-using CleanTemplate.Application.Repository.Interface;
-using CleanTemplate.Application.Services.Interface;
+using HealthPlan.Quote.Constants;
+using HealthPlan.Quote.Domain.Implementation;
+using HealthPlan.Quote.Repository.Interface;
+using HealthPlan.Quote.Services.Interface;
 using System.Linq.Expressions;
 
-namespace CleanTemplate.Application.Services.Implementation
+namespace HealthPlan.Quote.Services.Implementation
 {
     /// <summary>
     /// Service implementation for CleanEntity management operations.

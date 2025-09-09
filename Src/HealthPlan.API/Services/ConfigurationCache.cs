@@ -1,8 +1,8 @@
-using CleanTemplate.Application.Constants;
+using HealthPlan.Quote.Constants;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 
-namespace CleanTemplate.API.Services
+namespace HealthPlan.API.Services
 {
     public interface IConfigurationCache
     {

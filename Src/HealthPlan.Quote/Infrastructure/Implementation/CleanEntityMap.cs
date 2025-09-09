@@ -1,9 +1,9 @@
-using CleanTemplate.Application.Domain.Implementation;
+using HealthPlan.Quote.Domain.Implementation;
 using Foundation.Base.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CleanTemplate.Application.Infrastructure.Implementation
+namespace HealthPlan.Quote.Infrastructure.Implementation
 {
     /// <summary>
     /// Entity Framework configuration for the CleanEntity entity.

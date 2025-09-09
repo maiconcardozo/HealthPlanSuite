@@ -1,4 +1,4 @@
-namespace CleanTemplate.API
+namespace HealthPlan.API
 {
     /// <summary>
     /// Classe principal da aplicação responsável pela inicialização e execução do host.

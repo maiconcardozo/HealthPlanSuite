@@ -1,6 +1,6 @@
 using Foundation.Base.Domain.Interface;
 
-namespace CleanTemplate.Application.Domain.Interface
+namespace HealthPlan.Quote.Domain.Interface
 {
     /// <summary>
     /// Represents a clean entity interface that extends the base entity functionality.

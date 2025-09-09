@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 
-namespace CleanTemplate.Tests.Fixtures;
+namespace HealthPlan.Test.Fixtures;
 
 public class Startup
 {

@@ -1,10 +1,10 @@
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
-using CleanTemplate.API.Resource;
+using HealthPlan.API.Resource;
 using Microsoft.AspNetCore.Localization;
 
-namespace CleanTemplate.API.Swagger
+namespace HealthPlan.API.Swagger
 {
     public class LocalizedSwaggerDocumentFilter : IDocumentFilter
     {

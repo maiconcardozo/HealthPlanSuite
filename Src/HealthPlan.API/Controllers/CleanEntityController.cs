@@ -1,14 +1,14 @@
-using CleanTemplate.API.Resource;
-using CleanTemplate.API.Swagger;
-using CleanTemplate.Application.Domain.Implementation;
-using CleanTemplate.Application.DTO;
-using CleanTemplate.Application.Mapping;
-using CleanTemplate.Application.Services.Interface;
+using HealthPlan.API.Resource;
+using HealthPlan.API.Swagger;
+using HealthPlan.Quote.Domain.Implementation;
+using HealthPlan.Quote.DTO;
+using HealthPlan.Quote.Mapping;
+using HealthPlan.Quote.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace CleanTemplate.API.Controllers
+namespace HealthPlan.API.Controllers
 {
     /// <summary>
     /// ResourceAPI.CleanEntityControllerDescription

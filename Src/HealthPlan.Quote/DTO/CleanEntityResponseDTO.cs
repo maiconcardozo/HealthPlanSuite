@@ -1,4 +1,4 @@
-namespace CleanTemplate.Application.DTO
+namespace HealthPlan.Quote.DTO
 {
     /// <summary>
     /// Data Transfer Object for CleanEntity response operations.

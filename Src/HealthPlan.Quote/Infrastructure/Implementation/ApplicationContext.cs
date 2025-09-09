@@ -1,9 +1,9 @@
-﻿using CleanTemplate.Application.Domain.Implementation;
-using CleanTemplate.Application.Infrastructure.Implementation;
-using CleanTemplate.Application.Infrastructure.Interface;
+﻿using HealthPlan.Quote.Domain.Implementation;
+using HealthPlan.Quote.Infrastructure.Implementation;
+using HealthPlan.Quote.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanTemplate.Application.Infrastructure.Data
+namespace HealthPlan.Quote.Infrastructure.Data
 {
     public class ApplicationContext : DbContext, IApplicationContext
     {

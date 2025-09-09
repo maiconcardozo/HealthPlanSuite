@@ -1,9 +1,9 @@
-using CleanTemplate.Application.Domain.Implementation;
-using CleanTemplate.Application.Repository.Interface;
+using HealthPlan.Quote.Domain.Implementation;
+using HealthPlan.Quote.Repository.Interface;
 using Foundation.Base.Repository.Implementation;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanTemplate.Application.Repository.Implementation
+namespace HealthPlan.Quote.Repository.Implementation
 {
     /// <summary>
     /// Repository implementation for CleanEntity management operations.

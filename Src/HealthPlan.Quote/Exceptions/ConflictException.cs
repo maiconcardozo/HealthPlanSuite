@@ -1,4 +1,4 @@
-namespace CleanTemplate.Application.Exceptions
+namespace HealthPlan.Quote.Exceptions
 {
     public class ConflictException : Exception
     {

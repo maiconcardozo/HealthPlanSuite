@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Localization;
 
-namespace CleanTemplate.API.Middleware
+namespace HealthPlan.API.Middleware
 {
     /// <summary>
     /// Middleware that persists culture query string parameters as localization cookies.

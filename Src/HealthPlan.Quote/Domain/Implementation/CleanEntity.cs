@@ -1,7 +1,7 @@
-using CleanTemplate.Application.Domain.Interface;
+using HealthPlan.Quote.Domain.Interface;
 using Foundation.Base.Domain.Implementation;
 
-namespace CleanTemplate.Application.Domain.Implementation
+namespace HealthPlan.Quote.Domain.Implementation
 {
     /// <summary>
     /// Represents a clean entity implementation in the authentication system.

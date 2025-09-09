@@ -1,4 +1,4 @@
-namespace CleanTemplate.Application.Constants
+namespace HealthPlan.Quote.Constants
 {
     public static class ApplicationConstants
     {

@@ -1,7 +1,7 @@
-﻿using CleanTemplate.Application.Domain.Implementation;
+﻿using HealthPlan.Quote.Domain.Implementation;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanTemplate.Application.Infrastructure.Interface
+namespace HealthPlan.Quote.Infrastructure.Interface
 {
     public interface IApplicationContext
     {

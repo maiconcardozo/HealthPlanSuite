@@ -1,8 +1,8 @@
-﻿using CleanTemplate.Application.Infrastructure.Data;
+﻿using HealthPlan.Quote.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace CleanTemplate.API.Data
+namespace HealthPlan.API.Data
 {
     public abstract class BaseApiContext : DbContext
     {

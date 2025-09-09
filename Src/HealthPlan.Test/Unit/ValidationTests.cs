@@ -6,7 +6,7 @@ using Xunit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CleanTemplate.Tests.Unit;
+namespace HealthPlan.Test.Unit;
 
 public class ValidationTests
 {

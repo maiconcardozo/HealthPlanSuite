@@ -1,7 +1,7 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CleanTemplate.Application.Mapping
+namespace HealthPlan.Quote.Mapping
 {
     public static class CleanTemplateApplicationMapperInitializer
     {

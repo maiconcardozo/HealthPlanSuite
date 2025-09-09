@@ -1,8 +1,8 @@
-using CleanTemplate.API.Resource;
+using HealthPlan.API.Resource;
 using System.Globalization;
 using Xunit;
 
-namespace CleanTemplate.Tests.Unit
+namespace HealthPlan.Test.Unit
 {
     public class ApiLocalizationTests
     {

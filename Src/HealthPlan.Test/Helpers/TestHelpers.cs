@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace CleanTemplate.Tests.Helpers;
+namespace HealthPlan.Test.Helpers;
 
 public static class TestHelpers
 {

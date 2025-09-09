@@ -3,7 +3,7 @@ using Xunit;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CleanTemplate.Tests.Unit;
+namespace HealthPlan.Test.Unit;
 
 public class PasswordHashingTests
 {

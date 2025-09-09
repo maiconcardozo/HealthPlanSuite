@@ -1,6 +1,6 @@
-using CleanTemplate.Application.Constants;
+using HealthPlan.Quote.Constants;
 
-namespace CleanTemplate.API.Helper
+namespace HealthPlan.API.Helper
 {
     public static class Utils
     {

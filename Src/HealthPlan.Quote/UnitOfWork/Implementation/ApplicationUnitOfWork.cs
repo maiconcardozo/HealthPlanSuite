@@ -1,9 +1,9 @@
-﻿using CleanTemplate.Application.Repository.Interface;
-using CleanTemplate.Application.UnitOfWork.Interface;
+﻿using HealthPlan.Quote.Repository.Interface;
+using HealthPlan.Quote.UnitOfWork.Interface;
 using Foundation.Base.UnitOfWork.Implementation;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanTemplate.Application.UnitOfWork.Implementation
+namespace HealthPlan.Quote.UnitOfWork.Implementation
 {
     public class ApplicationUnitOfWork : BaseUnitOfWork, IApplicationUnitOfWork
     {

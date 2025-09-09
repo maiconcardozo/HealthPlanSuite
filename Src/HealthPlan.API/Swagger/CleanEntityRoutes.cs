@@ -1,6 +1,6 @@
-using CleanTemplate.API.Resource;
+using HealthPlan.API.Resource;
 
-namespace CleanTemplate.API.Swagger
+namespace HealthPlan.API.Swagger
 {
     /// <summary>
     /// Route constants for CleanEntity API endpoints.

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CleanTemplate.API.Resource {
+namespace HealthPlan.API.Resource {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CleanTemplate.API.Resource {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CleanTemplate.API.Resource.ResourceRoutesAPI", typeof(ResourceRoutesAPI).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HealthPlan.API.Resource.ResourceRoutesAPI", typeof(ResourceRoutesAPI).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
