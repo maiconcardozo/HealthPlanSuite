@@ -44,7 +44,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CleanTemplate.Application\CleanTemplate.Application.csproj" />
+		<ProjectReference Include="..\HealthPlan.Quote\HealthPlan.Quote.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

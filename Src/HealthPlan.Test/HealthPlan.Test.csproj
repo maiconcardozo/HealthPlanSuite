@@ -34,8 +34,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CleanTemplate.API\CleanTemplate.API.csproj" />
-		<ProjectReference Include="..\CleanTemplate.Application\CleanTemplate.Application.csproj" />
+		<ProjectReference Include="..\HealthPlan.API\HealthPlan.API.csproj" />
+		<ProjectReference Include="..\HealthPlan.Quote\HealthPlan.Quote.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
