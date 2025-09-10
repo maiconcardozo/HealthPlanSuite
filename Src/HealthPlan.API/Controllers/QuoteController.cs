@@ -11,8 +11,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for health plan quote management operations.
-    /// Provides comprehensive CRUD operations for health plan quotes.
+    /// ResourceAPI.QuoteControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -30,17 +29,16 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all active quotes from the system.
+        /// ResourceAPI.DocumentationGetQuotes
         /// </summary>
         /// <returns>
-        /// List of quote objects with their details, pricing, and status information on success.
-        /// Returns validation errors, unauthorized access, or internal server error on failure.
+        /// ResourceAPI.ReturnsListOfQuoteObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Quotes retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
-        [HttpGet("quotes")]
+        /// <response code="200">ResourceAPI.QuotesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorized</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
+        [HttpGet(QuoteRoutes.GetQuotes)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<QuoteResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -54,32 +52,48 @@ namespace HealthPlan.API.Controllers
             try
             {
                 var quotes = _quoteService.GetAllActiveQuotes();
-                var quoteDtos = quotes.Select(q => q.ToResponseDTO()).ToList();
-                return Ok(quoteDtos);
+                var quotesResponse = quotes.Select(q => CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(q));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                return Ok(successResponse);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(500, new ProblemDetails
-                {
-                    Status = 500,
-                    Title = "Internal Server Error",
-                    Detail = ex.Message
-                });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForUnauthorized(ex.Message, HttpContext.Request.Path);
+                return Unauthorized(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
         /// <summary>
-        /// Retrieves a specific quote by its ID.
+        /// ResourceAPI.DocumentationGetQuoteById
         /// </summary>
-        /// <param name="id">Quote ID</param>
-        /// <returns>Quote object with its details</returns>
-        /// <response code="200">Quote retrieved successfully</response>
-        /// <response code="404">Quote not found</response>
-        /// <response code="500">Internal server error</response>
-        [HttpGet("{id}")]
+        /// <param name="id">Quote ID to search for</param>
+        /// <returns>ResourceAPI.ReturnsQuoteMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.QuoteRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.QuoteNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
+        [HttpGet(QuoteRoutes.GetQuoteById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(QuoteResponseDTO))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(SucessDetailsExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
+        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult GetQuote(int id)
         {
             try
@@ -87,194 +101,237 @@ namespace HealthPlan.API.Controllers
                 var quote = _quoteService.GetById(id);
                 if (quote == null)
                 {
-                    return NotFound(new ProblemDetails
-                    {
-                        Status = 404,
-                        Title = "Quote not found",
-                        Detail = $"Quote with ID {id} was not found."
-                    });
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
+                    return NotFound(problemDetails);
                 }
 
-                var quoteDto = quote.ToResponseDTO();
-                return Ok(quoteDto);
+                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                return Ok(successResponse);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(500, new ProblemDetails
-                {
-                    Status = 500,
-                    Title = "Internal Server Error",
-                    Detail = ex.Message
-                });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForUnauthorized(ex.Message, HttpContext.Request.Path);
+                return Unauthorized(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
         /// <summary>
-        /// Retrieves quotes for a specific beneficiary.
+        /// ResourceAPI.DocumentationGetQuotesByBeneficiary
         /// </summary>
-        /// <param name="beneficiaryId">Beneficiary ID</param>
-        /// <returns>List of quotes for the beneficiary</returns>
-        /// <response code="200">Quotes retrieved successfully</response>
-        /// <response code="500">Internal server error</response>
-        [HttpGet("beneficiary/{beneficiaryId}")]
+        /// <param name="beneficiaryId">Beneficiary ID to search for</param>
+        /// <returns>ResourceAPI.ReturnsQuotesForSpecifiedBeneficiary</returns>
+        /// <response code="200">ResourceAPI.QuotesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
+        [HttpGet(QuoteRoutes.GetQuotesByBeneficiary)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<QuoteResponseDTO>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(SucessDetailsExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult GetQuotesByBeneficiary(int beneficiaryId)
         {
             try
             {
                 var quotes = _quoteService.GetQuotesByBeneficiary(beneficiaryId);
-                var quoteDtos = quotes.Select(q => q.ToResponseDTO()).ToList();
-                return Ok(quoteDtos);
+                var quotesResponse = quotes.Select(q => CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(q));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                return Ok(successResponse);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(500, new ProblemDetails
-                {
-                    Status = 500,
-                    Title = "Internal Server Error",
-                    Detail = ex.Message
-                });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForUnauthorized(ex.Message, HttpContext.Request.Path);
+                return Unauthorized(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
         /// <summary>
-        /// Creates a new health plan quote.
+        /// ResourceAPI.DocumentationAddQuote
         /// </summary>
-        /// <param name="quotePayload">Quote data for creation</param>
-        /// <returns>Created quote object</returns>
-        /// <response code="201">Quote created successfully</response>
-        /// <response code="400">Invalid request data</response>
-        /// <response code="500">Internal server error</response>
-        [HttpPost]
+        /// <param name="quotePayLoad">Quote data to create</param>
+        /// <returns>ResourceAPI.ReturnsCreatedQuoteOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.QuoteCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.QuoteAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
+        [HttpPost(QuoteRoutes.AddQuote)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(QuoteResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public IActionResult CreateQuote([FromBody] QuotePayLoadDTO quotePayload)
+        [SwaggerResponseExample(StatusCodes.Status201Created, typeof(SucessDetailsExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
+        [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
+        public IActionResult CreateQuote([FromBody] QuotePayLoadDTO quotePayLoad)
         {
             try
             {
-                if (quotePayload == null)
-                {
-                    return BadRequest(new ProblemDetails
-                    {
-                        Status = 400,
-                        Title = "Invalid request",
-                        Detail = "Quote data is required."
-                    });
-                }
-
-                var quote = quotePayload.ToEntity();
+                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
                 _quoteService.AddQuote(quote);
-                
-                var responseDto = quote.ToResponseDTO();
-                return CreatedAtAction(nameof(GetQuote), new { id = quote.Id }, responseDto);
+
+                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, "Quote created successfully", HttpContext.Request.Path);
+                return StatusCode(StatusCodes.Status201Created, successResponse);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                return StatusCode(500, new ProblemDetails
-                {
-                    Status = 500,
-                    Title = "Internal Server Error",
-                    Detail = ex.Message
-                });
+                var problemDetails = ProblemDetailsExampleFactory.ForConflict(ex.Message, HttpContext.Request.Path);
+                return Conflict(problemDetails);
+            }
+            catch (ArgumentException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForUnauthorized(ex.Message, HttpContext.Request.Path);
+                return Unauthorized(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
         /// <summary>
-        /// Updates an existing quote.
+        /// ResourceAPI.DocumentationUpdateQuote
         /// </summary>
-        /// <param name="id">Quote ID</param>
-        /// <param name="quotePayload">Updated quote data</param>
-        /// <returns>Updated quote object</returns>
-        /// <response code="200">Quote updated successfully</response>
-        /// <response code="400">Invalid request data</response>
-        /// <response code="404">Quote not found</response>
-        /// <response code="500">Internal server error</response>
-        [HttpPut("{id}")]
+        /// <param name="id">Quote ID to update</param>
+        /// <param name="quotePayLoad">Updated quote data</param>
+        /// <returns>ResourceAPI.ReturnsUpdatedQuoteOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.QuoteUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.QuoteNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
+        [HttpPut(QuoteRoutes.UpdateQuote)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(QuoteResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public IActionResult UpdateQuote(int id, [FromBody] QuotePayLoadDTO quotePayload)
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(SucessDetailsExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
+        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
+        public IActionResult UpdateQuote(int id, [FromBody] QuotePayLoadDTO quotePayLoad)
         {
             try
             {
                 var existingQuote = _quoteService.GetById(id);
                 if (existingQuote == null)
                 {
-                    return NotFound(new ProblemDetails
-                    {
-                        Status = 404,
-                        Title = "Quote not found",
-                        Detail = $"Quote with ID {id} was not found."
-                    });
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
+                    return NotFound(problemDetails);
                 }
 
-                // Update the existing quote with new data
-                existingQuote.CompanyId = quotePayload.CompanyId;
-                existingQuote.BeneficiaryId = quotePayload.BeneficiaryId;
-                existingQuote.HealthPlanId = quotePayload.HealthPlanId;
-                existingQuote.ValidUntil = quotePayload.ValidUntil;
-                existingQuote.MonthlyPremium = quotePayload.MonthlyPremium;
-                existingQuote.AgeRangeId = quotePayload.AgeRangeId;
-                existingQuote.Notes = quotePayload.Notes;
-                existingQuote.UpdatedBy = quotePayload.UpdatedBy;
+                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
+                quote.Id = id;
+                _quoteService.UpdateQuote(quote);
 
-                _quoteService.UpdateQuote(existingQuote);
-                
-                var responseDto = existingQuote.ToResponseDTO();
-                return Ok(responseDto);
+                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, "Quote updated successfully", HttpContext.Request.Path);
+                return Ok(successResponse);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                return StatusCode(500, new ProblemDetails
-                {
-                    Status = 500,
-                    Title = "Internal Server Error",
-                    Detail = ex.Message
-                });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForUnauthorized(ex.Message, HttpContext.Request.Path);
+                return Unauthorized(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
         /// <summary>
-        /// Deletes a quote by its ID.
+        /// ResourceAPI.DocumentationDeleteQuote
         /// </summary>
-        /// <param name="id">Quote ID</param>
-        /// <returns>Success status</returns>
-        /// <response code="204">Quote deleted successfully</response>
-        /// <response code="404">Quote not found</response>
-        /// <response code="500">Internal server error</response>
-        [HttpDelete("{id}")]
-        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        /// <param name="id">Quote ID to delete</param>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.QuoteDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.QuoteNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
+        [HttpDelete(QuoteRoutes.DeleteQuote)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(SucessDetailsExample))]
+        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
+        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
         public IActionResult DeleteQuote(int id)
         {
             try
             {
-                var quote = _quoteService.GetById(id);
-                if (quote == null)
+                var existingQuote = _quoteService.GetById(id);
+                if (existingQuote == null)
                 {
-                    return NotFound(new ProblemDetails
-                    {
-                        Status = 404,
-                        Title = "Quote not found",
-                        Detail = $"Quote with ID {id} was not found."
-                    });
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
+                    return NotFound(problemDetails);
                 }
 
                 _quoteService.DeleteQuote(id);
-                return NoContent();
+                var successResponse = SuccessResponseExampleFactory.ForSuccess("Quote deleted successfully", "Quote deleted successfully", HttpContext.Request.Path);
+                return Ok(successResponse);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                return StatusCode(500, new ProblemDetails
-                {
-                    Status = 500,
-                    Title = "Internal Server Error",
-                    Detail = ex.Message
-                });
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForUnauthorized(ex.Message, HttpContext.Request.Path);
+                return Unauthorized(problemDetails);
+            }
+            catch (Exception)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
     }
