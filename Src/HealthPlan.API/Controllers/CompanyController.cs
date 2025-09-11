@@ -11,35 +11,36 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// ResourceAPI.QuoteControllerDescription
+    /// Controller for managing Company entities.
+    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    public class QuoteController : ControllerBase
+    public class CompanyController : ControllerBase
     {
-        private readonly IQuoteService _quoteService;
+        private readonly ICompanyService _companyService;
 
         /// <summary>
-        /// Initializes a new instance of the QuoteController.
+        /// Initializes a new instance of the CompanyController.
         /// </summary>
-        /// <param name="quoteService">Service for quote management operations</param>
-        public QuoteController(IQuoteService quoteService)
+        /// <param name="companyService">Service for company management operations</param>
+        public CompanyController(ICompanyService companyService)
         {
-            _quoteService = quoteService;
+            _companyService = companyService;
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationGetQuotes
+        /// Retrieves all companies from the system.
         /// </summary>
         /// <returns>
-        /// ResourceAPI.ReturnsListOfQuoteObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
+        /// Returns list of Company objects with their details and status on success, validation errors, unauthorized access, or internal server error.
         /// </returns>
-        /// <response code="200">ResourceAPI.QuotesRetrievedSuccessfully</response>
-        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
-        /// <response code="401">ResourceAPI.ResponseUnauthorized</response>
-        /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpGet(QuoteRoutes.GetQuotes)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<QuoteResponseDTO>))]
+        /// <response code="200">Companies retrieved successfully</response>
+        /// <response code="400">Invalid request parameters</response>
+        /// <response code="401">Unauthorized access</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet(CompanyRoutes.GetCompanies)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompanyResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -47,13 +48,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetQuotes()
+        public IActionResult GetCompanies()
         {
             try
             {
-                var quotes = _quoteService.GetAllActiveQuotes();
-                var quotesResponse = quotes.Select(q => CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(q));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var companies = _companyService.GetAllActiveCompanies();
+                var companiesResponse = companies.Select(c => CleanTemplateApplicationMapperInitializer.Mapper.Map<CompanyResponseDTO>(c));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(companiesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -74,17 +75,17 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationGetQuoteById
+        /// Retrieves a company by its unique identifier.
         /// </summary>
-        /// <param name="id">Quote ID to search for</param>
-        /// <returns>ResourceAPI.ReturnsQuoteMatchingTheSpecifiedID</returns>
-        /// <response code="200">ResourceAPI.QuoteRetrievedSuccessfully</response>
-        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
-        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
-        /// <response code="404">ResourceAPI.QuoteNotFound</response>
-        /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpGet(QuoteRoutes.GetQuoteById)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(QuoteResponseDTO))]
+        /// <param name="id">Company ID to search for</param>
+        /// <returns>Returns Company matching the specified ID</returns>
+        /// <response code="200">Company retrieved successfully</response>
+        /// <response code="400">Invalid request parameters</response>
+        /// <response code="401">Unauthorized access</response>
+        /// <response code="404">Company not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet(CompanyRoutes.GetCompanyById)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -94,19 +95,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetQuote(int id)
+        public IActionResult GetCompany(int id)
         {
             try
             {
-                var quote = _quoteService.GetById(id);
-                if (quote == null)
+                var company = _companyService.GetById(id);
+                if (company == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Company not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var companyResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CompanyResponseDTO>(company);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(companyResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -127,30 +128,39 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationGetQuotesByBeneficiary
+        /// Retrieves a company by its CNPJ.
         /// </summary>
-        /// <param name="beneficiaryId">Beneficiary ID to search for</param>
-        /// <returns>ResourceAPI.ReturnsQuotesForSpecifiedBeneficiary</returns>
-        /// <response code="200">ResourceAPI.QuotesRetrievedSuccessfully</response>
-        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
-        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
-        /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpGet(QuoteRoutes.GetQuotesByBeneficiary)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<QuoteResponseDTO>))]
+        /// <param name="cnpj">CNPJ to search for</param>
+        /// <returns>Returns Company matching the specified CNPJ</returns>
+        /// <response code="200">Company retrieved successfully</response>
+        /// <response code="400">Invalid request parameters</response>
+        /// <response code="401">Unauthorized access</response>
+        /// <response code="404">Company not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet(CompanyRoutes.GetCompanyByCNPJ)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(SucessDetailsExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
+        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetQuotesByBeneficiary(int beneficiaryId)
+        public IActionResult GetCompanyByCNPJ(string cnpj)
         {
             try
             {
-                var quotes = _quoteService.GetQuotesByBeneficiary(beneficiaryId);
-                var quotesResponse = quotes.Select(q => CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(q));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var company = _companyService.GetCompanyByCNPJ(cnpj);
+                if (company == null)
+                {
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Company not found", HttpContext.Request.Path);
+                    return NotFound(problemDetails);
+                }
+
+                var companyResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CompanyResponseDTO>(company);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(companyResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -171,17 +181,17 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationAddQuote
+        /// Creates a new company in the system.
         /// </summary>
-        /// <param name="quotePayLoad">Quote data to create</param>
-        /// <returns>ResourceAPI.ReturnsCreatedQuoteOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
-        /// <response code="201">ResourceAPI.QuoteCreatedSuccessfully</response>
-        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
-        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
-        /// <response code="409">ResourceAPI.QuoteAlreadyExists</response>
-        /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpPost(QuoteRoutes.AddQuote)]
-        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(QuoteResponseDTO))]
+        /// <param name="companyPayLoad">Company data to create</param>
+        /// <returns>Returns created Company on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <response code="201">Company created successfully</response>
+        /// <response code="400">Invalid request parameters</response>
+        /// <response code="401">Unauthorized access</response>
+        /// <response code="409">Company already exists</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPost(CompanyRoutes.AddCompany)]
+        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
@@ -191,15 +201,15 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateQuote([FromBody] QuotePayLoadDTO quotePayLoad)
+        public IActionResult CreateCompany([FromBody] CompanyPayLoadDTO companyPayLoad)
         {
             try
             {
-                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
-                _quoteService.AddQuote(quote);
+                var company = CleanTemplateApplicationMapperInitializer.Mapper.Map<Company>(companyPayLoad);
+                _companyService.AddCompany(company);
 
-                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, "Quote created successfully", HttpContext.Request.Path);
+                var companyResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CompanyResponseDTO>(company);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(companyResponse, "Company created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -225,18 +235,18 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationUpdateQuote
+        /// Updates an existing company.
         /// </summary>
-        /// <param name="id">Quote ID to update</param>
-        /// <param name="quotePayLoad">Updated quote data</param>
-        /// <returns>ResourceAPI.ReturnsUpdatedQuoteOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
-        /// <response code="200">ResourceAPI.QuoteUpdatedSuccessfully</response>
-        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
-        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
-        /// <response code="404">ResourceAPI.QuoteNotFound</response>
-        /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpPut(QuoteRoutes.UpdateQuote)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(QuoteResponseDTO))]
+        /// <param name="id">Company ID to update</param>
+        /// <param name="companyPayLoad">Updated company data</param>
+        /// <returns>Returns updated Company on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <response code="200">Company updated successfully</response>
+        /// <response code="400">Invalid request parameters</response>
+        /// <response code="401">Unauthorized access</response>
+        /// <response code="404">Company not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPut(CompanyRoutes.UpdateCompany)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -246,23 +256,23 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateQuote(int id, [FromBody] QuotePayLoadDTO quotePayLoad)
+        public IActionResult UpdateCompany(int id, [FromBody] CompanyPayLoadDTO companyPayLoad)
         {
             try
             {
-                var existingQuote = _quoteService.GetById(id);
-                if (existingQuote == null)
+                var existingCompany = _companyService.GetById(id);
+                if (existingCompany == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Company not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
-                quote.Id = id;
-                _quoteService.UpdateQuote(quote);
+                var company = CleanTemplateApplicationMapperInitializer.Mapper.Map<Company>(companyPayLoad);
+                company.Id = id;
+                _companyService.UpdateCompany(company);
 
-                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, "Quote updated successfully", HttpContext.Request.Path);
+                var companyResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CompanyResponseDTO>(company);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(companyResponse, "Company updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -283,16 +293,16 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationDeleteQuote
+        /// Deletes a company from the system.
         /// </summary>
-        /// <param name="id">Quote ID to delete</param>
-        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
-        /// <response code="200">ResourceAPI.QuoteDeletedSuccessfully</response>
-        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
-        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
-        /// <response code="404">ResourceAPI.QuoteNotFound</response>
-        /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpDelete(QuoteRoutes.DeleteQuote)]
+        /// <param name="id">Company ID to delete</param>
+        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <response code="200">Company deleted successfully</response>
+        /// <response code="400">Invalid request parameters</response>
+        /// <response code="401">Unauthorized access</response>
+        /// <response code="404">Company not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpDelete(CompanyRoutes.DeleteCompany)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -303,19 +313,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteQuote(int id)
+        public IActionResult DeleteCompany(int id)
         {
             try
             {
-                var existingQuote = _quoteService.GetById(id);
-                if (existingQuote == null)
+                var existingCompany = _companyService.GetById(id);
+                if (existingCompany == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Company not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _quoteService.DeleteQuote(id);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess("Quote deleted successfully", "Quote deleted successfully", HttpContext.Request.Path);
+                _companyService.DeleteCompany(id);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess("Company deleted successfully", "Company deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)

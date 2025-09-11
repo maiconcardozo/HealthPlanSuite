@@ -159,6 +159,14 @@ namespace HealthPlan.Quote.Services.Implementation
                 quote.Status = "Pending";
             }
 
+            // Set audit fields for tracking when and by whom the quote was created
+            quote.DtCreated = DateTime.Now;
+            // Use the CreatedBy value from the entity/DTO instead of a default value
+            if (string.IsNullOrEmpty(quote.CreatedBy))
+            {
+                quote.CreatedBy = ApplicationConstants.DefaultCreatedByUser;
+            }
+
             _quoteRepository.Add(quote);
         }
 
@@ -170,8 +178,32 @@ namespace HealthPlan.Quote.Services.Implementation
         {
             foreach (var quote in quotes)
             {
-                AddQuote(quote);
+                // Set audit fields for each entity
+                quote.DtCreated = DateTime.Now;
+                if (string.IsNullOrEmpty(quote.CreatedBy))
+                {
+                    quote.CreatedBy = ApplicationConstants.DefaultCreatedByUser;
+                }
+                
+                // Generate unique quote number if not provided
+                if (string.IsNullOrEmpty(quote.QuoteNumber))
+                {
+                    quote.QuoteNumber = GenerateQuoteNumber();
+                }
+
+                // Set default values
+                if (quote.QuoteDate == default)
+                {
+                    quote.QuoteDate = DateTime.UtcNow;
+                }
+
+                if (string.IsNullOrEmpty(quote.Status))
+                {
+                    quote.Status = "Pending";
+                }
             }
+            
+            _quoteRepository.AddRange(quotes);
         }
 
         /// <summary>
@@ -180,6 +212,14 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <param name="quote">Quote with updated information</param>
         public void UpdateQuote(Domain.Implementation.Quote quote)
         {
+            // Update audit fields for tracking modifications
+            quote.DtUpdated = DateTime.Now;
+            // Use the UpdatedBy value from the entity/DTO instead of a default value
+            if (string.IsNullOrEmpty(quote.UpdatedBy))
+            {
+                quote.UpdatedBy = ApplicationConstants.DefaultCreatedByUser;
+            }
+            
             _quoteRepository.Update(quote);
         }
 
