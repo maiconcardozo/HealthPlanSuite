@@ -1,7 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<!-- Updated to .NET 9.0 for latest features and performance -->
+		<!-- 
+		CRITICAL: DO NOT DOWNGRADE FROM .NET 9.0!
+		This test project REQUIRES .NET 9.0 for:
+		- xUnit 2.9.x test framework compatibility
+		- ASP.NET Core Testing 9.0.x integration
+		- FluentAssertions 8.x modern assertion syntax
+		- Microsoft.NET.Test.Sdk 17.x test execution
+		Always keep this as net9.0 - downgrading will break test execution and CI/CD
+		-->
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -10,7 +18,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- Package versions compatible with .NET 9.0 -->
+		<!-- 
+		Testing packages specifically chosen for .NET 9.0 compatibility
+		WARNING: These versions require .NET 9.0 - do not downgrade the framework!
+		Test execution will fail on older .NET versions!
+		-->
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
 		<PackageReference Include="xunit" Version="2.9.3" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.4">

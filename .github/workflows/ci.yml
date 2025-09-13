@@ -7,6 +7,12 @@ on:
     branches: [ main, develop ]
 
 env:
+  # CRITICAL: DO NOT DOWNGRADE FROM .NET 9.0.x!
+  # This pipeline REQUIRES .NET 9.0.x for:
+  # - Building projects with net9.0 target framework
+  # - Package dependencies compatibility (EF Core 9.x, ASP.NET Core 9.x, etc.)
+  # - Test execution with latest xUnit and testing packages
+  # Changing to 8.0.x will break the entire CI/CD pipeline!
   DOTNET_VERSION: '9.0.x'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -23,6 +29,8 @@ jobs:
     - name: Setup .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
+        # WARNING: This MUST match the version in global.json and .csproj files!
+        # Do not change to 8.x - it will break the build process
         dotnet-version: ${{ env.DOTNET_VERSION }}
     
     - name: Verify .NET version

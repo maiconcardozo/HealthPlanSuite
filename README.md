@@ -1,12 +1,36 @@
 # HealthPlan Suite - .NET Health Plan Quote Management System
 
 [![CI/CD Pipeline](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml/badge.svg)](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml)
-[![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
-[![Entity Framework Core](https://img.shields.io/badge/EF%20Core-8.0.11-blue.svg)](https://docs.microsoft.com/en-us/ef/core/)
+[![.NET 9.0](https://img.shields.io/badge/.NET-9.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/9.0)
+[![Entity Framework Core](https://img.shields.io/badge/EF%20Core-9.0.9-blue.svg)](https://docs.microsoft.com/en-us/ef/core/)
 
 ## 📋 Overview
 
 **HealthPlan Suite** is a comprehensive .NET application for managing health plan quotes and related insurance operations. This system follows Clean Architecture principles and includes complete health plan management functionality for insurance companies and brokers.
+
+## ⚠️ CRITICAL: .NET 9.0 REQUIREMENT
+
+**DO NOT DOWNGRADE FROM .NET 9.0!**
+
+This application **REQUIRES** .NET 9.0 and cannot function on older versions due to:
+
+- **Entity Framework Core 9.0.x** - Critical database features and performance improvements
+- **ASP.NET Core 9.0.x** - Security updates and modern web API capabilities  
+- **Swashbuckle 9.0.x** - OpenAPI documentation compatibility
+- **Latest testing frameworks** - xUnit 2.9.x, FluentAssertions 8.x
+- **C# language features** - Latest syntax and runtime optimizations
+
+**What will break if downgraded:**
+- Build process will fail
+- Package dependencies will conflict
+- CI/CD pipeline will break
+- Database migrations may fail
+- API functionality may be compromised
+
+**Always maintain .NET 9.0.x in:**
+- `global.json` SDK version
+- All `.csproj` TargetFramework properties
+- CI/CD pipeline configuration
 
 ### 🔐 Key Features
 
