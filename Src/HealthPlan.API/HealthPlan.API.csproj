@@ -1,8 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<!-- Updated to .NET 8.0 for environment compatibility -->
-		<TargetFramework>net8.0</TargetFramework>
+		<!-- 
+		CRITICAL: DO NOT DOWNGRADE FROM .NET 9.0!
+		This project REQUIRES .NET 9.0 for:
+		- Latest Entity Framework Core 9.0.x features
+		- ASP.NET Core 9.0.x security updates and performance improvements
+		- Swashbuckle 9.0.x compatibility with modern OpenAPI standards
+		- Latest C# language features and runtime optimizations
+		Always keep this as net9.0 - downgrading will break dependencies and CI/CD pipeline
+		-->
+		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -19,27 +27,30 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!-- Package versions compatible with .NET 8.0 -->
+		<!-- 
+		Package versions specifically chosen for .NET 9.0 compatibility
+		WARNING: These versions require .NET 9.0 - do not downgrade the framework!
+		-->
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="FluentValidation" Version="12.0.0" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.13" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.13" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.13" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.13">
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="MySqlConnector" Version="2.3.7" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.8.0" />
+		<PackageReference Include="MySqlConnector" Version="2.4.0" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.4" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="9.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="9.0.4" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.4" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.4" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,10 +108,6 @@
 	  <Folder Include="Migrations\Production\" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" />
-	  <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" />
-	  <PackageReference Update="SonarAnalyzer.CSharp" Version="10.15.0.120848" />
-	</ItemGroup>
+
 
 </Project>
