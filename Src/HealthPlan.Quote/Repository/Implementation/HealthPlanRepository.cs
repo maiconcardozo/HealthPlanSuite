@@ -11,15 +11,12 @@ namespace HealthPlan.Quote.Repository.Implementation
     /// </summary>
     public class HealthPlanRepository : EntityRepository<Domain.Implementation.HealthPlan>, IHealthPlanRepository
     {
-        private readonly IApplicationContext _context;
-
         /// <summary>
         /// Initializes a new instance of the HealthPlanRepository.
         /// </summary>
         /// <param name="context">Database context for data operations</param>
         public HealthPlanRepository(IApplicationContext context) : base(context)
         {
-            _context = context;
         }
     }
 }

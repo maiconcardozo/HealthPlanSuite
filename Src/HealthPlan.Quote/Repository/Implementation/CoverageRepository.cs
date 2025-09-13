@@ -12,15 +12,12 @@ namespace HealthPlan.Quote.Repository.Implementation
     /// </summary>
     public class CoverageRepository : EntityRepository<Coverage>, ICoverageRepository
     {
-        private readonly IApplicationContext _context;
-
         /// <summary>
         /// Initializes a new instance of the CoverageRepository.
         /// </summary>
         /// <param name="context">Database context for data operations</param>
         public CoverageRepository(IApplicationContext context) : base(context)
         {
-            _context = context;
         }
 
         /// <summary>

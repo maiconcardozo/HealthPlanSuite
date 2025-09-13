@@ -1,5 +1,4 @@
 using HealthPlan.Quote.Domain.Implementation;
-using Foundation.Base.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +8,7 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
     /// Entity Framework configuration for the Quote entity.
     /// Defines table structure, constraints, and relationships.
     /// </summary>
-    internal class QuoteMap : IEntityTypeConfiguration<AgeRange>, IEntityTypeConfiguration<Domain.Implementation.Quote>
+    internal class QuoteMap : IEntityTypeConfiguration<Domain.Implementation.Quote>
     {
         /// <summary>
         /// Configures the Quote entity for Entity Framework.

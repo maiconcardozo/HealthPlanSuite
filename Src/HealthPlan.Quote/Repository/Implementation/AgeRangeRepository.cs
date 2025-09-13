@@ -12,15 +12,12 @@ namespace HealthPlan.Quote.Repository.Implementation
     /// </summary>
     public class AgeRangeRepository : EntityRepository<AgeRange>, IAgeRangeRepository
     {
-        private readonly IApplicationContext _context;
-
         /// <summary>
         /// Initializes a new instance of the AgeRangeRepository.
         /// </summary>
         /// <param name="context">Database context for data operations</param>
         public AgeRangeRepository(IApplicationContext context) : base(context)
         {
-            _context = context;
         }
 
         /// <summary>

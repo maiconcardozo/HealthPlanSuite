@@ -1,5 +1,4 @@
 using HealthPlan.Quote.Domain.Implementation;
-using Foundation.Base.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +8,7 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
     /// Entity Framework configuration for the Coverage entity.
     /// Defines table structure, constraints, and relationships.
     /// </summary>
-    internal class CoverageMap : IEntityTypeConfiguration<AgeRange>, IEntityTypeConfiguration<Coverage>
+    internal class CoverageMap : IEntityTypeConfiguration<Coverage>
     {
         /// <summary>
         /// Configures the Coverage entity for Entity Framework.

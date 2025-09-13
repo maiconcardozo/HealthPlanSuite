@@ -1,5 +1,4 @@
 using HealthPlan.Quote.Domain.Implementation;
-using Foundation.Base.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +8,7 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
     /// Entity Framework configuration for the Beneficiary entity.
     /// Defines table structure, constraints, and relationships.
     /// </summary>
-    internal class BeneficiaryMap : IEntityTypeConfiguration<AgeRange>, IEntityTypeConfiguration<Beneficiary>
+    internal class BeneficiaryMap : IEntityTypeConfiguration<Beneficiary>
     {
         /// <summary>
         /// Configures the Beneficiary entity for Entity Framework.
