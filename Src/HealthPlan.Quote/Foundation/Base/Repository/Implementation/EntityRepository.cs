@@ -9,7 +9,7 @@ namespace Foundation.Base.Repository.Implementation
     /// Compatible with Foundation.Base NuGet package implementation.
     /// </summary>
     /// <typeparam name="T">Entity type that implements IEntity</typeparam>
-    public class EntityRepository<T> : IEntityRepository<T> where T : class, Foundation.Base.Domain.Implemetation.Entity
+    public class EntityRepository<T> : IEntityRepository<T> where T : HealthPlan.Quote.Foundation.Entity
     {
         protected readonly DbContext _context;
         protected readonly DbSet<T> _dbSet;
@@ -31,7 +31,7 @@ namespace Foundation.Base.Repository.Implementation
         /// <returns>Entity if found, null otherwise</returns>
         public virtual T? Get(T entity)
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            ArgumentNullException.ThrowIfNull(entity);
             return GetById(entity.Id);
         }
 
@@ -42,7 +42,7 @@ namespace Foundation.Base.Repository.Implementation
         /// <returns>Task with entity if found, null otherwise</returns>
         public virtual async Task<T?> GetAsync(T entity)
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            ArgumentNullException.ThrowIfNull(entity);
             return await GetByIdAsync(entity.Id);
         }
 
@@ -53,9 +53,8 @@ namespace Foundation.Base.Repository.Implementation
         /// <returns>Collection of matching entities</returns>
         public virtual IEnumerable<T> GetByLstId(T entity)
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
-            if (entity.LstId == null || !entity.LstId.Any()) return new List<T>();
-            return _dbSet.Where(e => entity.LstId.Contains(e.Id)).ToList();
+            ArgumentNullException.ThrowIfNull(entity);
+            return entity.LstId == null || !entity.LstId.Any() ? new List<T>() : _dbSet.Where(e => entity.LstId.Contains(e.Id)).ToList();
         }
 
         /// <summary>
@@ -65,9 +64,8 @@ namespace Foundation.Base.Repository.Implementation
         /// <returns>Task with collection of matching entities</returns>
         public virtual async Task<IEnumerable<T>> GetByLstIdAsync(T entity)
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
-            if (entity.LstId == null || !entity.LstId.Any()) return new List<T>();
-            return await Task.FromResult(_dbSet.Where(e => entity.LstId.Contains(e.Id)).ToList());
+            ArgumentNullException.ThrowIfNull(entity);
+            return entity.LstId == null || !entity.LstId.Any() ? new List<T>() : await Task.FromResult(_dbSet.Where(e => entity.LstId.Contains(e.Id)).ToList());
         }
 
         /// <summary>

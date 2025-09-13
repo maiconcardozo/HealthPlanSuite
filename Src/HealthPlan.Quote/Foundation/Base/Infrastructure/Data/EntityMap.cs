@@ -9,7 +9,7 @@ namespace Foundation.Base.Infrastructure.Data
     /// Compatible with Foundation.Base NuGet package structure.
     /// </summary>
     /// <typeparam name="T">Entity type that implements IEntity</typeparam>
-    public abstract class EntityMap<T> where T : class, Foundation.Base.Domain.Implemetation.Entity
+    public abstract class EntityMap<T> where T : HealthPlan.Quote.Foundation.Entity
     {
         /// <summary>
         /// Configures the entity for Entity Framework.

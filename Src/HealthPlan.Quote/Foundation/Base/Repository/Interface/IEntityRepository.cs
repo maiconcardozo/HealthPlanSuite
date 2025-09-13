@@ -7,7 +7,7 @@ namespace Foundation.Base.Repository.Interface
     /// Compatible with Foundation.Base NuGet package interface.
     /// </summary>
     /// <typeparam name="T">Entity type that implements IEntity</typeparam>
-    public interface IEntityRepository<T> where T : class, Foundation.Base.Domain.Implemetation.Entity
+    public interface IEntityRepository<T> where T : HealthPlan.Quote.Foundation.Entity
     {
         /// <summary>
         /// Gets an entity using another entity as a template (typically for ID lookup).
