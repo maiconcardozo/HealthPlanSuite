@@ -8,12 +8,6 @@ namespace HealthPlan.Quote.Mapping
     {
         public CleanTemplateApplicationMapping()
         {
-            // CleanEntity mappings
-            CreateMap<CleanEntityPayLoadDTO, CleanEntity>();
-            CreateMap<CleanEntity, CleanEntityPayLoadDTO>();
-            CreateMap<CleanEntity, CleanEntityResponseDTO>();
-            CreateMap<CleanEntityResponseDTO, CleanEntity>();
-            
             // Quote mappings
             CreateMap<QuotePayLoadDTO, Domain.Implementation.Quote>()
                 .ForMember(dest => dest.QuoteNumber, opt => opt.Ignore())

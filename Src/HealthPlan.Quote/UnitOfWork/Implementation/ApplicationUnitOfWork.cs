@@ -1,20 +1,69 @@
-﻿using HealthPlan.Quote.Repository.Interface;
+using HealthPlan.Quote.Infrastructure.Interface;
+using HealthPlan.Quote.Repository.Interface;
 using HealthPlan.Quote.UnitOfWork.Interface;
-using Foundation.Base.UnitOfWork.Implementation;
-using Microsoft.EntityFrameworkCore;
 
 namespace HealthPlan.Quote.UnitOfWork.Implementation
 {
-    public class ApplicationUnitOfWork : BaseUnitOfWork, IApplicationUnitOfWork
+    /// <summary>
+    /// Unit of Work implementation for managing repository transactions
+    /// </summary>
+    public class ApplicationUnitOfWork : IApplicationUnitOfWork
     {
-        public ICleanEntityRepository CleanEntityRepository { get; }
+        private readonly IApplicationContext _context;
+        private bool _disposed = false;
+
+        public IAgeRangeRepository AgeRangeRepository { get; }
+        public IBeneficiaryRepository BeneficiaryRepository { get; }
+        public ICompanyRepository CompanyRepository { get; }
+        public ICoverageRepository CoverageRepository { get; }
+        public IHealthPlanRepository HealthPlanRepository { get; }
+        public IQuoteRepository QuoteRepository { get; }
 
         public ApplicationUnitOfWork(
-            DbContext context,
-            ICleanEntityRepository cleanEntityRepository
-        ) : base(context)
+            IApplicationContext context,
+            IAgeRangeRepository ageRangeRepository,
+            IBeneficiaryRepository beneficiaryRepository,
+            ICompanyRepository companyRepository,
+            ICoverageRepository coverageRepository,
+            IHealthPlanRepository healthPlanRepository,
+            IQuoteRepository quoteRepository
+        )
         {
-            CleanEntityRepository = cleanEntityRepository;
+            _context = context;
+            AgeRangeRepository = ageRangeRepository;
+            BeneficiaryRepository = beneficiaryRepository;
+            CompanyRepository = companyRepository;
+            CoverageRepository = coverageRepository;
+            HealthPlanRepository = healthPlanRepository;
+            QuoteRepository = quoteRepository;
+        }
+
+        public int Complete()
+        {
+            return _context.SaveChanges();
+        }
+
+        public async Task<int> CompleteAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context?.Dispose();
+                }
+            }
+            _disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

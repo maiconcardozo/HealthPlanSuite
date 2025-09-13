@@ -1,6 +1,7 @@
 using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.Repository.Interface;
-using Foundation.Base.Repository.Implementation;
+using HealthPlan.Quote.Repository.Base;
+using HealthPlan.Quote.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthPlan.Quote.Repository.Implementation
@@ -11,15 +12,12 @@ namespace HealthPlan.Quote.Repository.Implementation
     /// </summary>
     public class CompanyRepository : EntityRepository<Company>, ICompanyRepository
     {
-        private readonly DbContext _context;
-
         /// <summary>
         /// Initializes a new instance of the CompanyRepository.
         /// </summary>
         /// <param name="context">Database context for data operations</param>
-        public CompanyRepository(DbContext context) : base(context)
+        public CompanyRepository(IApplicationContext context) : base(context)
         {
-            _context = context;
         }
 
         /// <summary>
@@ -90,6 +88,22 @@ namespace HealthPlan.Quote.Repository.Implementation
         public bool CNPJExistsForDifferentCompany(string cnpj, int excludeId)
         {
             return _context.Set<Company>().Any(c => c.CNPJ == cnpj && c.Id != excludeId);
+        }
+
+        /// <summary>
+        /// Gets companies by a list of IDs.
+        /// </summary>
+        /// <param name="company">Company entity containing list of IDs</param>
+        /// <returns>Collection of companies matching the provided IDs</returns>
+        public IEnumerable<Company> GetByLstId(Company company)
+        {
+            if (company.LstId == null || company.LstId.Count == 0)
+                return new List<Company>();
+
+            return _context.Set<Company>()
+                .Where(c => company.LstId.Contains(c.Id))
+                .OrderBy(c => c.Name)
+                .ToList();
         }
     }
 }

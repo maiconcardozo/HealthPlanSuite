@@ -1,6 +1,7 @@
 using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.Repository.Interface;
-using Foundation.Base.Repository.Implementation;
+using HealthPlan.Quote.Repository.Base;
+using HealthPlan.Quote.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthPlan.Quote.Repository.Implementation
@@ -11,15 +12,12 @@ namespace HealthPlan.Quote.Repository.Implementation
     /// </summary>
     public class AgeRangeRepository : EntityRepository<AgeRange>, IAgeRangeRepository
     {
-        private readonly DbContext _context;
-
         /// <summary>
         /// Initializes a new instance of the AgeRangeRepository.
         /// </summary>
         /// <param name="context">Database context for data operations</param>
-        public AgeRangeRepository(DbContext context) : base(context)
+        public AgeRangeRepository(IApplicationContext context) : base(context)
         {
-            _context = context;
         }
 
         /// <summary>

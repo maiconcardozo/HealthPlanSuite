@@ -1,4 +1,4 @@
-﻿using Foundation.Base.Domain.Implementation;
+﻿using HealthPlan.Quote.Domain.Base;
 using HealthPlan.Quote.Domain.Interface;
 
 namespace HealthPlan.Quote.Domain.Implementation
@@ -55,5 +55,11 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// Gets or sets the ZIP code of the company.
         /// </summary>
         public string? ZipCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of IDs for bulk operations.
+        /// Used for operations that require multiple company IDs.
+        /// </summary>
+        public List<int>? LstId { get; set; }
     }
 }

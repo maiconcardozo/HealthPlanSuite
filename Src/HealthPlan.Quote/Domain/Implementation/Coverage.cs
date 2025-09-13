@@ -1,5 +1,5 @@
 ﻿using HealthPlan.Quote.Domain.Interface;
-using Foundation.Base.Domain.Implementation;
+using HealthPlan.Quote.Domain.Base;
 
 namespace HealthPlan.Quote.Domain.Implementation
 {
@@ -27,5 +27,11 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// Possible values: Ambulatorial, Hospitalar, Obstétrico, Odontológico.
         /// </summary>
         public string CoverageType { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets a list of IDs for bulk operations.
+        /// Used for operations that require multiple coverage IDs.
+        /// </summary>
+        public List<int>? LstId { get; set; }
     }
 }

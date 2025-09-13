@@ -30,10 +30,20 @@ namespace HealthPlan.Quote.Extensions
             services.AddScoped<DbContext>(provider => provider.GetRequiredService<ApplicationContext>());
 
             // Services
-            services.AddScoped<ICleanEntityService, CleanEntityService>();
+            services.AddScoped<IAgeRangeService, AgeRangeService>();
+            services.AddScoped<IBeneficiaryService, BeneficiaryService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<ICoverageService, CoverageService>();
+            services.AddScoped<IHealthPlanService, HealthPlanService>();
+            services.AddScoped<IQuoteService, QuoteService>();
 
             // Repositories
-            services.AddScoped<ICleanEntityRepository, CleanEntityRepository>();
+            services.AddScoped<IAgeRangeRepository, AgeRangeRepository>();
+            services.AddScoped<IBeneficiaryRepository, BeneficiaryRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ICoverageRepository, CoverageRepository>();
+            services.AddScoped<IHealthPlanRepository, HealthPlanRepository>();
+            services.AddScoped<IQuoteRepository, QuoteRepository>();
 
             // Unit of Work
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();

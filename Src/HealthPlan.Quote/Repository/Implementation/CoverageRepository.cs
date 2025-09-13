@@ -1,6 +1,7 @@
 using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.Repository.Interface;
-using Foundation.Base.Repository.Implementation;
+using HealthPlan.Quote.Repository.Base;
+using HealthPlan.Quote.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthPlan.Quote.Repository.Implementation
@@ -11,15 +12,12 @@ namespace HealthPlan.Quote.Repository.Implementation
     /// </summary>
     public class CoverageRepository : EntityRepository<Coverage>, ICoverageRepository
     {
-        private readonly DbContext _context;
-
         /// <summary>
         /// Initializes a new instance of the CoverageRepository.
         /// </summary>
         /// <param name="context">Database context for data operations</param>
-        public CoverageRepository(DbContext context) : base(context)
+        public CoverageRepository(IApplicationContext context) : base(context)
         {
-            _context = context;
         }
 
         /// <summary>
@@ -81,6 +79,22 @@ namespace HealthPlan.Quote.Repository.Implementation
         public bool NameExistsForDifferentCoverage(string name, int excludeId)
         {
             return _context.Set<Coverage>().Any(c => c.Name == name && c.Id != excludeId);
+        }
+
+        /// <summary>
+        /// Gets coverages by a list of IDs.
+        /// </summary>
+        /// <param name="coverage">Coverage entity containing list of IDs</param>
+        /// <returns>Collection of coverages matching the provided IDs</returns>
+        public IEnumerable<Coverage> GetByLstId(Coverage coverage)
+        {
+            if (coverage.LstId == null || coverage.LstId.Count == 0)
+                return new List<Coverage>();
+
+            return _context.Set<Coverage>()
+                .Where(c => coverage.LstId.Contains(c.Id))
+                .OrderBy(c => c.Name)
+                .ToList();
         }
     }
 }

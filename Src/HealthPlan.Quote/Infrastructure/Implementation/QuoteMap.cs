@@ -1,5 +1,4 @@
 using HealthPlan.Quote.Domain.Implementation;
-using Foundation.Base.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,16 +8,16 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
     /// Entity Framework configuration for the Quote entity.
     /// Defines table structure, constraints, and relationships.
     /// </summary>
-    internal class QuoteMap : EntityMap<Domain.Implementation.Quote>, IEntityTypeConfiguration<Domain.Implementation.Quote>
+    internal class QuoteMap : IEntityTypeConfiguration<Domain.Implementation.Quote>
     {
         /// <summary>
         /// Configures the Quote entity for Entity Framework.
         /// </summary>
         /// <param name="builder">Entity type builder for Quote</param>
-        public override void Configure(EntityTypeBuilder<Domain.Implementation.Quote> builder)
+        public void Configure(EntityTypeBuilder<Domain.Implementation.Quote> builder)
         {
             builder.ToTable("Quotes");
-            base.Configure(builder);
+            
 
             builder.Property(e => e.CompanyId)
                 .IsRequired();

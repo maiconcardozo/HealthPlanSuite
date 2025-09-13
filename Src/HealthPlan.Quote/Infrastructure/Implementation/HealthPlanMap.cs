@@ -1,5 +1,4 @@
 using HealthPlan.Quote.Domain.Implementation;
-using Foundation.Base.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,16 +8,16 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
     /// Entity Framework configuration for the HealthPlan entity.
     /// Defines table structure, constraints, and relationships.
     /// </summary>
-    internal class HealthPlanMap : EntityMap<Domain.Implementation.HealthPlan>, IEntityTypeConfiguration<Domain.Implementation.HealthPlan>
+    internal class HealthPlanMap : IEntityTypeConfiguration<Domain.Implementation.HealthPlan>
     {
         /// <summary>
         /// Configures the HealthPlan entity for Entity Framework.
         /// </summary>
         /// <param name="builder">Entity type builder for HealthPlan</param>
-        public override void Configure(EntityTypeBuilder<Domain.Implementation.HealthPlan> builder)
+        public void Configure(EntityTypeBuilder<Domain.Implementation.HealthPlan> builder)
         {
             builder.ToTable("HealthPlans");
-            base.Configure(builder);
+            
 
             builder.Property(e => e.CompanyId)
                 .IsRequired();
