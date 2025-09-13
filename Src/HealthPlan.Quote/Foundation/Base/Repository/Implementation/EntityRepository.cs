@@ -1,4 +1,3 @@
-using Foundation.Base.Domain.Interface;
 using Foundation.Base.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -7,9 +6,10 @@ namespace Foundation.Base.Repository.Implementation
 {
     /// <summary>
     /// Generic repository implementation providing basic CRUD operations for entities.
+    /// Compatible with Foundation.Base NuGet package implementation.
     /// </summary>
     /// <typeparam name="T">Entity type that implements IEntity</typeparam>
-    public class EntityRepository<T> : IEntityRepository<T> where T : class, IEntity
+    public class EntityRepository<T> : IEntityRepository<T> where T : HealthPlan.Quote.Foundation.Entity
     {
         protected readonly DbContext _context;
         protected readonly DbSet<T> _dbSet;
@@ -25,23 +25,47 @@ namespace Foundation.Base.Repository.Implementation
         }
 
         /// <summary>
-        /// Retrieves an entity by its ID.
+        /// Gets an entity using another entity as a template (typically for ID lookup).
         /// </summary>
-        /// <param name="id">The entity ID</param>
+        /// <param name="entity">Entity to use as template</param>
         /// <returns>Entity if found, null otherwise</returns>
-        public virtual T? GetById(int id)
+        public virtual T? Get(T entity)
         {
-            return _dbSet.Find(id);
+            ArgumentNullException.ThrowIfNull(entity);
+            return GetById(entity.Id);
         }
 
         /// <summary>
-        /// Retrieves entities by a collection of IDs.
+        /// Gets an entity using another entity as a template asynchronously.
         /// </summary>
-        /// <param name="ids">Collection of entity IDs</param>
-        /// <returns>Collection of matching entities</returns>
-        public virtual IEnumerable<T> GetByIds(IEnumerable<int> ids)
+        /// <param name="entity">Entity to use as template</param>
+        /// <returns>Task with entity if found, null otherwise</returns>
+        public virtual async Task<T?> GetAsync(T entity)
         {
-            return _dbSet.Where(e => ids.Contains(e.Id)).ToList();
+            ArgumentNullException.ThrowIfNull(entity);
+            return await GetByIdAsync(entity.Id);
+        }
+
+        /// <summary>
+        /// Gets entities by a list of IDs using the LstId property.
+        /// </summary>
+        /// <param name="entity">Entity containing LstId property with IDs to search</param>
+        /// <returns>Collection of matching entities</returns>
+        public virtual IEnumerable<T> GetByLstId(T entity)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+            return entity.LstId == null || !entity.LstId.Any() ? new List<T>() : _dbSet.Where(e => entity.LstId.Contains(e.Id)).ToList();
+        }
+
+        /// <summary>
+        /// Gets entities by a list of IDs using the LstId property asynchronously.
+        /// </summary>
+        /// <param name="entity">Entity containing LstId property with IDs to search</param>
+        /// <returns>Task with collection of matching entities</returns>
+        public virtual async Task<IEnumerable<T>> GetByLstIdAsync(T entity)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+            return entity.LstId == null || !entity.LstId.Any() ? new List<T>() : await Task.FromResult(_dbSet.Where(e => entity.LstId.Contains(e.Id)).ToList());
         }
 
         /// <summary>
@@ -50,7 +74,16 @@ namespace Foundation.Base.Repository.Implementation
         /// <returns>Collection of all entities</returns>
         public virtual IEnumerable<T> GetAll()
         {
-            return _dbSet.ToList();
+            return _dbSet.Where(e => e.IsActive).ToList();
+        }
+
+        /// <summary>
+        /// Retrieves all entities asynchronously.
+        /// </summary>
+        /// <returns>Task with collection of all entities</returns>
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await Task.FromResult(_dbSet.Where(e => e.IsActive).ToList());
         }
 
         /// <summary>
@@ -64,13 +97,13 @@ namespace Foundation.Base.Repository.Implementation
         }
 
         /// <summary>
-        /// Gets entities where the predicate condition is met.
+        /// Finds entities that match the given predicate asynchronously.
         /// </summary>
         /// <param name="predicate">Expression to filter entities</param>
-        /// <returns>Collection of matching entities</returns>
-        public virtual IEnumerable<T> GetWhere(Expression<Func<T, bool>> predicate)
+        /// <returns>Task with collection of matching entities</returns>
+        public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.Where(predicate).ToList();
+            return await Task.FromResult(_dbSet.Where(predicate).ToList());
         }
 
         /// <summary>
@@ -84,13 +117,13 @@ namespace Foundation.Base.Repository.Implementation
         }
 
         /// <summary>
-        /// Gets a single entity that matches the predicate, or null if no match.
+        /// Returns a single entity that matches the predicate asynchronously, or null if no match.
         /// </summary>
         /// <param name="predicate">Expression to filter entities</param>
-        /// <returns>Single entity if found, null otherwise</returns>
-        public virtual T? GetSingleOrDefault(Expression<Func<T, bool>> predicate)
+        /// <returns>Task with single entity if found, null otherwise</returns>
+        public virtual async Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.SingleOrDefault(predicate);
+            return await Task.FromResult(_dbSet.SingleOrDefault(predicate));
         }
 
         /// <summary>
@@ -106,22 +139,11 @@ namespace Foundation.Base.Repository.Implementation
         /// <summary>
         /// Adds multiple entities.
         /// </summary>
-        /// <param name="entities">Entities to add</param>
-        public virtual void AddRange(IEnumerable<T> entities)
+        /// <param name="lstEntity">Entities to add</param>
+        public virtual void AddRange(IEnumerable<T> lstEntity)
         {
-            if (entities == null) throw new ArgumentNullException(nameof(entities));
-            _dbSet.AddRange(entities);
-        }
-
-        /// <summary>
-        /// Updates an existing entity.
-        /// </summary>
-        /// <param name="entity">Entity to update</param>
-        public virtual void Update(T entity)
-        {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
-            entity.UpdatedAt = DateTime.UtcNow;
-            _dbSet.Update(entity);
+            if (lstEntity == null) throw new ArgumentNullException(nameof(lstEntity));
+            _dbSet.AddRange(lstEntity);
         }
 
         /// <summary>
@@ -131,50 +153,74 @@ namespace Foundation.Base.Repository.Implementation
         public virtual void Remove(T entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
-            _dbSet.Remove(entity);
-        }
-
-        /// <summary>
-        /// Deletes an entity by ID.
-        /// </summary>
-        /// <param name="id">ID of the entity to delete</param>
-        public virtual void Delete(int id)
-        {
-            var entity = GetById(id);
-            if (entity != null)
-            {
-                Remove(entity);
-            }
+            entity.IsActive = false;
+            entity.DtDeleted = DateTime.UtcNow;
+            _dbSet.Update(entity);
         }
 
         /// <summary>
         /// Removes multiple entities.
         /// </summary>
-        /// <param name="entities">Entities to remove</param>
-        public virtual void RemoveRange(IEnumerable<T> entities)
+        /// <param name="lstEntity">Entities to remove</param>
+        public virtual void RemoveRange(IEnumerable<T> lstEntity)
         {
-            if (entities == null) throw new ArgumentNullException(nameof(entities));
-            _dbSet.RemoveRange(entities);
+            if (lstEntity == null) throw new ArgumentNullException(nameof(lstEntity));
+            foreach (var entity in lstEntity)
+            {
+                entity.IsActive = false;
+                entity.DtDeleted = DateTime.UtcNow;
+            }
+            _dbSet.UpdateRange(lstEntity);
         }
 
         /// <summary>
-        /// Deletes multiple entities.
-        /// </summary>
-        /// <param name="entities">Entities to delete</param>
-        public virtual void DeleteRange(IEnumerable<T> entities)
-        {
-            if (entities == null) throw new ArgumentNullException(nameof(entities));
-            _dbSet.RemoveRange(entities);
-        }
-
-        /// <summary>
-        /// Checks if an entity exists by ID.
+        /// Retrieves an entity by its ID.
         /// </summary>
         /// <param name="id">The entity ID</param>
-        /// <returns>True if exists, false otherwise</returns>
-        public virtual bool Exists(int id)
+        /// <returns>Entity if found, null otherwise</returns>
+        public virtual T? GetById(int id)
         {
-            return _dbSet.Any(e => e.Id == id);
+            return _dbSet.Find(id);
+        }
+
+        /// <summary>
+        /// Retrieves an entity by its ID asynchronously.
+        /// </summary>
+        /// <param name="id">The entity ID</param>
+        /// <returns>Task with entity if found, null otherwise</returns>
+        public virtual async Task<T?> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        /// <summary>
+        /// Updates an existing entity.
+        /// </summary>
+        /// <param name="entity">Entity to update</param>
+        public virtual void Update(T entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            entity.DtUpdated = DateTime.UtcNow;
+            _dbSet.Update(entity);
+        }
+
+        /// <summary>
+        /// Retrieves all entities including deleted ones.
+        /// </summary>
+        /// <returns>Collection of all entities including deleted</returns>
+        public virtual IEnumerable<T> GetAllIncludingDeleted()
+        {
+            return _dbSet.ToList();
+        }
+
+        /// <summary>
+        /// Permanently deletes an entity (hard delete).
+        /// </summary>
+        /// <param name="entity">Entity to permanently delete</param>
+        public virtual void HardDelete(T entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            _dbSet.Remove(entity);
         }
     }
 }

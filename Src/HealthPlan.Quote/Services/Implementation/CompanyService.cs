@@ -62,7 +62,9 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>Collection of matching company entities</returns>
         public IEnumerable<Company> GetCompaniesByIds(IEnumerable<int> companyIds)
         {
-            return _companyRepository.GetByIds(companyIds);
+            // Use the NuGet package's GetByLstId method with an entity containing the IDs
+            var company = new Company { LstId = companyIds };
+            return _companyRepository.GetByLstId(company);
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>Collection of matching company entities</returns>
         public IEnumerable<Company> GetCompanies(Expression<Func<Company, bool>> predicate)
         {
-            return _companyRepository.GetWhere(predicate);
+            return _companyRepository.Find(predicate);
         }
 
         /// <summary>
@@ -113,7 +115,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <exception cref="InvalidOperationException">Thrown when multiple companies match the predicate</exception>
         public Company? GetSingleOrDefaultCompany(Expression<Func<Company, bool>> predicate)
         {
-            return _companyRepository.GetSingleOrDefault(predicate);
+            return _companyRepository.SingleOrDefault(predicate);
         }
 
         /// <summary>
@@ -271,7 +273,7 @@ namespace HealthPlan.Quote.Services.Implementation
             if (!companyList.Any())
                 return;
 
-            _companyRepository.DeleteRange(companyList);
+            _companyRepository.RemoveRange(companyList);
         }
 
         #endregion

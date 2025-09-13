@@ -1,102 +1,110 @@
 using Foundation.Base.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Foundation.Base.UnitOfWork.Implementation
 {
     /// <summary>
-    /// Base implementation of Unit of Work pattern for Entity Framework Core.
+    /// Base implementation for Unit of Work pattern.
+    /// Compatible with Foundation.Base NuGet package implementation.
     /// </summary>
     public class BaseUnitOfWork : IBaseUnitOfWork
     {
-        private readonly DbContext _context;
-        private IDbContextTransaction? _transaction;
+        protected readonly DbContext _context;
         private bool _disposed = false;
 
         /// <summary>
-        /// Initializes a new instance of the BaseUnitOfWork class.
+        /// Initializes a new instance of the BaseUnitOfWork.
         /// </summary>
-        /// <param name="context">The database context.</param>
+        /// <param name="context">Database context</param>
         public BaseUnitOfWork(DbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         /// <summary>
-        /// Saves all pending changes to the database.
-        /// </summary>
-        /// <returns>A task representing the asynchronous save operation.</returns>
-        public async Task<int> SaveAsync()
-        {
-            return await _context.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// Saves all pending changes to the database.
+        /// Commits all pending changes to the database.
         /// </summary>
         /// <returns>The number of entities written to the database.</returns>
-        public int Save()
+        public virtual int Commit()
         {
             return _context.SaveChanges();
         }
 
         /// <summary>
-        /// Begins a new database transaction.
+        /// Commits all pending changes to the database asynchronously.
         /// </summary>
-        /// <returns>A task representing the asynchronous transaction begin operation.</returns>
-        public async Task BeginTransactionAsync()
+        /// <returns>A task representing the asynchronous commit operation with the number of entities written.</returns>
+        public virtual async Task<int> CommitAsync()
         {
-            _transaction = await _context.Database.BeginTransactionAsync();
+            return await _context.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Commits the current database transaction.
+        /// Executes an action within a database transaction.
         /// </summary>
-        /// <returns>A task representing the asynchronous commit operation.</returns>
-        public async Task CommitTransactionAsync()
+        /// <param name="action">Action to execute</param>
+        public virtual void ExecuteInTransaction(Action action)
         {
-            if (_transaction != null)
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            
+            using var transaction = _context.Database.BeginTransaction();
+            try
             {
-                await _transaction.CommitAsync();
-                await _transaction.DisposeAsync();
-                _transaction = null;
+                action();
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
             }
         }
 
         /// <summary>
-        /// Rolls back the current database transaction.
+        /// Executes an async function within a database transaction.
         /// </summary>
-        /// <returns>A task representing the asynchronous rollback operation.</returns>
-        public async Task RollbackTransactionAsync()
+        /// <param name="actionAsync">Async function to execute</param>
+        /// <returns>A task representing the asynchronous transaction execution.</returns>
+        public virtual async Task ExecuteInTransactionAsync(Func<Task> actionAsync)
         {
-            if (_transaction != null)
+            if (actionAsync == null) throw new ArgumentNullException(nameof(actionAsync));
+            
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                await _transaction.RollbackAsync();
-                await _transaction.DisposeAsync();
-                _transaction = null;
+                await actionAsync();
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
             }
         }
 
         /// <summary>
-        /// Disposes the Unit of Work and releases resources.
+        /// Disposes the unit of work and underlying context.
+        /// </summary>
+        /// <param name="disposing">True if disposing managed resources</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Disposes the unit of work.
         /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Protected dispose method for inheritance support.
-        /// </summary>
-        /// <param name="disposing">True if disposing managed resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed && disposing)
-            {
-                _transaction?.Dispose();
-                _disposed = true;
-            }
         }
     }
 }
