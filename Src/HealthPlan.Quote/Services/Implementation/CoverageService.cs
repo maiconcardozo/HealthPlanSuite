@@ -58,7 +58,9 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>Collection of matching coverage entities</returns>
         public IEnumerable<Coverage> GetCoveragesByIds(IEnumerable<int> coverageIds)
         {
-            return _coverageRepository.GetByIds(coverageIds);
+            // Use the NuGet package's GetByLstId method with an entity containing the IDs
+            var coverage = new Coverage { LstId = coverageIds };
+            return _coverageRepository.GetByLstId(coverage);
         }
 
         /// <summary>
@@ -97,7 +99,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>Collection of matching coverage entities</returns>
         public IEnumerable<Coverage> GetCoverages(Expression<Func<Coverage, bool>> predicate)
         {
-            return _coverageRepository.GetWhere(predicate);
+            return _coverageRepository.Find(predicate);
         }
 
         /// <summary>
@@ -108,7 +110,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <exception cref="InvalidOperationException">Thrown when multiple coverages match the predicate</exception>
         public Coverage? GetSingleOrDefaultCoverage(Expression<Func<Coverage, bool>> predicate)
         {
-            return _coverageRepository.GetSingleOrDefault(predicate);
+            return _coverageRepository.SingleOrDefault(predicate);
         }
 
         /// <summary>
@@ -266,7 +268,7 @@ namespace HealthPlan.Quote.Services.Implementation
             if (!coverageList.Any())
                 return;
 
-            _coverageRepository.DeleteRange(coverageList);
+            _coverageRepository.RemoveRange(coverageList);
         }
 
         #endregion
