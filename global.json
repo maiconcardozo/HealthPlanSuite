@@ -1,15 +1,7 @@
 {
   "sdk": {
-    "version": "9.0.305",
+    "version": "8.0.119",
     "rollForward": "latestMinor",
     "allowPrerelease": false
   }
-  //
-  // CRITICAL: DO NOT DOWNGRADE SDK VERSION!
-  // This solution REQUIRES .NET 9.0.305+ SDK for:
-  // - Building all projects with net9.0 target framework
-  // - Package restore compatibility with EF Core 9.x and ASP.NET Core 9.x
-  // - CI/CD pipeline stability
-  // Downgrading to 8.x SDK will break the entire build process!
-  //
 }
