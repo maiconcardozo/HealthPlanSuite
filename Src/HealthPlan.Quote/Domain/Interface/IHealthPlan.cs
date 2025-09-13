@@ -1,4 +1,4 @@
-using HealthPlan.Quote.Domain.Base;
+﻿using Foundation.Base.Domain.Interface;
 
 namespace HealthPlan.Quote.Domain.Interface
 {

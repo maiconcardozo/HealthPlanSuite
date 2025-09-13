@@ -1,4 +1,4 @@
-using HealthPlan.Quote.Constants;
+﻿using HealthPlan.Quote.Constants;
 using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.Repository.Interface;
 using HealthPlan.Quote.Services.Interface;
@@ -56,7 +56,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// </summary>
         /// <param name="coverageIds">Collection of coverage IDs</param>
         /// <returns>Collection of matching coverage entities</returns>
-        public IEnumerable<Coverage> GetCoveragesByIds(IEnumerable<int> coverageIds)
+        public IEnumerable<Coverage> GetCoveragesByIds(IEnumerable<int>? coverageIds)
         {
             // Use the NuGet package's GetByLstId method with an entity containing the IDs
             var coverage = new Coverage { LstId = coverageIds };

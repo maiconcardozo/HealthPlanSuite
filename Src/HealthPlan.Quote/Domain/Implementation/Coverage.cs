@@ -1,5 +1,5 @@
-﻿using HealthPlan.Quote.Domain.Interface;
-using HealthPlan.Quote.Domain.Base;
+﻿using Foundation.Base.Domain.Implementation;
+using HealthPlan.Quote.Domain.Interface;
 
 namespace HealthPlan.Quote.Domain.Implementation
 {
@@ -15,13 +15,13 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// For example: "Consultas Médicas", "Exames Laboratoriais", "Cirurgias".
         /// </summary>
         public string Name { get; set; } = string.Empty;
-        
+
         /// <summary>
         /// Gets or sets the description of the coverage.
         /// Detailed explanation of what is covered.
         /// </summary>
         public string? Description { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the type of coverage.
         /// Possible values: Ambulatorial, Hospitalar, Obstétrico, Odontológico.
@@ -32,6 +32,6 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// Gets or sets a list of IDs for bulk operations.
         /// Used for operations that require multiple coverage IDs.
         /// </summary>
-        public List<int>? LstId { get; set; }
+        public IEnumerable<int>? LstId { get; set; }
     }
 }

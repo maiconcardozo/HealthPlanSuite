@@ -1,8 +1,7 @@
-using HealthPlan.Quote.Domain.Implementation;
-using HealthPlan.Quote.Repository.Interface;
-using HealthPlan.Quote.Repository.Base;
+﻿using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.Infrastructure.Interface;
-using Microsoft.EntityFrameworkCore;
+using HealthPlan.Quote.Repository.Base;
+using HealthPlan.Quote.Repository.Interface;
 
 namespace HealthPlan.Quote.Repository.Implementation
 {
@@ -97,13 +96,12 @@ namespace HealthPlan.Quote.Repository.Implementation
         /// <returns>Collection of companies matching the provided IDs</returns>
         public IEnumerable<Company> GetByLstId(Company company)
         {
-            if (company.LstId == null || company.LstId.Count == 0)
-                return new List<Company>();
-
-            return _context.Set<Company>()
+            return company.LstId != null && company.LstId.Any()
+                ? _context.Set<Company>()
                 .Where(c => company.LstId.Contains(c.Id))
                 .OrderBy(c => c.Name)
-                .ToList();
+                .ToList()
+                : new List<Company>();
         }
     }
 }

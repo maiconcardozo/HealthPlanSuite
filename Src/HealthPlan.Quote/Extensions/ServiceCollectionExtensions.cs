@@ -1,4 +1,5 @@
-using HealthPlan.Quote.Infrastructure.Data;
+﻿using HealthPlan.Quote.Infrastructure.Data;
+using HealthPlan.Quote.Infrastructure.Interface;
 using HealthPlan.Quote.Repository.Implementation;
 using HealthPlan.Quote.Repository.Interface;
 using HealthPlan.Quote.Services.Implementation;
@@ -36,6 +37,7 @@ namespace HealthPlan.Quote.Extensions
             services.AddScoped<ICoverageService, CoverageService>();
             services.AddScoped<IHealthPlanService, HealthPlanService>();
             services.AddScoped<IQuoteService, QuoteService>();
+            services.AddScoped<IApplicationContext, ApplicationContext>();
 
             // Repositories
             services.AddScoped<IAgeRangeRepository, AgeRangeRepository>();

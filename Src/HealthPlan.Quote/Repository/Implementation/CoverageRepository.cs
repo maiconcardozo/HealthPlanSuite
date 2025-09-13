@@ -1,8 +1,7 @@
-using HealthPlan.Quote.Domain.Implementation;
-using HealthPlan.Quote.Repository.Interface;
-using HealthPlan.Quote.Repository.Base;
+﻿using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.Infrastructure.Interface;
-using Microsoft.EntityFrameworkCore;
+using HealthPlan.Quote.Repository.Base;
+using HealthPlan.Quote.Repository.Interface;
 
 namespace HealthPlan.Quote.Repository.Implementation
 {
@@ -88,11 +87,17 @@ namespace HealthPlan.Quote.Repository.Implementation
         /// <returns>Collection of coverages matching the provided IDs</returns>
         public IEnumerable<Coverage> GetByLstId(Coverage coverage)
         {
-            if (coverage.LstId == null || coverage.LstId.Count == 0)
-                return new List<Coverage>();
+            if (coverage == null)
+            {
+                throw new ArgumentNullException(nameof(coverage));
+            }
 
-            return _context.Set<Coverage>()
-                .Where(c => coverage.LstId.Contains(c.Id))
+            var lstId = coverage.LstId as ICollection<int> ?? coverage.LstId?.ToList();
+
+            return lstId == null || lstId.Count == 0
+                ? new List<Coverage>()
+                : _context.Set<Coverage>()
+                .Where(c => lstId.Contains(c.Id))
                 .OrderBy(c => c.Name)
                 .ToList();
         }
