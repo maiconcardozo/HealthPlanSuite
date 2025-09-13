@@ -1,6 +1,7 @@
-using HealthPlan.Quote.Domain.Implementation;
+﻿using HealthPlan.Quote.Domain.Implementation;
 using FluentAssertions;
 using Xunit;
+using Foundation.Base.Domain.Implementation;
 
 namespace HealthPlan.Test.Unit
 {
@@ -217,7 +218,7 @@ namespace HealthPlan.Test.Unit
             var cleanEntity = new CleanEntity();
 
             // Assert
-            cleanEntity.Should().BeAssignableTo<HealthPlan.Quote.Foundation.Entity>();
+            cleanEntity.Should().BeAssignableTo<Entity>();
             // Base entity properties should be available
             cleanEntity.Id.Should().Be(0);
             cleanEntity.IsActive.Should().BeTrue(); // Default value from base class

@@ -1,5 +1,5 @@
+﻿using Foundation.Base.Domain.Implementation;
 using HealthPlan.Quote.Domain.Interface;
-using HealthPlan.Quote.Foundation;
 
 namespace HealthPlan.Quote.Domain.Implementation
 {
@@ -14,12 +14,12 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// Gets or sets the minimum age for this range (inclusive).
         /// </summary>
         public int MinAge { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the maximum age for this range (inclusive).
         /// </summary>
         public int MaxAge { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the description of the age range.
         /// For example: "0-18 anos", "19-23 anos", "24-28 anos", etc.

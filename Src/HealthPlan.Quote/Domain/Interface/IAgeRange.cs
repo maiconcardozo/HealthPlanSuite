@@ -1,4 +1,4 @@
-using Foundation.Base.Domain.Interface;
+﻿using Foundation.Base.Domain.Interface;
 
 namespace HealthPlan.Quote.Domain.Interface
 {
@@ -12,12 +12,12 @@ namespace HealthPlan.Quote.Domain.Interface
         /// Gets or sets the minimum age for this range (inclusive).
         /// </summary>
         int MinAge { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the maximum age for this range (inclusive).
         /// </summary>
         int MaxAge { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the description of the age range.
         /// </summary>
