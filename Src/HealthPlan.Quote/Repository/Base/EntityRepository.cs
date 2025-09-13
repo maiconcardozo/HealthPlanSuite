@@ -57,5 +57,20 @@ namespace HealthPlan.Quote.Repository.Base
                 Remove(entity);
             }
         }
+
+        public virtual T? SingleOrDefault(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.SingleOrDefault(predicate);
+        }
+
+        public virtual void AddRange(IEnumerable<T> entities)
+        {
+            _dbSet.AddRange(entities);
+        }
+
+        public virtual void RemoveRange(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
     }
 }

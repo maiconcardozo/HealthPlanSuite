@@ -43,5 +43,12 @@ namespace HealthPlan.Quote.Repository.Interface
         /// <param name="excludeId">Coverage ID to exclude from the check</param>
         /// <returns>True if the name exists for another coverage, false otherwise</returns>
         bool NameExistsForDifferentCoverage(string name, int excludeId);
+
+        /// <summary>
+        /// Gets coverages by a list of IDs.
+        /// </summary>
+        /// <param name="coverage">Coverage entity containing list of IDs</param>
+        /// <returns>Collection of coverages matching the provided IDs</returns>
+        IEnumerable<Coverage> GetByLstId(Coverage coverage);
     }
 }

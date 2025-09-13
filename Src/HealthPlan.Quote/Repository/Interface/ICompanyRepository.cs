@@ -51,5 +51,12 @@ namespace HealthPlan.Quote.Repository.Interface
         /// <param name="excludeId">Company ID to exclude from the check</param>
         /// <returns>True if the CNPJ exists for another company, false otherwise</returns>
         bool CNPJExistsForDifferentCompany(string cnpj, int excludeId);
+
+        /// <summary>
+        /// Gets companies by a list of IDs.
+        /// </summary>
+        /// <param name="company">Company entity containing list of IDs</param>
+        /// <returns>Collection of companies matching the provided IDs</returns>
+        IEnumerable<Company> GetByLstId(Company company);
     }
 }

@@ -51,5 +51,24 @@ namespace HealthPlan.Quote.Repository.Base
         /// </summary>
         /// <param name="id">Entity ID</param>
         void Remove(int id);
+
+        /// <summary>
+        /// Gets first entity matching criteria or default value
+        /// </summary>
+        /// <param name="predicate">Search criteria</param>
+        /// <returns>First matching entity or null</returns>
+        T? SingleOrDefault(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        /// Adds multiple entities
+        /// </summary>
+        /// <param name="entities">Entities to add</param>
+        void AddRange(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Removes multiple entities
+        /// </summary>
+        /// <param name="entities">Entities to remove</param>
+        void RemoveRange(IEnumerable<T> entities);
     }
 }

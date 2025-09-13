@@ -34,5 +34,15 @@ namespace HealthPlan.Quote.Domain.Base
         /// User who deleted the entity
         /// </summary>
         public string? DeletedBy { get; set; }
+
+        /// <summary>
+        /// User who created the entity
+        /// </summary>
+        public string? CreatedBy { get; set; }
+
+        /// <summary>
+        /// User who last updated the entity
+        /// </summary>
+        public string? UpdatedBy { get; set; }
     }
 }

@@ -80,5 +80,21 @@ namespace HealthPlan.Quote.Repository.Implementation
         {
             return _context.Set<Coverage>().Any(c => c.Name == name && c.Id != excludeId);
         }
+
+        /// <summary>
+        /// Gets coverages by a list of IDs.
+        /// </summary>
+        /// <param name="coverage">Coverage entity containing list of IDs</param>
+        /// <returns>Collection of coverages matching the provided IDs</returns>
+        public IEnumerable<Coverage> GetByLstId(Coverage coverage)
+        {
+            if (coverage.LstId == null || coverage.LstId.Count == 0)
+                return new List<Coverage>();
+
+            return _context.Set<Coverage>()
+                .Where(c => coverage.LstId.Contains(c.Id))
+                .OrderBy(c => c.Name)
+                .ToList();
+        }
     }
 }
