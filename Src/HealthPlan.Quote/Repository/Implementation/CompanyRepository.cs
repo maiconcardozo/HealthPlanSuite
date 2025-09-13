@@ -1,6 +1,7 @@
 using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.Repository.Interface;
-using Foundation.Base.Repository.Implementation;
+using HealthPlan.Quote.Repository.Base;
+using HealthPlan.Quote.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthPlan.Quote.Repository.Implementation
@@ -11,13 +12,13 @@ namespace HealthPlan.Quote.Repository.Implementation
     /// </summary>
     public class CompanyRepository : EntityRepository<Company>, ICompanyRepository
     {
-        private readonly DbContext _context;
+        private readonly IApplicationContext _context;
 
         /// <summary>
         /// Initializes a new instance of the CompanyRepository.
         /// </summary>
         /// <param name="context">Database context for data operations</param>
-        public CompanyRepository(DbContext context) : base(context)
+        public CompanyRepository(IApplicationContext context) : base(context)
         {
             _context = context;
         }

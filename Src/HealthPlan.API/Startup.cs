@@ -85,8 +85,6 @@ namespace HealthPlan.API
             // CONTROLLERS & VALIDAÇÃO
             // ==============================
             services.AddControllers();
-            // TODO: Add FluentValidation for CleanEntity when needed
-            // services.AddTransient<FluentValidation.IValidator<CleanEntityPayLoadDTO>, CleanEntityPayloadValidator>();
 
             // ==============================
             // SWAGGER
@@ -104,11 +102,12 @@ namespace HealthPlan.API
                 options.OperationFilter<LocalizedSwaggerOperationFilter>();
                 options.DocumentFilter<LocalizedSwaggerDocumentFilter>();
 
-                // Use CHAVES do resource nas definições de SwaggerDoc!
+                // Configure Swagger for Health Plan API controllers
                 options.SwaggerDoc(ApplicationConstants.Api.SwaggerDefinitions.Authentication, new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "CleanEntity API",
-                    Version = ApplicationConstants.Api.Version
+                    Title = "Health Plan API",
+                    Version = ApplicationConstants.Api.Version,
+                    Description = "API for managing health plan quotes, companies, coverages, and related operations"
                 });
 
                 options.DocInclusionPredicate((docName, apiDescription) =>
@@ -117,7 +116,9 @@ namespace HealthPlan.API
                     return docName switch
                     {
                         ApplicationConstants.Api.SwaggerDefinitions.Authentication =>
-                            controllerName?.Equals("CleanEntity", StringComparison.OrdinalIgnoreCase) == true,
+                            controllerName?.Equals("Quote", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("Company", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("Coverage", StringComparison.OrdinalIgnoreCase) == true,
                         _ => false
                     };
                 });
@@ -182,7 +183,7 @@ namespace HealthPlan.API
             {
                 options.SwaggerEndpoint(
                     ApplicationConstants.Api.SwaggerDefinitions.AuthenticationEndpoint,
-                    "CleanEntity API"
+                    "Health Plan API"
                 );
                 options.RoutePrefix = ApplicationConstants.Api.EmptyRoutePrefix;
                 options.InjectStylesheet(ApplicationConstants.Api.CustomStylePath);

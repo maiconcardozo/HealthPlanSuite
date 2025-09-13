@@ -1,5 +1,5 @@
 ﻿using HealthPlan.Quote.Domain.Interface;
-using Foundation.Base.Domain.Implementation;
+using HealthPlan.Quote.Domain.Base;
 
 namespace HealthPlan.Quote.Domain.Implementation
 {
