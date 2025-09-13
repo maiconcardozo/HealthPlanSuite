@@ -29,7 +29,7 @@ namespace HealthPlan.Quote.Infrastructure.Interface
         /// Asynchronously saves all changes made in this context to the database
         /// </summary>
         /// <returns>Task representing the asynchronous operation with number of state entries written</returns>
-        Task<int> SaveChangesAsync();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Releases the allocated resources of this context

@@ -9,16 +9,16 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
     /// Entity Framework configuration for the Beneficiary entity.
     /// Defines table structure, constraints, and relationships.
     /// </summary>
-    internal class BeneficiaryMap : EntityMap<Beneficiary>, IEntityTypeConfiguration<Beneficiary>
+    internal class BeneficiaryMap : IEntityTypeConfiguration<AgeRange>, IEntityTypeConfiguration<Beneficiary>
     {
         /// <summary>
         /// Configures the Beneficiary entity for Entity Framework.
         /// </summary>
         /// <param name="builder">Entity type builder for Beneficiary</param>
-        public override void Configure(EntityTypeBuilder<Beneficiary> builder)
+        public void Configure(EntityTypeBuilder<Beneficiary> builder)
         {
             builder.ToTable("Beneficiaries");
-            base.Configure(builder);
+            
 
             builder.Property(e => e.Name)
                 .IsRequired()
