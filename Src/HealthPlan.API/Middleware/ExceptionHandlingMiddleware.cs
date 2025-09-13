@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
 using HealthPlan.API.Resource;
-using Foundation.Base.Resource;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthPlan.API.Middleware
@@ -32,7 +31,7 @@ namespace HealthPlan.API.Middleware
                 var problemDetails = new ProblemDetails
                 {
                     Status = StatusCodes.Status500InternalServerError,
-                    Title = ResourceFoundation.AnUnhandledExceptionOccurred,
+                    Title = ResourceAPI.AnUnhandledExceptionOccurred,
                     Detail = ex.Message
                 };
 

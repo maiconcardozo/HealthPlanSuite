@@ -239,7 +239,7 @@ namespace HealthPlan.Quote.Services.Implementation
             if (company == null)
                 throw new ArgumentNullException(nameof(company));
 
-            _companyRepository.Delete(company);
+            _companyRepository.Remove(company);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace HealthPlan.Quote.Services.Implementation
             if (company == null)
                 throw new ArgumentException("Company not found", nameof(id));
 
-            _companyRepository.Delete(company);
+            _companyRepository.Remove(company);
         }
 
         /// <summary>
@@ -285,10 +285,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>True if CNPJ is unique, false otherwise</returns>
         public bool IsCNPJUnique(string cnpj)
         {
-            if (string.IsNullOrWhiteSpace(cnpj))
-                return false;
-
-            return !_companyRepository.CNPJExists(cnpj);
+            return !string.IsNullOrWhiteSpace(cnpj) && !_companyRepository.CNPJExists(cnpj);
         }
 
         /// <summary>
@@ -299,10 +296,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>True if CNPJ is unique, false otherwise</returns>
         public bool IsCNPJUniqueForUpdate(string cnpj, int excludeId)
         {
-            if (string.IsNullOrWhiteSpace(cnpj))
-                return false;
-
-            return !_companyRepository.CNPJExistsForDifferentCompany(cnpj, excludeId);
+            return !string.IsNullOrWhiteSpace(cnpj) && !_companyRepository.CNPJExistsForDifferentCompany(cnpj, excludeId);
         }
 
         /// <summary>

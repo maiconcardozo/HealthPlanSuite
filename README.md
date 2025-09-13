@@ -1,84 +1,82 @@
-# Clean Template Repository - .NET Clean Architecture Template
+# HealthPlan Suite - .NET Health Plan Quote Management System
 
-[![CI/CD Pipeline](https://github.com/maiconcardozo/CleanTemplateRepository/actions/workflows/ci.yml/badge.svg)](https://github.com/maiconcardozo/CleanTemplateRepository/actions/workflows/ci.yml)
-[![.NET 9.0](https://img.shields.io/badge/.NET-9.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/9.0)
-[![Entity Framework Core](https://img.shields.io/badge/EF%20Core-9.0.7-blue.svg)](https://docs.microsoft.com/en-us/ef/core/)
+[![CI/CD Pipeline](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml/badge.svg)](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml)
+[![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![Entity Framework Core](https://img.shields.io/badge/EF%20Core-8.0.11-blue.svg)](https://docs.microsoft.com/en-us/ef/core/)
 
 ## 📋 Overview
 
-**Clean Template Repository** is a pre-configured .NET template that provides a complete Clean Architecture foundation for building modern web applications. This template follows Domain-Driven Design (DDD) principles and includes a fully functional example entity (`CleanEntity`) demonstrating all layers and patterns.
+**HealthPlan Suite** is a comprehensive .NET application for managing health plan quotes and related insurance operations. This system follows Clean Architecture principles and includes complete health plan management functionality for insurance companies and brokers.
 
 ### 🔐 Key Features
 
+- **Health Plan Management**: Complete health plan quote and coverage management
 - **Clean Architecture**: Well-organized layers with proper separation of concerns
-- **Example Entity**: Complete `CleanEntity` implementation showing all patterns
 - **Repository Pattern**: Generic repository with Entity Framework implementation
 - **Unit of Work**: Transaction management and consistency
 - **Service Layer**: Business logic separation with proper error handling
-- **RESTful API**: Complete CRUD endpoints with proper HTTP status codes
+- **RESTful API**: Complete CRUD endpoints for health plan operations
 - **AutoMapper Integration**: DTO mapping configuration
 - **Entity Framework**: Database configuration and migrations
 - **Dependency Injection**: Proper IoC container setup
 - **Unit Testing**: Comprehensive test coverage with FluentAssertions
-- **JWT Infrastructure**: Token generation and validation ready for implementation
+- **Quote Management**: Generate and manage health plan quotes
+- **Coverage Management**: Define and manage different types of coverage
+- **Company Management**: Manage insurance companies and their details
+- **Age-based Pricing**: Support for age range-based pricing models
 
 ## 🏗️ Architecture
 
-The template is organized in well-defined layers following Clean Architecture principles:
+The application is organized in well-defined layers following Clean Architecture principles:
 
 ```
-CleanTemplateRepository/
+HealthPlanSuite/
 ├── Src/
-│   ├── Authentication.API/           # API Layer
-│   │   ├── Controllers/             # API Controllers
-│   │   │   └── CleanEntityController.cs  # Example CRUD controller
-│   │   ├── Middleware/              # Custom middleware
-│   │   ├── Swagger/                 # API documentation
-│   │   └── Data/                    # Database contexts
+│   ├── HealthPlan.API/                # API Layer
+│   │   ├── Controllers/               # API Controllers
+│   │   │   └── QuoteController.cs     # Health plan quote management
+│   │   │   └── CoverageController.cs  # Coverage management
+│   │   │   └── CompanyController.cs   # Insurance company management
+│   │   ├── Middleware/                # Custom middleware
+│   │   ├── Swagger/                   # API documentation
+│   │   └── Resource/                  # Localization resources
 │   │
-│   └── Authentication.Login/        # Domain & Business Logic
-│       ├── Domain/                  # Domain entities
-│       │   ├── Implementation/      # Concrete implementations
-│       │   │   ├── CleanEntity.cs   # Example entity
-│       │   │   ├── Token.cs         # JWT token (optional)
-│       │   │   └── JwtSettings.cs   # JWT configuration (optional)
-│       │   └── Interface/          # Domain interfaces
-│       ├── Services/               # Business services
-│       │   ├── Implementation/     # Service implementations
-│       │   │   └── CleanEntityService.cs
-│       │   └── Interface/         # Service contracts
-│       │       └── ICleanEntityService.cs
-│       ├── Repository/             # Data access layer
-│       │   ├── Implementation/     # Repository implementations
-│       │   │   └── CleanEntityRepository.cs
-│       │   └── Interface/         # Repository contracts
-│       │       └── ICleanEntityRepository.cs
-│       ├── DTO/                   # Data transfer objects
-│       │   ├── CleanEntityPayLoadDTO.cs
-│       │   └── CleanEntityResponseDTO.cs
-│       ├── Infrastructure/        # Entity configurations
-│       │   ├── Implementation/    # EF Core mappings
-│       │   └── Interface/        # Context contracts
-│       └── UnitOfWork/           # Unit of Work pattern
-│           ├── Implementation/    # UoW implementation
-│           └── Interface/        # UoW contract
+│   └── HealthPlan.Quote/              # Domain & Business Logic
+│       ├── Domain/                    # Domain entities
+│       │   ├── Implementation/        # Concrete implementations
+│       │   │   ├── Quote.cs           # Quote entity
+│       │   │   ├── Coverage.cs        # Coverage entity
+│       │   │   ├── Company.cs         # Company entity
+│       │   │   ├── HealthPlan.cs      # Health plan entity
+│       │   │   ├── AgeRange.cs        # Age range pricing
+│       │   │   └── Beneficiary.cs     # Beneficiary entity
+│       │   └── Interface/             # Domain interfaces
+│       ├── Services/                  # Business services
+│       │   ├── Implementation/        # Service implementations
+│       │   │   ├── QuoteService.cs    # Quote business logic
+│       │   │   ├── CoverageService.cs # Coverage business logic
+│       │   │   └── CompanyService.cs  # Company business logic
+│       │   └── Interface/             # Service contracts
+│       ├── Repository/                # Data access layer
+│       │   ├── Implementation/        # Repository implementations
+│       │   │   ├── QuoteRepository.cs # Quote data access
+│       │   │   ├── CoverageRepository.cs # Coverage data access
+│       │   │   └── CompanyRepository.cs # Company data access
+│       │   └── Interface/             # Repository contracts
+│       ├── DTO/                       # Data transfer objects
+│       ├── Infrastructure/            # Entity configurations
+│       │   └── Implementation/        # EF Core mappings
+│       ├── UnitOfWork/                # Unit of Work pattern
+│       └── Foundation/                # Base classes
+│           └── Base/                  # Foundation base implementations
 │
-└── Foundation.Base/                 # Shared base library
-│   ├── Domain/                      # Base domain entities
-│   ├── Repository/                  # Generic repository patterns
-│   ├── UnitOfWork/                  # Transaction management
-│   └── Util/                        # Common utilities
+└── HealthPlan.Test/                   # Test project
+    ├── Unit/                          # Unit tests
+    └── Helpers/                       # Test utilities
 │
-├── docs/                            # Documentation
-│   ├── status/                      # Project status reports
-│   └── *.md                         # Technical documentation
-│
-├── scripts/                         # Build & test scripts
-│   ├── build.sh / build.bat         # Cross-platform build scripts
-│   ├── run-tests.sh / run-tests.bat # Test execution scripts
-│   └── README.md                    # Scripts documentation
-│
-└── Solution/                        # Solution configuration
+├── docs/                              # Documentation
+├── scripts/                           # Build & test scripts
+└── Solution/                          # Solution configuration
 ```
 
 ### 📁 Repository Organization
@@ -92,15 +90,14 @@ The repository follows a clean, organized structure:
 
 ## 🔧 Technologies Used
 
-- **.NET 9.0** - Main framework (REQUIRED - never downgrade to 8.0)
-- **ASP.NET Core 9.0.7** - RESTful API framework
-- **Entity Framework Core 9.0.7** - ORM for data access
-- **JWT Bearer 8.14.0** - Token-based authentication
-- **FluentValidation 12.0.0** - Input validation
-- **Argon2 1.3.1** - Secure password hashing
-- **MySQL/MariaDB** - Database support (MySqlConnector 2.4.0)
-- **Swagger/OpenAPI 6.8.1** - API documentation
-- **AutoMapper 15.0.1** - Object mapping
+- **.NET 8.0** - Main framework
+- **ASP.NET Core 8.0.11** - RESTful API framework
+- **Entity Framework Core 8.0.11** - ORM for data access
+- **FluentValidation 11.9.2** - Input validation
+- **Konscious.Security.Cryptography.Argon2 1.3.1** - Secure password hashing
+- **MySQL/MariaDB** - Database support (MySqlConnector 2.3.7)
+- **Swagger/OpenAPI 6.8.0** - API documentation
+- **AutoMapper 13.0.1** - Object mapping
 
 ## 🚀 Development (Quick Start)
 
@@ -108,24 +105,24 @@ The repository follows a clean, organized structure:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/maiconcardozo/CleanTemplateRepository.git
-cd CleanTemplateRepository
+git clone https://github.com/maiconcardozo/HealthPlanSuite.git
+cd HealthPlanSuite
 
-# 2. Install .NET 9.0 SDK (REQUIRED - see requirements section below)
-# Download from: https://dotnet.microsoft.com/download/dotnet/9.0
+# 2. Install .NET 8.0 SDK
+# Download from: https://dotnet.microsoft.com/download/dotnet/8.0
 
-# 3. Verify .NET 9.0 installation
+# 3. Verify .NET 8.0 installation
 dotnet --version
-# Should output: 9.0.x
+# Should output: 8.0.x
 
 # 4. Restore dependencies
-dotnet restore Solution/Authentication.sln
+dotnet restore Solution/HealthPlan.sln
 
 # 5. Build in Debug mode (development)
-dotnet build Solution/Authentication.sln --configuration Debug
+dotnet build Solution/HealthPlan.sln --configuration Debug
 
 # 6. Run the API
-cd Src/Authentication.API
+cd Src/HealthPlan.API
 dotnet run --configuration Debug
 ```
 
@@ -144,7 +141,7 @@ scripts/test.bat                # Windows - build and test everything
 
 # 3. Manual verification steps:
 # Verify compilation
-dotnet build Solution/Authentication.sln --configuration Release
+dotnet build Solution/HealthPlan.sln --configuration Release
 # Should complete without errors
 
 # Run all tests  
@@ -153,7 +150,7 @@ scripts/run-tests.bat all       # Windows
 # Should show test results
 
 # Start the application
-cd Src/Authentication.API
+cd Src/HealthPlan.API
 dotnet run
 # Should start on https://localhost:7001
 ```
@@ -264,9 +261,9 @@ dotnet --list-sdks
 **Issue**: Project won't build or restore
 ```bash
 # Solution: Clean and rebuild
-dotnet clean Solution/Authentication.sln
-dotnet restore Solution/Authentication.sln
-dotnet build Solution/Authentication.sln
+dotnet clean Solution/HealthPlan.sln
+dotnet restore Solution/HealthPlan.sln
+dotnet build Solution/HealthPlan.sln
 ```
 
 **Issue**: Tests won't run
@@ -279,15 +276,15 @@ scripts/run-tests.sh verbose   # Detailed output for debugging
 ## 📦 Production Installation
 
 ### Prerequisites
-- .NET 9.0 SDK or higher (REQUIRED - never use 8.0)
+- .NET 8.0 SDK or higher
 - MySQL 8.0+ or higher
-- Entity Framework Core 9.0.7
+- Entity Framework Core 8.0.11
 
 ### Cloning and Building Locally
 ```bash
-git clone https://github.com/maiconcardozo/Authentication.git
-cd Authentication
-dotnet build Solution/Authentication.sln --configuration Release
+git clone https://github.com/maiconcardozo/HealthPlanSuite.git
+cd HealthPlanSuite
+dotnet build Solution/HealthPlan.sln --configuration Release
 ```
 
 ### 🔍 Project Compilation Verification
@@ -305,16 +302,16 @@ scripts/build.bat verify                  # Windows
 
 # Method 3: Manual verification steps
 # 1. Full compilation check (Release mode)
-dotnet clean Solution/Authentication.sln
-dotnet restore Solution/Authentication.sln  
-dotnet build Solution/Authentication.sln --configuration Release
+dotnet clean Solution/HealthPlan.sln
+dotnet restore Solution/HealthPlan.sln  
+dotnet build Solution/HealthPlan.sln --configuration Release
 
 # 2. Test execution verification
 ./run-tests.sh all                  # Linux/Mac
 ./run-tests.bat all                 # Windows
 
 # 3. API startup verification
-cd Src/Authentication.API
+cd Src/HealthPlan.API
 dotnet run --configuration Release  # Should start on https://localhost:7001
 
 # 4. Access API documentation
@@ -354,13 +351,13 @@ Update the connection string in `appsettings.Development.json`:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=AuthenticationDB;Uid=your_user;Pwd=your_password;"
+    "DefaultConnection": "Server=localhost;Database=HealthPlanDB;Uid=your_user;Pwd=your_password;"
   },
-  "JwtSettings": {
-    "Issuer": "Authentication",
-    "Audience": "AuthenticationClients",
-    "SecretKey": "your-secret-key-minimum-32-characters",
-    "ExpirationMinutes": 60
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
   }
 }
 ```
@@ -368,68 +365,35 @@ Update the connection string in `appsettings.Development.json`:
 ### 2. Initializing the Database
 
 ```bash
-cd Src/Authentication.API
-dotnet ef database update --context ApiContextDevelopment
+cd Src/HealthPlan.API
+dotnet ef database update --context ApplicationContext
 ```
 
-### 3. JWT Configuration for Development
+### 3. Basic Health Plan Management
 
 ```csharp
-// Program.cs - Development-specific configuration
-public class Program
+// Example: Creating a health plan quote
+public class QuoteController : ControllerBase
 {
-    public static void Main(string[] args)
+    private readonly IQuoteService _quoteService;
+    
+    public QuoteController(IQuoteService quoteService)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        
-        // Development-specific configuration
-        if (builder.Environment.IsDevelopment())
-        {
-            builder.Logging.AddConsole();
-            builder.Logging.AddDebug();
-            builder.Logging.SetMinimumLevel(LogLevel.Debug);
-        }
-        
-        // JWT configuration for development
-        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = jwtSettings["Issuer"],
-                    ValidAudience = jwtSettings["Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
-                };
-                
-                #if DEBUG
-                // Debug-specific configurations
-                options.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = context =>
-                    {
-                        Console.WriteLine($"Token validated for: {context.Principal?.Identity?.Name}");
-                        return Task.CompletedTask;
-                    }
-                };
-                #endif
-            });
-        
-        var app = builder.Build();
-        
-        // Development-specific middleware
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-        
-        app.Run();
+        _quoteService = quoteService;
+    }
+    
+    [HttpPost("CreateQuote")]
+    public async Task<IActionResult> CreateQuote([FromBody] QuotePayloadDTO request)
+    {
+        var response = await _quoteService.CreateQuoteAsync(request);
+        return Ok(response);
+    }
+    
+    [HttpGet("GetQuotes")]
+    public async Task<IActionResult> GetQuotes()
+    {
+        var quotes = await _quoteService.GetAllQuotesAsync();
+        return Ok(quotes);
     }
 }
 ```
@@ -642,46 +606,43 @@ curl -X POST "https://localhost:7001/AccountClaimAction/AddAccountClaimAction" \
 
 ## 🌐 API Endpoints
 
-### Main Authentication Endpoints
+### Main Health Plan Management Endpoints
 
 | Method | Endpoint | Description | Authentication |
 |--------|----------|-------------|----------------|
-| **POST** | `/Authentication/GenerateToken` | 🔑 Generate JWT token | ❌ |
-| **POST** | `/Authentication/AddAccount` | 👤 Create user account | ❌ |
+| **GET** | `/Quote/GetQuotes` | 📋 List all quotes | ✅ |
+| **GET** | `/Quote/GetQuoteById/{id}` | 🔍 Get quote by ID | ✅ |
+| **POST** | `/Quote/CreateQuote` | ➕ Create new quote | ✅ |
+| **PUT** | `/Quote/UpdateQuote/{id}` | ✏️ Update quote | ✅ |
+| **DELETE** | `/Quote/DeleteQuote/{id}` | ❌ Delete quote | ✅ |
+| **GET** | `/Coverage/GetCoverages` | 📋 List all coverages | ✅ |
+| **GET** | `/Coverage/GetCoverageById/{id}` | 🔍 Get coverage by ID | ✅ |
+| **POST** | `/Coverage/CreateCoverage` | ➕ Create new coverage | ✅ |
+| **PUT** | `/Coverage/UpdateCoverage/{id}` | ✏️ Update coverage | ✅ |
+| **DELETE** | `/Coverage/DeleteCoverage/{id}` | ❌ Delete coverage | ✅ |
+| **GET** | `/Company/GetCompanies` | 📋 List all companies | ✅ |
+| **GET** | `/Company/GetCompanyById/{id}` | 🔍 Get company by ID | ✅ |
+| **POST** | `/Company/CreateCompany` | ➕ Create new company | ✅ |
+| **PUT** | `/Company/UpdateCompany/{id}` | ✏️ Update company | ✅ |
+| **DELETE** | `/Company/DeleteCompany/{id}` | ❌ Delete company | ✅ |
 | **GET** | `/health` | ❤️ Health check | ❌ |
 
-### Permission Management Endpoints (RBAC)
+### 📋 Create Health Plan Quote
 
-| Method | Endpoint | Description | Authentication |
-|--------|----------|-------------|----------------|
-| **GET** | `/Claim/GetClaims` | 📋 List all claims | ✅ |
-| **GET** | `/Claim/GetClaimById/{id}` | 🔍 Get claim by ID | ✅ |
-| **POST** | `/Claim/AddClaim` | ➕ Create new claim | ✅ |
-| **PUT** | `/Claim/UpdateClaim/{id}` | ✏️ Update claim | ✅ |
-| **DELETE** | `/Claim/DeleteClaim/{id}` | ❌ Delete claim | ✅ |
-| **GET** | `/Action/GetActions` | 📋 List all actions | ✅ |
-| **GET** | `/Action/GetActionById/{id}` | 🔍 Get action by ID | ✅ |
-| **POST** | `/Action/AddAction` | ➕ Create new action | ✅ |
-| **PUT** | `/Action/UpdateAction/{id}` | ✏️ Update action | ✅ |
-| **DELETE** | `/Action/DeleteAction/{id}` | ❌ Delete action | ✅ |
-| **GET** | `/ClaimAction/GetClaimActions` | 🔗 List claim-action mappings | ✅ |
-| **POST** | `/ClaimAction/AddClaimAction` | 🔗 Map claim to action | ✅ |
-| **PUT** | `/ClaimAction/UpdateClaimAction/{id}` | ✏️ Update mapping | ✅ |
-| **DELETE** | `/ClaimAction/DeleteClaimAction/{id}` | ❌ Delete mapping | ✅ |
-| **GET** | `/AccountClaimAction/GetAccountClaimActions` | 👥 List user permissions | ✅ |
-| **POST** | `/AccountClaimAction/AddAccountClaimAction` | 👤 Assign permission to user | ✅ |
-| **DELETE** | `/AccountClaimAction/DeleteAccountClaimAction/{idAccount}/{idClaimAction}` | ❌ Remove user permission | ✅ |
-
-### 🔑 Generate Authentication Token
-
-Generates a JWT token for valid user credentials:
+Creates a new health plan quote with coverage details:
 
 ```bash
-curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
+curl -X POST "https://localhost:7001/Quote/CreateQuote" \
   -H "Content-Type: application/json" \
   -d '{
-    "userName": "admin",
-    "password": "password123"
+    "companyId": 1,
+    "beneficiaryCount": 2,
+    "coverages": [
+      {
+        "coverageId": 1,
+        "ageRangeId": 1
+      }
+    ]
   }'
 ```
 
@@ -791,21 +752,21 @@ Contributions are welcome! Please read the [contribution guide](CONTRIBUTING.md)
 
 ```bash
 # Clone the repository
-git clone https://github.com/maiconcardozo/Authentication.git
-cd Authentication
+git clone https://github.com/maiconcardozo/HealthPlanSuite.git
+cd HealthPlanSuite
 
-# Install dependencies (requires .NET 9.0 SDK)
-dotnet restore Solution/Authentication.sln
+# Install dependencies (requires .NET 8.0 SDK)
+dotnet restore Solution/HealthPlan.sln
 
 # Build the project
-dotnet build Solution/Authentication.sln --configuration Debug
+dotnet build Solution/HealthPlan.sln --configuration Debug
 
 # Run in development mode
-dotnet run --project Src/Authentication.API
+dotnet run --project Src/HealthPlan.API
 
-# Run tests using convenience scripts (recommended)
-scripts/run-tests.sh all          # Linux/Mac - runs all tests
-scripts/run-tests.bat all         # Windows - runs all tests
+# Run tests
+dotnet test Solution/HealthPlan.sln
+```
 
 # Or run tests manually
 dotnet test Src/Authentication.Tests/Authentication.Tests.csproj
@@ -824,7 +785,7 @@ The project includes a comprehensive test suite following TDD architecture with 
 test.bat                    # Windows
 
 # Alternative: Direct dotnet command
-dotnet test Solution/Authentication.sln
+dotnet test Solution/HealthPlan.sln
 ```
 
 **Using convenience scripts (advanced options):**
@@ -990,14 +951,14 @@ When developing, follow these practices to avoid CI failures:
 
 ```bash
 # 1. Check code quality before committing
-dotnet build Solution/Authentication.sln /warnaserror:IDE0046,IDE0045
+dotnet build Solution/HealthPlan.sln /warnaserror:IDE0046,IDE0045
 
 # 2. Fix any else statement violations
 # Replace: if/else return → ternary operator
 # Replace: if/else assignment → ternary operator
 
 # 3. Verify SOLID principle compliance
-dotnet build Solution/Authentication.sln /warnaserror:S3776,S1541,S1200
+dotnet build Solution/HealthPlan.sln /warnaserror:S3776,S1541,S1200
 
 # 4. Run full test suite
 ./test.sh
@@ -1042,7 +1003,7 @@ This project is licensed under the [MIT License](LICENSE).
 ## 📞 Support
 
 For questions, suggestions, or to report issues:
-- Open an [issue](https://github.com/maiconcardozo/Authentication/issues)
+- Open an [issue](https://github.com/maiconcardozo/HealthPlanSuite/issues)
 - Contact through GitHub
 
 ---

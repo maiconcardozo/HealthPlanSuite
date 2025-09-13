@@ -234,7 +234,7 @@ namespace HealthPlan.Quote.Services.Implementation
             if (coverage == null)
                 throw new ArgumentNullException(nameof(coverage));
 
-            _coverageRepository.Delete(coverage);
+            _coverageRepository.Remove(coverage);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace HealthPlan.Quote.Services.Implementation
             if (coverage == null)
                 throw new ArgumentException("Coverage not found", nameof(id));
 
-            _coverageRepository.Delete(coverage);
+            _coverageRepository.Remove(coverage);
         }
 
         /// <summary>
@@ -280,10 +280,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>True if name is unique, false otherwise</returns>
         public bool IsNameUnique(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                return false;
-
-            return !_coverageRepository.NameExists(name);
+            return !string.IsNullOrWhiteSpace(name) && !_coverageRepository.NameExists(name);
         }
 
         /// <summary>
@@ -294,10 +291,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>True if name is unique, false otherwise</returns>
         public bool IsNameUniqueForUpdate(string name, int excludeId)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                return false;
-
-            return !_coverageRepository.NameExistsForDifferentCoverage(name, excludeId);
+            return !string.IsNullOrWhiteSpace(name) && !_coverageRepository.NameExistsForDifferentCoverage(name, excludeId);
         }
 
         /// <summary>
@@ -307,10 +301,7 @@ namespace HealthPlan.Quote.Services.Implementation
         /// <returns>True if coverage type is valid, false otherwise</returns>
         public bool IsValidCoverageType(string coverageType)
         {
-            if (string.IsNullOrWhiteSpace(coverageType))
-                return false;
-
-            return _validCoverageTypes.Contains(coverageType);
+            return !string.IsNullOrWhiteSpace(coverageType) && _validCoverageTypes.Contains(coverageType);
         }
 
         #endregion
