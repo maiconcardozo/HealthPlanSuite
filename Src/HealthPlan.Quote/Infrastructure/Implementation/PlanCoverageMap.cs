@@ -23,15 +23,15 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             
             // Properties configuration
             builder.Property(x => x.Id)
-                .HasColumnName("IdPlanoCobertura")
+                .HasColumnName("IdPlanCoverage")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(e => e.IdPlanoSaude)
-                .HasColumnName("IdPlanoSaude")
+            builder.Property(e => e.IdHealthPlan)
+                .HasColumnName("IdHealthPlan")
                 .IsRequired();
 
-            builder.Property(e => e.IdCobertura)
-                .HasColumnName("IdCobertura")
+            builder.Property(e => e.IdCoverage)
+                .HasColumnName("IdCoverage")
                 .IsRequired();
 
             builder.Property(e => e.PremiumValue)
@@ -42,26 +42,26 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
                 .HasDefaultValue(true);
 
             // Create unique constraint on PlanId + CoverageId
-            builder.HasIndex(e => new { e.IdPlanoSaude, e.IdCobertura })
+            builder.HasIndex(e => new { e.IdHealthPlan, e.IdCoverage })
                 .IsUnique()
-                .HasDatabaseName("UK_PlanCoverage_PlanoSaude_Cobertura");
+                .HasDatabaseName("UK_PlanCoverage_HealthPlan_Coverage");
 
             // Create indexes for efficient filtering
-            builder.HasIndex(e => e.IdPlanoSaude)
-                .HasDatabaseName("IX_PlanCoverages_IdPlanoSaude");
+            builder.HasIndex(e => e.IdHealthPlan)
+                .HasDatabaseName("IX_PlanCoverages_IdHealthPlan");
 
-            builder.HasIndex(e => e.IdCobertura)
-                .HasDatabaseName("IX_PlanCoverages_IdCobertura");
+            builder.HasIndex(e => e.IdCoverage)
+                .HasDatabaseName("IX_PlanCoverages_IdCoverage");
 
             // Foreign key relationships
             builder.HasOne<Domain.Implementation.HealthPlan>()
                 .WithMany()
-                .HasForeignKey(e => e.IdPlanoSaude)
+                .HasForeignKey(e => e.IdHealthPlan)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne<Coverage>()
                 .WithMany()
-                .HasForeignKey(e => e.IdCobertura)
+                .HasForeignKey(e => e.IdCoverage)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

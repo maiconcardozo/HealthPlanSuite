@@ -23,23 +23,23 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             
             // Properties configuration
             builder.Property(x => x.Id)
-                .HasColumnName("IdCotacao")
+                .HasColumnName("IdQuote")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(e => e.IdEmpresa)
-                .HasColumnName("IdEmpresa")
+            builder.Property(e => e.IdCompany)
+                .HasColumnName("IdCompany")
                 .IsRequired();
 
-            builder.Property(e => e.IdBeneficiario)
-                .HasColumnName("IdBeneficiario")
+            builder.Property(e => e.IdBeneficiary)
+                .HasColumnName("IdBeneficiary")
                 .IsRequired();
 
-            builder.Property(e => e.IdPlanoSaude)
-                .HasColumnName("IdPlanoSaude")
+            builder.Property(e => e.IdHealthPlan)
+                .HasColumnName("IdHealthPlan")
                 .IsRequired();
 
-            builder.Property(e => e.IdFaixaEtaria)
-                .HasColumnName("IdFaixaEtaria")
+            builder.Property(e => e.IdAgeRange)
+                .HasColumnName("IdAgeRange")
                 .IsRequired();
 
             builder.Property(e => e.QuoteNumber)
@@ -77,8 +77,8 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             builder.HasIndex(e => e.IdBeneficiario)
                 .HasDatabaseName("IX_Quotes_IdBeneficiario");
 
-            builder.HasIndex(e => e.IdEmpresa)
-                .HasDatabaseName("IX_Quotes_IdEmpresa");
+            builder.HasIndex(e => e.IdCompany)
+                .HasDatabaseName("IX_Quotes_IdCompany");
 
             builder.HasIndex(e => e.Status)
                 .HasDatabaseName("IX_Quotes_Status");
@@ -89,22 +89,22 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             // Foreign key relationships
             builder.HasOne<Company>()
                 .WithMany()
-                .HasForeignKey(e => e.IdEmpresa)
+                .HasForeignKey(e => e.IdCompany)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Beneficiary>()
                 .WithMany()
-                .HasForeignKey(e => e.IdBeneficiario)
+                .HasForeignKey(e => e.IdBeneficiary)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Domain.Implementation.HealthPlan>()
                 .WithMany()
-                .HasForeignKey(e => e.IdPlanoSaude)
+                .HasForeignKey(e => e.IdHealthPlan)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<AgeRange>()
                 .WithMany()
-                .HasForeignKey(e => e.IdFaixaEtaria)
+                .HasForeignKey(e => e.IdAgeRange)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

@@ -9,82 +9,82 @@ namespace HealthPlan.Quote.DTO
         /// <summary>
         /// Gets or sets the unique identifier of the quote.
         /// </summary>
-        public int IdCotacao { get; set; }
+        public int IdQuote { get; set; }
         
         /// <summary>
         /// Gets or sets the company ID that is providing the quote.
         /// </summary>
-        public int IdEmpresa { get; set; }
+        public int IdCompany { get; set; }
         
         /// <summary>
         /// Gets or sets the beneficiary ID for whom the quote is being generated.
         /// </summary>
-        public int IdBeneficiario { get; set; }
+        public int IdBeneficiary { get; set; }
         
         /// <summary>
         /// Gets or sets the health plan ID being quoted.
         /// </summary>
-        public int IdPlanoSaude { get; set; }
+        public int IdHealthPlan { get; set; }
         
         /// <summary>
         /// Gets or sets the age range ID used for premium calculation.
         /// </summary>
-        public int IdFaixaEtaria { get; set; }
+        public int IdAgeRange { get; set; }
         
         // DEPRECATED properties for backward compatibility
         /// <summary>
         /// Gets or sets the unique identifier of the quote.
-        /// DEPRECATED: Use IdCotacao instead.
+        /// DEPRECATED: Use IdQuote instead.
         /// </summary>
-        [Obsolete("Use IdCotacao instead")]
+        [Obsolete("Use IdQuote instead")]
         public int Id 
         { 
-            get => IdCotacao; 
-            set => IdCotacao = value; 
+            get => IdQuote; 
+            set => IdQuote = value; 
         }
         
         /// <summary>
         /// Gets or sets the company ID that is providing the quote.
-        /// DEPRECATED: Use IdEmpresa instead.
+        /// DEPRECATED: Use IdCompany instead.
         /// </summary>
-        [Obsolete("Use IdEmpresa instead")]
+        [Obsolete("Use IdCompany instead")]
         public int CompanyId 
         { 
-            get => IdEmpresa; 
-            set => IdEmpresa = value; 
+            get => IdCompany; 
+            set => IdCompany = value; 
         }
         
         /// <summary>
         /// Gets or sets the beneficiary ID for whom the quote is being generated.
-        /// DEPRECATED: Use IdBeneficiario instead.
+        /// DEPRECATED: Use IdBeneficiary instead.
         /// </summary>
-        [Obsolete("Use IdBeneficiario instead")]
+        [Obsolete("Use IdBeneficiary instead")]
         public int BeneficiaryId 
         { 
-            get => IdBeneficiario; 
-            set => IdBeneficiario = value; 
+            get => IdBeneficiary; 
+            set => IdBeneficiary = value; 
         }
         
         /// <summary>
         /// Gets or sets the health plan ID being quoted.
-        /// DEPRECATED: Use IdPlanoSaude instead.
+        /// DEPRECATED: Use IdHealthPlan instead.
         /// </summary>
-        [Obsolete("Use IdPlanoSaude instead")]
+        [Obsolete("Use IdHealthPlan instead")]
         public int HealthPlanId 
         { 
-            get => IdPlanoSaude; 
-            set => IdPlanoSaude = value; 
+            get => IdHealthPlan; 
+            set => IdHealthPlan = value; 
         }
         
         /// <summary>
         /// Gets or sets the age range ID used for premium calculation.
-        /// DEPRECATED: Use IdFaixaEtaria instead.
+        /// DEPRECATED: Use IdAgeRange instead.
         /// </summary>
-        [Obsolete("Use IdFaixaEtaria instead")]
+        [Obsolete("Use IdAgeRange instead")]
         public int AgeRangeId 
         { 
-            get => IdFaixaEtaria; 
-            set => IdFaixaEtaria = value; 
+            get => IdAgeRange; 
+            set => IdAgeRange = value; 
         }
         
         /// <summary>

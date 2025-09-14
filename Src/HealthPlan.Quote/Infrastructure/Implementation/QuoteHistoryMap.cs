@@ -23,11 +23,11 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             
             // Properties configuration
             builder.Property(x => x.Id)
-                .HasColumnName("IdHistoricoCotacao")
+                .HasColumnName("IdQuoteHistory")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(e => e.IdCotacao)
-                .HasColumnName("IdCotacao")
+            builder.Property(e => e.IdQuote)
+                .HasColumnName("IdQuote")
                 .IsRequired();
 
             builder.Property(e => e.PreviousStatus)
@@ -52,8 +52,8 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
                 .HasMaxLength(256);
 
             // Create indexes for efficient filtering
-            builder.HasIndex(e => e.IdCotacao)
-                .HasDatabaseName("IX_QuoteHistories_IdCotacao");
+            builder.HasIndex(e => e.IdQuote)
+                .HasDatabaseName("IX_QuoteHistories_IdQuote");
 
             builder.HasIndex(e => e.NewStatus)
                 .HasDatabaseName("IX_QuoteHistories_NewStatus");
@@ -64,7 +64,7 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             // Foreign key relationship
             builder.HasOne<Domain.Implementation.Quote>()
                 .WithMany()
-                .HasForeignKey(e => e.IdCotacao)
+                .HasForeignKey(e => e.IdQuote)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -12,9 +12,9 @@ namespace HealthPlan.Quote.Domain.Implementation
     {
         /// <summary>
         /// Gets or sets the age range ID.
-        /// Maps to SQL column: IdFaixaEtaria
+        /// Maps to SQL column: IdAgeRange
         /// </summary>
-        public int IdFaixaEtaria 
+        public int IdAgeRange 
         { 
             get => Id; 
             set => Id = value; 

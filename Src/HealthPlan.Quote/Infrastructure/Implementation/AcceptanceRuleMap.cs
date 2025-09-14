@@ -23,11 +23,11 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             
             // Properties configuration
             builder.Property(x => x.Id)
-                .HasColumnName("IdRegraAceitacao")
+                .HasColumnName("IdAcceptanceRule")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(e => e.IdPlanoSaude)
-                .HasColumnName("IdPlanoSaude")
+            builder.Property(e => e.IdHealthPlan)
+                .HasColumnName("IdHealthPlan")
                 .IsRequired();
 
             builder.Property(e => e.RuleType)
@@ -58,8 +58,8 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
                 .HasDefaultValue(true);
 
             // Create indexes for efficient filtering
-            builder.HasIndex(e => e.IdPlanoSaude)
-                .HasDatabaseName("IX_AcceptanceRules_IdPlanoSaude");
+            builder.HasIndex(e => e.IdHealthPlan)
+                .HasDatabaseName("IX_AcceptanceRules_IdHealthPlan");
 
             builder.HasIndex(e => e.RuleType)
                 .HasDatabaseName("IX_AcceptanceRules_RuleType");
@@ -67,7 +67,7 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             // Foreign key relationship
             builder.HasOne<Domain.Implementation.HealthPlan>()
                 .WithMany()
-                .HasForeignKey(e => e.IdPlanoSaude)
+                .HasForeignKey(e => e.IdHealthPlan)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

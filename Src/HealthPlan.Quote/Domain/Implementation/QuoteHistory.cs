@@ -23,26 +23,26 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// <summary>
         /// Gets or sets the quote ID this history entry relates to.
         /// References the Quote entity.
-        /// Maps to SQL column: IdCotacao
+        /// Maps to SQL column: IdQuote
         /// </summary>
-        public int IdCotacao { get; set; }
+        public int IdQuote { get; set; }
 
         /// <summary>
         /// Gets or sets the quote this history entry relates to.
-        /// Navigation property for IdCotacao foreign key.
+        /// Navigation property for IdQuote foreign key.
         /// </summary>
         public Quote? Quote { get; set; }
         
         // DEPRECATED property for backward compatibility
         /// <summary>
         /// Gets or sets the quote ID this history entry relates to.
-        /// DEPRECATED: Use IdCotacao instead.
+        /// DEPRECATED: Use IdQuote instead.
         /// </summary>
-        [Obsolete("Use IdCotacao instead")]
+        [Obsolete("Use IdQuote instead")]
         public int QuoteId 
         { 
-            get => IdCotacao; 
-            set => IdCotacao = value; 
+            get => IdQuote; 
+            set => IdQuote = value; 
         }
 
         /// <summary>

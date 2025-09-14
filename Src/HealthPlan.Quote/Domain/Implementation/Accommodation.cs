@@ -12,9 +12,9 @@ namespace HealthPlan.Quote.Domain.Implementation
     {
         /// <summary>
         /// Gets or sets the accommodation ID.
-        /// Maps to SQL column: IdAcomodacao
+        /// Maps to SQL column: IdAccommodation
         /// </summary>
-        public int IdAcomodacao 
+        public int IdAccommodation 
         { 
             get => Id; 
             set => Id = value; 

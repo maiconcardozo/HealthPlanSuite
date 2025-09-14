@@ -23,15 +23,15 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             
             // Properties configuration
             builder.Property(x => x.Id)
-                .HasColumnName("IdPlanoSaude")
+                .HasColumnName("IdHealthPlan")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(e => e.IdEmpresa)
-                .HasColumnName("IdEmpresa")
+            builder.Property(e => e.IdCompany)
+                .HasColumnName("IdCompany")
                 .IsRequired();
 
-            builder.Property(e => e.IdAcomodacao)
-                .HasColumnName("IdAcomodacao")
+            builder.Property(e => e.IdAccommodation)
+                .HasColumnName("IdAccommodation")
                 .IsRequired();
 
             builder.Property(e => e.Name)
@@ -54,23 +54,23 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
                 .IsUnique()
                 .HasDatabaseName("IX_HealthPlans_Code_Unique");
 
-            // Create index on IdEmpresa for efficient filtering
-            builder.HasIndex(e => e.IdEmpresa)
-                .HasDatabaseName("IX_HealthPlans_IdEmpresa");
+            // Create index on IdCompany for efficient filtering
+            builder.HasIndex(e => e.IdCompany)
+                .HasDatabaseName("IX_HealthPlans_IdCompany");
 
-            // Create index on IdAcomodacao for efficient filtering
-            builder.HasIndex(e => e.IdAcomodacao)
-                .HasDatabaseName("IX_HealthPlans_IdAcomodacao");
+            // Create index on IdAccommodation for efficient filtering
+            builder.HasIndex(e => e.IdAccommodation)
+                .HasDatabaseName("IX_HealthPlans_IdAccommodation");
 
             // Foreign key relationships
             builder.HasOne<Company>()
                 .WithMany()
-                .HasForeignKey(e => e.IdEmpresa)
+                .HasForeignKey(e => e.IdCompany)
                 .OnDelete(DeleteBehavior.Restrict);
                 
             builder.HasOne<Accommodation>()
                 .WithMany()
-                .HasForeignKey(e => e.IdAcomodacao)
+                .HasForeignKey(e => e.IdAccommodation)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

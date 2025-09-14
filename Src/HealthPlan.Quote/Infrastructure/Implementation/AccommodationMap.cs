@@ -23,7 +23,7 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
             
             // Properties configuration
             builder.Property(x => x.Id)
-                .HasColumnName("IdAcomodacao")
+                .HasColumnName("IdAccommodation")
                 .ValueGeneratedOnAdd();
 
             builder.Property(e => e.Type)

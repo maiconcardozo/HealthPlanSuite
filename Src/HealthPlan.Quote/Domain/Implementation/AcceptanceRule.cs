@@ -23,26 +23,26 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// <summary>
         /// Gets or sets the health plan ID this rule applies to.
         /// References the HealthPlan entity.
-        /// Maps to SQL column: IdPlanoSaude
+        /// Maps to SQL column: IdHealthPlan
         /// </summary>
-        public int IdPlanoSaude { get; set; }
+        public int IdHealthPlan { get; set; }
 
         /// <summary>
         /// Gets or sets the health plan this rule applies to.
-        /// Navigation property for IdPlanoSaude foreign key.
+        /// Navigation property for IdHealthPlan foreign key.
         /// </summary>
         public HealthPlan? HealthPlan { get; set; }
         
         // DEPRECATED property for backward compatibility
         /// <summary>
         /// Gets or sets the health plan ID this rule applies to.
-        /// DEPRECATED: Use IdPlanoSaude instead.
+        /// DEPRECATED: Use IdHealthPlan instead.
         /// </summary>
-        [Obsolete("Use IdPlanoSaude instead")]
+        [Obsolete("Use IdHealthPlan instead")]
         public int HealthPlanId 
         { 
-            get => IdPlanoSaude; 
-            set => IdPlanoSaude = value; 
+            get => IdHealthPlan; 
+            set => IdHealthPlan = value; 
         }
 
         /// <summary>
