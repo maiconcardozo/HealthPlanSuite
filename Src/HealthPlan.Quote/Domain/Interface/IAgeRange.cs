@@ -9,6 +9,11 @@ namespace HealthPlan.Quote.Domain.Interface
     public interface IAgeRange : IEntity
     {
         /// <summary>
+        /// Gets or sets the description of the age range.
+        /// </summary>
+        string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the minimum age for this range (inclusive).
         /// </summary>
         int MinAge { get; set; }
@@ -19,8 +24,8 @@ namespace HealthPlan.Quote.Domain.Interface
         int MaxAge { get; set; }
 
         /// <summary>
-        /// Gets or sets the description of the age range.
+        /// Gets or sets the multiplier factor for premium calculation.
         /// </summary>
-        string Description { get; set; }
+        decimal Multiplier { get; set; }
     }
 }
