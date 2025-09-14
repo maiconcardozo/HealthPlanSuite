@@ -18,6 +18,13 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
         {
             builder.ToTable("Coverages");
             
+            // Primary key
+            builder.HasKey(x => x.Id);
+            
+            // Properties configuration
+            builder.Property(x => x.Id)
+                .HasColumnName("IdCobertura")
+                .ValueGeneratedOnAdd();
 
             builder.Property(e => e.Name)
                 .IsRequired()
