@@ -22,5 +22,15 @@ namespace HealthPlan.Quote.Domain.Interface
         /// Gets or sets the type of coverage.
         /// </summary>
         string CoverageType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base value of the coverage.
+        /// </summary>
+        decimal BaseValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether this coverage is mandatory.
+        /// </summary>
+        bool IsMandatory { get; set; }
     }
 }
