@@ -11,30 +11,63 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class HealthPlan : Entity, IHealthPlan
     {
         /// <summary>
+        /// Gets or sets the health plan ID.
+        /// Maps to SQL column: IdPlanoSaude
+        /// </summary>
+        public int IdPlanoSaude 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+
+        /// <summary>
         /// Gets or sets the company ID that offers this health plan.
         /// References the Company entity.
-        /// Maps to SQL column: EmpresaId
+        /// Maps to SQL column: IdEmpresa
         /// </summary>
-        public int CompanyId { get; set; }
+        public int IdEmpresa { get; set; }
         
         /// <summary>
         /// Gets or sets the company that offers this health plan.
-        /// Navigation property for CompanyId foreign key.
+        /// Navigation property for IdEmpresa foreign key.
         /// </summary>
         public Company? Company { get; set; }
 
         /// <summary>
         /// Gets or sets the accommodation ID for this health plan.
         /// References the Accommodation entity.
-        /// Maps to SQL column: AcomodacaoId
+        /// Maps to SQL column: IdAcomodacao
         /// </summary>
-        public int AccommodationId { get; set; }
+        public int IdAcomodacao { get; set; }
 
         /// <summary>
         /// Gets or sets the accommodation for this health plan.
-        /// Navigation property for AccommodationId foreign key.
+        /// Navigation property for IdAcomodacao foreign key.
         /// </summary>
         public Accommodation? Accommodation { get; set; }
+        
+        // DEPRECATED properties for backward compatibility
+        /// <summary>
+        /// Gets or sets the company ID that offers this health plan.
+        /// DEPRECATED: Use IdEmpresa instead.
+        /// </summary>
+        [Obsolete("Use IdEmpresa instead")]
+        public int CompanyId 
+        { 
+            get => IdEmpresa; 
+            set => IdEmpresa = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the accommodation ID for this health plan.
+        /// DEPRECATED: Use IdAcomodacao instead.
+        /// </summary>
+        [Obsolete("Use IdAcomodacao instead")]
+        public int AccommodationId 
+        { 
+            get => IdAcomodacao; 
+            set => IdAcomodacao = value; 
+        }
         
         /// <summary>
         /// Gets or sets the name of the health plan.

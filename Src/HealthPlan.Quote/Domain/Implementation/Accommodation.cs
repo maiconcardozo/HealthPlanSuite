@@ -11,6 +11,15 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class Accommodation : Entity, IAccommodation
     {
         /// <summary>
+        /// Gets or sets the accommodation ID.
+        /// Maps to SQL column: IdAcomodacao
+        /// </summary>
+        public int IdAcomodacao 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+        /// <summary>
         /// Gets or sets the type of accommodation.
         /// Examples: "Enfermaria", "Apartamento", "Apartamento Luxo", "UTI".
         /// Maps to SQL column: Tipo

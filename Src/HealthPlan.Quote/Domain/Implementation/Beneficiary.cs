@@ -11,6 +11,15 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class Beneficiary : Entity, IBeneficiary
     {
         /// <summary>
+        /// Gets or sets the beneficiary ID.
+        /// Maps to SQL column: IdBeneficiario
+        /// </summary>
+        public int IdBeneficiario 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+        /// <summary>
         /// Gets or sets the beneficiary's full name.
         /// Maps to SQL column: Nome
         /// </summary>

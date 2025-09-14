@@ -11,17 +11,39 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class QuoteHistory : Entity, IQuoteHistory
     {
         /// <summary>
+        /// Gets or sets the quote history ID.
+        /// Maps to SQL column: IdHistoricoCotacao
+        /// </summary>
+        public int IdHistoricoCotacao 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+
+        /// <summary>
         /// Gets or sets the quote ID this history entry relates to.
         /// References the Quote entity.
-        /// Maps to SQL column: CotacaoId
+        /// Maps to SQL column: IdCotacao
         /// </summary>
-        public int QuoteId { get; set; }
+        public int IdCotacao { get; set; }
 
         /// <summary>
         /// Gets or sets the quote this history entry relates to.
-        /// Navigation property for QuoteId foreign key.
+        /// Navigation property for IdCotacao foreign key.
         /// </summary>
         public Quote? Quote { get; set; }
+        
+        // DEPRECATED property for backward compatibility
+        /// <summary>
+        /// Gets or sets the quote ID this history entry relates to.
+        /// DEPRECATED: Use IdCotacao instead.
+        /// </summary>
+        [Obsolete("Use IdCotacao instead")]
+        public int QuoteId 
+        { 
+            get => IdCotacao; 
+            set => IdCotacao = value; 
+        }
 
         /// <summary>
         /// Gets or sets the previous status of the quote.

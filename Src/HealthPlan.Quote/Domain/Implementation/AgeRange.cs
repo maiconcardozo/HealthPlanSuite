@@ -11,6 +11,15 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class AgeRange : Entity, IAgeRange
     {
         /// <summary>
+        /// Gets or sets the age range ID.
+        /// Maps to SQL column: IdFaixaEtaria
+        /// </summary>
+        public int IdFaixaEtaria 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+        /// <summary>
         /// Gets or sets the description of the age range.
         /// For example: "0-18 anos", "19-23 anos", "24-28 anos", etc.
         /// </summary>

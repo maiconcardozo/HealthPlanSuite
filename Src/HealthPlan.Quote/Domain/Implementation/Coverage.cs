@@ -11,6 +11,15 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class Coverage : Entity, ICoverage
     {
         /// <summary>
+        /// Gets or sets the coverage ID.
+        /// Maps to SQL column: IdCobertura
+        /// </summary>
+        public int IdCobertura 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+        /// <summary>
         /// Gets or sets the name of the coverage.
         /// For example: "Consultas Médicas", "Exames Laboratoriais", "Cirurgias".
         /// Maps to SQL column: Nome

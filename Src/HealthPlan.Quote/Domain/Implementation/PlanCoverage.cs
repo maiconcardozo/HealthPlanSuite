@@ -11,30 +11,63 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class PlanCoverage : Entity, IPlanCoverage
     {
         /// <summary>
+        /// Gets or sets the plan coverage ID.
+        /// Maps to SQL column: IdPlanoCobertura
+        /// </summary>
+        public int IdPlanoCobertura 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+
+        /// <summary>
         /// Gets or sets the health plan ID.
         /// References the HealthPlan entity.
-        /// Maps to SQL column: PlanoSaudeId
+        /// Maps to SQL column: IdPlanoSaude
         /// </summary>
-        public int HealthPlanId { get; set; }
+        public int IdPlanoSaude { get; set; }
 
         /// <summary>
         /// Gets or sets the health plan.
-        /// Navigation property for HealthPlanId foreign key.
+        /// Navigation property for IdPlanoSaude foreign key.
         /// </summary>
         public HealthPlan? HealthPlan { get; set; }
 
         /// <summary>
         /// Gets or sets the coverage ID.
         /// References the Coverage entity.
-        /// Maps to SQL column: CoberturaId
+        /// Maps to SQL column: IdCobertura
         /// </summary>
-        public int CoverageId { get; set; }
+        public int IdCobertura { get; set; }
 
         /// <summary>
         /// Gets or sets the coverage.
-        /// Navigation property for CoverageId foreign key.
+        /// Navigation property for IdCobertura foreign key.
         /// </summary>
         public Coverage? Coverage { get; set; }
+        
+        // DEPRECATED properties for backward compatibility
+        /// <summary>
+        /// Gets or sets the health plan ID.
+        /// DEPRECATED: Use IdPlanoSaude instead.
+        /// </summary>
+        [Obsolete("Use IdPlanoSaude instead")]
+        public int HealthPlanId 
+        { 
+            get => IdPlanoSaude; 
+            set => IdPlanoSaude = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the coverage ID.
+        /// DEPRECATED: Use IdCobertura instead.
+        /// </summary>
+        [Obsolete("Use IdCobertura instead")]
+        public int CoverageId 
+        { 
+            get => IdCobertura; 
+            set => IdCobertura = value; 
+        }
 
         /// <summary>
         /// Gets or sets the premium value for this coverage in this plan.
