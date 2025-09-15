@@ -41,73 +41,73 @@ CREATE TABLE IF NOT EXISTS `Company` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Insurance companies that offer health plans';
 
 -- ==================================================
--- TABELA: Faixas Etárias
+-- TABLE: Age Ranges
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `FaixaEtaria` (
+CREATE TABLE IF NOT EXISTS `AgeRange` (
     `IdAgeRange` int NOT NULL AUTO_INCREMENT,
-    `Descricao` varchar(50) NOT NULL COMMENT 'Descrição da faixa etária (ex: 0-18 anos)',
-    `IdadeMinima` int NOT NULL COMMENT 'Idade mínima da faixa',
-    `IdadeMaxima` int NOT NULL COMMENT 'Idade máxima da faixa',
-    `Multiplicador` decimal(10,4) NOT NULL DEFAULT '1.0000' COMMENT 'Multiplicador para cálculo do prêmio',
-    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Registro ativo',
-    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Data de criação',
-    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Data de atualização',
-    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Data de exclusão lógica',
-    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'Usuário que criou',
-    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que atualizou',
-    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que excluiu',
+    `Description` varchar(50) NOT NULL COMMENT 'Age range description (e.g., 0-18 years)',
+    `MinimumAge` int NOT NULL COMMENT 'Minimum age of the range',
+    `MaximumAge` int NOT NULL COMMENT 'Maximum age of the range',
+    `Multiplier` decimal(10,4) NOT NULL DEFAULT '1.0000' COMMENT 'Multiplier for premium calculation',
+    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Active record',
+    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Creation date',
+    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Update date',
+    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Logical deletion date',
+    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'User who created',
+    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'User who updated',
+    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'User who deleted',
     PRIMARY KEY (`IdAgeRange`),
-    INDEX `IX_FaixaEtaria_IdadeMinima_IdadeMaxima` (`IdadeMinima`, `IdadeMaxima`),
-    INDEX `IX_FaixaEtaria_IsActive` (`IsActive`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Faixas etárias para cálculo de prêmios';
+    INDEX `IX_AgeRange_MinimumAge_MaximumAge` (`MinimumAge`, `MaximumAge`),
+    INDEX `IX_AgeRange_IsActive` (`IsActive`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Age ranges for premium calculations';
 
 -- ==================================================
--- TABELA: Acomodações
+-- TABLE: Accommodations
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `Acomodacao` (
+CREATE TABLE IF NOT EXISTS `Accommodation` (
     `IdAccommodation` int NOT NULL AUTO_INCREMENT,
-    `Tipo` varchar(50) NOT NULL COMMENT 'Tipo de acomodação (Apartamento, Enfermaria, etc.)',
-    `Descricao` varchar(255) NOT NULL COMMENT 'Descrição detalhada da acomodação',
-    `ValorAdicional` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Valor adicional da acomodação',
-    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Registro ativo',
-    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Data de criação',
-    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Data de atualização',
-    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Data de exclusão lógica',
-    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'Usuário que criou',
-    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que atualizou',
-    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que excluiu',
+    `Type` varchar(50) NOT NULL COMMENT 'Accommodation type (Private Room, Ward, etc.)',
+    `Description` varchar(255) NOT NULL COMMENT 'Detailed accommodation description',
+    `AdditionalValue` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Additional accommodation cost',
+    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Active record',
+    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Creation date',
+    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Update date',
+    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Logical deletion date',
+    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'User who created',
+    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'User who updated',
+    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'User who deleted',
     PRIMARY KEY (`IdAccommodation`),
-    INDEX `IX_Acomodacao_Tipo` (`Tipo`),
-    INDEX `IX_Acomodacao_IsActive` (`IsActive`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tipos de acomodações hospitalares';
+    INDEX `IX_Accommodation_Type` (`Type`),
+    INDEX `IX_Accommodation_IsActive` (`IsActive`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Hospital accommodation types';
 
 -- ==================================================
--- TABELA: Coberturas
+-- TABLE: Coverage
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `Cobertura` (
+CREATE TABLE IF NOT EXISTS `Coverage` (
     `IdCoverage` int NOT NULL AUTO_INCREMENT,
-    `Nome` varchar(255) NOT NULL COMMENT 'Nome da cobertura',
-    `Descricao` text DEFAULT NULL COMMENT 'Descrição detalhada da cobertura',
-    `Tipo` varchar(100) NOT NULL COMMENT 'Tipo de cobertura (Ambulatorial, Hospitalar, Obstétrica, etc.)',
-    `ValorBase` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Valor base da cobertura',
-    `IsObrigatoria` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Indica se a cobertura é obrigatória',
-    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Registro ativo',
-    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Data de criação',
-    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Data de atualização',
-    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Data de exclusão lógica',
-    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'Usuário que criou',
-    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que atualizou',
-    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que excluiu',
+    `Name` varchar(255) NOT NULL COMMENT 'Coverage name',
+    `Description` text DEFAULT NULL COMMENT 'Detailed coverage description',
+    `Type` varchar(100) NOT NULL COMMENT 'Coverage type (Outpatient, Hospital, Obstetric, etc.)',
+    `BaseValue` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Coverage base value',
+    `IsMandatory` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Indicates if coverage is mandatory',
+    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Active record',
+    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Creation date',
+    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Update date',
+    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Logical deletion date',
+    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'User who created',
+    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'User who updated',
+    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'User who deleted',
     PRIMARY KEY (`IdCoverage`),
-    INDEX `IX_Cobertura_Tipo` (`Tipo`),
-    INDEX `IX_Cobertura_Nome` (`Nome`),
-    INDEX `IX_Cobertura_IsActive` (`IsActive`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Coberturas disponíveis para os planos de saúde';
+    INDEX `IX_Coverage_Type` (`Type`),
+    INDEX `IX_Coverage_Name` (`Name`),
+    INDEX `IX_Coverage_IsActive` (`IsActive`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Available coverage for health plans';
 
 -- ==================================================
--- TABELA: Planos de Saúde
+-- TABLE: Health Plans
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `PlanoSaude` (
+CREATE TABLE IF NOT EXISTS `HealthPlan` (
     `IdHealthPlan` int NOT NULL AUTO_INCREMENT,
     `IdCompany` int NOT NULL COMMENT 'ID da empresa que oferece o plano',
     `IdAccommodation` int NOT NULL COMMENT 'ID da acomodação padrão do plano',
@@ -140,12 +140,12 @@ CREATE TABLE IF NOT EXISTS `PlanoSaude` (
     INDEX `IX_PlanoSaude_IsActive` (`IsActive`),
     CONSTRAINT `FK_PlanoSaude_Empresa` FOREIGN KEY (`IdCompany`) REFERENCES `Empresa` (`IdCompany`) ON DELETE CASCADE,
     CONSTRAINT `FK_PlanoSaude_Acomodacao` FOREIGN KEY (`IdAccommodation`) REFERENCES `Acomodacao` (`IdAccommodation`) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Planos de saúde oferecidos pelas empresas';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Health plans offered by companies';
 
 -- ==================================================
--- TABELA: Coberturas do Plano (Relacionamento N:N)
+-- TABLE: Plan Coverage (N:N Relationship)
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `PlanoCobertura` (
+CREATE TABLE IF NOT EXISTS `PlanCoverage` (
     `IdPlanoCobertura` int NOT NULL AUTO_INCREMENT,
     `IdHealthPlan` int NOT NULL COMMENT 'ID do plano de saúde',
     `IdCoverage` int NOT NULL COMMENT 'ID da cobertura',
@@ -165,12 +165,12 @@ CREATE TABLE IF NOT EXISTS `PlanoCobertura` (
     INDEX `IX_PlanoCobertura_IsActive` (`IsActive`),
     CONSTRAINT `FK_PlanoCobertura_PlanoSaude` FOREIGN KEY (`IdHealthPlan`) REFERENCES `PlanoSaude` (`IdHealthPlan`) ON DELETE CASCADE,
     CONSTRAINT `FK_PlanoCobertura_Cobertura` FOREIGN KEY (`IdCoverage`) REFERENCES `Cobertura` (`IdCoverage`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Relacionamento entre planos e coberturas';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Relationship between plans and coverage';
 
 -- ==================================================
--- TABELA: Beneficiários
+-- TABLE: Beneficiaries
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `Beneficiario` (
+CREATE TABLE IF NOT EXISTS `Beneficiary` (
     `IdBeneficiary` int NOT NULL AUTO_INCREMENT,
     `Nome` varchar(255) NOT NULL COMMENT 'Nome completo do beneficiário',
     `CPF` varchar(14) NOT NULL UNIQUE COMMENT 'CPF do beneficiário (formato: XXX.XXX.XXX-XX)',
@@ -199,12 +199,12 @@ CREATE TABLE IF NOT EXISTS `Beneficiario` (
     INDEX `IX_Beneficiario_Nome` (`Nome`),
     INDEX `IX_Beneficiario_DataNascimento` (`DataNascimento`),
     INDEX `IX_Beneficiario_IsActive` (`IsActive`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Beneficiários dos planos de saúde';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Health plan beneficiaries';
 
 -- ==================================================
--- TABELA: Regras de Aceitação
+-- TABLE: Acceptance Rules
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `RegraAceitacao` (
+CREATE TABLE IF NOT EXISTS `AcceptanceRule` (
     `IdRegraAceitacao` int NOT NULL AUTO_INCREMENT,
     `IdHealthPlan` int NOT NULL COMMENT 'ID do plano de saúde',
     `TipoRegra` varchar(100) NOT NULL COMMENT 'Tipo da regra (Idade, Renda, Profissão, etc.)',
@@ -227,12 +227,12 @@ CREATE TABLE IF NOT EXISTS `RegraAceitacao` (
     INDEX `IX_RegraAceitacao_TipoRegra` (`TipoRegra`),
     INDEX `IX_RegraAceitacao_IsActive` (`IsActive`),
     CONSTRAINT `FK_RegraAceitacao_PlanoSaude` FOREIGN KEY (`IdHealthPlan`) REFERENCES `PlanoSaude` (`IdHealthPlan`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Regras de aceitação para os planos de saúde';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Acceptance rules for health plans';
 
 -- ==================================================
--- TABELA: Cotações
+-- TABLE: Quotes
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `Cotacao` (
+CREATE TABLE IF NOT EXISTS `Quote` (
     `IdQuote` int NOT NULL AUTO_INCREMENT,
     `IdCompany` int NOT NULL COMMENT 'ID da empresa que está cotando',
     `IdBeneficiary` int NOT NULL COMMENT 'ID do beneficiário solicitante',
@@ -270,12 +270,12 @@ CREATE TABLE IF NOT EXISTS `Cotacao` (
     CONSTRAINT `FK_Cotacao_Beneficiario` FOREIGN KEY (`IdBeneficiary`) REFERENCES `Beneficiario` (`IdBeneficiary`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Cotacao_PlanoSaude` FOREIGN KEY (`IdHealthPlan`) REFERENCES `PlanoSaude` (`IdHealthPlan`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Cotacao_FaixaEtaria` FOREIGN KEY (`IdAgeRange`) REFERENCES `FaixaEtaria` (`IdAgeRange`) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Cotações de planos de saúde';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Health plan quotes';
 
 -- ==================================================
--- TABELA: Histórico de Cotações
+-- TABLE: Quote History
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `HistoricoCotacao` (
+CREATE TABLE IF NOT EXISTS `QuoteHistory` (
     `IdHistoricoCotacao` int NOT NULL AUTO_INCREMENT,
     `IdQuote` int NOT NULL COMMENT 'ID da cotação',
     `StatusAnterior` varchar(50) DEFAULT NULL COMMENT 'Status anterior da cotação',
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `HistoricoCotacao` (
     INDEX `IX_HistoricoCotacao_DataMudanca` (`DataMudanca`),
     INDEX `IX_HistoricoCotacao_IsActive` (`IsActive`),
     CONSTRAINT `FK_HistoricoCotacao_Cotacao` FOREIGN KEY (`IdQuote`) REFERENCES `Cotacao` (`IdQuote`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Histórico de mudanças de status das cotações';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Quote status change history';
 
 -- ==================================================
 -- INSERÇÃO DE DADOS INICIAIS
@@ -340,13 +340,13 @@ INSERT INTO `Cobertura` (`Nome`, `Descricao`, `Tipo`, `ValorBase`, `IsObrigatori
 -- EXEMPLOS DE COTAÇÃO (10 exemplos reais)
 -- ==================================================
 
--- Empresa Seguradora de Exemplo
+-- Example Insurance Company
 INSERT INTO `Empresa` (`Nome`, `NomeFantasia`, `CNPJ`, `Email`, `Telefone`, `Endereco`, `Cidade`, `Estado`, `CEP`, `CreatedBy`) VALUES
 ('Saúde & Vida Seguros Ltda', 'Saúde & Vida', '12.345.678/0001-90', 'contato@saudeevida.com.br', '(11) 3456-7890', 'Av. Paulista, 1000 - Sala 1501', 'São Paulo', 'SP', '01310-100', 'System'),
 ('MedLife Seguros S.A.', 'MedLife', '98.765.432/0001-10', 'vendas@medlife.com.br', '(21) 2345-6789', 'Rua do Ouvidor, 123 - 10º andar', 'Rio de Janeiro', 'RJ', '20040-020', 'System'),
 ('PlanoMax Saúde', 'PlanoMax', '11.222.333/0001-44', 'atendimento@planomax.com.br', '(31) 3333-4444', 'Av. Afonso Pena, 567', 'Belo Horizonte', 'MG', '30130-002', 'System');
 
--- Planos de Saúde de Exemplo
+-- Example Health Plans
 INSERT INTO `PlanoSaude` (`EmpresaId`, `AcomodacaoId`, `Nome`, `Descricao`, `Codigo`, `Categoria`, `TipoContratacao`, `AbrangenciaGeografica`, `SegmentacaoAssistencial`, `PremioBase`, `CoparticipacaoConsulta`, `CoparticipacaoExame`, `CarenciaConsulta`, `CarenciaExame`, `CarenciaInternacao`, `CreatedBy`) VALUES
 (1, 1, 'Essencial Ambulatorial', 'Plano básico com cobertura ambulatorial completa', 'ESS-AMB-001', 'Individual', 'Individual', 'Estadual', 'Ambulatorial', 89.90, 25.00, 15.00, 30, 30, 0, 'System'),
 (1, 2, 'Completo Hospitalar', 'Plano completo com internação em apartamento', 'CMP-HOSP-001', 'Individual', 'Individual', 'Nacional', 'Hospitalar', 189.90, 30.00, 20.00, 30, 60, 180, 'System'),
