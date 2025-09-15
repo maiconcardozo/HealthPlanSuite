@@ -7,7 +7,7 @@ namespace HealthPlan.Test.Integration
     /// <summary>
     /// Integration tests for Quote examples from the SQL modeling.
     /// These tests validate the structure and data integrity of the 10 real quote examples
-    /// included in the ModelagemPlanoSaude.sql file.
+    /// included in the HealthPlanModeling.sql file.
     /// </summary>
     public class QuoteModelingExamplesTests
     {

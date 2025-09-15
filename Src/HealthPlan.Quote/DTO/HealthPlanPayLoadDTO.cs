@@ -14,7 +14,7 @@ namespace HealthPlan.Quote.DTO
         
         /// <summary>
         /// Gets or sets the name of the health plan.
-        /// For example: "Plano Básico", "Plano Executivo", "Plano Premium".
+        /// For example: "Basic Plan", "Executive Plan", "Premium Plan".
         /// </summary>
         public string Name { get; set; } = string.Empty;
         
@@ -32,7 +32,7 @@ namespace HealthPlan.Quote.DTO
         
         /// <summary>
         /// Gets or sets the type of the health plan.
-        /// Possible values: Individual, Familiar, Empresarial.
+        /// Possible values: Individual, Family, Corporate.
         /// </summary>
         public string PlanType { get; set; } = string.Empty;
         

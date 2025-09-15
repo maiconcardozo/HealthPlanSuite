@@ -11,6 +11,15 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class Company : Entity, ICompany
     {
         /// <summary>
+        /// Gets or sets the company ID.
+        /// Maps to SQL column: IdCompany
+        /// </summary>
+        public int IdCompany 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+        /// <summary>
         /// Gets or sets the company name.
         /// Maps to SQL column: Nome
         /// </summary>

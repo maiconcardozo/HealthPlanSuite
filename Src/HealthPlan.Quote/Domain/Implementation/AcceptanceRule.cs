@@ -11,21 +11,43 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class AcceptanceRule : Entity, IAcceptanceRule
     {
         /// <summary>
+        /// Gets or sets the acceptance rule ID.
+        /// Maps to SQL column: IdRegraAceitacao
+        /// </summary>
+        public int IdRegraAceitacao 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+
+        /// <summary>
         /// Gets or sets the health plan ID this rule applies to.
         /// References the HealthPlan entity.
-        /// Maps to SQL column: PlanoSaudeId
+        /// Maps to SQL column: IdHealthPlan
         /// </summary>
-        public int HealthPlanId { get; set; }
+        public int IdHealthPlan { get; set; }
 
         /// <summary>
         /// Gets or sets the health plan this rule applies to.
-        /// Navigation property for HealthPlanId foreign key.
+        /// Navigation property for IdHealthPlan foreign key.
         /// </summary>
         public HealthPlan? HealthPlan { get; set; }
+        
+        // DEPRECATED property for backward compatibility
+        /// <summary>
+        /// Gets or sets the health plan ID this rule applies to.
+        /// DEPRECATED: Use IdHealthPlan instead.
+        /// </summary>
+        [Obsolete("Use IdHealthPlan instead")]
+        public int HealthPlanId 
+        { 
+            get => IdHealthPlan; 
+            set => IdHealthPlan = value; 
+        }
 
         /// <summary>
         /// Gets or sets the type of rule.
-        /// Examples: "Idade", "Renda", "Profissão", "Estado Civil".
+        /// Examples: "Age", "Income", "Profession", "Marital Status".
         /// Maps to SQL column: TipoRegra
         /// </summary>
         public string RuleType { get; set; } = string.Empty;

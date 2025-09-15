@@ -11,8 +11,17 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class Coverage : Entity, ICoverage
     {
         /// <summary>
+        /// Gets or sets the coverage ID.
+        /// Maps to SQL column: IdCoverage
+        /// </summary>
+        public int IdCoverage 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+        /// <summary>
         /// Gets or sets the name of the coverage.
-        /// For example: "Consultas Médicas", "Exames Laboratoriais", "Cirurgias".
+        /// For example: "Medical Consultations", "Laboratory Tests", "Surgeries".
         /// Maps to SQL column: Nome
         /// </summary>
         public string Name { get; set; } = string.Empty;
@@ -26,7 +35,7 @@ namespace HealthPlan.Quote.Domain.Implementation
 
         /// <summary>
         /// Gets or sets the type of coverage.
-        /// Possible values: Ambulatorial, Hospitalar, Obstétrico, Odontológico, Emergencial.
+        /// Possible values: Outpatient, Hospital, Obstetric, Dental, Emergency.
         /// Maps to SQL column: Tipo
         /// </summary>
         public string CoverageType { get; set; } = string.Empty;

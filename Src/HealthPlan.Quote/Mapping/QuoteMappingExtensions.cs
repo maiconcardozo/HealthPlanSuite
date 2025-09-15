@@ -17,12 +17,12 @@ namespace HealthPlan.Quote.Mapping
         {
             return new Domain.Implementation.Quote
             {
-                CompanyId = dto.CompanyId,
-                BeneficiaryId = dto.BeneficiaryId,
-                HealthPlanId = dto.HealthPlanId,
+                IdCompany = dto.IdCompany,
+                IdBeneficiary = dto.IdBeneficiary,
+                IdHealthPlan = dto.IdHealthPlan,
                 ValidUntil = dto.ValidUntil,
                 MonthlyPremium = dto.MonthlyPremium,
-                AgeRangeId = dto.AgeRangeId,
+                IdAgeRange = dto.IdAgeRange,
                 Notes = dto.Notes,
                 CreatedBy = dto.CreatedBy,
                 UpdatedBy = dto.UpdatedBy,
@@ -42,15 +42,15 @@ namespace HealthPlan.Quote.Mapping
         {
             return new QuoteResponseDTO
             {
-                Id = entity.Id,
-                CompanyId = entity.CompanyId,
-                BeneficiaryId = entity.BeneficiaryId,
-                HealthPlanId = entity.HealthPlanId,
+                IdQuote = entity.Id,
+                IdCompany = entity.IdCompany,
+                IdBeneficiary = entity.IdBeneficiary,
+                IdHealthPlan = entity.IdHealthPlan,
+                IdAgeRange = entity.IdAgeRange,
                 QuoteNumber = entity.QuoteNumber,
                 QuoteDate = entity.QuoteDate,
                 ValidUntil = entity.ValidUntil,
                 MonthlyPremium = entity.MonthlyPremium,
-                AgeRangeId = entity.AgeRangeId,
                 Status = entity.Status,
                 Notes = entity.Notes,
                 DtCreated = entity.DtCreated,

@@ -11,67 +11,122 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class Quote : Entity, IQuote
     {
         /// <summary>
+        /// Gets or sets the quote ID.
+        /// Maps to SQL column: IdQuote
+        /// </summary>
+        public int IdQuote 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+
+        /// <summary>
         /// Gets or sets the company ID that is providing the quote.
         /// References the Company entity.
-        /// Maps to SQL column: EmpresaId
+        /// Maps to SQL column: IdCompany
         /// </summary>
-        public int CompanyId { get; set; }
+        public int IdCompany { get; set; }
         
         /// <summary>
         /// Gets or sets the company that is providing the quote.
-        /// Navigation property for CompanyId foreign key.
+        /// Navigation property for IdCompany foreign key.
         /// </summary>
         public Company? Company { get; set; }
         
         /// <summary>
         /// Gets or sets the beneficiary ID for whom the quote is being generated.
         /// References the Beneficiary entity.
-        /// Maps to SQL column: BeneficiarioId
+        /// Maps to SQL column: IdBeneficiary
         /// </summary>
-        public int BeneficiaryId { get; set; }
+        public int IdBeneficiary { get; set; }
         
         /// <summary>
         /// Gets or sets the beneficiary for whom the quote is being generated.
-        /// Navigation property for BeneficiaryId foreign key.
+        /// Navigation property for IdBeneficiary foreign key.
         /// </summary>
         public Beneficiary? Beneficiary { get; set; }
         
         /// <summary>
         /// Gets or sets the health plan ID being quoted.
         /// References the HealthPlan entity.
-        /// Maps to SQL column: PlanoSaudeId
+        /// Maps to SQL column: IdHealthPlan
         /// </summary>
-        public int HealthPlanId { get; set; }
+        public int IdHealthPlan { get; set; }
         
         /// <summary>
         /// Gets or sets the health plan being quoted.
-        /// Navigation property for HealthPlanId foreign key.
+        /// Navigation property for IdHealthPlan foreign key.
         /// </summary>
         public HealthPlan? HealthPlan { get; set; }
         
         /// <summary>
         /// Gets or sets the age range ID used for premium calculation.
         /// References the AgeRange entity.
-        /// Maps to SQL column: FaixaEtariaId
+        /// Maps to SQL column: IdAgeRange
         /// </summary>
-        public int AgeRangeId { get; set; }
+        public int IdAgeRange { get; set; }
         
         /// <summary>
         /// Gets or sets the age range used for premium calculation.
-        /// Navigation property for AgeRangeId foreign key.
+        /// Navigation property for IdAgeRange foreign key.
         /// </summary>
         public AgeRange? AgeRange { get; set; }
+        
+        // DEPRECATED properties for backward compatibility
+        /// <summary>
+        /// Gets or sets the company ID that is providing the quote.
+        /// DEPRECATED: Use IdCompany instead.
+        /// </summary>
+        [Obsolete("Use IdCompany instead")]
+        public int CompanyId 
+        { 
+            get => IdCompany; 
+            set => IdCompany = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the beneficiary ID for whom the quote is being generated.
+        /// DEPRECATED: Use IdBeneficiary instead.
+        /// </summary>
+        [Obsolete("Use IdBeneficiary instead")]
+        public int BeneficiaryId 
+        { 
+            get => IdBeneficiary; 
+            set => IdBeneficiary = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the health plan ID being quoted.
+        /// DEPRECATED: Use IdHealthPlan instead.
+        /// </summary>
+        [Obsolete("Use IdHealthPlan instead")]
+        public int HealthPlanId 
+        { 
+            get => IdHealthPlan; 
+            set => IdHealthPlan = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the age range ID used for premium calculation.
+        /// DEPRECATED: Use IdAgeRange instead.
+        /// </summary>
+        [Obsolete("Use IdAgeRange instead")]
+        public int AgeRangeId 
+        { 
+            get => IdAgeRange; 
+            set => IdAgeRange = value; 
+        }
         
         /// <summary>
         /// Gets or sets the unique quote number.
         /// Must be unique across the system.
-        /// Maps to SQL column: NumeroCotacao
+        /// Maps to SQL column: QuoteNumber
         /// </summary>
         public string QuoteNumber { get; set; } = string.Empty;
         
         /// <summary>
         /// Gets or sets the date when the quote was generated.
-        /// Maps to SQL column: DataCotacao
+        /// Maps to SQL column: QuoteDate
         /// </summary>
         public DateTime QuoteDate { get; set; } = DateTime.UtcNow;
         

@@ -11,34 +11,67 @@ namespace HealthPlan.Quote.Domain.Implementation
     public class HealthPlan : Entity, IHealthPlan
     {
         /// <summary>
+        /// Gets or sets the health plan ID.
+        /// Maps to SQL column: IdHealthPlan
+        /// </summary>
+        public int IdHealthPlan 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+
+        /// <summary>
         /// Gets or sets the company ID that offers this health plan.
         /// References the Company entity.
-        /// Maps to SQL column: EmpresaId
+        /// Maps to SQL column: IdCompany
         /// </summary>
-        public int CompanyId { get; set; }
+        public int IdCompany { get; set; }
         
         /// <summary>
         /// Gets or sets the company that offers this health plan.
-        /// Navigation property for CompanyId foreign key.
+        /// Navigation property for IdCompany foreign key.
         /// </summary>
         public Company? Company { get; set; }
 
         /// <summary>
         /// Gets or sets the accommodation ID for this health plan.
         /// References the Accommodation entity.
-        /// Maps to SQL column: AcomodacaoId
+        /// Maps to SQL column: IdAccommodation
         /// </summary>
-        public int AccommodationId { get; set; }
+        public int IdAccommodation { get; set; }
 
         /// <summary>
         /// Gets or sets the accommodation for this health plan.
-        /// Navigation property for AccommodationId foreign key.
+        /// Navigation property for IdAccommodation foreign key.
         /// </summary>
         public Accommodation? Accommodation { get; set; }
         
+        // DEPRECATED properties for backward compatibility
+        /// <summary>
+        /// Gets or sets the company ID that offers this health plan.
+        /// DEPRECATED: Use IdCompany instead.
+        /// </summary>
+        [Obsolete("Use IdCompany instead")]
+        public int CompanyId 
+        { 
+            get => IdCompany; 
+            set => IdCompany = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the accommodation ID for this health plan.
+        /// DEPRECATED: Use IdAccommodation instead.
+        /// </summary>
+        [Obsolete("Use IdAccommodation instead")]
+        public int AccommodationId 
+        { 
+            get => IdAccommodation; 
+            set => IdAccommodation = value; 
+        }
+        
         /// <summary>
         /// Gets or sets the name of the health plan.
-        /// For example: "Plano Básico", "Plano Executivo", "Plano Premium".
+        /// For example: "Basic Plan", "Executive Plan", "Premium Plan".
         /// Maps to SQL column: Nome
         /// </summary>
         public string Name { get; set; } = string.Empty;
@@ -59,7 +92,7 @@ namespace HealthPlan.Quote.Domain.Implementation
 
         /// <summary>
         /// Gets or sets the category of the health plan.
-        /// Possible values: Individual, Familiar, Empresarial.
+        /// Possible values: Individual, Family, Corporate.
         /// Maps to SQL column: Categoria
         /// </summary>
         public string Category { get; set; } = string.Empty;
@@ -78,7 +111,7 @@ namespace HealthPlan.Quote.Domain.Implementation
         
         /// <summary>
         /// Gets or sets the type of contract.
-        /// Possible values: Individual, Coletivo por Adesão, Empresarial.
+        /// Possible values: Individual, Group Membership, Corporate.
         /// Maps to SQL column: TipoContratacao
         /// </summary>
         public string ContractType { get; set; } = string.Empty;
@@ -92,7 +125,7 @@ namespace HealthPlan.Quote.Domain.Implementation
 
         /// <summary>
         /// Gets or sets the healthcare segmentation.
-        /// Possible values: Ambulatorial, Hospitalar, Obstetrícia, Odontológica.
+        /// Possible values: Outpatient, Hospital, Obstetric, Dental.
         /// Maps to SQL column: SegmentacaoAssistencial
         /// </summary>
         public string HealthcareSegmentation { get; set; } = string.Empty;

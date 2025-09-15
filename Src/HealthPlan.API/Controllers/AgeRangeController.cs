@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing Age Range entities (Faixas Etárias).
+    /// Controller for managing Age Range entities.
     /// Provides comprehensive CRUD operations for age ranges used in premium calculations.
     /// </summary>
     [ApiController]
