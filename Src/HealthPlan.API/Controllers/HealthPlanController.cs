@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing Health Plan entities (Planos de Saúde).
+    /// Controller for managing Health Plan entities.
     /// Provides comprehensive CRUD operations for health insurance plans offered by companies.
     /// </summary>
     [ApiController]

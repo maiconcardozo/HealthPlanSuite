@@ -71,7 +71,7 @@ namespace HealthPlan.Quote.Domain.Implementation
         
         /// <summary>
         /// Gets or sets the name of the health plan.
-        /// For example: "Plano Básico", "Plano Executivo", "Plano Premium".
+        /// For example: "Basic Plan", "Executive Plan", "Premium Plan".
         /// Maps to SQL column: Nome
         /// </summary>
         public string Name { get; set; } = string.Empty;
@@ -92,7 +92,7 @@ namespace HealthPlan.Quote.Domain.Implementation
 
         /// <summary>
         /// Gets or sets the category of the health plan.
-        /// Possible values: Individual, Familiar, Empresarial.
+        /// Possible values: Individual, Family, Corporate.
         /// Maps to SQL column: Categoria
         /// </summary>
         public string Category { get; set; } = string.Empty;
@@ -111,7 +111,7 @@ namespace HealthPlan.Quote.Domain.Implementation
         
         /// <summary>
         /// Gets or sets the type of contract.
-        /// Possible values: Individual, Coletivo por Adesão, Empresarial.
+        /// Possible values: Individual, Group Membership, Corporate.
         /// Maps to SQL column: TipoContratacao
         /// </summary>
         public string ContractType { get; set; } = string.Empty;
@@ -125,7 +125,7 @@ namespace HealthPlan.Quote.Domain.Implementation
 
         /// <summary>
         /// Gets or sets the healthcare segmentation.
-        /// Possible values: Ambulatorial, Hospitalar, Obstetrícia, Odontológica.
+        /// Possible values: Outpatient, Hospital, Obstetric, Dental.
         /// Maps to SQL column: SegmentacaoAssistencial
         /// </summary>
         public string HealthcareSegmentation { get; set; } = string.Empty;

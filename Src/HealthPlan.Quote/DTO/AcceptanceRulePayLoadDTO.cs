@@ -13,7 +13,7 @@ namespace HealthPlan.Quote.DTO
 
         /// <summary>
         /// Gets or sets the type of rule.
-        /// Examples: "Idade", "Renda", "Profissão", "Estado Civil".
+        /// Examples: "Age", "Income", "Profession", "Marital Status".
         /// </summary>
         public string RuleType { get; set; } = string.Empty;
 

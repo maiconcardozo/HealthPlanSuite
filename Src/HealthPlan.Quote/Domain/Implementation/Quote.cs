@@ -120,13 +120,13 @@ namespace HealthPlan.Quote.Domain.Implementation
         /// <summary>
         /// Gets or sets the unique quote number.
         /// Must be unique across the system.
-        /// Maps to SQL column: NumeroCotacao
+        /// Maps to SQL column: QuoteNumber
         /// </summary>
         public string QuoteNumber { get; set; } = string.Empty;
         
         /// <summary>
         /// Gets or sets the date when the quote was generated.
-        /// Maps to SQL column: DataCotacao
+        /// Maps to SQL column: QuoteDate
         /// </summary>
         public DateTime QuoteDate { get; set; } = DateTime.UtcNow;
         

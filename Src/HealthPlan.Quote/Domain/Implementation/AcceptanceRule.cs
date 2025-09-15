@@ -47,7 +47,7 @@ namespace HealthPlan.Quote.Domain.Implementation
 
         /// <summary>
         /// Gets or sets the type of rule.
-        /// Examples: "Idade", "Renda", "Profissão", "Estado Civil".
+        /// Examples: "Age", "Income", "Profession", "Marital Status".
         /// Maps to SQL column: TipoRegra
         /// </summary>
         public string RuleType { get; set; } = string.Empty;

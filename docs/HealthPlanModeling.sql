@@ -1,12 +1,12 @@
 -- ==================================================
--- MODELAGEM RELACIONAL COMPLETA - SISTEMA PLANO DE SAÚDE
--- Arquivo: ModelagemPlanoSaude.sql
--- Versão: 1.0
--- Data: 2025-01-17
--- Descrição: Modelagem completa para sistema de cotação de planos de saúde
+-- COMPLETE RELATIONAL MODELING - HEALTH PLAN SYSTEM
+-- File: HealthPlanModeling.sql
+-- Version: 1.0
+-- Date: 2025-01-17
+-- Description: Complete modeling for health plan quotation system
 -- ==================================================
 
--- Configurações do banco
+-- Database configuration
 SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -14,31 +14,31 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 -- ==================================================
--- TABELA: Empresas (Seguradoras)
+-- TABLE: Companies (Insurance Companies)
 -- ==================================================
-CREATE TABLE IF NOT EXISTS `Empresa` (
+CREATE TABLE IF NOT EXISTS `Company` (
     `IdCompany` int NOT NULL AUTO_INCREMENT,
-    `Nome` varchar(255) NOT NULL COMMENT 'Nome da empresa seguradora',
-    `NomeFantasia` varchar(255) DEFAULT NULL COMMENT 'Nome fantasia da empresa',
-    `CNPJ` varchar(18) NOT NULL UNIQUE COMMENT 'CNPJ da empresa (formato: XX.XXX.XXX/XXXX-XX)',
-    `Email` varchar(255) DEFAULT NULL COMMENT 'Email de contato da empresa',
-    `Telefone` varchar(20) DEFAULT NULL COMMENT 'Telefone de contato',
-    `Endereco` varchar(500) DEFAULT NULL COMMENT 'Endereço completo',
-    `Cidade` varchar(100) DEFAULT NULL COMMENT 'Cidade',
-    `Estado` varchar(2) DEFAULT NULL COMMENT 'UF do estado',
-    `CEP` varchar(10) DEFAULT NULL COMMENT 'CEP (formato: XXXXX-XXX)',
-    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Registro ativo',
-    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Data de criação',
-    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Data de atualização',
-    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Data de exclusão lógica',
-    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'Usuário que criou',
-    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que atualizou',
-    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'Usuário que excluiu',
+    `Name` varchar(255) NOT NULL COMMENT 'Insurance company name',
+    `TradeName` varchar(255) DEFAULT NULL COMMENT 'Company trade name',
+    `CNPJ` varchar(18) NOT NULL UNIQUE COMMENT 'Company CNPJ (format: XX.XXX.XXX/XXXX-XX)',
+    `Email` varchar(255) DEFAULT NULL COMMENT 'Company contact email',
+    `Phone` varchar(20) DEFAULT NULL COMMENT 'Contact phone number',
+    `Address` varchar(500) DEFAULT NULL COMMENT 'Complete address',
+    `City` varchar(100) DEFAULT NULL COMMENT 'City',
+    `State` varchar(2) DEFAULT NULL COMMENT 'State abbreviation',
+    `PostalCode` varchar(10) DEFAULT NULL COMMENT 'Postal code (format: XXXXX-XXX)',
+    `IsActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Active record',
+    `DtCreated` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Creation date',
+    `DtUpdated` datetime(6) DEFAULT NULL COMMENT 'Update date',
+    `DtDeleted` datetime(6) DEFAULT NULL COMMENT 'Logical deletion date',
+    `CreatedBy` varchar(256) NOT NULL DEFAULT 'System' COMMENT 'User who created',
+    `UpdatedBy` varchar(256) DEFAULT NULL COMMENT 'User who updated',
+    `DeletedBy` varchar(256) DEFAULT NULL COMMENT 'User who deleted',
     PRIMARY KEY (`IdCompany`),
-    INDEX `IX_Empresa_CNPJ` (`CNPJ`),
-    INDEX `IX_Empresa_Nome` (`Nome`),
-    INDEX `IX_Empresa_IsActive` (`IsActive`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Empresas seguradoras que oferecem planos de saúde';
+    INDEX `IX_Company_CNPJ` (`CNPJ`),
+    INDEX `IX_Company_Name` (`Name`),
+    INDEX `IX_Company_IsActive` (`IsActive`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Insurance companies that offer health plans';
 
 -- ==================================================
 -- TABELA: Faixas Etárias

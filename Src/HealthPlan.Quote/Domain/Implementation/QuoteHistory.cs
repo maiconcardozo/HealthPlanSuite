@@ -12,7 +12,7 @@ namespace HealthPlan.Quote.Domain.Implementation
     {
         /// <summary>
         /// Gets or sets the quote history ID.
-        /// Maps to SQL column: IdHistoricoCotacao
+        /// Maps to SQL column: IdQuoteHistory
         /// </summary>
         public int IdHistoricoCotacao 
         { 

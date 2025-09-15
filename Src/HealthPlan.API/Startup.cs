@@ -11,8 +11,8 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API
 {
     /// <summary>
-    /// Classe responsável pela configuração inicial da aplicação ASP.NET Core.
-    /// Organiza a configuração de serviços e do pipeline de middlewares de forma estruturada.
+    /// Class responsible for ASP.NET Core application initial configuration.
+    /// Organizes service configuration and middleware pipeline in a structured way.
     /// </summary>
     public class Startup
     {

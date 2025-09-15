@@ -74,8 +74,8 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
                 .HasDatabaseName("IX_Quotes_QuoteNumber_Unique");
 
             // Create indexes for efficient filtering
-            builder.HasIndex(e => e.IdBeneficiario)
-                .HasDatabaseName("IX_Quotes_IdBeneficiario");
+            builder.HasIndex(e => e.IdBeneficiary)
+                .HasDatabaseName("IX_Quotes_IdBeneficiary");
 
             builder.HasIndex(e => e.IdCompany)
                 .HasDatabaseName("IX_Quotes_IdCompany");
