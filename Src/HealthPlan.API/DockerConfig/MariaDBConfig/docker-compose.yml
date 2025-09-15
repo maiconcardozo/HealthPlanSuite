@@ -1,11 +1,11 @@
 ﻿services:
   mariadb:
     image: mariadb:11
-    container_name: mariadb_auth
+    container_name: mariadb_healthplan
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Authentication
+      MYSQL_DATABASE: HealthPlan
       MYSQL_USER: sa
       MYSQL_PASSWORD: ewufexop$     
     ports:
