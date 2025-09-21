@@ -1,5 +1,6 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
+using HealthPlan.API.Util;
 using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
@@ -128,15 +129,8 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new adhesion fee.
+        /// ResourceAPI.DocumentationCreateAdhesionFee.
         /// </summary>
-        /// <param name="taxaAdesaoPayLoad">Adhesion fee data to create</param>
-        /// <returns>Returns created TaxaAdesao on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Adhesion fee created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Adhesion fee already exists</response>
-        /// <response code="500">Internal server error</response>
         [HttpPost("")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(TaxaAdesaoResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -148,15 +142,22 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateTaxaAdesao([FromBody] TaxaAdesaoPayLoadDTO taxaAdesaoPayLoad)
+        public async Task<IActionResult> CreateTaxaAdesao([FromBody] TaxaAdesaoPayLoadDTO taxaAdesaoPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = await ValidationHelper.ValidateEntityAsync(taxaAdesaoPayLoad, serviceProvider, this);
+
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
             try
             {
                 var taxaAdesao = CleanTemplateApplicationMapperInitializer.Mapper.Map<TaxaAdesao>(taxaAdesaoPayLoad);
                 _taxaAdesaoService.AddTaxaAdesao(taxaAdesao);
 
                 var taxaAdesaoResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<TaxaAdesaoResponseDTO>(taxaAdesao);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, "Adhesion fee created successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -182,16 +183,8 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing adhesion fee.
+        /// ResourceAPI.DocumentationUpdateAdhesionFee.
         /// </summary>
-        /// <param name="id">Adhesion fee ID to update</param>
-        /// <param name="taxaAdesaoPayLoad">Updated adhesion fee data</param>
-        /// <returns>Returns updated TaxaAdesao on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Adhesion fee updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Adhesion fee not found</response>
-        /// <response code="500">Internal server error</response>
         [HttpPut("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TaxaAdesaoResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -203,14 +196,21 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateTaxaAdesao(int id, [FromBody] TaxaAdesaoPayLoadDTO taxaAdesaoPayLoad)
+        public async Task<IActionResult> UpdateTaxaAdesao(int id, [FromBody] TaxaAdesaoPayLoadDTO taxaAdesaoPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = await ValidationHelper.ValidateEntityAsync(taxaAdesaoPayLoad, serviceProvider, this);
+
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
             try
             {
                 var existingTaxaAdesao = _taxaAdesaoService.GetById(id);
                 if (existingTaxaAdesao == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Adhesion fee not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
@@ -219,7 +219,7 @@ namespace HealthPlan.API.Controllers
                 _taxaAdesaoService.UpdateTaxaAdesao(taxaAdesao);
 
                 var taxaAdesaoResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<TaxaAdesaoResponseDTO>(taxaAdesao);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, "Adhesion fee updated successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)

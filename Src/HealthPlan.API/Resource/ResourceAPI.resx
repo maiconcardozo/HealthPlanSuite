@@ -639,4 +639,10 @@
   <data name="CleanEntityDeletedSuccessfully" xml:space="preserve">
     <value>CleanEntity deleted successfully.</value>
   </data>
+  <data name="DocumentationCreateAdhesionFee" xml:space="preserve">
+    <value>Creates a new adhesion fee with the provided information.</value>
+  </data>
+  <data name="DocumentationUpdateAdhesionFee" xml:space="preserve">
+    <value>Updates an existing adhesion fee with the provided information.</value>
+  </data>
 </root>
