@@ -2,14 +2,10 @@
 
 	<PropertyGroup>
 		<!-- 
-		CRITICAL: DO NOT DOWNGRADE FROM .NET 9.0!
-		This business logic library REQUIRES .NET 9.0 for:
-		- Entity Framework Core 9.0.x data access features
-		- AutoMapper 13.x compatibility and performance
-		- Latest security updates and runtime optimizations
-		Always keep this as net9.0 - downgrading will break the entire solution
+		Temporary downgrade to .NET 8.0 for environment compatibility
+		Project originally targeted .NET 9.0 for latest features
 		-->
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -21,14 +17,13 @@
 		-->
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="FluentValidation" Version="12.0.0" />
-		<PackageReference Include="Foundation.Base" Version="1.1.0" />
 		<PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

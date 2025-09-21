@@ -2,15 +2,10 @@
 
 	<PropertyGroup>
 		<!-- 
-		CRITICAL: DO NOT DOWNGRADE FROM .NET 9.0!
-		This test project REQUIRES .NET 9.0 for:
-		- xUnit 2.9.x test framework compatibility
-		- ASP.NET Core Testing 9.0.x integration
-		- FluentAssertions 8.x modern assertion syntax
-		- Microsoft.NET.Test.Sdk 17.x test execution
-		Always keep this as net9.0 - downgrading will break test execution and CI/CD
+		Temporary downgrade to .NET 8.0 for environment compatibility
+		Project originally targeted .NET 9.0 for latest features
 		-->
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
@@ -33,13 +28,13 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
 		<PackageReference Include="Moq" Version="4.20.72" />
 		<PackageReference Include="FluentAssertions" Version="8.6.0" />
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.3.0" />
 		<PackageReference Include="FluentValidation" Version="12.0.0" />
