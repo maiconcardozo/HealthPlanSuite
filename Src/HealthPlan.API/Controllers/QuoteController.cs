@@ -1,5 +1,6 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
+using HealthPlan.API.Util;
 using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
@@ -191,15 +192,22 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateQuote([FromBody] QuotePayLoadDTO quotePayLoad)
+        public async Task<IActionResult> CreateQuote([FromBody] QuotePayLoadDTO quotePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = await ValidationHelper.ValidateEntityAsync(quotePayLoad, serviceProvider, this);
+
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
             try
             {
                 var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
                 _quoteService.AddQuote(quote);
 
                 var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, "Quote created successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -246,14 +254,21 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateQuote(int id, [FromBody] QuotePayLoadDTO quotePayLoad)
+        public async Task<IActionResult> UpdateQuote(int id, [FromBody] QuotePayLoadDTO quotePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = await ValidationHelper.ValidateEntityAsync(quotePayLoad, serviceProvider, this);
+
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
             try
             {
                 var existingQuote = _quoteService.GetById(id);
                 if (existingQuote == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
@@ -262,7 +277,7 @@ namespace HealthPlan.API.Controllers
                 _quoteService.UpdateQuote(quote);
 
                 var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, "Quote updated successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)

@@ -116,9 +116,24 @@ namespace HealthPlan.API
                     return docName switch
                     {
                         ApplicationConstants.Api.SwaggerDefinitions.Authentication =>
-                            controllerName?.Equals("Quote", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("AcceptanceRule", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("Accommodation", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("AdhesionFee", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("AgeRange", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("Beneficiary", StringComparison.OrdinalIgnoreCase) == true ||
                             controllerName?.Equals("Company", StringComparison.OrdinalIgnoreCase) == true ||
-                            controllerName?.Equals("Coverage", StringComparison.OrdinalIgnoreCase) == true,
+                            controllerName?.Equals("CoparticipacaoProcedimento", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("ProcedureCoparticipation", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("Coverage", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("DescontoPromocional", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("PromotionalDiscount", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("HealthPlan", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("PlanCoverage", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("PrecoPlanoFaixa", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("PlanPriceRange", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("Quote", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("QuoteHistory", StringComparison.OrdinalIgnoreCase) == true ||
+                            controllerName?.Equals("TaxaAdesao", StringComparison.OrdinalIgnoreCase) == true,
                         _ => false
                     };
                 });
