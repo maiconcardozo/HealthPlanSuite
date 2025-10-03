@@ -53,13 +53,13 @@ The Authentication project has been significantly enhanced with a complete Found
 
 **Problem**: Mixed .NET versions and outdated packages.
 
-**Solution**: Standardized to .NET 9.0 across all projects:
+**Solution**: Standardized to .NET 8.0 across all projects:
 
 #### Framework Updates
-- **Target Framework**: Updated from mixed versions to `.NET 9.0`
-- **API Project**: `Authentication.API.csproj` → .NET 9.0
-- **Domain Project**: `Authentication.Login.csproj` → .NET 9.0
-- **Foundation**: `Foundation.Base.csproj` → .NET 9.0
+- **Target Framework**: Updated from mixed versions to `.NET 8.0`
+- **API Project**: `Authentication.API.csproj` → .NET 8.0
+- **Domain Project**: `Authentication.Login.csproj` → .NET 8.0
+- **Foundation**: `Foundation.Base.csproj` → .NET 8.0
 
 #### Package Version Updates
 - `Microsoft.AspNetCore.Authentication.JwtBearer`: Updated to 9.0.7
@@ -260,7 +260,7 @@ The Authentication project has been significantly enhanced with a complete Found
 The Authentication project has been transformed from a non-functional codebase with broken dependencies into a robust, well-architected authentication service following .NET best practices. The implementation includes:
 
 - ✅ Complete Foundation.Base library with essential patterns
-- ✅ .NET 9.0 framework upgrade with latest packages
+- ✅ .NET 8.0 framework upgrade with latest packages
 - ✅ Clean Architecture implementation
 - ✅ Comprehensive documentation
 - ✅ Security improvements

@@ -7,7 +7,7 @@ Este guia fornece instruções passo a passo para configurar e usar o serviço d
 Antes de começar, certifique-se de ter os seguintes componentes instalados:
 
 ### Obrigatórios
-- **.NET 9.0 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/9.0)
+- **.NET 8.0 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/8.0)
 - **MySQL 8.0+** - [Download](https://dev.mysql.com/downloads/mysql/)
 - **Git** - [Download](https://git-scm.com/)
 
