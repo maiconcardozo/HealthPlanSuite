@@ -1,520 +1,520 @@
-# 🗺️ Mapeamento do Projeto HealthPlan Suite
+# 🗺️ HealthPlan Suite Project Mapping
 
-Este documento fornece um mapeamento completo dos controllers, endpoints, classes principais e arquitetura do projeto HealthPlan Suite.
+This document provides a complete mapping of controllers, endpoints, main classes, and architecture of the HealthPlan Suite project.
 
-## 📋 Índice
-- [Controllers e Endpoints](#controllers-e-endpoints)
-- [Classes Principais](#classes-principais)
-- [Organização do Projeto](#organização-do-projeto)
-- [Observações](#observações)
+## 📋 Table of Contents
+- [Controllers and Endpoints](#controllers-and-endpoints)
+- [Main Classes](#main-classes)
+- [Project Organization](#project-organization)
+- [Notes](#notes)
 
 ---
 
-## 🎮 Controllers e Endpoints
+## 🎮 Controllers and Endpoints
 
 ### 1. PlanCoverageController
-**Descrição**: Gerencia operações CRUD de coberturas de plano.
+**Description**: Manages CRUD operations for plan coverages.
 
-**Rota Base**: `/PlanCoverage`
+**Base Route**: `/PlanCoverage`
 
 **Endpoints**:
-- `GET /PlanCoverage/plan-coverages` - Recupera todas as coberturas de plano ativas
-- `GET /PlanCoverage/{id}` - Recupera uma cobertura de plano específica por ID
-- `GET /PlanCoverage/health-plan/{healthPlanId}` - Recupera coberturas por ID do plano de saúde
-- `POST /PlanCoverage` - Cria uma nova cobertura de plano
-- `PUT /PlanCoverage/{id}` - Atualiza uma cobertura de plano existente
-- `DELETE /PlanCoverage/{id}` - Remove uma cobertura de plano
+- `GET /PlanCoverage/plan-coverages` - Retrieves all active plan coverages
+- `GET /PlanCoverage/{id}` - Retrieves a specific plan coverage by ID
+- `GET /PlanCoverage/health-plan/{healthPlanId}` - Retrieves coverages by health plan ID
+- `POST /PlanCoverage` - Creates a new plan coverage
+- `PUT /PlanCoverage/{id}` - Updates an existing plan coverage
+- `DELETE /PlanCoverage/{id}` - Deletes a plan coverage
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/PlanCoverageController.cs`
+**File**: `Src/HealthPlan.API/Controllers/PlanCoverageController.cs`
 
 ---
 
 ### 2. CoverageController
-**Descrição**: Gerencia as coberturas disponíveis no sistema.
+**Description**: Manages available coverages in the system.
 
-**Rota Base**: `/Coverage`
+**Base Route**: `/Coverage`
 
 **Endpoints**:
-- `GET /Coverage/coverages` - Lista todas as coberturas
-- `GET /Coverage/{id}` - Recupera uma cobertura por ID
-- `GET /Coverage/type/{coverageType}` - Filtra coberturas por tipo
-- `POST /Coverage` - Cria nova cobertura
-- `PUT /Coverage/{id}` - Atualiza cobertura existente
-- `DELETE /Coverage/{id}` - Remove cobertura
+- `GET /Coverage/coverages` - Lists all coverages
+- `GET /Coverage/{id}` - Retrieves a coverage by ID
+- `GET /Coverage/type/{coverageType}` - Filters coverages by type
+- `POST /Coverage` - Creates new coverage
+- `PUT /Coverage/{id}` - Updates existing coverage
+- `DELETE /Coverage/{id}` - Deletes coverage
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/CoverageController.cs`
+**File**: `Src/HealthPlan.API/Controllers/CoverageController.cs`
 
 ---
 
 ### 3. QuoteController
-**Descrição**: Gerencia cotações de planos de saúde.
+**Description**: Manages health plan quotes.
 
-**Rota Base**: `/Quote`
+**Base Route**: `/Quote`
 
 **Endpoints**:
-- `GET /Quote/quotes` - Lista todas as cotações
-- `GET /Quote/{id}` - Recupera cotação por ID
-- `POST /Quote` - Cria nova cotação
-- `PUT /Quote/{id}` - Atualiza cotação
-- `DELETE /Quote/{id}` - Remove cotação
+- `GET /Quote/quotes` - Lists all quotes
+- `GET /Quote/{id}` - Retrieves quote by ID
+- `POST /Quote` - Creates new quote
+- `PUT /Quote/{id}` - Updates quote
+- `DELETE /Quote/{id}` - Deletes quote
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/QuoteController.cs`
+**File**: `Src/HealthPlan.API/Controllers/QuoteController.cs`
 
 ---
 
 ### 4. HealthPlanController
-**Descrição**: Gerencia planos de saúde.
+**Description**: Manages health plans.
 
-**Rota Base**: `/HealthPlan`
+**Base Route**: `/HealthPlan`
 
 **Endpoints**:
-- `GET /HealthPlan/healthplans` - Lista todos os planos
-- `GET /HealthPlan/{id}` - Recupera plano por ID
-- `GET /HealthPlan/company/{companyId}` - Filtra planos por operadora
-- `GET /HealthPlan/code/{code}` - Busca plano por código
-- `POST /HealthPlan` - Cria novo plano
-- `PUT /HealthPlan/{id}` - Atualiza plano
-- `DELETE /HealthPlan/{id}` - Remove plano
+- `GET /HealthPlan/healthplans` - Lists all plans
+- `GET /HealthPlan/{id}` - Retrieves plan by ID
+- `GET /HealthPlan/company/{companyId}` - Filters plans by insurance company
+- `GET /HealthPlan/code/{code}` - Searches plan by code
+- `POST /HealthPlan` - Creates new plan
+- `PUT /HealthPlan/{id}` - Updates plan
+- `DELETE /HealthPlan/{id}` - Deletes plan
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/HealthPlanController.cs`
+**File**: `Src/HealthPlan.API/Controllers/HealthPlanController.cs`
 
 ---
 
 ### 5. CompanyController
-**Descrição**: Gerencia operadoras de planos de saúde.
+**Description**: Manages health plan insurance companies.
 
-**Rota Base**: `/Company`
+**Base Route**: `/Company`
 
 **Endpoints**:
-- `GET /Company/companies` - Lista todas as operadoras
-- `GET /Company/{id}` - Recupera operadora por ID
-- `GET /Company/cnpj/{cnpj}` - Busca operadora por CNPJ
-- `POST /Company` - Cria nova operadora
-- `PUT /Company/{id}` - Atualiza operadora
-- `DELETE /Company/{id}` - Remove operadora
+- `GET /Company/companies` - Lists all companies
+- `GET /Company/{id}` - Retrieves company by ID
+- `GET /Company/cnpj/{cnpj}` - Searches company by CNPJ (Brazilian tax ID)
+- `POST /Company` - Creates new company
+- `PUT /Company/{id}` - Updates company
+- `DELETE /Company/{id}` - Deletes company
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/CompanyController.cs`
+**File**: `Src/HealthPlan.API/Controllers/CompanyController.cs`
 
 ---
 
 ### 6. BeneficiaryController
-**Descrição**: Gerencia beneficiários dos planos.
+**Description**: Manages plan beneficiaries.
 
-**Rota Base**: `/Beneficiary`
+**Base Route**: `/Beneficiary`
 
 **Endpoints**:
-- `GET /Beneficiary/beneficiaries` - Lista todos os beneficiários
-- `GET /Beneficiary/{id}` - Recupera beneficiário por ID
-- `GET /Beneficiary/cpf/{cpf}` - Busca beneficiário por CPF
-- `POST /Beneficiary` - Cria novo beneficiário
-- `PUT /Beneficiary/{id}` - Atualiza beneficiário
-- `DELETE /Beneficiary/{id}` - Remove beneficiário
+- `GET /Beneficiary/beneficiaries` - Lists all beneficiaries
+- `GET /Beneficiary/{id}` - Retrieves beneficiary by ID
+- `GET /Beneficiary/cpf/{cpf}` - Searches beneficiary by CPF (Brazilian ID)
+- `POST /Beneficiary` - Creates new beneficiary
+- `PUT /Beneficiary/{id}` - Updates beneficiary
+- `DELETE /Beneficiary/{id}` - Deletes beneficiary
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/BeneficiaryController.cs`
+**File**: `Src/HealthPlan.API/Controllers/BeneficiaryController.cs`
 
 ---
 
 ### 7. AgeRangeController
-**Descrição**: Gerencia faixas etárias para cálculo de preços.
+**Description**: Manages age ranges for price calculation.
 
-**Rota Base**: `/AgeRange`
+**Base Route**: `/AgeRange`
 
 **Endpoints**:
-- `GET /AgeRange/age-ranges` - Lista todas as faixas etárias
-- `GET /AgeRange/{id}` - Recupera faixa etária por ID
-- `POST /AgeRange` - Cria nova faixa etária
-- `PUT /AgeRange/{id}` - Atualiza faixa etária
-- `DELETE /AgeRange/{id}` - Remove faixa etária
+- `GET /AgeRange/age-ranges` - Lists all age ranges
+- `GET /AgeRange/{id}` - Retrieves age range by ID
+- `POST /AgeRange` - Creates new age range
+- `PUT /AgeRange/{id}` - Updates age range
+- `DELETE /AgeRange/{id}` - Deletes age range
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/AgeRangeController.cs`
+**File**: `Src/HealthPlan.API/Controllers/AgeRangeController.cs`
 
 ---
 
 ### 8. AccommodationController
-**Descrição**: Gerencia tipos de acomodação hospitalar.
+**Description**: Manages hospital accommodation types.
 
-**Rota Base**: `/Accommodation`
+**Base Route**: `/Accommodation`
 
 **Endpoints**:
-- `GET /Accommodation/accommodations` - Lista todas as acomodações
-- `GET /Accommodation/{id}` - Recupera acomodação por ID
-- `GET /Accommodation/type/{type}` - Filtra acomodações por tipo
-- `POST /Accommodation` - Cria nova acomodação
-- `PUT /Accommodation/{id}` - Atualiza acomodação
-- `DELETE /Accommodation/{id}` - Remove acomodação
+- `GET /Accommodation/accommodations` - Lists all accommodations
+- `GET /Accommodation/{id}` - Retrieves accommodation by ID
+- `GET /Accommodation/type/{type}` - Filters accommodations by type
+- `POST /Accommodation` - Creates new accommodation
+- `PUT /Accommodation/{id}` - Updates accommodation
+- `DELETE /Accommodation/{id}` - Deletes accommodation
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/AccommodationController.cs`
+**File**: `Src/HealthPlan.API/Controllers/AccommodationController.cs`
 
 ---
 
 ### 9. AcceptanceRuleController
-**Descrição**: Gerencia regras de aceitação de planos.
+**Description**: Manages plan acceptance rules.
 
-**Rota Base**: `/AcceptanceRule`
+**Base Route**: `/AcceptanceRule`
 
 **Endpoints**:
-- `GET /AcceptanceRule/acceptance-rules` - Lista todas as regras de aceitação
-- `GET /AcceptanceRule/{id}` - Recupera regra por ID
-- `GET /AcceptanceRule/health-plan/{healthPlanId}` - Filtra regras por plano
-- `POST /AcceptanceRule` - Cria nova regra
-- `PUT /AcceptanceRule/{id}` - Atualiza regra
-- `DELETE /AcceptanceRule/{id}` - Remove regra
+- `GET /AcceptanceRule/acceptance-rules` - Lists all acceptance rules
+- `GET /AcceptanceRule/{id}` - Retrieves rule by ID
+- `GET /AcceptanceRule/health-plan/{healthPlanId}` - Filters rules by plan
+- `POST /AcceptanceRule` - Creates new rule
+- `PUT /AcceptanceRule/{id}` - Updates rule
+- `DELETE /AcceptanceRule/{id}` - Deletes rule
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/AcceptanceRuleController.cs`
+**File**: `Src/HealthPlan.API/Controllers/AcceptanceRuleController.cs`
 
 ---
 
 ### 10. QuoteHistoryController
-**Descrição**: Gerencia histórico de cotações.
+**Description**: Manages quote history.
 
-**Rota Base**: `/QuoteHistory`
+**Base Route**: `/QuoteHistory`
 
 **Endpoints**:
-- `GET /QuoteHistory/quote-histories` - Lista todo o histórico
-- `GET /QuoteHistory/{id}` - Recupera histórico por ID
-- `GET /QuoteHistory/quote/{quoteId}` - Filtra histórico por cotação
-- `POST /QuoteHistory` - Cria novo registro de histórico
-- `PUT /QuoteHistory/{id}` - Atualiza histórico
-- `DELETE /QuoteHistory/{id}` - Remove histórico
+- `GET /QuoteHistory/quote-histories` - Lists all history
+- `GET /QuoteHistory/{id}` - Retrieves history by ID
+- `GET /QuoteHistory/quote/{quoteId}` - Filters history by quote
+- `POST /QuoteHistory` - Creates new history record
+- `PUT /QuoteHistory/{id}` - Updates history
+- `DELETE /QuoteHistory/{id}` - Deletes history
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/QuoteHistoryController.cs`
+**File**: `Src/HealthPlan.API/Controllers/QuoteHistoryController.cs`
 
 ---
 
 ### 11. TaxaAdesaoController
-**Descrição**: Gerencia taxas de adesão aos planos.
+**Description**: Manages plan adhesion fees.
 
-**Rota Base**: `/TaxaAdesao`
+**Base Route**: `/TaxaAdesao`
 
 **Endpoints**:
-- `GET /TaxaAdesao/taxas-adesao` - Lista todas as taxas
-- `GET /TaxaAdesao/{id}` - Recupera taxa por ID
-- `POST /TaxaAdesao` - Cria nova taxa
-- `PUT /TaxaAdesao/{id}` - Atualiza taxa
-- `DELETE /TaxaAdesao/{id}` - Remove taxa
+- `GET /TaxaAdesao/taxas-adesao` - Lists all fees
+- `GET /TaxaAdesao/{id}` - Retrieves fee by ID
+- `POST /TaxaAdesao` - Creates new fee
+- `PUT /TaxaAdesao/{id}` - Updates fee
+- `DELETE /TaxaAdesao/{id}` - Deletes fee
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/TaxaAdesaoController.cs`
+**File**: `Src/HealthPlan.API/Controllers/TaxaAdesaoController.cs`
 
 ---
 
 ### 12. DescontoPromocionalController
-**Descrição**: Gerencia descontos promocionais.
+**Description**: Manages promotional discounts.
 
-**Rota Base**: `/DescontoPromocional`
+**Base Route**: `/DescontoPromocional`
 
 **Endpoints**:
-- `GET /DescontoPromocional/descontos-promocionais` - Lista todos os descontos
-- `GET /DescontoPromocional/{id}` - Recupera desconto por ID
-- `POST /DescontoPromocional` - Cria novo desconto
-- `PUT /DescontoPromocional/{id}` - Atualiza desconto
-- `DELETE /DescontoPromocional/{id}` - Remove desconto
+- `GET /DescontoPromocional/descontos-promocionais` - Lists all discounts
+- `GET /DescontoPromocional/{id}` - Retrieves discount by ID
+- `POST /DescontoPromocional` - Creates new discount
+- `PUT /DescontoPromocional/{id}` - Updates discount
+- `DELETE /DescontoPromocional/{id}` - Deletes discount
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/DescontoPromocionalController.cs`
+**File**: `Src/HealthPlan.API/Controllers/DescontoPromocionalController.cs`
 
 ---
 
 ### 13. CoparticipacaoProcedimentoController
-**Descrição**: Gerencia coparticipação em procedimentos.
+**Description**: Manages procedure co-participation.
 
-**Rota Base**: `/CoparticipacaoProcedimento`
+**Base Route**: `/CoparticipacaoProcedimento`
 
 **Endpoints**:
-- `GET /CoparticipacaoProcedimento/coparticipacoes` - Lista todas as coparticipações
-- `GET /CoparticipacaoProcedimento/{id}` - Recupera coparticipação por ID
-- `POST /CoparticipacaoProcedimento` - Cria nova coparticipação
-- `PUT /CoparticipacaoProcedimento/{id}` - Atualiza coparticipação
-- `DELETE /CoparticipacaoProcedimento/{id}` - Remove coparticipação
+- `GET /CoparticipacaoProcedimento/coparticipacoes` - Lists all co-participations
+- `GET /CoparticipacaoProcedimento/{id}` - Retrieves co-participation by ID
+- `POST /CoparticipacaoProcedimento` - Creates new co-participation
+- `PUT /CoparticipacaoProcedimento/{id}` - Updates co-participation
+- `DELETE /CoparticipacaoProcedimento/{id}` - Deletes co-participation
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/CoparticipacaoProcedimentoController.cs`
+**File**: `Src/HealthPlan.API/Controllers/CoparticipacaoProcedimentoController.cs`
 
 ---
 
 ### 14. PrecoPlanoFaixaController
-**Descrição**: Gerencia preços de planos por faixa etária.
+**Description**: Manages plan prices by age range.
 
-**Rota Base**: `/PrecoPlanoFaixa`
+**Base Route**: `/PrecoPlanoFaixa`
 
 **Endpoints**:
-- `GET /PrecoPlanoFaixa/precos` - Lista todos os preços
-- `GET /PrecoPlanoFaixa/{id}` - Recupera preço por ID
-- `POST /PrecoPlanoFaixa` - Cria novo preço
-- `PUT /PrecoPlanoFaixa/{id}` - Atualiza preço
-- `DELETE /PrecoPlanoFaixa/{id}` - Remove preço
+- `GET /PrecoPlanoFaixa/precos` - Lists all prices
+- `GET /PrecoPlanoFaixa/{id}` - Retrieves price by ID
+- `POST /PrecoPlanoFaixa` - Creates new price
+- `PUT /PrecoPlanoFaixa/{id}` - Updates price
+- `DELETE /PrecoPlanoFaixa/{id}` - Deletes price
 
-**Arquivo**: `Src/HealthPlan.API/Controllers/PrecoPlanoFaixaController.cs`
+**File**: `Src/HealthPlan.API/Controllers/PrecoPlanoFaixaController.cs`
 
 ---
 
-## 🔧 Classes Principais
+## 🔧 Main Classes
 
 ### 1. ApplicationConstants
-**Localização**: 
+**Location**: 
 - `Src/HealthPlan.API/Constants/ApplicationConstants.cs`
 - `Src/HealthPlan.Quote/Constants/ApplicationConstants.cs`
 
-**Descrição**: Define constantes utilizadas em toda a aplicação.
+**Description**: Defines constants used throughout the application.
 
-**Principais Constantes**:
-- `DefaultCreatedByUser`: Usuário padrão para criação de registros
-- `DefaultConnectionStringName`: Nome padrão da string de conexão
-- `ClaimTypes.Permission`: Tipo de claim para permissões
-- `Environment.Production/Development`: Ambientes de execução
-- `Cors.AllowAllPolicy`: Política de CORS
-- `Api.Title`, `Api.Version`: Informações da API
-- `Api.SwaggerEndpoint`: Endpoint do Swagger
+**Main Constants**:
+- `DefaultCreatedByUser`: Default user for record creation
+- `DefaultConnectionStringName`: Default connection string name
+- `ClaimTypes.Permission`: Claim type for permissions
+- `Environment.Production/Development`: Execution environments
+- `Cors.AllowAllPolicy`: CORS policy
+- `Api.Title`, `Api.Version`: API information
+- `Api.SwaggerEndpoint`: Swagger endpoint
 
-**Finalidade**: Centralizar valores constantes e configurações da aplicação, facilitando manutenção e padronização.
+**Purpose**: Centralize constant values and application configurations, facilitating maintenance and standardization.
 
 ---
 
 ### 2. BaseApiContext
-**Localização**: `Src/HealthPlan.API/Data/BaseApiContext.cs`
+**Location**: `Src/HealthPlan.API/Data/BaseApiContext.cs`
 
-**Descrição**: Classe base abstrata para contextos de banco de dados da API.
+**Description**: Abstract base class for API database contexts.
 
-**Funcionalidades**:
-- Herda de `DbContext` do Entity Framework Core
-- Configuração automática de conexão com banco de dados
-- Suporte a MySQL em produção
-- Suporte a InMemoryDatabase para testes
-- Carregamento automático do modelo de dados via `ApplicationContext`
+**Features**:
+- Inherits from Entity Framework Core `DbContext`
+- Automatic database connection configuration
+- MySQL support in production
+- InMemoryDatabase support for tests
+- Automatic data model loading via `ApplicationContext`
 
-**Responsabilidades**:
-- Gerenciar conexões com banco de dados
-- Aplicar configurações do Entity Framework
-- Facilitar testes com banco em memória
+**Responsibilities**:
+- Manage database connections
+- Apply Entity Framework configurations
+- Facilitate testing with in-memory database
 
 ---
 
 ### 3. SucessDetails
-**Localização**: `Src/HealthPlan.API/Swagger/SucessDetails.cs`
+**Location**: `Src/HealthPlan.API/Swagger/SucessDetails.cs`
 
-**Descrição**: Classe para padronização de respostas de sucesso da API.
+**Description**: Class for standardizing API success responses.
 
-**Propriedades**:
-- `Status`: Código HTTP de status (herda de ProblemDetails)
-- `Title`: Título da resposta
-- `Detail`: Detalhes adicionais
-- `Type`: URI do RFC que define o tipo de resposta
-- `Data`: Objeto com os dados da resposta
-- `Instance`: Caminho da requisição
+**Properties**:
+- `Status`: HTTP status code (inherits from ProblemDetails)
+- `Title`: Response title
+- `Detail`: Additional details
+- `Type`: RFC URI defining the response type
+- `Data`: Object with response data
+- `Instance`: Request path
 
-**Uso**: Retornar respostas consistentes e padronizadas em endpoints de sucesso.
+**Usage**: Return consistent and standardized responses in success endpoints.
 
-**Exemplo Factory**: `SuccessResponseExampleFactory.ForSuccess()` cria instâncias configuradas.
+**Factory Example**: `SuccessResponseExampleFactory.ForSuccess()` creates configured instances.
 
 ---
 
 ### 4. Utils
-**Localização**: `Src/HealthPlan.API/Util/Utils.cs`
+**Location**: `Src/HealthPlan.API/Util/Utils.cs`
 
-**Descrição**: Classe utilitária com métodos auxiliares.
+**Description**: Utility class with helper methods.
 
-**Métodos Principais**:
-- `GetConnectionString()`: Retorna a string de conexão apropriada
-  - Detecta automaticamente ambiente de teste
-  - Retorna InMemoryDatabase para testes
-  - Retorna connection string configurada para produção/desenvolvimento
+**Main Methods**:
+- `GetConnectionString()`: Returns the appropriate connection string
+  - Automatically detects test environment
+  - Returns InMemoryDatabase for tests
+  - Returns configured connection string for production/development
 
-**Finalidade**: Fornecer funções auxiliares reutilizáveis em diferentes partes da aplicação.
+**Purpose**: Provide reusable helper functions in different parts of the application.
 
 ---
 
-### 5. Outras Classes Importantes
+### 5. Other Important Classes
 
 #### ProblemDetailsExampleFactory
-**Localização**: `Src/HealthPlan.API/Swagger/ProblemDetailsExampleFactory.cs`
+**Location**: `Src/HealthPlan.API/Swagger/ProblemDetailsExampleFactory.cs`
 
-**Descrição**: Factory para criar respostas de erro padronizadas.
+**Description**: Factory for creating standardized error responses.
 
-**Métodos**:
-- `ForBadRequest()`: Erros de validação (400)
-- `ForUnauthorized()`: Erros de autorização (401)
-- `ForNotFound()`: Recursos não encontrados (404)
-- `ForConflict()`: Conflitos de dados (409)
-- `ForInternalServerError()`: Erros internos (500)
+**Methods**:
+- `ForBadRequest()`: Validation errors (400)
+- `ForUnauthorized()`: Authorization errors (401)
+- `ForNotFound()`: Resources not found (404)
+- `ForConflict()`: Data conflicts (409)
+- `ForInternalServerError()`: Internal errors (500)
 
 #### CleanTemplateApplicationMapperInitializer
-**Localização**: `Src/HealthPlan.Quote/Mapping/`
+**Location**: `Src/HealthPlan.Quote/Mapping/`
 
-**Descrição**: Inicializa e configura o AutoMapper para mapeamento entre DTOs e entidades de domínio.
+**Description**: Initializes and configures AutoMapper for mapping between DTOs and domain entities.
 
 #### Route Classes
-**Localização**: `Src/HealthPlan.API/Swagger/*Routes.cs`
+**Location**: `Src/HealthPlan.API/Swagger/*Routes.cs`
 
-**Descrição**: Definem constantes para rotas de cada controller, garantindo consistência e facilitando refatoração.
+**Description**: Define route constants for each controller, ensuring consistency and facilitating refactoring.
 
 ---
 
-## 🏗️ Organização do Projeto
+## 🏗️ Project Organization
 
-O projeto HealthPlan Suite segue os princípios da **Clean Architecture**, promovendo separação de responsabilidades, testabilidade e manutenibilidade.
+The HealthPlan Suite project follows **Clean Architecture** principles, promoting separation of concerns, testability, and maintainability.
 
-### Camadas da Arquitetura
+### Architecture Layers
 
 ```
 HealthPlanSuite/
 ├── Src/
-│   ├── HealthPlan.API/              # Camada de Apresentação
-│   │   ├── Controllers/             # Endpoints da API
-│   │   ├── Middleware/              # Middlewares HTTP
-│   │   ├── Swagger/                 # Documentação e exemplos da API
-│   │   │   ├── Routes/              # Constantes de rotas
-│   │   │   └── Examples/            # Exemplos para Swagger
-│   │   ├── Data/                    # Contextos específicos da API
-│   │   ├── Constants/               # Constantes da API
-│   │   ├── Util/                    # Utilitários
-│   │   └── Resource/                # Recursos de localização
+│   ├── HealthPlan.API/              # Presentation Layer
+│   │   ├── Controllers/             # API Endpoints
+│   │   ├── Middleware/              # HTTP Middlewares
+│   │   ├── Swagger/                 # API Documentation and Examples
+│   │   │   ├── Routes/              # Route Constants
+│   │   │   └── Examples/            # Swagger Examples
+│   │   ├── Data/                    # API-specific Contexts
+│   │   ├── Constants/               # API Constants
+│   │   ├── Util/                    # Utilities
+│   │   └── Resource/                # Localization Resources
 │   │
-│   └── HealthPlan.Quote/            # Camadas de Domínio, Aplicação e Infraestrutura
-│       ├── Domain/                  # Camada de Domínio
-│       │   ├── Interface/           # Interfaces de entidades
-│       │   └── Implementation/      # Entidades de domínio
+│   └── HealthPlan.Quote/            # Domain, Application and Infrastructure Layers
+│       ├── Domain/                  # Domain Layer
+│       │   ├── Interface/           # Entity Interfaces
+│       │   └── Implementation/      # Domain Entities
 │       │
-│       ├── Services/                # Camada de Aplicação
-│       │   ├── Interface/           # Interfaces de serviços
-│       │   └── Implementation/      # Lógica de negócio
+│       ├── Services/                # Application Layer
+│       │   ├── Interface/           # Service Interfaces
+│       │   └── Implementation/      # Business Logic
 │       │
-│       ├── Repository/              # Camada de Infraestrutura - Dados
-│       │   ├── Interface/           # Interfaces de repositórios
-│       │   └── Implementation/      # Acesso a dados
+│       ├── Repository/              # Infrastructure Layer - Data
+│       │   ├── Interface/           # Repository Interfaces
+│       │   └── Implementation/      # Data Access
 │       │
-│       ├── Infrastructure/          # Camada de Infraestrutura
-│       │   ├── Data/                # Configurações de contexto
-│       │   └── Implementation/      # Mapeamentos EF Core
+│       ├── Infrastructure/          # Infrastructure Layer
+│       │   ├── Data/                # Context Configurations
+│       │   └── Implementation/      # EF Core Mappings
 │       │
 │       ├── DTO/                     # Data Transfer Objects
-│       ├── Mapping/                 # Configurações do AutoMapper
-│       ├── UnitOfWork/              # Padrão Unit of Work
-│       ├── Constants/               # Constantes do domínio
-│       └── Validation/              # Regras de validação
+│       ├── Mapping/                 # AutoMapper Configurations
+│       ├── UnitOfWork/              # Unit of Work Pattern
+│       ├── Constants/               # Domain Constants
+│       └── Validation/              # Validation Rules
 │
-└── HealthPlan.Test/                 # Camada de Testes
-    ├── Unit/                        # Testes unitários
-    ├── Integration/                 # Testes de integração
-    └── Helpers/                     # Utilitários de teste
+└── HealthPlan.Test/                 # Test Layer
+    ├── Unit/                        # Unit Tests
+    ├── Integration/                 # Integration Tests
+    └── Helpers/                     # Test Utilities
 ```
 
-### Princípios Aplicados
+### Applied Principles
 
 #### 1. **Separation of Concerns**
-Cada camada tem responsabilidades bem definidas:
-- **Presentation (API)**: Recebe requisições HTTP, valida entrada, retorna respostas
-- **Application (Services)**: Contém lógica de negócio e orquestração
-- **Domain**: Define entidades e regras de negócio fundamentais
-- **Infrastructure**: Implementa acesso a dados e integrações externas
+Each layer has well-defined responsibilities:
+- **Presentation (API)**: Receives HTTP requests, validates input, returns responses
+- **Application (Services)**: Contains business logic and orchestration
+- **Domain**: Defines entities and fundamental business rules
+- **Infrastructure**: Implements data access and external integrations
 
 #### 2. **Dependency Inversion**
-- Camadas internas não dependem de camadas externas
-- Interfaces definem contratos entre camadas
-- Injeção de dependência gerenciada pelo ASP.NET Core
+- Inner layers don't depend on outer layers
+- Interfaces define contracts between layers
+- Dependency injection managed by ASP.NET Core
 
 #### 3. **Single Responsibility**
-- Cada classe tem uma única responsabilidade
-- Controllers apenas gerenciam requisições/respostas
-- Services contêm lógica de negócio
-- Repositories gerenciam persistência
+- Each class has a single responsibility
+- Controllers only manage requests/responses
+- Services contain business logic
+- Repositories manage persistence
 
 #### 4. **Clean Code**
-- DTOs separam representações de dados da API do domínio
-- Mapeamento automático com AutoMapper
-- Validações centralizadas
-- Tratamento de erros padronizado
+- DTOs separate API data representations from domain
+- Automatic mapping with AutoMapper
+- Centralized validations
+- Standardized error handling
 
 ---
 
-## 📚 Padrões de Design Utilizados
+## 📚 Design Patterns Used
 
 ### 1. Repository Pattern
-**Localização**: `Src/HealthPlan.Quote/Repository/`
+**Location**: `Src/HealthPlan.Quote/Repository/`
 
-Abstrai o acesso a dados, permitindo:
-- Trocar implementação de persistência sem afetar lógica de negócio
-- Facilitar testes com repositórios mock
-- Centralizar queries e operações de dados
+Abstracts data access, allowing:
+- Change persistence implementation without affecting business logic
+- Facilitate testing with mock repositories
+- Centralize queries and data operations
 
 ### 2. Unit of Work Pattern
-**Localização**: `Src/HealthPlan.Quote/UnitOfWork/`
+**Location**: `Src/HealthPlan.Quote/UnitOfWork/`
 
-Gerencia transações:
-- Garante consistência em operações múltiplas
-- Controla commit/rollback de transações
-- Coordena múltiplos repositórios
+Manages transactions:
+- Ensures consistency in multiple operations
+- Controls transaction commit/rollback
+- Coordinates multiple repositories
 
 ### 3. Dependency Injection
-Configurado em `Program.cs`:
-- Registro de serviços e repositórios
-- Controle de ciclo de vida (Scoped, Singleton, Transient)
-- Facilita testes e desacoplamento
+Configured in `Program.cs`:
+- Registration of services and repositories
+- Lifecycle control (Scoped, Singleton, Transient)
+- Facilitates testing and decoupling
 
 ### 4. DTO Pattern
-**Localização**: `Src/HealthPlan.Quote/DTO/`
+**Location**: `Src/HealthPlan.Quote/DTO/`
 
-Separa representações:
-- `*PayLoadDTO`: Dados de entrada (POST/PUT)
-- `*ResponseDTO`: Dados de saída (GET)
-- Protege modelo de domínio
-- Controla quais dados são expostos
+Separates representations:
+- `*PayLoadDTO`: Input data (POST/PUT)
+- `*ResponseDTO`: Output data (GET)
+- Protects domain model
+- Controls which data is exposed
 
 ### 5. Factory Pattern
-**Localização**: `Src/HealthPlan.API/Swagger/*Factory.cs`
+**Location**: `Src/HealthPlan.API/Swagger/*Factory.cs`
 
-Cria objetos complexos:
-- `SuccessResponseExampleFactory`: Respostas de sucesso
-- `ProblemDetailsExampleFactory`: Respostas de erro
-- Garante consistência e facilita manutenção
-
----
-
-## 🔍 Observações
-
-### Para Navegar pelo Código
-
-1. **Explorar Controllers**: Comece por `Src/HealthPlan.API/Controllers/` para entender os endpoints disponíveis
-
-2. **Entender Entidades**: Veja `Src/HealthPlan.Quote/Domain/Implementation/` para conhecer o modelo de domínio
-
-3. **Revisar Serviços**: Analise `Src/HealthPlan.Quote/Services/Implementation/` para a lógica de negócio
-
-4. **Verificar DTOs**: Confira `Src/HealthPlan.Quote/DTO/` para estruturas de entrada/saída
-
-5. **Consultar Documentação**: Use o Swagger em `/swagger` quando a aplicação estiver rodando
-
-### Busca no GitHub
-
-Para encontrar controllers, classes e funcionalidades específicas:
-- Use a busca de código do GitHub: Pressione `/` e digite o termo
-- Filtre por tipo de arquivo: `filename:Controller.cs`
-- Busque por classes específicas: `class:ApplicationConstants`
-- Encontre interfaces: `interface:IService`
-
-### Links Úteis
-
-- **Arquitetura Completa**: [docs/ARCHITECTURE.md](./ARCHITECTURE.md)
-- **Guia de Desenvolvimento**: [docs/DEVELOPMENT.md](./DEVELOPMENT.md)
-- **Documentação da API**: [docs/API.md](./API.md)
-- **Guia de Testes**: [docs/TESTING.md](./TESTING.md)
-- **Início Rápido**: [docs/QUICK_START.md](./QUICK_START.md)
-
-### Contribuindo
-
-Para adicionar novos recursos ou modificar existentes:
-1. Leia [CONTRIBUTING.md](../CONTRIBUTING.md) para diretrizes
-2. Siga os padrões arquiteturais estabelecidos
-3. Mantenha a coerência com o código existente
-4. Adicione testes para novas funcionalidades
-5. Atualize a documentação conforme necessário
+Creates complex objects:
+- `SuccessResponseExampleFactory`: Success responses
+- `ProblemDetailsExampleFactory`: Error responses
+- Ensures consistency and facilitates maintenance
 
 ---
 
-## 📞 Suporte
+## 🔍 Notes
 
-Para dúvidas ou problemas:
-- Abra uma issue no GitHub
-- Consulte a documentação completa na pasta `docs/`
-- Revise os exemplos em `docs/EXAMPLES.md`
+### Navigating the Code
+
+1. **Explore Controllers**: Start with `Src/HealthPlan.API/Controllers/` to understand available endpoints
+
+2. **Understand Entities**: See `Src/HealthPlan.Quote/Domain/Implementation/` to know the domain model
+
+3. **Review Services**: Analyze `Src/HealthPlan.Quote/Services/Implementation/` for business logic
+
+4. **Check DTOs**: Review `Src/HealthPlan.Quote/DTO/` for input/output structures
+
+5. **Consult Documentation**: Use Swagger at `/swagger` when the application is running
+
+### GitHub Search
+
+To find controllers, classes and specific features:
+- Use GitHub code search: Press `/` and type the term
+- Filter by file type: `filename:Controller.cs`
+- Search for specific classes: `class:ApplicationConstants`
+- Find interfaces: `interface:IService`
+
+### Useful Links
+
+- **Complete Architecture**: [docs/ARCHITECTURE.md](./ARCHITECTURE.md)
+- **Development Guide**: [docs/DEVELOPMENT.md](./DEVELOPMENT.md)
+- **API Documentation**: [docs/API.md](./API.md)
+- **Testing Guide**: [docs/TESTING.md](./TESTING.md)
+- **Quick Start**: [docs/QUICK_START.md](./QUICK_START.md)
+
+### Contributing
+
+To add new features or modify existing ones:
+1. Read [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines
+2. Follow established architectural patterns
+3. Maintain coherence with existing code
+4. Add tests for new features
+5. Update documentation as needed
 
 ---
 
-**Última Atualização**: Janeiro 2025
-**Versão do Documento**: 1.0
+## 📞 Support
+
+For questions or issues:
+- Open an issue on GitHub
+- Consult complete documentation in the `docs/` folder
+- Review examples in `docs/EXAMPLES.md`
+
+---
+
+**Last Updated**: January 2025
+**Document Version**: 1.0

@@ -1,42 +1,42 @@
 # 🚀 Quick Start Guide - Authentication Service
 
-Este guia fornece instruções passo a passo para configurar e usar o serviço de autenticação em diferentes cenários.
+This guide provides step-by-step instructions to configure and use the authentication service in different scenarios.
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-Antes de começar, certifique-se de ter os seguintes componentes instalados:
+Before starting, make sure you have the following components installed:
 
-### Obrigatórios
+### Required
 - **.NET 8.0 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/8.0)
 - **MySQL 8.0+** - [Download](https://dev.mysql.com/downloads/mysql/)
 - **Git** - [Download](https://git-scm.com/)
 
-### Recomendados
-- **Visual Studio 2022** com workload .NET - [Download](https://visualstudio.microsoft.com/)
-- **Visual Studio Code** com extensão C# Dev Kit - [Download](https://code.visualstudio.com/)
-- **MySQL Workbench** para gerenciamento do banco - [Download](https://dev.mysql.com/downloads/workbench/)
+### Recommended
+- **Visual Studio 2022** with .NET workload - [Download](https://visualstudio.microsoft.com/)
+- **Visual Studio Code** with C# Dev Kit extension - [Download](https://code.visualstudio.com/)
+- **MySQL Workbench** for database management - [Download](https://dev.mysql.com/downloads/workbench/)
 
-## 🏃‍♂️ Configuração Rápida (5 minutos)
+## 🏃‍♂️ Quick Setup (5 minutes)
 
-### 1. Clone e Construa o Projeto
+### 1. Clone and Build the Project
 
 ```bash
-# Clone o repositório
+# Clone the repository
 git clone https://github.com/maiconcardozo/CleanTemplateRepository.git
 cd CleanTemplateRepository
 
-# Restaure as dependências
+# Restore dependencies
 dotnet restore Solution/Authentication.sln
 
-# Construa o projeto
+# Build the project
 dotnet build Solution/Authentication.sln --configuration Debug
 ```
 
-### 2. Configure o Banco de Dados
+### 2. Configure the Database
 
-#### Opção A: MySQL Local
+#### Option A: Local MySQL
 ```bash
-# Inicie o MySQL e crie um banco
+# Start MySQL and create a database
 mysql -u root -p
 CREATE DATABASE AuthenticationDB;
 CREATE USER 'authuser'@'localhost' IDENTIFIED BY 'password123';
@@ -45,9 +45,9 @@ FLUSH PRIVILEGES;
 exit;
 ```
 
-#### Opção B: Docker MySQL (Mais Rápido)
+#### Option B: Docker MySQL (Faster)
 ```bash
-# Execute MySQL em container Docker
+# Run MySQL in Docker container
 docker run --name mysql-auth \
   -e MYSQL_ROOT_PASSWORD=rootpass \
   -e MYSQL_DATABASE=AuthenticationDB \
@@ -57,9 +57,9 @@ docker run --name mysql-auth \
   -d mysql:8.0
 ```
 
-### 3. Configure a Connection String
+### 3. Configure the Connection String
 
-Edite `Src/Authentication.API/appsettings.Development.json`:
+Edit `Src/Authentication.API/appsettings.Development.json`:
 
 ```json
 {
@@ -75,37 +75,37 @@ Edite `Src/Authentication.API/appsettings.Development.json`:
 }
 ```
 
-### 4. Execute as Migrações do Banco
+### 4. Run Database Migrations
 
 ```bash
 cd Src/Authentication.API
 dotnet ef database update --context ApiContextDevelopment
 ```
 
-### 5. Execute a Aplicação
+### 5. Run the Application
 
 ```bash
-# Execute em modo de desenvolvimento
+# Run in development mode
 dotnet run --configuration Debug
 
-# A API estará disponível em: https://localhost:7001
-# Documentação Swagger: https://localhost:7001
+# API will be available at: https://localhost:7001
+# Swagger Documentation: https://localhost:7001
 ```
 
-## 🔐 Primeiro Uso - Testando a API
+## 🔐 First Use - Testing the API
 
-### 1. Acesse a Documentação Swagger
+### 1. Access Swagger Documentation
 
-Abra seu navegador e vá para: **https://localhost:7001**
+Open your browser and go to: **https://localhost:7001**
 
-Você verá duas APIs documentadas:
-- **Authentication API** - Login e geração de tokens
-- **Access Control API** - Gerenciamento RBAC (Claims, Actions, etc.)
+You will see two documented APIs:
+- **Authentication API** - Login and token generation
+- **Access Control API** - RBAC management (Claims, Actions, etc.)
 
-### 2. Crie sua Primeira Conta
+### 2. Create Your First Account
 
 ```bash
-# Usando curl
+# Using curl
 curl -X POST "https://localhost:7001/Authentication/AddAccount" \
   -H "Content-Type: application/json" \
   -d '{
@@ -114,7 +114,7 @@ curl -X POST "https://localhost:7001/Authentication/AddAccount" \
   }'
 ```
 
-**Resposta esperada (200 OK):**
+**Expected response (200 OK):**
 ```json
 {
   "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.3.1",
@@ -128,7 +128,7 @@ curl -X POST "https://localhost:7001/Authentication/AddAccount" \
 }
 ```
 
-### 3. Gere um Token JWT
+### 3. Generate a JWT Token
 
 ```bash
 curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
@@ -139,7 +139,7 @@ curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
   }'
 ```
 
-**Resposta esperada (200 OK):**
+**Expected response (200 OK):**
 ```json
 {
   "data": {
@@ -151,20 +151,20 @@ curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
 }
 ```
 
-### 4. Use o Token para Acessar Endpoints Protegidos
+### 4. Use the Token to Access Protected Endpoints
 
 ```bash
-# Salve o token em uma variável
+# Save the token in a variable
 TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
-# Liste todas as claims
+# List all claims
 curl -X GET "https://localhost:7001/Claim/GetClaims" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## 🔒 Configurando RBAC (Controle de Acesso)
+## 🔒 Configuring RBAC (Access Control)
 
-### 1. Crie uma Claim (Permissão)
+### 1. Create a Claim (Permission)
 
 ```bash
 curl -X POST "https://localhost:7001/Claim/AddClaim" \
@@ -173,11 +173,11 @@ curl -X POST "https://localhost:7001/Claim/AddClaim" \
   -d '{
     "type": "Permission",
     "value": "UserManagement",
-    "description": "Permissão para gerenciar usuários"
+    "description": "Permission to manage users"
   }'
 ```
 
-### 2. Crie uma Action (Ação do Sistema)
+### 2. Create an Action (System Action)
 
 ```bash
 curl -X POST "https://localhost:7001/Action/AddAction" \
@@ -185,11 +185,11 @@ curl -X POST "https://localhost:7001/Action/AddAction" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Create",
-    "description": "Criar novos registros"
+    "description": "Create new records"
   }'
 ```
 
-### 3. Mapeie Claim para Action
+### 3. Map Claim to Action
 
 ```bash
 curl -X POST "https://localhost:7001/ClaimAction/AddClaimAction" \
@@ -201,7 +201,7 @@ curl -X POST "https://localhost:7001/ClaimAction/AddClaimAction" \
   }'
 ```
 
-### 4. Atribua Permissão ao Usuário
+### 4. Assign Permission to User
 
 ```bash
 curl -X POST "https://localhost:7001/AccountClaimAction/AddAccountClaimAction" \
@@ -213,25 +213,25 @@ curl -X POST "https://localhost:7001/AccountClaimAction/AddAccountClaimAction" \
   }'
 ```
 
-## 🧪 Validando a Configuração
+## 🧪 Validating the Configuration
 
-### Execute os Testes
+### Run the Tests
 
 ```bash
-# Execute todos os testes
+# Run all tests
 dotnet test Src/Authentication.Tests/Authentication.Tests.csproj
 
-# Execute apenas testes unitários
+# Run only unit tests
 dotnet test --filter "FullyQualifiedName~Unit"
 
-# Execute com scripts de conveniência
+# Run with convenience scripts
 scripts/run-tests.sh unit    # Linux/Mac
 scripts/run-tests.bat unit     # Windows
 ```
 
-### Verifique a Geração de Token com Claims
+### Verify Token Generation with Claims
 
-Após configurar o RBAC, gere um novo token:
+After configuring RBAC, generate a new token:
 
 ```bash
 curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
@@ -242,9 +242,9 @@ curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
   }'
 ```
 
-O token agora deve incluir as claims no formato `"UserManagement:Create"`.
+The token should now include claims in the format `"UserManagement:Create"`.
 
-## 🔧 Integração com Frontend
+## 🔧 Frontend Integration
 
 ### JavaScript/React Example
 
@@ -283,7 +283,7 @@ class AuthService {
   }
 }
 
-// Uso
+// Usage
 const auth = new AuthService();
 await auth.login('admin', 'AdminPass123!');
 const claims = await auth.apiCall('/Claim/GetClaims');
@@ -327,51 +327,51 @@ public class AuthenticationClient
 }
 ```
 
-## 📚 Próximos Passos
+## 📚 Next Steps
 
-1. **Leia a documentação completa**: [docs/DEVELOPMENT.md](DEVELOPMENT.md)
-2. **Configure para produção**: [docs/DEPLOYMENT.md](DEPLOYMENT.md)
-3. **Entenda a arquitetura**: [docs/ARCHITECTURE.md](ARCHITECTURE.md)
-4. **Veja mais exemplos**: [docs/EXAMPLES.md](EXAMPLES.md)
-5. **Configure segurança**: [docs/SECURITY.md](SECURITY.md)
+1. **Read complete documentation**: [docs/DEVELOPMENT.md](DEVELOPMENT.md)
+2. **Configure for production**: [docs/DEPLOYMENT.md](DEPLOYMENT.md)
+3. **Understand the architecture**: [docs/ARCHITECTURE.md](ARCHITECTURE.md)
+4. **See more examples**: [docs/EXAMPLES.md](EXAMPLES.md)
+5. **Configure security**: [docs/SECURITY.md](SECURITY.md)
 
-## 🆘 Problemas Comuns
+## 🆘 Common Issues
 
-### ❌ Erro de Conexão com Banco
+### ❌ Database Connection Error
 ```
 Unable to connect to any of the specified MySQL hosts
 ```
-**Solução**: Verifique se o MySQL está rodando e a connection string está correta.
+**Solution**: Check if MySQL is running and the connection string is correct.
 
-### ❌ Erro de Migração
+### ❌ Migration Error
 ```
 Unable to create an object of type 'ApiContextDevelopment'
 ```
-**Solução**: 
+**Solution**: 
 ```bash
 cd Src/Authentication.API
 dotnet ef database update --context ApiContextDevelopment --verbose
 ```
 
-### ❌ Token Inválido
+### ❌ Invalid Token
 ```
 401 Unauthorized
 ```
-**Solução**: Verifique se o token está sendo enviado no header `Authorization: Bearer {token}`.
+**Solution**: Verify that the token is being sent in the `Authorization: Bearer {token}` header.
 
 ### ❌ CORS Error (Frontend)
 ```
 Access to fetch at 'https://localhost:7001' has been blocked by CORS policy
 ```
-**Solução**: A API já está configurada com CORS permitindo todas as origens. Verifique se está usando HTTPS.
+**Solution**: The API is already configured with CORS allowing all origins. Check if you're using HTTPS.
 
-## 💡 Dicas de Desenvolvimento
+## 💡 Development Tips
 
-- Use `dotnet watch run` para hot reload durante desenvolvimento
-- Configure variáveis de ambiente para diferentes ambientes
-- Use o Swagger UI para testar endpoints interativamente
-- Monitore logs com `dotnet run --verbosity detailed`
-- Use ferramentas como Postman ou Insomnia para testes de API
+- Use `dotnet watch run` for hot reload during development
+- Configure environment variables for different environments
+- Use Swagger UI to test endpoints interactively
+- Monitor logs with `dotnet run --verbosity detailed`
+- Use tools like Postman or Insomnia for API testing
 
 ---
 
