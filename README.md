@@ -1,36 +1,27 @@
 # HealthPlan Suite - .NET Health Plan Quote Management System
 
 [![CI/CD Pipeline](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml/badge.svg)](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml)
-[![.NET 9.0](https://img.shields.io/badge/.NET-9.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/9.0)
-[![Entity Framework Core](https://img.shields.io/badge/EF%20Core-9.0.9-blue.svg)](https://docs.microsoft.com/en-us/ef/core/)
+[![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![Entity Framework Core](https://img.shields.io/badge/EF%20Core-8.0.11-blue.svg)](https://docs.microsoft.com/en-us/ef/core/)
 
 ## 📋 Overview
 
 **HealthPlan Suite** is a comprehensive .NET application for managing health plan quotes and related insurance operations. This system follows Clean Architecture principles and includes complete health plan management functionality for insurance companies and brokers.
 
-## ⚠️ CRITICAL: .NET 9.0 REQUIREMENT
+## ⚠️ Framework Requirements
 
-**DO NOT DOWNGRADE FROM .NET 9.0!**
+This application is built with **.NET 8.0** and uses the following technologies:
 
-This application **REQUIRES** .NET 9.0 and cannot function on older versions due to:
+- **Entity Framework Core 8.0.11** - Database ORM and data access
+- **ASP.NET Core 8.0.11** - Web framework for REST API development  
+- **Swashbuckle 6.8.0** - OpenAPI/Swagger documentation
+- **Testing frameworks** - xUnit 2.9.x, FluentAssertions 6.x, Moq 4.20.x
+- **C# language features** - Modern C# syntax and features
 
-- **Entity Framework Core 9.0.x** - Critical database features and performance improvements
-- **ASP.NET Core 9.0.x** - Security updates and modern web API capabilities  
-- **Swashbuckle 9.0.x** - OpenAPI documentation compatibility
-- **Latest testing frameworks** - xUnit 2.9.x, FluentAssertions 8.x
-- **C# language features** - Latest syntax and runtime optimizations
-
-**What will break if downgraded:**
-- Build process will fail
-- Package dependencies will conflict
-- CI/CD pipeline will break
-- Database migrations may fail
-- API functionality may be compromised
-
-**Always maintain .NET 9.0.x in:**
-- `global.json` SDK version
-- All `.csproj` TargetFramework properties
-- CI/CD pipeline configuration
+**Current framework versions:**
+- `global.json` SDK version: 8.0.100
+- All `.csproj` TargetFramework: net8.0
+- Package dependencies aligned with .NET 8.0
 
 ### 🔐 Key Features
 
@@ -114,12 +105,12 @@ The repository follows a clean, organized structure:
 
 ## 🔧 Technologies Used
 
-- **.NET 8.0** - Main framework
+- **.NET 8.0** - Main framework (net8.0)
 - **ASP.NET Core 8.0.11** - RESTful API framework
 - **Entity Framework Core 8.0.11** - ORM for data access
-- **FluentValidation 11.9.2** - Input validation
+- **FluentValidation 12.0.0** - Input validation
 - **Konscious.Security.Cryptography.Argon2 1.3.1** - Secure password hashing
-- **MySQL/MariaDB** - Database support (MySqlConnector 2.3.7)
+- **MySQL/MariaDB** - Database support (MySqlConnector 2.3.7, Pomelo.EntityFrameworkCore.MySql 8.0.2)
 - **Swagger/OpenAPI 6.8.0** - API documentation
 - **AutoMapper 13.0.1** - Object mapping
 
@@ -132,12 +123,12 @@ The repository follows a clean, organized structure:
 git clone https://github.com/maiconcardozo/HealthPlanSuite.git
 cd HealthPlanSuite
 
-# 2. Install .NET 8.0 SDK
+# 2. Install .NET 8.0 SDK (8.0.100 or later)
 # Download from: https://dotnet.microsoft.com/download/dotnet/8.0
 
 # 3. Verify .NET 8.0 installation
 dotnet --version
-# Should output: 8.0.x
+# Should output: 8.0.x (e.g., 8.0.414)
 
 # 4. Restore dependencies
 dotnet restore Solution/HealthPlan.sln
@@ -224,62 +215,42 @@ dotnet watch run --configuration Debug
 - **Visual Studio Code** with C# Dev Kit extension
 - **JetBrains Rider** 2024.1+
 
-## ⚠️ .NET 9.0 Framework Requirements
+## ⚠️ .NET 8.0 Framework Information
 
-**CRITICAL**: This project requires .NET 9.0 and must never be downgraded to .NET 8.0.
+This project uses **.NET 8.0** as specified in the project files.
 
-### Why .NET 9.0 is Required:
-- **Performance Improvements**: Enhanced runtime performance and memory usage
-- **Package Compatibility**: Latest versions of Entity Framework Core 9.0.7 and related packages
-- **Security Updates**: Latest security patches and improvements
-- **Modern Features**: Access to newest C# language features and framework improvements
+### Current Framework Configuration:
+- **SDK Version**: 8.0.100 (specified in global.json)
+- **Target Framework**: net8.0 (all .csproj files)
+- **Entity Framework Core**: 8.0.11
+- **ASP.NET Core**: 8.0.11
 
 ### Installation:
-1. **Download .NET 9.0 SDK**: https://dotnet.microsoft.com/download/dotnet/9.0
-2. **Verify Installation**: `dotnet --version` should show 9.0.x
+1. **Download .NET 8.0 SDK**: https://dotnet.microsoft.com/download/dotnet/8.0
+2. **Verify Installation**: `dotnet --version` should show 8.0.x
 3. **Check Project**: `dotnet build` should complete without framework errors
 
-### Framework Validation:
-The project includes comprehensive protection against .NET version regression:
-
-#### 🔒 Multi-Layer Protection System:
-1. **global.json Enforcement**: Forces .NET 9.0 SDK usage and prevents accidental downgrade to 8.0
-2. **Project File Validation**: All `.csproj` files strictly target `net9.0` framework
-3. **CI/CD Protection**: Automated workflows fail if any .NET 8.0 references are detected
-4. **Documentation Guards**: Clear warnings throughout the codebase about version requirements
-
-#### 🚨 Automatic Regression Detection:
-- **GitHub Actions Workflow**: `.github/workflows/dotnet-version-check.yml` scans all project files
-- **Build-Time Validation**: The existing build workflow includes framework targeting validation
-- **Pre-commit Protection**: The SDK enforcement in `global.json` prevents local builds with wrong versions
-
-#### 🛡️ Why This Protection Exists:
-- **Package Compatibility**: EF Core 9.0.7 and other dependencies require .NET 9.0
-- **Performance**: .NET 9.0 runtime optimizations are essential for production
-- **Security**: Latest security patches only available in .NET 9.0
-- **Future-Proofing**: Prevents accidental downgrades during development or deployment
-
-### 🔧 Troubleshooting .NET 9.0 Setup
+### 🔧 Troubleshooting .NET 8.0 Setup
 
 #### Common Issues and Solutions:
 
-**Issue**: `NETSDK1045: The current .NET SDK does not support targeting .NET 9.0`
+**Issue**: `NETSDK1045: The current .NET SDK does not support targeting .NET 8.0`
 ```bash
-# Solution: Install .NET 9.0 SDK
-# 1. Download from: https://dotnet.microsoft.com/download/dotnet/9.0
+# Solution: Install .NET 8.0 SDK
+# 1. Download from: https://dotnet.microsoft.com/download/dotnet/8.0
 # 2. Verify installation: dotnet --version
-# 3. Should show: 9.0.x
+# 3. Should show: 8.0.x
 ```
 
 **Issue**: `A compatible .NET SDK was not found`
 ```bash
 # Solution: Check global.json configuration
 cat global.json
-# Should specify version: "9.0.0"
+# Should specify version: "8.0.100"
 
 # Verify SDK installation
 dotnet --list-sdks
-# Should include: 9.0.x
+# Should include: 8.0.x
 ```
 
 **Issue**: Project won't build or restore
@@ -355,13 +326,13 @@ The project includes automated CI/CD pipeline support:
 
 **For GitHub repositories:**
 - Pipeline automatically runs on push/PR
-- Builds with .NET 9.0 in Ubuntu environment
+- Builds with .NET 8.0 in Ubuntu environment
 - Executes all tests and generates reports
 - Provides code coverage and security scanning
 
 **For other CI systems:**
 - Use `./test.sh` (Linux) or `./test.bat` (Windows) as the main test command
-- Ensure .NET 9.0 SDK is installed in the CI environment
+- Ensure .NET 8.0 SDK is installed in the CI environment
 - Configure artifact collection for test results in `TestResults/` directory
 
 ## 🚀 Quick Usage (Development)
@@ -874,7 +845,7 @@ For comprehensive testing information, see:
 
 The project includes automated testing through GitHub Actions:
 - ✅ Runs on every push and pull request
-- ✅ Uses .NET 9.0 in Ubuntu environment
+- ✅ Uses .NET 8.0 in Ubuntu environment
 - ✅ Generates test reports and coverage analysis
 - ✅ Stores artifacts for 30 days
 - ✅ Enforces quality gates before merge
@@ -886,8 +857,8 @@ The project includes a comprehensive CI/CD pipeline using GitHub Actions that au
 ### 🚀 Automated Pipeline Features
 
 **On every push and pull request:**
-- ✅ **Build Verification**: Compiles the project in Release mode with .NET 9.0
-- ✅ **Test Execution**: Runs all 349 tests and generates reports
+- ✅ **Build Verification**: Compiles the project in Release mode with .NET 8.0
+- ✅ **Test Execution**: Runs all tests and generates reports
 - ✅ **Code Quality**: Enforces coding standards and SOLID principles
 - ✅ **Else Statement Prevention**: Blocks if/else patterns in favor of conditional expressions
 - ✅ **SOLID Principles Enforcement**: Validates adherence to clean code principles
@@ -944,7 +915,7 @@ The pipeline provides detailed feedback including:
 The CI pipeline is defined in `.github/workflows/ci.yml` and includes:
 
 ```yaml
-# Runs on: Ubuntu Latest with .NET 9.0
+# Runs on: Ubuntu Latest with .NET 8.0
 # Triggers: Push/PR to main and develop branches
 # Steps: Build → Test → Quality Check → Security Scan
 ```

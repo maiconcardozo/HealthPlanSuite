@@ -8,7 +8,7 @@ This guide provides all the necessary information to set up the development envi
 
 ### Prerequisites
 
-- **.NET 9.0 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/9.0) **REQUIRED - Never use 8.0**
+- **.NET 8.0 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/8.0) (8.0.100 or later)
 - **Visual Studio 2022** (17.8+) or **VS Code** with C# Dev Kit
 - **MySQL 8.0+** - [Download](https://dev.mysql.com/downloads/mysql/)
 - **Git** - [Download](https://git-scm.com/)
@@ -305,7 +305,7 @@ Configure `.vscode/launch.json`:
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/Src/Authentication.API/bin/Debug/net9.0/Authentication.API.dll",
+      "program": "${workspaceFolder}/Src/HealthPlan.API/bin/Debug/net8.0/HealthPlan.API.dll",
       "args": [],
       "cwd": "${workspaceFolder}/Src/Authentication.API",
       "stopAtEntry": false,

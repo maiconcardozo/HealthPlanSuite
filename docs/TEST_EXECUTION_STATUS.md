@@ -3,9 +3,9 @@
 ## 📊 Current Test Infrastructure Status
 
 **Last Updated**: December 2024  
-**Environment**: .NET 9.0 Required  
+**Environment**: .NET 8.0 Required  
 **Test Count**: 342 comprehensive tests  
-**Status**: ✅ Ready for execution (with .NET 9.0)
+**Status**: ✅ Ready for execution (with .NET 8.0)
 
 ## 🎯 Quick Test Execution Summary
 
@@ -30,7 +30,7 @@
 
 4. **🏗️ CI/CD Pipeline**
    - Automatically runs on push/PR
-   - Uses GitHub Actions with .NET 9.0
+   - Uses GitHub Actions with .NET 8.0
    - Generates artifacts and reports
 
 ## 📋 Test Infrastructure Components
@@ -93,24 +93,24 @@
 
 ## 🚨 Environment Requirements
 
-### ⚠️ **Critical Requirement: .NET 9.0**
+### ⚠️ **Critical Requirement: .NET 8.0**
 
-**Current Limitation**: Project requires .NET 9.0 SDK but many environments have .NET 8.0
+**Current Limitation**: Project requires .NET 8.0 SDK but many environments have .NET 8.0
 
-#### **Why .NET 9.0 is Required**:
-- Entity Framework Core 9.0.7 dependencies
+#### **Why .NET 8.0 is Required**:
+- Entity Framework Core 8.0.11 dependencies
 - Performance optimizations and security updates
 - Modern framework features
 - Package compatibility requirements
 
 #### **Installation Instructions**:
 ```bash
-# 1. Download .NET 9.0 SDK
+# 1. Download .NET 8.0 SDK
 # Visit: https://dotnet.microsoft.com/download/dotnet/9.0
 
 # 2. Verify installation
 dotnet --version
-# Should show: 9.0.x
+# Should show: 8.0.x
 
 # 3. Test compatibility
 dotnet restore Solution/Authentication.sln
@@ -163,7 +163,7 @@ dotnet test Solution/Authentication.sln --verbosity minimal
 
 #### **"NETSDK1045: .NET SDK not found"**
 ```bash
-# Solution: Install .NET 9.0 SDK
+# Solution: Install .NET 8.0 SDK
 # Download from: https://dotnet.microsoft.com/download/dotnet/9.0
 ```
 
@@ -222,7 +222,7 @@ dotnet test Solution/Authentication.sln --configuration Release
 
 ## 🎉 Summary
 
-The Authentication project has a **robust, comprehensive test infrastructure** ready for execution. The main requirement is ensuring .NET 9.0 SDK is installed in the environment. Once this requirement is met, tests can be executed using multiple convenient methods, from simple single commands to advanced CI/CD integration.
+The Authentication project has a **robust, comprehensive test infrastructure** ready for execution. The main requirement is ensuring .NET 8.0 SDK is installed in the environment. Once this requirement is met, tests can be executed using multiple convenient methods, from simple single commands to advanced CI/CD integration.
 
 **Total Test Count**: 342 tests  
 **Coverage Target**: >80%  

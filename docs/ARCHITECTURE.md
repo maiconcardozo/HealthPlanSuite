@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Authentication service follows **Clean Architecture** principles, ensuring separation of concerns, testability, and maintainability. The architecture is designed to be scalable, secure, and easily extensible. Built on **.NET 9.0** with **Entity Framework Core 9.0.7** for enhanced performance and modern development features.
+The HealthPlan Suite follows **Clean Architecture** principles, ensuring separation of concerns, testability, and maintainability. The architecture is designed to be scalable, secure, and easily extensible. Built on **.NET 8.0** with **Entity Framework Core 8.0.11** for data access and performance.
 
 ## Architecture Layers
 
@@ -323,34 +323,34 @@ appsettings.json                 ← Base configuration
 ## Technology Stack
 
 ### Core Framework
-- **.NET 9.0**: Base framework providing runtime and BCL (REQUIRED - never downgrade to 8.0)
-- **ASP.NET Core 9.0.7**: Web framework for REST API development
-- **Entity Framework Core 9.0.7**: Object-relational mapper for data access
+- **.NET 8.0**: Base framework providing runtime and BCL (net8.0 target framework)
+- **ASP.NET Core 8.0.11**: Web framework for REST API development
+- **Entity Framework Core 8.0.11**: Object-relational mapper for data access
 
 ### Authentication & Security
 - **JWT Bearer Tokens**: Stateless authentication mechanism
-- **System.IdentityModel.Tokens.Jwt 8.14.0**: JWT implementation
-- **Microsoft.AspNetCore.Authentication.JwtBearer 9.0.7**: JWT middleware
+- **System.IdentityModel.Tokens.Jwt 8.2.1**: JWT implementation
+- **Konscious.Security.Cryptography.Argon2 1.3.1**: Secure password hashing
 
 ### Database & Data Access
 - **MySQL 8.0+**: Primary database system
-- **Pomelo.EntityFrameworkCore.MySql 9.0.0-rc.1**: MySQL provider for EF Core
-- **MySqlConnector 2.4.0**: High-performance MySQL connector
+- **Pomelo.EntityFrameworkCore.MySql 8.0.2**: MySQL provider for EF Core
+- **MySqlConnector 2.3.7**: High-performance MySQL connector
 
 ### Validation & Mapping
 - **FluentValidation 12.0.0**: Input validation library
-- **AutoMapper 15.0.1**: Object-object mapping
+- **AutoMapper 13.0.1**: Object-object mapping
 
 ### API Documentation
-- **Swashbuckle.AspNetCore 6.8.1**: OpenAPI/Swagger documentation generation
-- **Microsoft.AspNetCore.OpenApi 9.0.7**: OpenAPI support
+- **Swashbuckle.AspNetCore 6.8.0**: OpenAPI/Swagger documentation generation
+- **Microsoft.AspNetCore.OpenApi 8.0.11**: OpenAPI support
 
 ### Testing Framework
-- **xUnit 2.9.3**: Primary testing framework
+- **xUnit 2.9.0**: Primary testing framework
 - **Moq 4.20.72**: Mocking framework
-- **FluentAssertions 8.6.0**: Fluent testing assertions
-- **Microsoft.AspNetCore.Mvc.Testing 9.0.7**: Integration testing support
+- **FluentAssertions 6.12.1**: Fluent testing assertions
+- **Microsoft.AspNetCore.Mvc.Testing 8.0.11**: Integration testing support
 
 ### External Dependencies
-- **Foundation.Base 1.0.5**: Base library providing common patterns and utilities
+- **Foundation.Base 1.0.4**: Base library providing common patterns and utilities
 - **Resource Usage**: CPU, memory, and database connections

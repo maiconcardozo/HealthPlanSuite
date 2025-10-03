@@ -44,7 +44,7 @@ For first deployment, consider creating default:
 
 ### System Requirements
 
-- **.NET 9.0 Runtime**: Required for running the application
+- **.NET 8.0 Runtime**: Required for running the application
 - **MySQL 8.0+**: Database server
 - **Redis** (Optional): For caching and session storage
 - **Load Balancer** (Production): For high availability
@@ -135,7 +135,7 @@ DROP INDEX IX_Account_UserName ON Account;
 
 ### Development Environment
 
-1. **Install .NET 9.0 SDK**
+1. **Install .NET 8.0 SDK**
 ```bash
 # Windows (using winget)
 winget install Microsoft.DotNet.SDK.9
@@ -669,7 +669,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 8.0.x
         
     - name: Restore dependencies
       run: dotnet restore Solution/Authentication.sln
@@ -691,7 +691,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 8.0.x
         
     - name: Build and publish
       run: |
@@ -733,7 +733,7 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '9.0.x'
+        version: '8.0.x'
         
     - task: DotNetCoreCLI@2
       displayName: 'Restore packages'
@@ -856,7 +856,7 @@ sudo ufw enable
    - Check token expiration time
 
 3. **Application Won't Start**
-   - Check .NET 9.0 runtime is installed
+   - Check .NET 8.0 runtime is installed
    - Verify all required environment variables
    - Check application logs
    - Ensure ports are available
