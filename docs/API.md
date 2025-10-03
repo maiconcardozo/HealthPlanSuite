@@ -1450,11 +1450,453 @@ The API uses semantic versioning (SemVer) with the following strategy:
 - Header versioning: `API-Version: 1.0`
 - Accept header versioning: `Accept: application/vnd.api+json;version=1`
 
+---
+
+# 🏥 Health Plan API
+
+The Health Plan API provides comprehensive management of health plans, coverages, quotes, and related entities.
+
+## Endpoints Overview
+
+The Health Plan API includes the following controller categories:
+- **Plan Coverage Management**: PlanCoverageController
+- **Coverage Types**: CoverageController  
+- **Quote Management**: QuoteController, QuoteHistoryController
+- **Health Plans**: HealthPlanController
+- **Companies**: CompanyController
+- **Beneficiaries**: BeneficiaryController
+- **Configuration**: AgeRangeController, AccommodationController, AcceptanceRuleController
+- **Pricing**: PrecoPlanoFaixaController, TaxaAdesaoController, DescontoPromocionalController, CoparticipacaoProcedimentoController
+
+For complete endpoint listings, see [docs/MAPEAMENTO.md](./MAPEAMENTO.md).
+
+---
+
+## PlanCoverage Management
+
+### GET /PlanCoverage/plan-coverages
+
+Retrieves all active plan coverages from the system.
+
+**Request:**
+
+```http
+GET /PlanCoverage/plan-coverages HTTP/1.1
+Host: localhost:7001
+Content-Type: application/json
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "status": 200,
+  "title": "Success",
+  "detail": "Request was successful",
+  "instance": "/PlanCoverage/plan-coverages",
+  "data": [
+    {
+      "id": 1,
+      "healthPlanId": 1,
+      "coverageId": 1,
+      "isActive": true,
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": 2,
+      "healthPlanId": 1,
+      "coverageId": 2,
+      "isActive": true,
+      "createdAt": "2024-01-15T10:35:00Z",
+      "updatedAt": "2024-01-15T10:35:00Z"
+    }
+  ]
+}
+```
+
+**Error Responses:**
+
+**400 Bad Request**:
+```json
+{
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Invalid request parameters",
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "instance": "/PlanCoverage/plan-coverages"
+}
+```
+
+**401 Unauthorized**:
+```json
+{
+  "title": "Unauthorized",
+  "status": 401,
+  "detail": "Unauthorized access",
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.3.1",
+  "instance": "/PlanCoverage/plan-coverages"
+}
+```
+
+**500 Internal Server Error**:
+```json
+{
+  "title": "Internal Server Error",
+  "status": 500,
+  "detail": "An error occurred while processing your request",
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+  "instance": "/PlanCoverage/plan-coverages"
+}
+```
+
+---
+
+### GET /PlanCoverage/{id}
+
+Retrieves a specific plan coverage by ID.
+
+**Request:**
+
+```http
+GET /PlanCoverage/1 HTTP/1.1
+Host: localhost:7001
+Content-Type: application/json
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "status": 200,
+  "title": "Success",
+  "detail": "Request was successful",
+  "instance": "/PlanCoverage/1",
+  "data": {
+    "id": 1,
+    "healthPlanId": 1,
+    "coverageId": 1,
+    "isActive": true,
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+**Error Responses:**
+
+**404 Not Found**:
+```json
+{
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Plan coverage not found",
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+  "instance": "/PlanCoverage/1"
+}
+```
+
+---
+
+### POST /PlanCoverage
+
+Creates a new plan coverage.
+
+**Request:**
+
+```http
+POST /PlanCoverage HTTP/1.1
+Host: localhost:7001
+Content-Type: application/json
+
+{
+  "healthPlanId": 1,
+  "coverageId": 1,
+  "isActive": true
+}
+```
+
+**Request Body Schema:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `healthPlanId` | integer | ✅ | ID of the health plan |
+| `coverageId` | integer | ✅ | ID of the coverage |
+| `isActive` | boolean | ✅ | Whether the coverage is active |
+
+**Response (201 Created):**
+
+```json
+{
+  "status": 201,
+  "title": "Created",
+  "detail": "Plan coverage created successfully",
+  "instance": "/PlanCoverage",
+  "data": {
+    "id": 3,
+    "healthPlanId": 1,
+    "coverageId": 1,
+    "isActive": true,
+    "createdAt": "2024-01-15T10:40:00Z",
+    "updatedAt": "2024-01-15T10:40:00Z"
+  }
+}
+```
+
+**Error Responses:**
+
+**400 Bad Request**:
+```json
+{
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "One or more validation errors occurred",
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "instance": "/PlanCoverage",
+  "errors": {
+    "healthPlanId": ["Health plan ID is required"],
+    "coverageId": ["Coverage ID is required"]
+  }
+}
+```
+
+**409 Conflict**:
+```json
+{
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Plan coverage already exists",
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.8",
+  "instance": "/PlanCoverage"
+}
+```
+
+---
+
+### PUT /PlanCoverage/{id}
+
+Updates an existing plan coverage.
+
+**Request:**
+
+```http
+PUT /PlanCoverage/1 HTTP/1.1
+Host: localhost:7001
+Content-Type: application/json
+
+{
+  "id": 1,
+  "healthPlanId": 1,
+  "coverageId": 2,
+  "isActive": true
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "status": 200,
+  "title": "Success",
+  "detail": "Plan coverage updated successfully",
+  "instance": "/PlanCoverage/1",
+  "data": {
+    "id": 1,
+    "healthPlanId": 1,
+    "coverageId": 2,
+    "isActive": true,
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T11:00:00Z"
+  }
+}
+```
+
+---
+
+### DELETE /PlanCoverage/{id}
+
+Deletes a plan coverage.
+
+**Request:**
+
+```http
+DELETE /PlanCoverage/1 HTTP/1.1
+Host: localhost:7001
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "status": 200,
+  "title": "Success",
+  "detail": "Plan coverage deleted successfully",
+  "instance": "/PlanCoverage/1"
+}
+```
+
+**Error Responses:**
+
+**404 Not Found**:
+```json
+{
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Plan coverage not found",
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+  "instance": "/PlanCoverage/1"
+}
+```
+
+---
+
+## Coverage Management
+
+### GET /Coverage/coverages
+
+Lists all available coverages in the system.
+
+**Request:**
+
+```http
+GET /Coverage/coverages HTTP/1.1
+Host: localhost:7001
+Content-Type: application/json
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "status": 200,
+  "title": "Success",
+  "detail": "Request was successful",
+  "instance": "/Coverage/coverages",
+  "data": [
+    {
+      "id": 1,
+      "name": "Consultas Médicas",
+      "description": "Cobertura para consultas médicas em clínicas e hospitais",
+      "coverageType": "Ambulatorial",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "name": "Internações",
+      "description": "Cobertura para internações hospitalares",
+      "coverageType": "Hospitalar",
+      "isActive": true
+    }
+  ]
+}
+```
+
+---
+
+### GET /Coverage/{id}
+
+Retrieves a specific coverage by ID.
+
+**Request:**
+
+```http
+GET /Coverage/1 HTTP/1.1
+Host: localhost:7001
+Content-Type: application/json
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "status": 200,
+  "title": "Success",
+  "detail": "Request was successful",
+  "instance": "/Coverage/1",
+  "data": {
+    "id": 1,
+    "name": "Consultas Médicas",
+    "description": "Cobertura para consultas médicas em clínicas e hospitais",
+    "coverageType": "Ambulatorial",
+    "isActive": true
+  }
+}
+```
+
+---
+
+## Quote Management
+
+### POST /Quote
+
+Creates a new health plan quote.
+
+**Request:**
+
+```http
+POST /Quote HTTP/1.1
+Host: localhost:7001
+Content-Type: application/json
+
+{
+  "companyId": 1,
+  "healthPlanId": 1,
+  "beneficiaries": [
+    {
+      "name": "João Silva",
+      "cpf": "12345678900",
+      "birthDate": "1990-05-15",
+      "age": 34
+    },
+    {
+      "name": "Maria Silva",
+      "cpf": "98765432100",
+      "birthDate": "1992-08-20",
+      "age": 32
+    }
+  ],
+  "accommodationId": 1,
+  "ageRangeIds": [1, 2]
+}
+```
+
+**Request Body Schema:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `companyId` | integer | ✅ | ID of the insurance company |
+| `healthPlanId` | integer | ✅ | ID of the health plan |
+| `beneficiaries` | array | ✅ | List of beneficiaries |
+| `accommodationId` | integer | ✅ | ID of the accommodation type |
+| `ageRangeIds` | array | ✅ | List of age range IDs |
+
+**Response (201 Created):**
+
+```json
+{
+  "status": 201,
+  "title": "Created",
+  "detail": "Request was successful",
+  "instance": "/Quote",
+  "data": {
+    "id": 1,
+    "companyId": 1,
+    "healthPlanId": 1,
+    "totalPrice": 850.00,
+    "numberOfBeneficiaries": 2,
+    "createdAt": "2024-01-15T10:45:00Z"
+  }
+}
+```
+
+---
+
 ## 📞 Support
 
 For API support and questions:
 
 - **Documentation**: [API Docs](../../docs/)
+- **Complete Mapping**: [MAPEAMENTO.md](./MAPEAMENTO.md)
 - **Issues**: [GitHub Issues](../../issues)
 - **Support Email**: api-support@yourdomain.com
 - **Developer Forum**: [Community Forum](https://forum.yourdomain.com)
