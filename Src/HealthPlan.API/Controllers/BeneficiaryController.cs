@@ -4,6 +4,7 @@ using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
 using HealthPlan.Quote.Services.Interface;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,14 +20,17 @@ namespace HealthPlan.API.Controllers
     public class BeneficiaryController : ControllerBase
     {
         private readonly IBeneficiaryService _beneficiaryService;
+        private readonly IValidator<BeneficiaryPayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the BeneficiaryController.
         /// </summary>
         /// <param name="beneficiaryService">Service for beneficiary management operations</param>
-        public BeneficiaryController(IBeneficiaryService beneficiaryService)
+        /// <param name="validator">Validator for BeneficiaryPayLoadDTO</param>
+        public BeneficiaryController(IBeneficiaryService beneficiaryService, IValidator<BeneficiaryPayLoadDTO> validator)
         {
             _beneficiaryService = beneficiaryService;
+            this.validator = validator;
         }
 
         /// <summary>
@@ -148,8 +152,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateBeneficiary([FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad)
+        public IActionResult CreateBeneficiary([FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(beneficiaryPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var beneficiary = CleanTemplateApplicationMapperInitializer.Mapper.Map<Beneficiary>(beneficiaryPayLoad);
@@ -203,8 +216,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateBeneficiary(int id, [FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad)
+        public IActionResult UpdateBeneficiary(int id, [FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(beneficiaryPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var existingBeneficiary = _beneficiaryService.GetById(id);
