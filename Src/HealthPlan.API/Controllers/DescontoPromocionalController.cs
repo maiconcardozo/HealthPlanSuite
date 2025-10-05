@@ -4,6 +4,7 @@ using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
 using HealthPlan.Quote.Services.Interface;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,14 +20,17 @@ namespace HealthPlan.API.Controllers
     public class DescontoPromocionalController : ControllerBase
     {
         private readonly IDescontoPromocionalService _descontoPromocionalService;
+        private readonly IValidator<DescontoPromocionalPayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the DescontoPromocionalController.
         /// </summary>
         /// <param name="descontoPromocionalService">Service for promotional discount management operations</param>
-        public DescontoPromocionalController(IDescontoPromocionalService descontoPromocionalService)
+        /// <param name="validator">Validator for DescontoPromocionalPayLoadDTO</param>
+        public DescontoPromocionalController(IDescontoPromocionalService descontoPromocionalService, IValidator<DescontoPromocionalPayLoadDTO> validator)
         {
             _descontoPromocionalService = descontoPromocionalService;
+            this.validator = validator;
         }
 
         /// <summary>
@@ -148,8 +152,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateDescontoPromocional([FromBody] DescontoPromocionalPayLoadDTO descontoPromocionalPayLoad)
+        public IActionResult CreateDescontoPromocional([FromBody] DescontoPromocionalPayLoadDTO descontoPromocionalPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(descontoPromocionalPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var descontoPromocional = CleanTemplateApplicationMapperInitializer.Mapper.Map<DescontoPromocional>(descontoPromocionalPayLoad);
@@ -203,8 +216,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateDescontoPromocional(int id, [FromBody] DescontoPromocionalPayLoadDTO descontoPromocionalPayLoad)
+        public IActionResult UpdateDescontoPromocional(int id, [FromBody] DescontoPromocionalPayLoadDTO descontoPromocionalPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(descontoPromocionalPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var existingDescontoPromocional = _descontoPromocionalService.GetById(id);

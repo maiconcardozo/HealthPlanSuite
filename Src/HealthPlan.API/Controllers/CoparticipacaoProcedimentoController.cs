@@ -4,6 +4,7 @@ using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
 using HealthPlan.Quote.Services.Interface;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,14 +20,17 @@ namespace HealthPlan.API.Controllers
     public class CoparticipacaoProcedimentoController : ControllerBase
     {
         private readonly ICoparticipacaoProcedimentoService _coparticipacaoProcedimentoService;
+        private readonly IValidator<CoparticipacaoProcedimentoPayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the CoparticipacaoProcedimentoController.
         /// </summary>
         /// <param name="coparticipacaoProcedimentoService">Service for co-participation procedure management operations</param>
-        public CoparticipacaoProcedimentoController(ICoparticipacaoProcedimentoService coparticipacaoProcedimentoService)
+        /// <param name="validator">Validator for CoparticipacaoProcedimentoPayLoadDTO</param>
+        public CoparticipacaoProcedimentoController(ICoparticipacaoProcedimentoService coparticipacaoProcedimentoService, IValidator<CoparticipacaoProcedimentoPayLoadDTO> validator)
         {
             _coparticipacaoProcedimentoService = coparticipacaoProcedimentoService;
+            this.validator = validator;
         }
 
         /// <summary>
@@ -148,8 +152,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateCoparticipacaoProcedimento([FromBody] CoparticipacaoProcedimentoPayLoadDTO coparticipacaoProcedimentoPayLoad)
+        public IActionResult CreateCoparticipacaoProcedimento([FromBody] CoparticipacaoProcedimentoPayLoadDTO coparticipacaoProcedimentoPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(coparticipacaoProcedimentoPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var coparticipacaoProcedimento = CleanTemplateApplicationMapperInitializer.Mapper.Map<CoparticipacaoProcedimento>(coparticipacaoProcedimentoPayLoad);
@@ -203,8 +216,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateCoparticipacaoProcedimento(int id, [FromBody] CoparticipacaoProcedimentoPayLoadDTO coparticipacaoProcedimentoPayLoad)
+        public IActionResult UpdateCoparticipacaoProcedimento(int id, [FromBody] CoparticipacaoProcedimentoPayLoadDTO coparticipacaoProcedimentoPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(coparticipacaoProcedimentoPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var existingCoparticipacaoProcedimento = _coparticipacaoProcedimentoService.GetById(id);

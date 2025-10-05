@@ -4,6 +4,7 @@ using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
 using HealthPlan.Quote.Services.Interface;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,14 +20,17 @@ namespace HealthPlan.API.Controllers
     public class QuoteHistoryController : ControllerBase
     {
         private readonly IQuoteHistoryService _quoteHistoryService;
+        private readonly IValidator<QuoteHistoryPayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the QuoteHistoryController.
         /// </summary>
         /// <param name="quoteHistoryService">Service for quote history management operations</param>
-        public QuoteHistoryController(IQuoteHistoryService quoteHistoryService)
+        /// <param name="validator">Validator for QuoteHistoryPayLoadDTO</param>
+        public QuoteHistoryController(IQuoteHistoryService quoteHistoryService, IValidator<QuoteHistoryPayLoadDTO> validator)
         {
             _quoteHistoryService = quoteHistoryService;
+            this.validator = validator;
         }
 
         /// <summary>
@@ -148,8 +152,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateQuoteHistory([FromBody] QuoteHistoryPayLoadDTO quoteHistoryPayLoad)
+        public IActionResult CreateQuoteHistory([FromBody] QuoteHistoryPayLoadDTO quoteHistoryPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(quoteHistoryPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var quoteHistory = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteHistory>(quoteHistoryPayLoad);
@@ -203,8 +216,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateQuoteHistory(int id, [FromBody] QuoteHistoryPayLoadDTO quoteHistoryPayLoad)
+        public IActionResult UpdateQuoteHistory(int id, [FromBody] QuoteHistoryPayLoadDTO quoteHistoryPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(quoteHistoryPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var existingQuoteHistory = _quoteHistoryService.GetById(id);

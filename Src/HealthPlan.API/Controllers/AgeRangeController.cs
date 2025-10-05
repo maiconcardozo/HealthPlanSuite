@@ -4,6 +4,7 @@ using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
 using HealthPlan.Quote.Services.Interface;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,14 +20,17 @@ namespace HealthPlan.API.Controllers
     public class AgeRangeController : ControllerBase
     {
         private readonly IAgeRangeService _ageRangeService;
+        private readonly IValidator<AgeRangePayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the AgeRangeController.
         /// </summary>
         /// <param name="ageRangeService">Service for age range management operations</param>
-        public AgeRangeController(IAgeRangeService ageRangeService)
+        /// <param name="validator">Validator for AgeRangePayLoadDTO</param>
+        public AgeRangeController(IAgeRangeService ageRangeService, IValidator<AgeRangePayLoadDTO> validator)
         {
             _ageRangeService = ageRangeService;
+            this.validator = validator;
         }
 
         /// <summary>
@@ -148,8 +152,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateAgeRange([FromBody] AgeRangePayLoadDTO ageRangePayLoad)
+        public IActionResult CreateAgeRange([FromBody] AgeRangePayLoadDTO ageRangePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(ageRangePayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var ageRange = CleanTemplateApplicationMapperInitializer.Mapper.Map<AgeRange>(ageRangePayLoad);
@@ -203,8 +216,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAgeRange(int id, [FromBody] AgeRangePayLoadDTO ageRangePayLoad)
+        public IActionResult UpdateAgeRange(int id, [FromBody] AgeRangePayLoadDTO ageRangePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(ageRangePayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var existingAgeRange = _ageRangeService.GetById(id);

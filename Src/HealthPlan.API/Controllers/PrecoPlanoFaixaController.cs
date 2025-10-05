@@ -4,6 +4,7 @@ using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
 using HealthPlan.Quote.Services.Interface;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,14 +20,17 @@ namespace HealthPlan.API.Controllers
     public class PrecoPlanoFaixaController : ControllerBase
     {
         private readonly IPrecoPlanoFaixaService _precoPlanoFaixaService;
+        private readonly IValidator<PrecoPlanoFaixaPayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the PrecoPlanoFaixaController.
         /// </summary>
         /// <param name="precoPlanoFaixaService">Service for plan price range management operations</param>
-        public PrecoPlanoFaixaController(IPrecoPlanoFaixaService precoPlanoFaixaService)
+        /// <param name="validator">Validator for PrecoPlanoFaixaPayLoadDTO</param>
+        public PrecoPlanoFaixaController(IPrecoPlanoFaixaService precoPlanoFaixaService, IValidator<PrecoPlanoFaixaPayLoadDTO> validator)
         {
             _precoPlanoFaixaService = precoPlanoFaixaService;
+            this.validator = validator;
         }
 
         /// <summary>
@@ -148,8 +152,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreatePrecoPlanoFaixa([FromBody] PrecoPlanoFaixaPayLoadDTO precoPlanoFaixaPayLoad)
+        public IActionResult CreatePrecoPlanoFaixa([FromBody] PrecoPlanoFaixaPayLoadDTO precoPlanoFaixaPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(precoPlanoFaixaPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var precoPlanoFaixa = CleanTemplateApplicationMapperInitializer.Mapper.Map<PrecoPlanoFaixa>(precoPlanoFaixaPayLoad);
@@ -203,8 +216,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdatePrecoPlanoFaixa(int id, [FromBody] PrecoPlanoFaixaPayLoadDTO precoPlanoFaixaPayLoad)
+        public IActionResult UpdatePrecoPlanoFaixa(int id, [FromBody] PrecoPlanoFaixaPayLoadDTO precoPlanoFaixaPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(precoPlanoFaixaPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var existingPrecoPlanoFaixa = _precoPlanoFaixaService.GetById(id);
