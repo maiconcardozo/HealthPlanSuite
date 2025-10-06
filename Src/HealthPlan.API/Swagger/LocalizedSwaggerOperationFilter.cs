@@ -4,88 +4,84 @@ using HealthPlan.API.Resource;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 
-public class LocalizedSwaggerOperationFilter : IOperationFilter
+namespace HealthPlan.API.Swagger
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public LocalizedSwaggerOperationFilter(IHttpContextAccessor httpContextAccessor)
+    /// <summary>
+    /// Swagger operation filter for localizing API operation documentation
+    /// </summary>
+    public class LocalizedSwaggerOperationFilter : IOperationFilter
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public void Apply(OpenApiOperation operation, OperationFilterContext context)
-    {
-        switch (context.MethodInfo.Name)
+        /// <summary>
+        /// Initializes a new instance of the LocalizedSwaggerOperationFilter
+        /// </summary>
+        /// <param name="httpContextAccessor">HTTP context accessor for accessing culture information</param>
+        public LocalizedSwaggerOperationFilter(IHttpContextAccessor httpContextAccessor)
         {
-            // CleanEntity Controller methods
-            case "GetCleanEntities":
-                operation.Summary = "Get all CleanEntities";
-                operation.Description = "Retrieves all CleanEntity objects in the system.";
-                SetResponseDescription(operation, StatusCodes.Status200OK, "CleanEntities retrieved successfully.");
-                SetResponseDescription(operation, StatusCodes.Status400BadRequest, "Invalid request parameters");
-                SetResponseDescription(operation, StatusCodes.Status401Unauthorized, "Unauthorized access");
-                SetResponseDescription(operation, StatusCodes.Status500InternalServerError, "Internal server error");
-                break;
-
-            case "GetCleanEntityById":
-                operation.Summary = "Get CleanEntity by ID";
-                operation.Description = "Retrieves a specific CleanEntity by its unique identifier.";
-                SetResponseDescription(operation, StatusCodes.Status200OK, "CleanEntity retrieved successfully.");
-                SetResponseDescription(operation, StatusCodes.Status400BadRequest, "Invalid request parameters");
-                SetResponseDescription(operation, StatusCodes.Status401Unauthorized, "Unauthorized access");
-                SetResponseDescription(operation, StatusCodes.Status404NotFound, "CleanEntity not found.");
-                SetResponseDescription(operation, StatusCodes.Status500InternalServerError, "Internal server error");
-                break;
-
-            case "AddCleanEntity":
-                operation.Summary = "Add new CleanEntity";
-                operation.Description = "Creates a new CleanEntity with the provided information.";
-                SetResponseDescription(operation, StatusCodes.Status201Created, "CleanEntity created successfully.");
-                SetResponseDescription(operation, StatusCodes.Status400BadRequest, "Invalid request parameters");
-                SetResponseDescription(operation, StatusCodes.Status401Unauthorized, "Unauthorized access");
-                SetResponseDescription(operation, StatusCodes.Status409Conflict, "CleanEntity already exists.");
-                SetResponseDescription(operation, StatusCodes.Status500InternalServerError, "Internal server error");
-                break;
-
-            case "UpdateCleanEntity":
-                operation.Summary = "Update CleanEntity";
-                operation.Description = "Updates an existing CleanEntity with the provided information.";
-                SetResponseDescription(operation, StatusCodes.Status200OK, "CleanEntity updated successfully.");
-                SetResponseDescription(operation, StatusCodes.Status400BadRequest, "Invalid request parameters");
-                SetResponseDescription(operation, StatusCodes.Status401Unauthorized, "Unauthorized access");
-                SetResponseDescription(operation, StatusCodes.Status404NotFound, "CleanEntity not found.");
-                SetResponseDescription(operation, StatusCodes.Status500InternalServerError, "Internal server error");
-                break;
-
-            case "DeleteCleanEntity":
-                operation.Summary = "Delete CleanEntity";
-                operation.Description = "Removes a CleanEntity from the system by its unique identifier.";
-                SetResponseDescription(operation, StatusCodes.Status200OK, "CleanEntity deleted successfully.");
-                SetResponseDescription(operation, StatusCodes.Status400BadRequest, "Invalid request parameters");
-                SetResponseDescription(operation, StatusCodes.Status401Unauthorized, "Unauthorized access");
-                SetResponseDescription(operation, StatusCodes.Status404NotFound, "CleanEntity not found.");
-                SetResponseDescription(operation, StatusCodes.Status500InternalServerError, "Internal server error");
-                break;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        // Apply localization to all text if needed
-        var httpContext = _httpContextAccessor.HttpContext;
-        if (httpContext != null)
+        /// <summary>
+        /// Applies localization to Swagger operation documentation
+        /// </summary>
+        /// <param name="operation">The Swagger operation</param>
+        /// <param name="context">The operation filter context</param>
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            var feature = httpContext.Features.Get<IRequestCultureFeature>();
-            var culture = feature?.RequestCulture.Culture ?? CultureInfo.CurrentCulture;
-            
-            // Apply culture-specific formatting if needed
-            // ResourceAPI.Culture = culture; // Will be enabled once resource files are regenerated
-        }
-    }
+            var culture = GetCurrentCulture();
 
-    private static void SetResponseDescription(OpenApiOperation operation, int statusCode, string description)
-    {
-        var statusCodeString = statusCode.ToString();
-        if (operation.Responses.ContainsKey(statusCodeString))
+            // Localize operation summary
+            if (!string.IsNullOrEmpty(operation.Summary) && operation.Summary.StartsWith("ResourceAPI."))
+            {
+                var key = operation.Summary.Substring("ResourceAPI.".Length);
+                var text = ResourceAPI.ResourceManager.GetString(key, culture);
+                if (!string.IsNullOrEmpty(text))
+                {
+                    operation.Summary = text;
+                }
+            }
+
+            // Localize operation description
+            if (!string.IsNullOrEmpty(operation.Description) && operation.Description.StartsWith("ResourceAPI."))
+            {
+                var key = operation.Description.Substring("ResourceAPI.".Length);
+                var text = ResourceAPI.ResourceManager.GetString(key, culture);
+                if (!string.IsNullOrEmpty(text))
+                {
+                    operation.Description = text;
+                }
+            }
+
+            // Localize response descriptions
+            foreach (var response in operation.Responses)
+            {
+                if (!string.IsNullOrEmpty(response.Value.Description) && response.Value.Description.StartsWith("ResourceAPI."))
+                {
+                    var key = response.Value.Description.Substring("ResourceAPI.".Length);
+                    var text = ResourceAPI.ResourceManager.GetString(key, culture);
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        response.Value.Description = text;
+                    }
+                }
+            }
+        }
+
+        private CultureInfo GetCurrentCulture()
         {
-            operation.Responses[statusCodeString].Description = description;
+            // Try to get culture from current HTTP request context first
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                var requestCultureFeature = _httpContextAccessor.HttpContext.Features.Get<IRequestCultureFeature>();
+                if (requestCultureFeature?.RequestCulture?.Culture != null)
+                {
+                    return requestCultureFeature.RequestCulture.Culture;
+                }
+            }
+
+            // Fall back to CurrentUICulture if no HTTP context or request culture available
+            return CultureInfo.CurrentUICulture;
         }
     }
 }
