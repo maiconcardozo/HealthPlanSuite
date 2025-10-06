@@ -12,39 +12,39 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing AcceptanceRule entities.
-    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
+    /// Controller for managing PromotionalDiscount entities (Descontos Promocionais).
+    /// Provides comprehensive CRUD operations for promotional discounts of health plans.
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    public class AcceptanceRuleController : ControllerBase
+    public class PromotionalDiscountController : ControllerBase
     {
-        private readonly IAcceptanceRuleService _acceptanceRuleService;
-        private readonly IValidator<AcceptanceRulePayLoadDTO> validator;
+        private readonly IPromotionalDiscountService _promotionalDiscountService;
+        private readonly IValidator<PromotionalDiscountPayLoadDTO> validator;
 
         /// <summary>
-        /// Initializes a new instance of the AcceptanceRuleController.
+        /// Initializes a new instance of the PromotionalDiscountController.
         /// </summary>
-        /// <param name="acceptanceRuleService">Service for acceptance rule management operations</param>
-        /// <param name="validator">Validator for AcceptanceRulePayLoadDTO</param>
-        public AcceptanceRuleController(IAcceptanceRuleService acceptanceRuleService, IValidator<AcceptanceRulePayLoadDTO> validator)
+        /// <param name="promotionalDiscountService">Service for promotional discount management operations</param>
+        /// <param name="validator">Validator for PromotionalDiscountPayLoadDTO</param>
+        public PromotionalDiscountController(IPromotionalDiscountService promotionalDiscountService, IValidator<PromotionalDiscountPayLoadDTO> validator)
         {
-            _acceptanceRuleService = acceptanceRuleService;
+            _promotionalDiscountService = promotionalDiscountService;
             this.validator = validator;
         }
 
         /// <summary>
-        /// Retrieves all acceptance rules from the system.
+        /// Retrieves all promotional discounts from the system.
         /// </summary>
         /// <returns>
-        /// Returns list of AcceptanceRule objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// Returns list of PromotionalDiscount objects with their details and status on success, validation errors, unauthorized access, or internal server error.
         /// </returns>
-        /// <response code="200">Acceptance rules retrieved successfully</response>
+        /// <response code="200">Promotional discounts retrieved successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
         /// <response code="500">Internal server error</response>
-        [HttpGet(AcceptanceRuleRoutes.GetAcceptanceRules)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<AcceptanceRuleResponseDTO>))]
+        [HttpGet("")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<PromotionalDiscountResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -52,13 +52,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAcceptanceRules()
+        public IActionResult GetPromotionalDiscounts()
         {
             try
             {
-                var acceptanceRules = _acceptanceRuleService.GetAllActiveAcceptanceRules();
-                var acceptanceRulesResponse = acceptanceRules.Select(ar => CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(ar));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRulesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var promotionalDiscount = _promotionalDiscountService.GetAllActivePromotionalDiscounts();
+                var promotionalDiscountResponse = promotionalDiscount.Select(dp => CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(dp));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -79,17 +79,17 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves an acceptance rule by its unique identifier.
+        /// Retrieves a specific promotional discount by ID.
         /// </summary>
-        /// <param name="id">AcceptanceRule ID to search for</param>
-        /// <returns>Returns AcceptanceRule matching the specified ID</returns>
-        /// <response code="200">Acceptance rule retrieved successfully</response>
+        /// <param name="id">Promotional discount ID to search for</param>
+        /// <returns>Returns PromotionalDiscount matching the specified ID</returns>
+        /// <response code="200">Promotional discount retrieved successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
+        /// <response code="404">Promotional discount not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpGet(AcceptanceRuleRoutes.GetAcceptanceRuleById)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AcceptanceRuleResponseDTO))]
+        [HttpGet("{id}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PromotionalDiscountResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -99,19 +99,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAcceptanceRule(int id)
+        public IActionResult GetPromotionalDiscounts(int id)
         {
             try
             {
-                var acceptanceRule = _acceptanceRuleService.GetById(id);
-                if (acceptanceRule == null)
+                var promotionalDiscount = _promotionalDiscountService.GetById(id);
+                if (promotionalDiscount == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Acceptance rule not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var acceptanceRuleResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(acceptanceRule);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRuleResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var promotionalDiscountResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(promotionalDiscount);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -132,17 +132,17 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new acceptance rule in the system.
+        /// Creates a new promotional discount.
         /// </summary>
-        /// <param name="acceptanceRulePayLoad">Acceptance rule data to create</param>
-        /// <returns>Returns created AcceptanceRule on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Acceptance rule created successfully</response>
+        /// <param name="promotionalDiscountPayLoad">Promotional discount data to create</param>
+        /// <returns>Returns created PromotionalDiscount on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <response code="201">Promotional discount created successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Acceptance rule already exists</response>
+        /// <response code="409">Promotional discount already exists</response>
         /// <response code="500">Internal server error</response>
-        [HttpPost(AcceptanceRuleRoutes.AddAcceptanceRule)]
-        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AcceptanceRuleResponseDTO))]
+        [HttpPost("")]
+        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(PromotionalDiscountResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
@@ -152,9 +152,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateAcceptanceRule([FromBody] AcceptanceRulePayLoadDTO acceptanceRulePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult CreatePromotionalDiscount([FromBody] PromotionalDiscountPayLoadDTO promotionalDiscountPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(acceptanceRulePayLoad);
+            var validationResult = validator.Validate(promotionalDiscountPayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -165,11 +165,11 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var acceptanceRule = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRule>(acceptanceRulePayLoad);
-                _acceptanceRuleService.AddAcceptanceRule(acceptanceRule);
+                var promotionalDiscount = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscount>(promotionalDiscountPayLoad);
+                _promotionalDiscountService.AddPromotionalDiscount(promotionalDiscount);
 
-                var acceptanceRuleResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(acceptanceRule);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRuleResponse, "Acceptance rule created successfully", HttpContext.Request.Path);
+                var promotionalDiscountResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(promotionalDiscount);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, "Promotional discount created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -195,18 +195,18 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing acceptance rule.
+        /// Updates an existing promotional discount.
         /// </summary>
-        /// <param name="id">AcceptanceRule ID to update</param>
-        /// <param name="acceptanceRulePayLoad">Updated acceptance rule data</param>
-        /// <returns>Returns updated AcceptanceRule on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Acceptance rule updated successfully</response>
+        /// <param name="id">Promotional discount ID to update</param>
+        /// <param name="promotionalDiscountPayLoad">Updated promotional discount data</param>
+        /// <returns>Returns updated PromotionalDiscount on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <response code="200">Promotional discount updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
+        /// <response code="404">Promotional discount not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpPut(AcceptanceRuleRoutes.UpdateAcceptanceRule)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AcceptanceRuleResponseDTO))]
+        [HttpPut("{id}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PromotionalDiscountResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -216,9 +216,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAcceptanceRule(int id, [FromBody] AcceptanceRulePayLoadDTO acceptanceRulePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdatePromotionalDiscount(int id, [FromBody] PromotionalDiscountPayLoadDTO promotionalDiscountPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(acceptanceRulePayLoad);
+            var validationResult = validator.Validate(promotionalDiscountPayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -229,19 +229,19 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingAcceptanceRule = _acceptanceRuleService.GetById(id);
-                if (existingAcceptanceRule == null)
+                var existingPromotionalDiscount = _promotionalDiscountService.GetById(id);
+                if (existingPromotionalDiscount == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Acceptance rule not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var acceptanceRule = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRule>(acceptanceRulePayLoad);
-                acceptanceRule.Id = id;
-                _acceptanceRuleService.UpdateAcceptanceRule(acceptanceRule);
+                var promotionalDiscount = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscount>(promotionalDiscountPayLoad);
+                promotionalDiscount.Id = id;
+                _promotionalDiscountService.UpdatePromotionalDiscount(promotionalDiscount);
 
-                var acceptanceRuleResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(acceptanceRule);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRuleResponse, "Acceptance rule updated successfully", HttpContext.Request.Path);
+                var promotionalDiscountResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(promotionalDiscount);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, "Promotional discount updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -262,16 +262,16 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Deletes an acceptance rule from the system.
+        /// Deletes an existing promotional discount.
         /// </summary>
-        /// <param name="id">AcceptanceRule ID to delete</param>
+        /// <param name="id">Promotional discount ID to delete</param>
         /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Acceptance rule deleted successfully</response>
+        /// <response code="200">Promotional discount deleted successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
+        /// <response code="404">Promotional discount not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpDelete(AcceptanceRuleRoutes.DeleteAcceptanceRule)]
+        [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -282,19 +282,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteAcceptanceRule(int id)
+        public IActionResult DeletePromotionalDiscount(int id)
         {
             try
             {
-                var existingAcceptanceRule = _acceptanceRuleService.GetById(id);
-                if (existingAcceptanceRule == null)
+                var existingPromotionalDiscount = _promotionalDiscountService.GetById(id);
+                if (existingPromotionalDiscount == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Acceptance rule not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _acceptanceRuleService.DeleteAcceptanceRule(id);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess("Acceptance rule deleted successfully", "Acceptance rule deleted successfully", HttpContext.Request.Path);
+                _promotionalDiscountService.DeletePromotionalDiscount(id);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess("Promotional discount deleted successfully", "Promotional discount deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)

@@ -4,6 +4,7 @@ using HealthPlan.Quote.Domain.Implementation;
 using HealthPlan.Quote.DTO;
 using HealthPlan.Quote.Mapping;
 using HealthPlan.Quote.Services.Interface;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,14 +20,17 @@ namespace HealthPlan.API.Controllers
     public class AccommodationController : ControllerBase
     {
         private readonly IAccommodationService _accommodationService;
+        private readonly IValidator<AccommodationPayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the AccommodationController.
         /// </summary>
         /// <param name="accommodationService">Service for accommodation management operations</param>
-        public AccommodationController(IAccommodationService accommodationService)
+        /// <param name="validator">Validator for AccommodationPayLoadDTO</param>
+        public AccommodationController(IAccommodationService accommodationService, IValidator<AccommodationPayLoadDTO> validator)
         {
             _accommodationService = accommodationService;
+            this.validator = validator;
         }
 
         /// <summary>
@@ -148,8 +152,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateAccommodation([FromBody] AccommodationPayLoadDTO accommodationPayLoad)
+        public IActionResult CreateAccommodation([FromBody] AccommodationPayLoadDTO accommodationPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(accommodationPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var accommodation = CleanTemplateApplicationMapperInitializer.Mapper.Map<Accommodation>(accommodationPayLoad);
@@ -203,8 +216,17 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAccommodation(int id, [FromBody] AccommodationPayLoadDTO accommodationPayLoad)
+        public IActionResult UpdateAccommodation(int id, [FromBody] AccommodationPayLoadDTO accommodationPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
+            var validationResult = validator.Validate(accommodationPayLoad);
+            if (!validationResult.IsValid)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
+            }
+
             try
             {
                 var existingAccommodation = _accommodationService.GetById(id);

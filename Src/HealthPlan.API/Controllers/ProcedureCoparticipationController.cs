@@ -12,39 +12,39 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing AcceptanceRule entities.
-    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
+    /// Controller for managing ProcedureCoparticipation entities (Coparticipação de Procedimentos).
+    /// Provides comprehensive CRUD operations for co-participation procedures of health plans.
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    public class AcceptanceRuleController : ControllerBase
+    public class ProcedureCoparticipationController : ControllerBase
     {
-        private readonly IAcceptanceRuleService _acceptanceRuleService;
-        private readonly IValidator<AcceptanceRulePayLoadDTO> validator;
+        private readonly IProcedureCoparticipationService _procedureCoparticipationService;
+        private readonly IValidator<ProcedureCoparticipationPayLoadDTO> validator;
 
         /// <summary>
-        /// Initializes a new instance of the AcceptanceRuleController.
+        /// Initializes a new instance of the ProcedureCoparticipationController.
         /// </summary>
-        /// <param name="acceptanceRuleService">Service for acceptance rule management operations</param>
-        /// <param name="validator">Validator for AcceptanceRulePayLoadDTO</param>
-        public AcceptanceRuleController(IAcceptanceRuleService acceptanceRuleService, IValidator<AcceptanceRulePayLoadDTO> validator)
+        /// <param name="procedureCoparticipationService">Service for co-participation procedure management operations</param>
+        /// <param name="validator">Validator for ProcedureCoparticipationPayLoadDTO</param>
+        public ProcedureCoparticipationController(IProcedureCoparticipationService procedureCoparticipationService, IValidator<ProcedureCoparticipationPayLoadDTO> validator)
         {
-            _acceptanceRuleService = acceptanceRuleService;
+            _procedureCoparticipationService = procedureCoparticipationService;
             this.validator = validator;
         }
 
         /// <summary>
-        /// Retrieves all acceptance rules from the system.
+        /// Retrieves all co-participation procedures from the system.
         /// </summary>
         /// <returns>
-        /// Returns list of AcceptanceRule objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// Returns list of ProcedureCoparticipation objects with their details and status on success, validation errors, unauthorized access, or internal server error.
         /// </returns>
-        /// <response code="200">Acceptance rules retrieved successfully</response>
+        /// <response code="200">Co-participation procedures retrieved successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
         /// <response code="500">Internal server error</response>
-        [HttpGet(AcceptanceRuleRoutes.GetAcceptanceRules)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<AcceptanceRuleResponseDTO>))]
+        [HttpGet("")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProcedureCoparticipationResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -52,13 +52,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAcceptanceRules()
+        public IActionResult GetProcedureCoparticipations()
         {
             try
             {
-                var acceptanceRules = _acceptanceRuleService.GetAllActiveAcceptanceRules();
-                var acceptanceRulesResponse = acceptanceRules.Select(ar => CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(ar));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRulesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var procedureCoparticipation = _procedureCoparticipationService.GetAllActiveProcedureCoparticipations();
+                var procedureCoparticipationResponse = procedureCoparticipation.Select(cp => CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipationResponseDTO>(cp));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(procedureCoparticipationResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -79,17 +79,17 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves an acceptance rule by its unique identifier.
+        /// Retrieves a specific co-participation procedure by ID.
         /// </summary>
-        /// <param name="id">AcceptanceRule ID to search for</param>
-        /// <returns>Returns AcceptanceRule matching the specified ID</returns>
-        /// <response code="200">Acceptance rule retrieved successfully</response>
+        /// <param name="id">Co-participation procedure ID to search for</param>
+        /// <returns>Returns ProcedureCoparticipation matching the specified ID</returns>
+        /// <response code="200">Co-participation procedure retrieved successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
+        /// <response code="404">Co-participation procedure not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpGet(AcceptanceRuleRoutes.GetAcceptanceRuleById)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AcceptanceRuleResponseDTO))]
+        [HttpGet("{id}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProcedureCoparticipationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -99,19 +99,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAcceptanceRule(int id)
+        public IActionResult GetProcedureCoparticipations(int id)
         {
             try
             {
-                var acceptanceRule = _acceptanceRuleService.GetById(id);
-                if (acceptanceRule == null)
+                var procedureCoparticipation = _procedureCoparticipationService.GetById(id);
+                if (procedureCoparticipation == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Acceptance rule not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Co-participation procedure not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var acceptanceRuleResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(acceptanceRule);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRuleResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var procedureCoparticipationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipationResponseDTO>(procedureCoparticipation);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(procedureCoparticipationResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -132,17 +132,17 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new acceptance rule in the system.
+        /// Creates a new co-participation procedure.
         /// </summary>
-        /// <param name="acceptanceRulePayLoad">Acceptance rule data to create</param>
-        /// <returns>Returns created AcceptanceRule on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Acceptance rule created successfully</response>
+        /// <param name="procedureCoparticipationPayLoad">Co-participation procedure data to create</param>
+        /// <returns>Returns created ProcedureCoparticipation on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <response code="201">Co-participation procedure created successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Acceptance rule already exists</response>
+        /// <response code="409">Co-participation procedure already exists</response>
         /// <response code="500">Internal server error</response>
-        [HttpPost(AcceptanceRuleRoutes.AddAcceptanceRule)]
-        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AcceptanceRuleResponseDTO))]
+        [HttpPost("")]
+        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(ProcedureCoparticipationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
@@ -152,9 +152,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateAcceptanceRule([FromBody] AcceptanceRulePayLoadDTO acceptanceRulePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult CreateProcedureCoparticipation([FromBody] ProcedureCoparticipationPayLoadDTO procedureCoparticipationPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(acceptanceRulePayLoad);
+            var validationResult = validator.Validate(procedureCoparticipationPayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -165,11 +165,11 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var acceptanceRule = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRule>(acceptanceRulePayLoad);
-                _acceptanceRuleService.AddAcceptanceRule(acceptanceRule);
+                var procedureCoparticipation = CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipation>(procedureCoparticipationPayLoad);
+                _procedureCoparticipationService.AddProcedureCoparticipation(procedureCoparticipation);
 
-                var acceptanceRuleResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(acceptanceRule);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRuleResponse, "Acceptance rule created successfully", HttpContext.Request.Path);
+                var procedureCoparticipationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipationResponseDTO>(procedureCoparticipation);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(procedureCoparticipationResponse, "Co-participation procedure created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -195,18 +195,18 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing acceptance rule.
+        /// Updates an existing co-participation procedure.
         /// </summary>
-        /// <param name="id">AcceptanceRule ID to update</param>
-        /// <param name="acceptanceRulePayLoad">Updated acceptance rule data</param>
-        /// <returns>Returns updated AcceptanceRule on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Acceptance rule updated successfully</response>
+        /// <param name="id">Co-participation procedure ID to update</param>
+        /// <param name="procedureCoparticipationPayLoad">Updated co-participation procedure data</param>
+        /// <returns>Returns updated ProcedureCoparticipation on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <response code="200">Co-participation procedure updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
+        /// <response code="404">Co-participation procedure not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpPut(AcceptanceRuleRoutes.UpdateAcceptanceRule)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AcceptanceRuleResponseDTO))]
+        [HttpPut("{id}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProcedureCoparticipationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -216,9 +216,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAcceptanceRule(int id, [FromBody] AcceptanceRulePayLoadDTO acceptanceRulePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateProcedureCoparticipation(int id, [FromBody] ProcedureCoparticipationPayLoadDTO procedureCoparticipationPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(acceptanceRulePayLoad);
+            var validationResult = validator.Validate(procedureCoparticipationPayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -229,19 +229,19 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingAcceptanceRule = _acceptanceRuleService.GetById(id);
-                if (existingAcceptanceRule == null)
+                var existingProcedureCoparticipation = _procedureCoparticipationService.GetById(id);
+                if (existingProcedureCoparticipation == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Acceptance rule not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Co-participation procedure not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var acceptanceRule = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRule>(acceptanceRulePayLoad);
-                acceptanceRule.Id = id;
-                _acceptanceRuleService.UpdateAcceptanceRule(acceptanceRule);
+                var procedureCoparticipation = CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipation>(procedureCoparticipationPayLoad);
+                procedureCoparticipation.Id = id;
+                _procedureCoparticipationService.UpdateProcedureCoparticipation(procedureCoparticipation);
 
-                var acceptanceRuleResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(acceptanceRule);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(acceptanceRuleResponse, "Acceptance rule updated successfully", HttpContext.Request.Path);
+                var procedureCoparticipationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipationResponseDTO>(procedureCoparticipation);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(procedureCoparticipationResponse, "Co-participation procedure updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -262,16 +262,16 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Deletes an acceptance rule from the system.
+        /// Deletes an existing co-participation procedure.
         /// </summary>
-        /// <param name="id">AcceptanceRule ID to delete</param>
+        /// <param name="id">Co-participation procedure ID to delete</param>
         /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Acceptance rule deleted successfully</response>
+        /// <response code="200">Co-participation procedure deleted successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
+        /// <response code="404">Co-participation procedure not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpDelete(AcceptanceRuleRoutes.DeleteAcceptanceRule)]
+        [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -282,19 +282,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteAcceptanceRule(int id)
+        public IActionResult DeleteProcedureCoparticipation(int id)
         {
             try
             {
-                var existingAcceptanceRule = _acceptanceRuleService.GetById(id);
-                if (existingAcceptanceRule == null)
+                var existingProcedureCoparticipation = _procedureCoparticipationService.GetById(id);
+                if (existingProcedureCoparticipation == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Acceptance rule not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Co-participation procedure not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _acceptanceRuleService.DeleteAcceptanceRule(id);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess("Acceptance rule deleted successfully", "Acceptance rule deleted successfully", HttpContext.Request.Path);
+                _procedureCoparticipationService.DeleteProcedureCoparticipation(id);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess("Co-participation procedure deleted successfully", "Co-participation procedure deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
