@@ -14,38 +14,45 @@ O projeto Authentication utiliza documentação de código abrangente para garan
 
 ### 🏛️ Controllers
 
-Os controllers devem ter documentação XML completa para geração automática do Swagger:
+Os controllers devem ter documentação XML completa para geração automática do Swagger. **Importante**: Use chaves de recursos (ResourceAPI) para permitir internacionalização (i18n):
 
 ```csharp
 /// <summary>
-/// Controller responsible for handling authentication operations.
-/// Provides endpoints for JWT token generation and user authentication.
+/// ResourceAPI.QuoteControllerDescription
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class AuthenticationController : ControllerBase
+public class QuoteController : ControllerBase
 {
     /// <summary>
-    /// Generates a JWT token for authenticated users.
-    /// Validates user credentials and returns a JWT token with user claims if successful.
+    /// ResourceAPI.DocumentationGetQuotes
     /// </summary>
-    /// <param name="authenticationDTO">User credentials (username and password)</param>
-    /// <param name="serviceProvider">Service provider for dependency injection</param>
     /// <returns>
-    /// Returns a JWT token with user information on success (200),
-    /// validation errors (400), unauthorized access (401), or internal server error (500)
+    /// ResourceAPI.ReturnsListOfQuoteObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
     /// </returns>
-    /// <response code="200">Token generated successfully</response>
-    /// <response code="400">Invalid request data or validation errors</response>
-    /// <response code="401">Invalid credentials</response>
-    /// <response code="500">Internal server error</response>
-    [HttpPost(AuthenticationRoutes.GenerateToken)]
-    public async Task<IActionResult> GenerateToken([FromBody] AccountPayLoadDTO authenticationDTO, [FromServices] IServiceProvider serviceProvider)
+    /// <response code="200">ResourceAPI.QuotesRetrievedSuccessfully</response>
+    /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+    /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+    /// <response code="500">ResourceAPI.InternalServerError</response>
+    [HttpGet(QuoteRoutes.GetQuotes)]
+    public IActionResult GetQuotes()
     {
         // Implementation...
     }
 }
 ```
+
+**Padrão de Nomenclatura de Chaves ResourceAPI:**
+- Descrição do Controller: `{EntityName}ControllerDescription`
+- Documentação de Métodos: `DocumentationGet{EntityName}s`, `DocumentationGet{EntityName}ById`, `DocumentationAdd{EntityName}`, `DocumentationUpdate{EntityName}`, `DocumentationDelete{EntityName}`
+- Retornos: `ReturnsListOf{EntityName}ObjectsWithTheirDetailsAndStatusOnSuccess...`, `Returns{EntityName}MatchingTheSpecifiedID`, etc.
+- Respostas: `{EntityName}sRetrievedSuccessfully`, `{EntityName}RetrievedSuccessfully`, `{EntityName}CreatedSuccessfully`, `{EntityName}UpdatedSuccessfully`, `{EntityName}DeletedSuccessfully`, `{EntityName}NotFound`, `{EntityName}AlreadyExists`
+
+**Benefícios:**
+- ✅ Suporte automático para múltiplos idiomas (inglês e português)
+- ✅ Centralização da documentação em arquivos de recursos
+- ✅ Facilita manutenção e atualização de textos
+- ✅ Swagger automaticamente localizado com base na cultura do usuário
 
 ### 🔧 Services e Interfaces
 

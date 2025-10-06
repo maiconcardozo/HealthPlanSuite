@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing PlanPriceRange entities (Preços por Plano e Faixa).
-    /// Provides comprehensive CRUD operations for plan price ranges of health plans.
+    /// ResourceAPI.PlanPriceRangeControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all plan price ranges from the system.
+        /// ResourceAPI.DocumentationGetPlanPriceRanges
         /// </summary>
         /// <returns>
-        /// Returns list of PlanPriceRange objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfPlanPriceRangeObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Plan price ranges retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.PlanPriceRangesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<PlanPriceRangeResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a specific plan price range by ID.
+        /// ResourceAPI.DocumentationGetPlanPriceRangeById
         /// </summary>
         /// <param name="id">Plan price range ID to search for</param>
-        /// <returns>Returns PlanPriceRange matching the specified ID</returns>
-        /// <response code="200">Plan price range retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Plan price range not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsPlanPriceRangeMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.PlanPriceRangesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.PlanPriceRangeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PlanPriceRangeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -132,15 +131,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new plan price range.
+        /// ResourceAPI.DocumentationAddPlanPriceRange
         /// </summary>
         /// <param name="planPriceRangePayLoad">Plan price range data to create</param>
-        /// <returns>Returns created PlanPriceRange on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Plan price range created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Plan price range already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedPlanPriceRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.PlanPriceRangeCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.PlanPriceRangeAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost("")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(PlanPriceRangeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -195,15 +194,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing plan price range.
+        /// ResourceAPI.DocumentationUpdatePlanPriceRange
         /// </summary>
         /// <param name="planPriceRangePayLoad">Updated plan price range data including the ID</param>
-        /// <returns>Returns updated PlanPriceRange on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Plan price range updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Plan price range not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedPlanPriceRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.PlanPriceRangeUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.PlanPriceRangeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PlanPriceRangeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -261,15 +260,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Deletes an existing plan price range.
+        /// ResourceAPI.DocumentationDeletePlanPriceRange
         /// </summary>
         /// <param name="id">Plan price range ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Plan price range deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Plan price range not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessPlanPriceRangeDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.PlanPriceRangeDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.PlanPriceRangeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

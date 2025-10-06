@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing ProcedureCoparticipation entities (Coparticipação de Procedimentos).
-    /// Provides comprehensive CRUD operations for co-participation procedures of health plans.
+    /// ResourceAPI.ProcedureCoparticipationControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all co-participation procedures from the system.
+        /// ResourceAPI.DocumentationGetProcedureCoparticipations
         /// </summary>
         /// <returns>
-        /// Returns list of ProcedureCoparticipation objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfProcedureCoparticipationObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
         /// <response code="200">Co-participation procedures retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProcedureCoparticipationResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a specific co-participation procedure by ID.
+        /// ResourceAPI.DocumentationGetProcedureCoparticipationById
         /// </summary>
         /// <param name="id">Co-participation procedure ID to search for</param>
-        /// <returns>Returns ProcedureCoparticipation matching the specified ID</returns>
+        /// <returns>ResourceAPI.ReturnsProcedureCoparticipationMatchingTheSpecifiedID</returns>
         /// <response code="200">Co-participation procedure retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="404">Co-participation procedure not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProcedureCoparticipationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -132,15 +131,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new co-participation procedure.
+        /// ResourceAPI.DocumentationAddProcedureCoparticipation
         /// </summary>
         /// <param name="procedureCoparticipationPayLoad">Co-participation procedure data to create</param>
-        /// <returns>Returns created ProcedureCoparticipation on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <returns>ResourceAPI.ReturnsCreatedProcedureCoparticipationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="201">Co-participation procedure created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="409">Co-participation procedure already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost("")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(ProcedureCoparticipationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -195,15 +194,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing co-participation procedure.
+        /// ResourceAPI.DocumentationUpdateProcedureCoparticipation
         /// </summary>
         /// <param name="procedureCoparticipationPayLoad">Updated co-participation procedure data including the ID</param>
-        /// <returns>Returns updated ProcedureCoparticipation on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <returns>ResourceAPI.ReturnsUpdatedProcedureCoparticipationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="200">Co-participation procedure updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="404">Co-participation procedure not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProcedureCoparticipationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -261,15 +260,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Deletes an existing co-participation procedure.
+        /// ResourceAPI.DocumentationDeleteProcedureCoparticipation
         /// </summary>
         /// <param name="id">Co-participation procedure ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessProcedureCoparticipationDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="200">Co-participation procedure deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="404">Co-participation procedure not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

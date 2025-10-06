@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing AdhesionFee entities (Taxas de Adesão).
-    /// Provides comprehensive CRUD operations for adhesion fees of health plans.
+    /// ResourceAPI.AdhesionFeeControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -31,15 +30,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all adhesion fees from the system.
+        /// ResourceAPI.DocumentationGetAdhesionFees
         /// </summary>
         /// <returns>
-        /// Returns list of AdhesionFee objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfAdhesionFeeObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Adhesion fees retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.AdhesionFeesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<AdhesionFeeResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -76,15 +75,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a specific adhesion fee by ID.
+        /// ResourceAPI.DocumentationGetAdhesionFeeById
         /// </summary>
         /// <param name="id">Adhesion fee ID to search for</param>
-        /// <returns>Returns AdhesionFee matching the specified ID</returns>
-        /// <response code="200">Adhesion fee retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Adhesion fee not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsAdhesionFeeMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.AdhesionFeeRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AdhesionFeeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdhesionFeeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -129,7 +128,7 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationCreateAdhesionFee.
+        /// ResourceAPI.DocumentationAddAdhesionFee
         /// </summary>
         [HttpPost("")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AdhesionFeeResponseDTO))]
@@ -183,7 +182,7 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// ResourceAPI.DocumentationUpdateAdhesionFee.
+        /// ResourceAPI.DocumentationUpdateAdhesionFee
         /// </summary>
         [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdhesionFeeResponseDTO))]
@@ -240,15 +239,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Deletes an existing adhesion fee.
+        /// ResourceAPI.DocumentationDeleteAdhesionFee
         /// </summary>
         /// <param name="id">Adhesion fee ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Adhesion fee deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Adhesion fee not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessAdhesionFeeDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.AdhesionFeeDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AdhesionFeeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing Accommodation entities.
-    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
+    /// ResourceAPI.AccommodationControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all accommodations from the system.
+        /// ResourceAPI.DocumentationGetAccommodations
         /// </summary>
         /// <returns>
-        /// Returns list of Accommodation objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfAccommodationObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Accommodations retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.AccommodationsRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(AccommodationRoutes.GetAccommodations)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<AccommodationResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves an accommodation by its unique identifier.
+        /// ResourceAPI.DocumentationGetAccommodationById
         /// </summary>
         /// <param name="id">Accommodation ID to search for</param>
-        /// <returns>Returns Accommodation matching the specified ID</returns>
-        /// <response code="200">Accommodation retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Accommodation not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsAccommodationMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.AccommodationsRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AccommodationNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(AccommodationRoutes.GetAccommodationById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AccommodationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -132,15 +131,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new accommodation in the system.
+        /// ResourceAPI.DocumentationAddAccommodation
         /// </summary>
         /// <param name="accommodationPayLoad">Accommodation data to create</param>
-        /// <returns>Returns created Accommodation on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Accommodation created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Accommodation already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedAccommodationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.AccommodationCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.AccommodationAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost(AccommodationRoutes.AddAccommodation)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AccommodationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -195,15 +194,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing accommodation.
+        /// ResourceAPI.DocumentationUpdateAccommodation
         /// </summary>
         /// <param name="accommodationPayLoad">Updated accommodation data including the ID</param>
-        /// <returns>Returns updated Accommodation on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Accommodation updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Accommodation not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedAccommodationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.AccommodationUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AccommodationNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut(AccommodationRoutes.UpdateAccommodation)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AccommodationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -264,12 +263,12 @@ namespace HealthPlan.API.Controllers
         /// Deletes an accommodation from the system.
         /// </summary>
         /// <param name="id">Accommodation ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Accommodation deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Accommodation not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessAccommodationDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.AccommodationDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AccommodationNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete(AccommodationRoutes.DeleteAccommodation)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

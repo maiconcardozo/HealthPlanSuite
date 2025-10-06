@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing QuoteHistory entities.
-    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
+    /// ResourceAPI.QuoteHistoryControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all quote histories from the system.
+        /// ResourceAPI.DocumentationGetQuoteHistorys
         /// </summary>
         /// <returns>
-        /// Returns list of QuoteHistory objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfQuoteHistoryObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Quote histories retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.QuoteHistorysRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(QuoteHistoryRoutes.GetQuoteHistories)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<QuoteHistoryResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a quote history by its unique identifier.
+        /// ResourceAPI.DocumentationGetQuoteHistoryById
         /// </summary>
         /// <param name="id">QuoteHistory ID to search for</param>
-        /// <returns>Returns QuoteHistory matching the specified ID</returns>
-        /// <response code="200">Quote history retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Quote history not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsQuoteHistoryMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.QuoteHistorysRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.QuoteHistoryNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(QuoteHistoryRoutes.GetQuoteHistoryById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(QuoteHistoryResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -132,15 +131,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new quote history in the system.
+        /// ResourceAPI.DocumentationAddQuoteHistory
         /// </summary>
         /// <param name="quoteHistoryPayLoad">Quote history data to create</param>
-        /// <returns>Returns created QuoteHistory on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Quote history created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Quote history already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedQuoteHistoryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.QuoteHistoryCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.QuoteHistoryAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost(QuoteHistoryRoutes.AddQuoteHistory)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(QuoteHistoryResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -195,15 +194,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing quote history.
+        /// ResourceAPI.DocumentationUpdateQuoteHistory
         /// </summary>
         /// <param name="quoteHistoryPayLoad">Updated quote history data including the ID</param>
-        /// <returns>Returns updated QuoteHistory on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Quote history updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Quote history not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedQuoteHistoryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.QuoteHistoryUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.QuoteHistoryNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut(QuoteHistoryRoutes.UpdateQuoteHistory)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(QuoteHistoryResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -264,12 +263,12 @@ namespace HealthPlan.API.Controllers
         /// Deletes a quote history from the system.
         /// </summary>
         /// <param name="id">QuoteHistory ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Quote history deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Quote history not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessQuoteHistoryDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.QuoteHistoryDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.QuoteHistoryNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete(QuoteHistoryRoutes.DeleteQuoteHistory)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

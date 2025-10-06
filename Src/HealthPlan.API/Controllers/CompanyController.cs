@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing Company entities.
-    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
+    /// ResourceAPI.CompanyControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all companies from the system.
+        /// ResourceAPI.DocumentationGetCompanys
         /// </summary>
         /// <returns>
-        /// Returns list of Company objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfCompanyObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Companies retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.CompanysRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(CompanyRoutes.GetCompanies)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<CompanyResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a company by its unique identifier.
+        /// ResourceAPI.DocumentationGetCompanyById
         /// </summary>
         /// <param name="id">Company ID to search for</param>
-        /// <returns>Returns Company matching the specified ID</returns>
-        /// <response code="200">Company retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Company not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCompanyMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.CompanysRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.CompanyNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(CompanyRoutes.GetCompanyById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -136,11 +135,11 @@ namespace HealthPlan.API.Controllers
         /// </summary>
         /// <param name="cnpj">CNPJ to search for</param>
         /// <returns>Returns Company matching the specified CNPJ</returns>
-        /// <response code="200">Company retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Company not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.CompanysRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.CompanyNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(CompanyRoutes.GetCompanyByCNPJ)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -185,15 +184,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new company in the system.
+        /// ResourceAPI.DocumentationAddCompany
         /// </summary>
         /// <param name="companyPayLoad">Company data to create</param>
-        /// <returns>Returns created Company on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Company created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Company already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedCompanyOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.CompanyCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.CompanyAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost(CompanyRoutes.AddCompany)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -248,15 +247,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing company.
+        /// ResourceAPI.DocumentationUpdateCompany
         /// </summary>
         /// <param name="companyPayLoad">Updated company data including the ID</param>
-        /// <returns>Returns updated Company on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Company updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Company not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedCompanyOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.CompanyUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.CompanyNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut(CompanyRoutes.UpdateCompany)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CompanyResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -317,12 +316,12 @@ namespace HealthPlan.API.Controllers
         /// Deletes a company from the system.
         /// </summary>
         /// <param name="id">Company ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Company deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Company not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessCompanyDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.CompanyDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.CompanyNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete(CompanyRoutes.DeleteCompany)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
