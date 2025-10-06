@@ -1,19 +1,16 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+  workflow_dispatch:
 
 env:
-  # CRITICAL: DO NOT DOWNGRADE FROM .NET 9.0.x!
-  # This pipeline REQUIRES .NET 9.0.x for:
-  # - Building projects with net9.0 target framework
-  # - Package dependencies compatibility (EF Core 9.x, ASP.NET Core 9.x, etc.)
+  # CRITICAL: DO NOT DOWNGRADE FROM .NET 8.0.x!
+  # This pipeline REQUIRES .NET 8.0.x for:
+  # - Building projects with net8.0 target framework
+  # - Package dependencies compatibility (EF Core 8.x, ASP.NET Core 8.x, etc.)
   # - Test execution with latest xUnit and testing packages
-  # Changing to 8.0.x will break the entire CI/CD pipeline!
-  DOTNET_VERSION: '9.0.x'
+  # Changing to another version may break the CI/CD pipeline!
+  DOTNET_VERSION: '8.0.x'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
@@ -29,8 +26,6 @@ jobs:
     - name: Setup .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v4
       with:
-        # WARNING: This MUST match the version in global.json and .csproj files!
-        # Do not change to 8.x - it will break the build process
         dotnet-version: ${{ env.DOTNET_VERSION }}
     
     - name: Verify .NET version
@@ -73,7 +68,6 @@ jobs:
           find TestResults -name "*.trx" | wc -l | xargs echo "📁 TRX files found:"
           find TestResults -name "*.xml" | wc -l | xargs echo "📊 Coverage files found:"
           
-          # Display test summary if available
           if command -v trx2junit &> /dev/null; then
             echo "🔍 Converting test results..."
           else
@@ -107,7 +101,6 @@ jobs:
           find TestResults/Coverage -name "coverage.cobertura.xml" | head -1 | while read file; do
             if [ -f "$file" ]; then
               echo "✅ Coverage file generated: $file"
-              # Extract line coverage percentage if possible
               if command -v xmllint &> /dev/null; then
                 COVERAGE=$(xmllint --xpath "string(//coverage/@line-rate)" "$file" 2>/dev/null || echo "N/A")
                 if [ "$COVERAGE" != "N/A" ] && [ "$COVERAGE" != "" ]; then
