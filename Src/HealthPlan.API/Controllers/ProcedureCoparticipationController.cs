@@ -197,15 +197,14 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing co-participation procedure.
         /// </summary>
-        /// <param name="id">Co-participation procedure ID to update</param>
-        /// <param name="procedureCoparticipationPayLoad">Updated co-participation procedure data</param>
+        /// <param name="procedureCoparticipationPayLoad">Updated co-participation procedure data including the ID</param>
         /// <returns>Returns updated ProcedureCoparticipation on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Co-participation procedure updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
         /// <response code="404">Co-participation procedure not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpPut("{id}")]
+        [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProcedureCoparticipationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -216,7 +215,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateProcedureCoparticipation(int id, [FromBody] ProcedureCoparticipationPayLoadDTO procedureCoparticipationPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateProcedureCoparticipation([FromBody] ProcedureCoparticipationPayLoadDTO procedureCoparticipationPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(procedureCoparticipationPayLoad);
             if (!validationResult.IsValid)
@@ -229,7 +228,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingProcedureCoparticipation = _procedureCoparticipationService.GetById(id);
+                var existingProcedureCoparticipation = _procedureCoparticipationService.GetById(procedureCoparticipationPayLoad.Id);
                 if (existingProcedureCoparticipation == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Co-participation procedure not found", HttpContext.Request.Path);
@@ -237,7 +236,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var procedureCoparticipation = CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipation>(procedureCoparticipationPayLoad);
-                procedureCoparticipation.Id = id;
+                procedureCoparticipation.Id = procedureCoparticipationPayLoad.Id;
                 _procedureCoparticipationService.UpdateProcedureCoparticipation(procedureCoparticipation);
 
                 var procedureCoparticipationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<ProcedureCoparticipationResponseDTO>(procedureCoparticipation);

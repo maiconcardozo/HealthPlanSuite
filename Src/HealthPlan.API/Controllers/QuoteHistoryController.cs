@@ -197,8 +197,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing quote history.
         /// </summary>
-        /// <param name="id">QuoteHistory ID to update</param>
-        /// <param name="quoteHistoryPayLoad">Updated quote history data</param>
+        /// <param name="quoteHistoryPayLoad">Updated quote history data including the ID</param>
         /// <returns>Returns updated QuoteHistory on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Quote history updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -216,7 +215,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateQuoteHistory(int id, [FromBody] QuoteHistoryPayLoadDTO quoteHistoryPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateQuoteHistory([FromBody] QuoteHistoryPayLoadDTO quoteHistoryPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(quoteHistoryPayLoad);
             if (!validationResult.IsValid)
@@ -229,7 +228,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingQuoteHistory = _quoteHistoryService.GetById(id);
+                var existingQuoteHistory = _quoteHistoryService.GetById(quoteHistoryPayLoad.Id);
                 if (existingQuoteHistory == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote history not found", HttpContext.Request.Path);
@@ -237,7 +236,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var quoteHistory = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteHistory>(quoteHistoryPayLoad);
-                quoteHistory.Id = id;
+                quoteHistory.Id = quoteHistoryPayLoad.Id;
                 _quoteHistoryService.UpdateQuoteHistory(quoteHistory);
 
                 var quoteHistoryResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteHistoryResponseDTO>(quoteHistory);

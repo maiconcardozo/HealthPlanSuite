@@ -235,8 +235,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationUpdateQuote
         /// </summary>
-        /// <param name="id">Quote ID to update</param>
-        /// <param name="quotePayLoad">Updated quote data</param>
+        /// <param name="quotePayLoad">Updated quote data including the ID</param>
         /// <returns>ResourceAPI.ReturnsUpdatedQuoteOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="200">ResourceAPI.QuoteUpdatedSuccessfully</response>
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
@@ -254,7 +253,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> UpdateQuote(int id, [FromBody] QuotePayLoadDTO quotePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateQuote([FromBody] QuotePayLoadDTO quotePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = await ValidationHelper.ValidateEntityAsync(quotePayLoad, serviceProvider, this);
 
@@ -265,7 +264,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingQuote = _quoteService.GetById(id);
+                var existingQuote = _quoteService.GetById(quotePayLoad.Id);
                 if (existingQuote == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
@@ -273,7 +272,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
-                quote.Id = id;
+                quote.Id = quotePayLoad.Id;
                 _quoteService.UpdateQuote(quote);
 
                 var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
