@@ -8,10 +8,10 @@ namespace HealthPlan.Quote.Services.Interface
     /// </summary>
     public interface IPlanPriceRangeService
     {
-        IEnumerable<PlanPriceRange> GetAllActivePrecoPlanoFaixa();
+        IEnumerable<PlanPriceRange> GetAllActivePlanPriceRanges();
         PlanPriceRange? GetById(int id);
-        void AddPrecoPlanoFaixa(PlanPriceRange precoPlanoFaixa);
-        void UpdatePrecoPlanoFaixa(PlanPriceRange precoPlanoFaixa);
-        void DeletePrecoPlanoFaixa(int id);
+        void AddPlanPriceRange(PlanPriceRange planPriceRange);
+        void UpdatePlanPriceRange(PlanPriceRange planPriceRange);
+        void DeletePlanPriceRange(int id);
     }
 }

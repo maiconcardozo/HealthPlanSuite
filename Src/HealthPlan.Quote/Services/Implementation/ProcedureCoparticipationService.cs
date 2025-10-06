@@ -9,36 +9,36 @@ namespace HealthPlan.Quote.Services.Implementation
     /// </summary>
     public class ProcedureCoparticipationService : IProcedureCoparticipationService
     {
-        private readonly IProcedureCoparticipationRepository _coparticipacaoProcedimentoRepository;
+        private readonly IProcedureCoparticipationRepository _procedureCoparticipationRepository;
 
-        public ProcedureCoparticipationService(IProcedureCoparticipationRepository coparticipacaoProcedimentoRepository)
+        public ProcedureCoparticipationService(IProcedureCoparticipationRepository procedureCoparticipationRepository)
         {
-            _coparticipacaoProcedimentoRepository = coparticipacaoProcedimentoRepository;
+            _procedureCoparticipationRepository = procedureCoparticipationRepository;
         }
 
-        public IEnumerable<ProcedureCoparticipation> GetAllActiveCoparticipacaoProcedimento()
+        public IEnumerable<ProcedureCoparticipation> GetAllActiveProcedureCoparticipations()
         {
-            return _coparticipacaoProcedimentoRepository.Find(cp => cp.IsActive);
+            return _procedureCoparticipationRepository.Find(cp => cp.IsActive);
         }
 
         public ProcedureCoparticipation? GetById(int id)
         {
-            return _coparticipacaoProcedimentoRepository.GetById(id);
+            return _procedureCoparticipationRepository.GetById(id);
         }
 
-        public void AddCoparticipacaoProcedimento(ProcedureCoparticipation coparticipacaoProcedimento)
+        public void AddProcedureCoparticipation(ProcedureCoparticipation procedureCoparticipation)
         {
-            _coparticipacaoProcedimentoRepository.Add(coparticipacaoProcedimento);
+            _procedureCoparticipationRepository.Add(procedureCoparticipation);
         }
 
-        public void UpdateCoparticipacaoProcedimento(ProcedureCoparticipation coparticipacaoProcedimento)
+        public void UpdateProcedureCoparticipation(ProcedureCoparticipation procedureCoparticipation)
         {
-            _coparticipacaoProcedimentoRepository.Update(coparticipacaoProcedimento);
+            _procedureCoparticipationRepository.Update(procedureCoparticipation);
         }
 
-        public void DeleteCoparticipacaoProcedimento(int id)
+        public void DeleteProcedureCoparticipation(int id)
         {
-            _coparticipacaoProcedimentoRepository.Remove(id);
+            _procedureCoparticipationRepository.Remove(id);
         }
     }
 }

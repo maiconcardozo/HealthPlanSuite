@@ -9,36 +9,36 @@ namespace HealthPlan.Quote.Services.Implementation
     /// </summary>
     public class PromotionalDiscountService : IPromotionalDiscountService
     {
-        private readonly IPromotionalDiscountRepository _descontoPromocionalRepository;
+        private readonly IPromotionalDiscountRepository _promotionalDiscountRepository;
 
-        public PromotionalDiscountService(IPromotionalDiscountRepository descontoPromocionalRepository)
+        public PromotionalDiscountService(IPromotionalDiscountRepository promotionalDiscountRepository)
         {
-            _descontoPromocionalRepository = descontoPromocionalRepository;
+            _promotionalDiscountRepository = promotionalDiscountRepository;
         }
 
-        public IEnumerable<PromotionalDiscount> GetAllActiveDescontoPromocional()
+        public IEnumerable<PromotionalDiscount> GetAllActivePromotionalDiscounts()
         {
-            return _descontoPromocionalRepository.Find(dp => dp.IsActive);
+            return _promotionalDiscountRepository.Find(dp => dp.IsActive);
         }
 
         public PromotionalDiscount? GetById(int id)
         {
-            return _descontoPromocionalRepository.GetById(id);
+            return _promotionalDiscountRepository.GetById(id);
         }
 
-        public void AddDescontoPromocional(PromotionalDiscount descontoPromocional)
+        public void AddPromotionalDiscount(PromotionalDiscount promotionalDiscount)
         {
-            _descontoPromocionalRepository.Add(descontoPromocional);
+            _promotionalDiscountRepository.Add(promotionalDiscount);
         }
 
-        public void UpdateDescontoPromocional(PromotionalDiscount descontoPromocional)
+        public void UpdatePromotionalDiscount(PromotionalDiscount promotionalDiscount)
         {
-            _descontoPromocionalRepository.Update(descontoPromocional);
+            _promotionalDiscountRepository.Update(promotionalDiscount);
         }
 
-        public void DeleteDescontoPromocional(int id)
+        public void DeletePromotionalDiscount(int id)
         {
-            _descontoPromocionalRepository.Remove(id);
+            _promotionalDiscountRepository.Remove(id);
         }
     }
 }

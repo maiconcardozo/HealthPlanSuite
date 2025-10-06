@@ -8,10 +8,10 @@ namespace HealthPlan.Quote.Services.Interface
     /// </summary>
     public interface IPromotionalDiscountService
     {
-        IEnumerable<PromotionalDiscount> GetAllActiveDescontoPromocional();
+        IEnumerable<PromotionalDiscount> GetAllActivePromotionalDiscounts();
         PromotionalDiscount? GetById(int id);
-        void AddDescontoPromocional(PromotionalDiscount descontoPromocional);
-        void UpdateDescontoPromocional(PromotionalDiscount descontoPromocional);
-        void DeleteDescontoPromocional(int id);
+        void AddPromotionalDiscount(PromotionalDiscount promotionalDiscount);
+        void UpdatePromotionalDiscount(PromotionalDiscount promotionalDiscount);
+        void DeletePromotionalDiscount(int id);
     }
 }

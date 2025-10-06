@@ -8,10 +8,10 @@ namespace HealthPlan.Quote.Services.Interface
     /// </summary>
     public interface IProcedureCoparticipationService
     {
-        IEnumerable<ProcedureCoparticipation> GetAllActiveCoparticipacaoProcedimento();
+        IEnumerable<ProcedureCoparticipation> GetAllActiveProcedureCoparticipations();
         ProcedureCoparticipation? GetById(int id);
-        void AddCoparticipacaoProcedimento(ProcedureCoparticipation coparticipacaoProcedimento);
-        void UpdateCoparticipacaoProcedimento(ProcedureCoparticipation coparticipacaoProcedimento);
-        void DeleteCoparticipacaoProcedimento(int id);
+        void AddProcedureCoparticipation(ProcedureCoparticipation procedureCoparticipation);
+        void UpdateProcedureCoparticipation(ProcedureCoparticipation procedureCoparticipation);
+        void DeleteProcedureCoparticipation(int id);
     }
 }

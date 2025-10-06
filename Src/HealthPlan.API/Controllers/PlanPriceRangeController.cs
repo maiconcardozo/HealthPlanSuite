@@ -19,17 +19,17 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class PlanPriceRangeController : ControllerBase
     {
-        private readonly IPlanPriceRangeService _precoPlanoFaixaService;
+        private readonly IPlanPriceRangeService _planPriceRangeService;
         private readonly IValidator<PlanPriceRangePayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the PlanPriceRangeController.
         /// </summary>
-        /// <param name="precoPlanoFaixaService">Service for plan price range management operations</param>
+        /// <param name="planPriceRangeService">Service for plan price range management operations</param>
         /// <param name="validator">Validator for PlanPriceRangePayLoadDTO</param>
-        public PlanPriceRangeController(IPlanPriceRangeService precoPlanoFaixaService, IValidator<PlanPriceRangePayLoadDTO> validator)
+        public PlanPriceRangeController(IPlanPriceRangeService planPriceRangeService, IValidator<PlanPriceRangePayLoadDTO> validator)
         {
-            _precoPlanoFaixaService = precoPlanoFaixaService;
+            _planPriceRangeService = planPriceRangeService;
             this.validator = validator;
         }
 
@@ -52,13 +52,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetPrecoPlanoFaixa()
+        public IActionResult GetPlanPriceRanges()
         {
             try
             {
-                var precoPlanoFaixa = _precoPlanoFaixaService.GetAllActivePrecoPlanoFaixa();
-                var precoPlanoFaixaResponse = precoPlanoFaixa.Select(ppf => CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(ppf));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(precoPlanoFaixaResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var planPriceRange = _planPriceRangeService.GetAllActivePlanPriceRanges();
+                var planPriceRangeResponse = planPriceRange.Select(ppf => CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(ppf));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(planPriceRangeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -99,19 +99,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetPrecoPlanoFaixa(int id)
+        public IActionResult GetPlanPriceRanges(int id)
         {
             try
             {
-                var precoPlanoFaixa = _precoPlanoFaixaService.GetById(id);
-                if (precoPlanoFaixa == null)
+                var planPriceRange = _planPriceRangeService.GetById(id);
+                if (planPriceRange == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Plan price range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var precoPlanoFaixaResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(precoPlanoFaixa);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(precoPlanoFaixaResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var planPriceRangeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(planPriceRange);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(planPriceRangeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -134,7 +134,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Creates a new plan price range.
         /// </summary>
-        /// <param name="precoPlanoFaixaPayLoad">Plan price range data to create</param>
+        /// <param name="planPriceRangePayLoad">Plan price range data to create</param>
         /// <returns>Returns created PlanPriceRange on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="201">Plan price range created successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -152,9 +152,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreatePrecoPlanoFaixa([FromBody] PlanPriceRangePayLoadDTO precoPlanoFaixaPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult CreatePlanPriceRange([FromBody] PlanPriceRangePayLoadDTO planPriceRangePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(precoPlanoFaixaPayLoad);
+            var validationResult = validator.Validate(planPriceRangePayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -165,11 +165,11 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var precoPlanoFaixa = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRange>(precoPlanoFaixaPayLoad);
-                _precoPlanoFaixaService.AddPrecoPlanoFaixa(precoPlanoFaixa);
+                var planPriceRange = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRange>(planPriceRangePayLoad);
+                _planPriceRangeService.AddPlanPriceRange(planPriceRange);
 
-                var precoPlanoFaixaResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(precoPlanoFaixa);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(precoPlanoFaixaResponse, "Plan price range created successfully", HttpContext.Request.Path);
+                var planPriceRangeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(planPriceRange);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(planPriceRangeResponse, "Plan price range created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -198,7 +198,7 @@ namespace HealthPlan.API.Controllers
         /// Updates an existing plan price range.
         /// </summary>
         /// <param name="id">Plan price range ID to update</param>
-        /// <param name="precoPlanoFaixaPayLoad">Updated plan price range data</param>
+        /// <param name="planPriceRangePayLoad">Updated plan price range data</param>
         /// <returns>Returns updated PlanPriceRange on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Plan price range updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -216,9 +216,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdatePrecoPlanoFaixa(int id, [FromBody] PlanPriceRangePayLoadDTO precoPlanoFaixaPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdatePlanPriceRange(int id, [FromBody] PlanPriceRangePayLoadDTO planPriceRangePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(precoPlanoFaixaPayLoad);
+            var validationResult = validator.Validate(planPriceRangePayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -229,19 +229,19 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingPrecoPlanoFaixa = _precoPlanoFaixaService.GetById(id);
+                var existingPrecoPlanoFaixa = _planPriceRangeService.GetById(id);
                 if (existingPrecoPlanoFaixa == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Plan price range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var precoPlanoFaixa = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRange>(precoPlanoFaixaPayLoad);
-                precoPlanoFaixa.Id = id;
-                _precoPlanoFaixaService.UpdatePrecoPlanoFaixa(precoPlanoFaixa);
+                var planPriceRange = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRange>(planPriceRangePayLoad);
+                planPriceRange.Id = id;
+                _planPriceRangeService.UpdatePlanPriceRange(planPriceRange);
 
-                var precoPlanoFaixaResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(precoPlanoFaixa);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(precoPlanoFaixaResponse, "Plan price range updated successfully", HttpContext.Request.Path);
+                var planPriceRangeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PlanPriceRangeResponseDTO>(planPriceRange);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(planPriceRangeResponse, "Plan price range updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -282,18 +282,18 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeletePrecoPlanoFaixa(int id)
+        public IActionResult DeletePlanPriceRange(int id)
         {
             try
             {
-                var existingPrecoPlanoFaixa = _precoPlanoFaixaService.GetById(id);
+                var existingPrecoPlanoFaixa = _planPriceRangeService.GetById(id);
                 if (existingPrecoPlanoFaixa == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Plan price range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _precoPlanoFaixaService.DeletePrecoPlanoFaixa(id);
+                _planPriceRangeService.DeletePlanPriceRange(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Plan price range deleted successfully", "Plan price range deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }

@@ -17,17 +17,17 @@ namespace HealthPlan.API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    public class TaxaAdesaoController : ControllerBase
+    public class AdhesionFeeController : ControllerBase
     {
-        private readonly IAdhesionFeeService _taxaAdesaoService;
+        private readonly IAdhesionFeeService _adhesionFeeService;
 
         /// <summary>
-        /// Initializes a new instance of the TaxaAdesaoController.
+        /// Initializes a new instance of the AdhesionFeeController.
         /// </summary>
-        /// <param name="taxaAdesaoService">Service for adhesion fee management operations</param>
-        public TaxaAdesaoController(IAdhesionFeeService taxaAdesaoService)
+        /// <param name="adhesionFeeService">Service for adhesion fee management operations</param>
+        public AdhesionFeeController(IAdhesionFeeService adhesionFeeService)
         {
-            _taxaAdesaoService = taxaAdesaoService;
+            _adhesionFeeService = adhesionFeeService;
         }
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetTaxaAdesao()
+        public IActionResult GetAdhesionFees()
         {
             try
             {
-                var taxaAdesao = _taxaAdesaoService.GetAllActiveTaxaAdesao();
-                var taxaAdesaoResponse = taxaAdesao.Select(ta => CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(ta));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var adhesionFee = _adhesionFeeService.GetAllActiveAdhesionFees();
+                var adhesionFeeResponse = adhesionFee.Select(ta => CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(ta));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -96,19 +96,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetTaxaAdesao(int id)
+        public IActionResult GetAdhesionFees(int id)
         {
             try
             {
-                var taxaAdesao = _taxaAdesaoService.GetById(id);
-                if (taxaAdesao == null)
+                var adhesionFee = _adhesionFeeService.GetById(id);
+                if (adhesionFee == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Adhesion fee not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var taxaAdesaoResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(taxaAdesao);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var adhesionFeeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(adhesionFee);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -142,9 +142,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> CreateTaxaAdesao([FromBody] AdhesionFeePayLoadDTO taxaAdesaoPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateAdhesionFee([FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(taxaAdesaoPayLoad, serviceProvider, this);
+            var validationResult = await ValidationHelper.ValidateEntityAsync(adhesionFeePayLoad, serviceProvider, this);
 
             if (validationResult != null)
             {
@@ -153,11 +153,11 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var taxaAdesao = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFee>(taxaAdesaoPayLoad);
-                _taxaAdesaoService.AddTaxaAdesao(taxaAdesao);
+                var adhesionFee = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFee>(adhesionFeePayLoad);
+                _adhesionFeeService.AddAdhesionFee(adhesionFee);
 
-                var taxaAdesaoResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(taxaAdesao);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var adhesionFeeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(adhesionFee);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -196,9 +196,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> UpdateTaxaAdesao(int id, [FromBody] AdhesionFeePayLoadDTO taxaAdesaoPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateAdhesionFee(int id, [FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(taxaAdesaoPayLoad, serviceProvider, this);
+            var validationResult = await ValidationHelper.ValidateEntityAsync(adhesionFeePayLoad, serviceProvider, this);
 
             if (validationResult != null)
             {
@@ -207,19 +207,19 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingTaxaAdesao = _taxaAdesaoService.GetById(id);
+                var existingTaxaAdesao = _adhesionFeeService.GetById(id);
                 if (existingTaxaAdesao == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var taxaAdesao = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFee>(taxaAdesaoPayLoad);
-                taxaAdesao.Id = id;
-                _taxaAdesaoService.UpdateTaxaAdesao(taxaAdesao);
+                var adhesionFee = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFee>(adhesionFeePayLoad);
+                adhesionFee.Id = id;
+                _adhesionFeeService.UpdateAdhesionFee(adhesionFee);
 
-                var taxaAdesaoResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(taxaAdesao);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(taxaAdesaoResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var adhesionFeeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(adhesionFee);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -260,18 +260,18 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteTaxaAdesao(int id)
+        public IActionResult DeleteAdhesionFee(int id)
         {
             try
             {
-                var existingTaxaAdesao = _taxaAdesaoService.GetById(id);
+                var existingTaxaAdesao = _adhesionFeeService.GetById(id);
                 if (existingTaxaAdesao == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Adhesion fee not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _taxaAdesaoService.DeleteTaxaAdesao(id);
+                _adhesionFeeService.DeleteAdhesionFee(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Adhesion fee deleted successfully", "Adhesion fee deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }

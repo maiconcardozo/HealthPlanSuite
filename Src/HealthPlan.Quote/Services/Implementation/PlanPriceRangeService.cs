@@ -9,36 +9,36 @@ namespace HealthPlan.Quote.Services.Implementation
     /// </summary>
     public class PlanPriceRangeService : IPlanPriceRangeService
     {
-        private readonly IPlanPriceRangeRepository _precoPlanoFaixaRepository;
+        private readonly IPlanPriceRangeRepository _planPriceRangeRepository;
 
-        public PlanPriceRangeService(IPlanPriceRangeRepository precoPlanoFaixaRepository)
+        public PlanPriceRangeService(IPlanPriceRangeRepository planPriceRangeRepository)
         {
-            _precoPlanoFaixaRepository = precoPlanoFaixaRepository;
+            _planPriceRangeRepository = planPriceRangeRepository;
         }
 
-        public IEnumerable<PlanPriceRange> GetAllActivePrecoPlanoFaixa()
+        public IEnumerable<PlanPriceRange> GetAllActivePlanPriceRanges()
         {
-            return _precoPlanoFaixaRepository.Find(ppf => ppf.IsActive);
+            return _planPriceRangeRepository.Find(ppf => ppf.IsActive);
         }
 
         public PlanPriceRange? GetById(int id)
         {
-            return _precoPlanoFaixaRepository.GetById(id);
+            return _planPriceRangeRepository.GetById(id);
         }
 
-        public void AddPrecoPlanoFaixa(PlanPriceRange precoPlanoFaixa)
+        public void AddPlanPriceRange(PlanPriceRange planPriceRange)
         {
-            _precoPlanoFaixaRepository.Add(precoPlanoFaixa);
+            _planPriceRangeRepository.Add(planPriceRange);
         }
 
-        public void UpdatePrecoPlanoFaixa(PlanPriceRange precoPlanoFaixa)
+        public void UpdatePlanPriceRange(PlanPriceRange planPriceRange)
         {
-            _precoPlanoFaixaRepository.Update(precoPlanoFaixa);
+            _planPriceRangeRepository.Update(planPriceRange);
         }
 
-        public void DeletePrecoPlanoFaixa(int id)
+        public void DeletePlanPriceRange(int id)
         {
-            _precoPlanoFaixaRepository.Remove(id);
+            _planPriceRangeRepository.Remove(id);
         }
     }
 }

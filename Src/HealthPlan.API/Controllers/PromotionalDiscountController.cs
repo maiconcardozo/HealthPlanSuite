@@ -19,17 +19,17 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class PromotionalDiscountController : ControllerBase
     {
-        private readonly IPromotionalDiscountService _descontoPromocionalService;
+        private readonly IPromotionalDiscountService _promotionalDiscountService;
         private readonly IValidator<PromotionalDiscountPayLoadDTO> validator;
 
         /// <summary>
         /// Initializes a new instance of the PromotionalDiscountController.
         /// </summary>
-        /// <param name="descontoPromocionalService">Service for promotional discount management operations</param>
+        /// <param name="promotionalDiscountService">Service for promotional discount management operations</param>
         /// <param name="validator">Validator for PromotionalDiscountPayLoadDTO</param>
-        public PromotionalDiscountController(IPromotionalDiscountService descontoPromocionalService, IValidator<PromotionalDiscountPayLoadDTO> validator)
+        public PromotionalDiscountController(IPromotionalDiscountService promotionalDiscountService, IValidator<PromotionalDiscountPayLoadDTO> validator)
         {
-            _descontoPromocionalService = descontoPromocionalService;
+            _promotionalDiscountService = promotionalDiscountService;
             this.validator = validator;
         }
 
@@ -52,13 +52,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetDescontoPromocional()
+        public IActionResult GetPromotionalDiscounts()
         {
             try
             {
-                var descontoPromocional = _descontoPromocionalService.GetAllActiveDescontoPromocional();
-                var descontoPromocionalResponse = descontoPromocional.Select(dp => CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(dp));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(descontoPromocionalResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var promotionalDiscount = _promotionalDiscountService.GetAllActivePromotionalDiscounts();
+                var promotionalDiscountResponse = promotionalDiscount.Select(dp => CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(dp));
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -99,19 +99,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetDescontoPromocional(int id)
+        public IActionResult GetPromotionalDiscounts(int id)
         {
             try
             {
-                var descontoPromocional = _descontoPromocionalService.GetById(id);
-                if (descontoPromocional == null)
+                var promotionalDiscount = _promotionalDiscountService.GetById(id);
+                if (promotionalDiscount == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var descontoPromocionalResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(descontoPromocional);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(descontoPromocionalResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var promotionalDiscountResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(promotionalDiscount);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -134,7 +134,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Creates a new promotional discount.
         /// </summary>
-        /// <param name="descontoPromocionalPayLoad">Promotional discount data to create</param>
+        /// <param name="promotionalDiscountPayLoad">Promotional discount data to create</param>
         /// <returns>Returns created PromotionalDiscount on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="201">Promotional discount created successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -152,9 +152,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateDescontoPromocional([FromBody] PromotionalDiscountPayLoadDTO descontoPromocionalPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult CreatePromotionalDiscount([FromBody] PromotionalDiscountPayLoadDTO promotionalDiscountPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(descontoPromocionalPayLoad);
+            var validationResult = validator.Validate(promotionalDiscountPayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -165,11 +165,11 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var descontoPromocional = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscount>(descontoPromocionalPayLoad);
-                _descontoPromocionalService.AddDescontoPromocional(descontoPromocional);
+                var promotionalDiscount = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscount>(promotionalDiscountPayLoad);
+                _promotionalDiscountService.AddPromotionalDiscount(promotionalDiscount);
 
-                var descontoPromocionalResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(descontoPromocional);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(descontoPromocionalResponse, "Promotional discount created successfully", HttpContext.Request.Path);
+                var promotionalDiscountResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(promotionalDiscount);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, "Promotional discount created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
             }
             catch (InvalidOperationException ex)
@@ -198,7 +198,7 @@ namespace HealthPlan.API.Controllers
         /// Updates an existing promotional discount.
         /// </summary>
         /// <param name="id">Promotional discount ID to update</param>
-        /// <param name="descontoPromocionalPayLoad">Updated promotional discount data</param>
+        /// <param name="promotionalDiscountPayLoad">Updated promotional discount data</param>
         /// <returns>Returns updated PromotionalDiscount on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Promotional discount updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -216,9 +216,9 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateDescontoPromocional(int id, [FromBody] PromotionalDiscountPayLoadDTO descontoPromocionalPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdatePromotionalDiscount(int id, [FromBody] PromotionalDiscountPayLoadDTO promotionalDiscountPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
-            var validationResult = validator.Validate(descontoPromocionalPayLoad);
+            var validationResult = validator.Validate(promotionalDiscountPayLoad);
             if (!validationResult.IsValid)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
@@ -229,19 +229,19 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingDescontoPromocional = _descontoPromocionalService.GetById(id);
+                var existingDescontoPromocional = _promotionalDiscountService.GetById(id);
                 if (existingDescontoPromocional == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var descontoPromocional = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscount>(descontoPromocionalPayLoad);
-                descontoPromocional.Id = id;
-                _descontoPromocionalService.UpdateDescontoPromocional(descontoPromocional);
+                var promotionalDiscount = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscount>(promotionalDiscountPayLoad);
+                promotionalDiscount.Id = id;
+                _promotionalDiscountService.UpdatePromotionalDiscount(promotionalDiscount);
 
-                var descontoPromocionalResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(descontoPromocional);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(descontoPromocionalResponse, "Promotional discount updated successfully", HttpContext.Request.Path);
+                var promotionalDiscountResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<PromotionalDiscountResponseDTO>(promotionalDiscount);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(promotionalDiscountResponse, "Promotional discount updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -282,18 +282,18 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteDescontoPromocional(int id)
+        public IActionResult DeletePromotionalDiscount(int id)
         {
             try
             {
-                var existingDescontoPromocional = _descontoPromocionalService.GetById(id);
+                var existingDescontoPromocional = _promotionalDiscountService.GetById(id);
                 if (existingDescontoPromocional == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _descontoPromocionalService.DeleteDescontoPromocional(id);
+                _promotionalDiscountService.DeletePromotionalDiscount(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Promotional discount deleted successfully", "Promotional discount deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }

@@ -8,10 +8,10 @@ namespace HealthPlan.Quote.Services.Interface
     /// </summary>
     public interface IAdhesionFeeService
     {
-        IEnumerable<AdhesionFee> GetAllActiveTaxaAdesao();
+        IEnumerable<AdhesionFee> GetAllActiveAdhesionFees();
         AdhesionFee? GetById(int id);
-        void AddTaxaAdesao(AdhesionFee taxaAdesao);
-        void UpdateTaxaAdesao(AdhesionFee taxaAdesao);
-        void DeleteTaxaAdesao(int id);
+        void AddAdhesionFee(AdhesionFee adhesionFee);
+        void UpdateAdhesionFee(AdhesionFee adhesionFee);
+        void DeleteAdhesionFee(int id);
     }
 }

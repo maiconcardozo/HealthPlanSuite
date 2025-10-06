@@ -9,36 +9,36 @@ namespace HealthPlan.Quote.Services.Implementation
     /// </summary>
     public class AdhesionFeeService : IAdhesionFeeService
     {
-        private readonly IAdhesionFeeRepository _taxaAdesaoRepository;
+        private readonly IAdhesionFeeRepository _adhesionFeeRepository;
 
-        public AdhesionFeeService(IAdhesionFeeRepository taxaAdesaoRepository)
+        public AdhesionFeeService(IAdhesionFeeRepository adhesionFeeRepository)
         {
-            _taxaAdesaoRepository = taxaAdesaoRepository;
+            _adhesionFeeRepository = adhesionFeeRepository;
         }
 
-        public IEnumerable<AdhesionFee> GetAllActiveTaxaAdesao()
+        public IEnumerable<AdhesionFee> GetAllActiveAdhesionFees()
         {
-            return _taxaAdesaoRepository.Find(ta => ta.IsActive);
+            return _adhesionFeeRepository.Find(ta => ta.IsActive);
         }
 
         public AdhesionFee? GetById(int id)
         {
-            return _taxaAdesaoRepository.GetById(id);
+            return _adhesionFeeRepository.GetById(id);
         }
 
-        public void AddTaxaAdesao(AdhesionFee taxaAdesao)
+        public void AddAdhesionFee(AdhesionFee adhesionFee)
         {
-            _taxaAdesaoRepository.Add(taxaAdesao);
+            _adhesionFeeRepository.Add(adhesionFee);
         }
 
-        public void UpdateTaxaAdesao(AdhesionFee taxaAdesao)
+        public void UpdateAdhesionFee(AdhesionFee adhesionFee)
         {
-            _taxaAdesaoRepository.Update(taxaAdesao);
+            _adhesionFeeRepository.Update(adhesionFee);
         }
 
-        public void DeleteTaxaAdesao(int id)
+        public void DeleteAdhesionFee(int id)
         {
-            _taxaAdesaoRepository.Remove(id);
+            _adhesionFeeRepository.Remove(id);
         }
     }
 }
