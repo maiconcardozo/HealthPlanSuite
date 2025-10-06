@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing AcceptanceRule entities.
-    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
+    /// ResourceAPI.AcceptanceRuleControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all acceptance rules from the system.
+        /// ResourceAPI.DocumentationGetAcceptanceRules
         /// </summary>
         /// <returns>
-        /// Returns list of AcceptanceRule objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfAcceptanceRuleObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Acceptance rules retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.AcceptanceRulesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(AcceptanceRuleRoutes.GetAcceptanceRules)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<AcceptanceRuleResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves an acceptance rule by its unique identifier.
+        /// ResourceAPI.DocumentationGetAcceptanceRuleById
         /// </summary>
         /// <param name="id">AcceptanceRule ID to search for</param>
-        /// <returns>Returns AcceptanceRule matching the specified ID</returns>
-        /// <response code="200">Acceptance rule retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsAcceptanceRuleMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.AcceptanceRuleRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AcceptanceRuleNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(AcceptanceRuleRoutes.GetAcceptanceRuleById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AcceptanceRuleResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -132,15 +131,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new acceptance rule in the system.
+        /// ResourceAPI.DocumentationAddAcceptanceRule
         /// </summary>
         /// <param name="acceptanceRulePayLoad">Acceptance rule data to create</param>
-        /// <returns>Returns created AcceptanceRule on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Acceptance rule created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Acceptance rule already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedAcceptanceRuleOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.AcceptanceRuleCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.AcceptanceRuleAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost(AcceptanceRuleRoutes.AddAcceptanceRule)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AcceptanceRuleResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -195,15 +194,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing acceptance rule.
+        /// ResourceAPI.DocumentationUpdateAcceptanceRule
         /// </summary>
         /// <param name="acceptanceRulePayLoad">Updated acceptance rule data including the ID</param>
-        /// <returns>Returns updated AcceptanceRule on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Acceptance rule updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedAcceptanceRuleOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.AcceptanceRuleUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AcceptanceRuleNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut(AcceptanceRuleRoutes.UpdateAcceptanceRule)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AcceptanceRuleResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -264,12 +263,12 @@ namespace HealthPlan.API.Controllers
         /// Deletes an acceptance rule from the system.
         /// </summary>
         /// <param name="id">AcceptanceRule ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Acceptance rule deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Acceptance rule not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessAcceptanceRuleDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.AcceptanceRuleDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AcceptanceRuleNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete(AcceptanceRuleRoutes.DeleteAcceptanceRule)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

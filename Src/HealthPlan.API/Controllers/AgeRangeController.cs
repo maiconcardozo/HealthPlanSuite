@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing Age Range entities.
-    /// Provides comprehensive CRUD operations for age ranges used in premium calculations.
+    /// ResourceAPI.AgeRangeControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all age ranges from the system.
+        /// ResourceAPI.DocumentationGetAgeRanges
         /// </summary>
         /// <returns>
-        /// Returns list of AgeRange objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfAgeRangeObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Age ranges retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.AgeRangesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<AgeRangeResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a specific age range by ID.
+        /// ResourceAPI.DocumentationGetAgeRangeById
         /// </summary>
         /// <param name="id">Age range ID to search for</param>
-        /// <returns>Returns AgeRange matching the specified ID</returns>
-        /// <response code="200">Age range retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Age range not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsAgeRangeMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.AgeRangesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AgeRangeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AgeRangeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -132,15 +131,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new age range.
+        /// ResourceAPI.DocumentationAddAgeRange
         /// </summary>
         /// <param name="ageRangePayLoad">Age range data to create</param>
-        /// <returns>Returns created AgeRange on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Age range created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Age range already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedAgeRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.AgeRangeCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.AgeRangeAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost("")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AgeRangeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -195,15 +194,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing age range.
+        /// ResourceAPI.DocumentationUpdateAgeRange
         /// </summary>
         /// <param name="ageRangePayLoad">Updated age range data including the ID</param>
-        /// <returns>Returns updated AgeRange on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Age range updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Age range not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedAgeRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.AgeRangeUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AgeRangeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AgeRangeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -261,15 +260,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Deletes an existing age range.
+        /// ResourceAPI.DocumentationDeleteAgeRange
         /// </summary>
         /// <param name="id">Age range ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Age range deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Age range not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessAgeRangeDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.AgeRangeDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.AgeRangeNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

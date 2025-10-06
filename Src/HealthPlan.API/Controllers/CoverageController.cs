@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing Coverage entities.
-    /// Provides comprehensive CRUD operations following the established CleanEntity pattern.
+    /// ResourceAPI.CoverageControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all coverages from the system.
+        /// ResourceAPI.DocumentationGetCoverages
         /// </summary>
         /// <returns>
-        /// Returns list of Coverage objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfCoverageObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Coverages retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.CoveragesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(CoverageRoutes.GetCoverages)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<CoverageResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a coverage by its unique identifier.
+        /// ResourceAPI.DocumentationGetCoverageById
         /// </summary>
         /// <param name="id">Coverage ID to search for</param>
-        /// <returns>Returns Coverage matching the specified ID</returns>
-        /// <response code="200">Coverage retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Coverage not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCoverageMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.CoveragesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.CoverageNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(CoverageRoutes.GetCoverageById)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CoverageResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -136,10 +135,10 @@ namespace HealthPlan.API.Controllers
         /// </summary>
         /// <param name="coverageType">Coverage type to search for</param>
         /// <returns>Returns Coverages matching the specified type</returns>
-        /// <response code="200">Coverages retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.CoveragesRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet(CoverageRoutes.GetCoveragesByType)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<CoverageResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -176,15 +175,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new coverage in the system.
+        /// ResourceAPI.DocumentationAddCoverage
         /// </summary>
         /// <param name="coveragePayLoad">Coverage data to create</param>
-        /// <returns>Returns created Coverage on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Coverage created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Coverage already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedCoverageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.CoverageCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.CoverageAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost(CoverageRoutes.AddCoverage)]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(CoverageResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -239,15 +238,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing coverage.
+        /// ResourceAPI.DocumentationUpdateCoverage
         /// </summary>
         /// <param name="coveragePayLoad">Updated coverage data including the ID</param>
-        /// <returns>Returns updated Coverage on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Coverage updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Coverage not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedCoverageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.CoverageUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.CoverageNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut(CoverageRoutes.UpdateCoverage)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CoverageResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -308,12 +307,12 @@ namespace HealthPlan.API.Controllers
         /// Deletes a coverage from the system.
         /// </summary>
         /// <param name="id">Coverage ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Coverage deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Coverage not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessCoverageDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.CoverageDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.CoverageNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete(CoverageRoutes.DeleteCoverage)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]

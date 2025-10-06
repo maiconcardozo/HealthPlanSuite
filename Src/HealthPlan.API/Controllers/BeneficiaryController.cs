@@ -12,8 +12,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace HealthPlan.API.Controllers
 {
     /// <summary>
-    /// Controller for managing Beneficiary entities.
-    /// Provides comprehensive CRUD operations for beneficiaries who can be covered by health plans.
+    /// ResourceAPI.BeneficiaryControllerDescription
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -34,15 +33,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all beneficiaries from the system.
+        /// ResourceAPI.DocumentationGetBeneficiarys
         /// </summary>
         /// <returns>
-        /// Returns list of Beneficiary objects with their details and status on success, validation errors, unauthorized access, or internal server error.
+        /// ResourceAPI.ReturnsListOfBeneficiaryObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError
         /// </returns>
-        /// <response code="200">Beneficiaries retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="200">ResourceAPI.BeneficiarysRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<BeneficiaryResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -79,15 +78,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a specific beneficiary by ID.
+        /// ResourceAPI.DocumentationGetBeneficiaryById
         /// </summary>
         /// <param name="id">Beneficiary ID to search for</param>
-        /// <returns>Returns Beneficiary matching the specified ID</returns>
-        /// <response code="200">Beneficiary retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Beneficiary not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsBeneficiaryMatchingTheSpecifiedID</returns>
+        /// <response code="200">ResourceAPI.BeneficiarysRetrievedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.BeneficiaryNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpGet("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BeneficiaryResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -132,15 +131,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new beneficiary.
+        /// ResourceAPI.DocumentationAddBeneficiary
         /// </summary>
         /// <param name="beneficiaryPayLoad">Beneficiary data to create</param>
-        /// <returns>Returns created Beneficiary on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="201">Beneficiary created successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="409">Beneficiary already exists</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsCreatedBeneficiaryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="201">ResourceAPI.BeneficiaryCreatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="409">ResourceAPI.BeneficiaryAlreadyExists</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPost("")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(BeneficiaryResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -195,15 +194,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Updates an existing beneficiary.
+        /// ResourceAPI.DocumentationUpdateBeneficiary
         /// </summary>
         /// <param name="beneficiaryPayLoad">Updated beneficiary data including the ID</param>
-        /// <returns>Returns updated Beneficiary on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Beneficiary updated successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Beneficiary not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsUpdatedBeneficiaryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.BeneficiaryUpdatedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.BeneficiaryNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BeneficiaryResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -261,15 +260,15 @@ namespace HealthPlan.API.Controllers
         }
 
         /// <summary>
-        /// Deletes an existing beneficiary.
+        /// ResourceAPI.DocumentationDeleteBeneficiary
         /// </summary>
         /// <param name="id">Beneficiary ID to delete</param>
-        /// <returns>Returns confirmation message on success, validation errors, unauthorized access, or internal server error</returns>
-        /// <response code="200">Beneficiary deleted successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Beneficiary not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessBeneficiaryDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
+        /// <response code="200">ResourceAPI.BeneficiaryDeletedSuccessfully</response>
+        /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
+        /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
+        /// <response code="404">ResourceAPI.BeneficiaryNotFound</response>
+        /// <response code="500">ResourceAPI.InternalServerError</response>
         [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
