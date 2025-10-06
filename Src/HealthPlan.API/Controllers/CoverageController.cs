@@ -241,8 +241,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing coverage.
         /// </summary>
-        /// <param name="id">Coverage ID to update</param>
-        /// <param name="coveragePayLoad">Updated coverage data</param>
+        /// <param name="coveragePayLoad">Updated coverage data including the ID</param>
         /// <returns>Returns updated Coverage on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Coverage updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -260,7 +259,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateCoverage(int id, [FromBody] CoveragePayLoadDTO coveragePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateCoverage([FromBody] CoveragePayLoadDTO coveragePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(coveragePayLoad);
             if (!validationResult.IsValid)
@@ -273,7 +272,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingCoverage = _coverageService.GetById(id);
+                var existingCoverage = _coverageService.GetById(coveragePayLoad.Id);
                 if (existingCoverage == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Coverage not found", HttpContext.Request.Path);
@@ -281,7 +280,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var coverage = CleanTemplateApplicationMapperInitializer.Mapper.Map<Coverage>(coveragePayLoad);
-                coverage.Id = id;
+                coverage.Id = coveragePayLoad.Id;
                 _coverageService.UpdateCoverage(coverage);
 
                 var coverageResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CoverageResponseDTO>(coverage);

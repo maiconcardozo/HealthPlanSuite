@@ -250,8 +250,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing company.
         /// </summary>
-        /// <param name="id">Company ID to update</param>
-        /// <param name="companyPayLoad">Updated company data</param>
+        /// <param name="companyPayLoad">Updated company data including the ID</param>
         /// <returns>Returns updated Company on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Company updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -269,7 +268,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateCompany(int id, [FromBody] CompanyPayLoadDTO companyPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateCompany([FromBody] CompanyPayLoadDTO companyPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(companyPayLoad);
             if (!validationResult.IsValid)
@@ -282,7 +281,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingCompany = _companyService.GetById(id);
+                var existingCompany = _companyService.GetById(companyPayLoad.Id);
                 if (existingCompany == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Company not found", HttpContext.Request.Path);
@@ -290,7 +289,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var company = CleanTemplateApplicationMapperInitializer.Mapper.Map<Company>(companyPayLoad);
-                company.Id = id;
+                company.Id = companyPayLoad.Id;
                 _companyService.UpdateCompany(company);
 
                 var companyResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CompanyResponseDTO>(company);

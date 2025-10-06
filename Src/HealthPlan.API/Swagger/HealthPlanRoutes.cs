@@ -36,7 +36,7 @@ namespace HealthPlan.API.Swagger
         /// <summary>
         /// Route for updating an existing health plan.
         /// </summary>
-        public const string UpdateHealthPlan = "{id}";
+        public const string UpdateHealthPlan = "";
         
         /// <summary>
         /// Route for deleting a health plan.

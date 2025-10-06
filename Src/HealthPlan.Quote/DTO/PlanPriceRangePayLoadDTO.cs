@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class PlanPriceRangePayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the plan price range.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the health plan ID that this price range applies to.
         /// References the HealthPlan entity.
         /// </summary>

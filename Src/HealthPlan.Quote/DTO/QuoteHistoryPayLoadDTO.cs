@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class QuoteHistoryPayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the quote history.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the quote ID this history entry relates to.
         /// </summary>
         public int QuoteId { get; set; }

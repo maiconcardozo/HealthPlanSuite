@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class CoveragePayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the coverage.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the coverage.
         /// For example: "Medical Consultations", "Laboratory Tests", "Surgeries".
         /// </summary>

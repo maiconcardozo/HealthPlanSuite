@@ -31,7 +31,7 @@ namespace HealthPlan.API.Swagger
         /// <summary>
         /// Route for updating an existing age range.
         /// </summary>
-        public const string UpdateAgeRange = "{id}";
+        public const string UpdateAgeRange = "";
         
         /// <summary>
         /// Route for deleting an age range.

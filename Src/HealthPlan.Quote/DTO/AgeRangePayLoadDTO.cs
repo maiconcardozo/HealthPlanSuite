@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class AgeRangePayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the age range.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the minimum age for this range (inclusive).
         /// </summary>
         public int MinAge { get; set; }

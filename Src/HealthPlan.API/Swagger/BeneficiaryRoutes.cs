@@ -31,7 +31,7 @@ namespace HealthPlan.API.Swagger
         /// <summary>
         /// Route for updating an existing beneficiary.
         /// </summary>
-        public const string UpdateBeneficiary = "{id}";
+        public const string UpdateBeneficiary = "";
         
         /// <summary>
         /// Route for deleting a beneficiary.
