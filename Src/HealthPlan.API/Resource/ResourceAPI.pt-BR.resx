@@ -669,4 +669,790 @@
   <data name="CleanEntityDeletedSuccessfully" xml:space="preserve">
     <value>CleanEntity excluída com sucesso.</value>
   </data>
+
+<!-- AcceptanceRule Controller Resources -->
+  <data name="AcceptanceRuleControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades AcceptanceRule. Fornece operações CRUD abrangentes para regras de aceitação de planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetAcceptanceRules" xml:space="preserve">
+    <value>Recupera regras de aceitação do sistema.</value>
+  </data>
+  <data name="ReturnsListOfAcceptanceRuleObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos AcceptanceRule com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AcceptanceRulesRetrievedSuccessfully" xml:space="preserve">
+    <value>Regras de aceitação recuperados com sucesso.</value>
+  </data>
+  <data name="DocumentationGetAcceptanceRuleById" xml:space="preserve">
+    <value>Recupera um regra de aceitação específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsAcceptanceRuleMatchingTheSpecifiedID" xml:space="preserve">
+    <value>AcceptanceRule correspondente ao ID especificado</value>
+  </data>
+  <data name="AcceptanceRuleRetrievedSuccessfully" xml:space="preserve">
+    <value>Regra de aceitação recuperado com sucesso.</value>
+  </data>
+  <data name="AcceptanceRuleNotFound" xml:space="preserve">
+    <value>Regra de aceitação não encontrado.</value>
+  </data>
+  <data name="DocumentationAddAcceptanceRule" xml:space="preserve">
+    <value>Cria um novo regra de aceitação no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedAcceptanceRuleOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna regra de aceitação criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AcceptanceRuleCreatedSuccessfully" xml:space="preserve">
+    <value>Regra de aceitação criado com sucesso.</value>
+  </data>
+  <data name="AcceptanceRuleAlreadyExists" xml:space="preserve">
+    <value>Regra de aceitação já existe.</value>
+  </data>
+  <data name="DocumentationUpdateAcceptanceRule" xml:space="preserve">
+    <value>Atualiza um regra de aceitação existente.</value>
+  </data>
+  <data name="ReturnsUpdatedAcceptanceRuleOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna regra de aceitação atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AcceptanceRuleUpdatedSuccessfully" xml:space="preserve">
+    <value>Regra de aceitação atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteAcceptanceRule" xml:space="preserve">
+    <value>Exclui um regra de aceitação existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessAcceptanceRuleDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AcceptanceRuleDeletedSuccessfully" xml:space="preserve">
+    <value>Regra de aceitação excluído com sucesso.</value>
+  </data>
+
+<!-- Accommodation Controller Resources -->
+  <data name="AccommodationControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades Accommodation. Fornece operações CRUD abrangentes para tipos de acomodação em planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetAccommodations" xml:space="preserve">
+    <value>Recupera acomodações do sistema.</value>
+  </data>
+  <data name="ReturnsListOfAccommodationObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos Accommodation com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AccommodationsRetrievedSuccessfully" xml:space="preserve">
+    <value>Acomodações recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetAccommodationById" xml:space="preserve">
+    <value>Recupera um acomodação específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsAccommodationMatchingTheSpecifiedID" xml:space="preserve">
+    <value>Accommodation correspondente ao ID especificado</value>
+  </data>
+  <data name="AccommodationRetrievedSuccessfully" xml:space="preserve">
+    <value>Acomodação recuperado com sucesso.</value>
+  </data>
+  <data name="AccommodationNotFound" xml:space="preserve">
+    <value>Acomodação não encontrado.</value>
+  </data>
+  <data name="DocumentationAddAccommodation" xml:space="preserve">
+    <value>Cria um novo acomodação no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedAccommodationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna acomodação criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AccommodationCreatedSuccessfully" xml:space="preserve">
+    <value>Acomodação criado com sucesso.</value>
+  </data>
+  <data name="AccommodationAlreadyExists" xml:space="preserve">
+    <value>Acomodação já existe.</value>
+  </data>
+  <data name="DocumentationUpdateAccommodation" xml:space="preserve">
+    <value>Atualiza um acomodação existente.</value>
+  </data>
+  <data name="ReturnsUpdatedAccommodationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna acomodação atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AccommodationUpdatedSuccessfully" xml:space="preserve">
+    <value>Acomodação atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteAccommodation" xml:space="preserve">
+    <value>Exclui um acomodação existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessAccommodationDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AccommodationDeletedSuccessfully" xml:space="preserve">
+    <value>Acomodação excluído com sucesso.</value>
+  </data>
+
+<!-- AdhesionFee Controller Resources -->
+  <data name="AdhesionFeeControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades AdhesionFee. Fornece operações CRUD abrangentes para taxas de adesão de planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetAdhesionFees" xml:space="preserve">
+    <value>Recupera taxas de adesão do sistema.</value>
+  </data>
+  <data name="ReturnsListOfAdhesionFeeObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos AdhesionFee com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AdhesionFeesRetrievedSuccessfully" xml:space="preserve">
+    <value>Taxas de adesão recuperados com sucesso.</value>
+  </data>
+  <data name="DocumentationGetAdhesionFeeById" xml:space="preserve">
+    <value>Recupera um taxa de adesão específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsAdhesionFeeMatchingTheSpecifiedID" xml:space="preserve">
+    <value>AdhesionFee correspondente ao ID especificado</value>
+  </data>
+  <data name="AdhesionFeeRetrievedSuccessfully" xml:space="preserve">
+    <value>Taxa de adesão recuperado com sucesso.</value>
+  </data>
+  <data name="AdhesionFeeNotFound" xml:space="preserve">
+    <value>Taxa de adesão não encontrado.</value>
+  </data>
+  <data name="DocumentationAddAdhesionFee" xml:space="preserve">
+    <value>Cria um novo taxa de adesão no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedAdhesionFeeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna taxa de adesão criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AdhesionFeeCreatedSuccessfully" xml:space="preserve">
+    <value>Taxa de adesão criado com sucesso.</value>
+  </data>
+  <data name="AdhesionFeeAlreadyExists" xml:space="preserve">
+    <value>Taxa de adesão já existe.</value>
+  </data>
+  <data name="DocumentationUpdateAdhesionFee" xml:space="preserve">
+    <value>Atualiza um taxa de adesão existente.</value>
+  </data>
+  <data name="ReturnsUpdatedAdhesionFeeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna taxa de adesão atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AdhesionFeeUpdatedSuccessfully" xml:space="preserve">
+    <value>Taxa de adesão atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteAdhesionFee" xml:space="preserve">
+    <value>Exclui um taxa de adesão existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessAdhesionFeeDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AdhesionFeeDeletedSuccessfully" xml:space="preserve">
+    <value>Taxa de adesão excluído com sucesso.</value>
+  </data>
+
+<!-- AgeRange Controller Resources -->
+  <data name="AgeRangeControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades Age Range. Fornece operações CRUD abrangentes para faixas etárias usadas em cálculos de prêmio.</value>
+  </data>
+  <data name="DocumentationGetAgeRanges" xml:space="preserve">
+    <value>Recupera faixas etárias do sistema.</value>
+  </data>
+  <data name="ReturnsListOfAgeRangeObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos AgeRange com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AgeRangesRetrievedSuccessfully" xml:space="preserve">
+    <value>Faixas etárias recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetAgeRangeById" xml:space="preserve">
+    <value>Recupera uma faixa etária específica por seu identificador único.</value>
+  </data>
+  <data name="ReturnsAgeRangeMatchingTheSpecifiedID" xml:space="preserve">
+    <value>AgeRange correspondente ao ID especificado</value>
+  </data>
+  <data name="AgeRangeRetrievedSuccessfully" xml:space="preserve">
+    <value>Faixa etária recuperada com sucesso.</value>
+  </data>
+  <data name="AgeRangeNotFound" xml:space="preserve">
+    <value>Faixa etária não encontrada.</value>
+  </data>
+  <data name="DocumentationAddAgeRange" xml:space="preserve">
+    <value>Cria uma nova faixa etária no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedAgeRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna faixa etária criada em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AgeRangeCreatedSuccessfully" xml:space="preserve">
+    <value>Faixa etária criada com sucesso.</value>
+  </data>
+  <data name="AgeRangeAlreadyExists" xml:space="preserve">
+    <value>Faixa etária já existe.</value>
+  </data>
+  <data name="DocumentationUpdateAgeRange" xml:space="preserve">
+    <value>Atualiza uma faixa etária existente.</value>
+  </data>
+  <data name="ReturnsUpdatedAgeRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna faixa etária atualizada em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AgeRangeUpdatedSuccessfully" xml:space="preserve">
+    <value>Faixa etária atualizada com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteAgeRange" xml:space="preserve">
+    <value>Exclui uma faixa etária existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessAgeRangeDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="AgeRangeDeletedSuccessfully" xml:space="preserve">
+    <value>Faixa etária excluída com sucesso.</value>
+  </data>
+
+<!-- Beneficiary Controller Resources -->
+  <data name="BeneficiaryControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades Beneficiary. Fornece operações CRUD abrangentes para beneficiários que podem ser cobertos por planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetBeneficiarys" xml:space="preserve">
+    <value>Recupera beneficiários do sistema.</value>
+  </data>
+  <data name="ReturnsListOfBeneficiaryObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos Beneficiary com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="BeneficiarysRetrievedSuccessfully" xml:space="preserve">
+    <value>Beneficiários recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetBeneficiaryById" xml:space="preserve">
+    <value>Recupera um beneficiário específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsBeneficiaryMatchingTheSpecifiedID" xml:space="preserve">
+    <value>Beneficiary correspondente ao ID especificado</value>
+  </data>
+  <data name="BeneficiaryRetrievedSuccessfully" xml:space="preserve">
+    <value>Beneficiário recuperado com sucesso.</value>
+  </data>
+  <data name="BeneficiaryNotFound" xml:space="preserve">
+    <value>Beneficiário não encontrado.</value>
+  </data>
+  <data name="DocumentationAddBeneficiary" xml:space="preserve">
+    <value>Cria um novo beneficiário no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedBeneficiaryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna beneficiário criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="BeneficiaryCreatedSuccessfully" xml:space="preserve">
+    <value>Beneficiário criado com sucesso.</value>
+  </data>
+  <data name="BeneficiaryAlreadyExists" xml:space="preserve">
+    <value>Beneficiário já existe.</value>
+  </data>
+  <data name="DocumentationUpdateBeneficiary" xml:space="preserve">
+    <value>Atualiza um beneficiário existente.</value>
+  </data>
+  <data name="ReturnsUpdatedBeneficiaryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna beneficiário atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="BeneficiaryUpdatedSuccessfully" xml:space="preserve">
+    <value>Beneficiário atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteBeneficiary" xml:space="preserve">
+    <value>Exclui um beneficiário existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessBeneficiaryDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="BeneficiaryDeletedSuccessfully" xml:space="preserve">
+    <value>Beneficiário excluído com sucesso.</value>
+  </data>
+
+<!-- Company Controller Resources -->
+  <data name="CompanyControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades Company. Fornece operações CRUD abrangentes para empresas no sistema de plano de saúde.</value>
+  </data>
+  <data name="DocumentationGetCompanys" xml:space="preserve">
+    <value>Recupera empresas do sistema.</value>
+  </data>
+  <data name="ReturnsListOfCompanyObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos Company com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CompanysRetrievedSuccessfully" xml:space="preserve">
+    <value>Empresas recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetCompanyById" xml:space="preserve">
+    <value>Recupera uma empresa específica por seu identificador único.</value>
+  </data>
+  <data name="ReturnsCompanyMatchingTheSpecifiedID" xml:space="preserve">
+    <value>Company correspondente ao ID especificado</value>
+  </data>
+  <data name="CompanyRetrievedSuccessfully" xml:space="preserve">
+    <value>Empresa recuperada com sucesso.</value>
+  </data>
+  <data name="CompanyNotFound" xml:space="preserve">
+    <value>Empresa não encontrada.</value>
+  </data>
+  <data name="DocumentationAddCompany" xml:space="preserve">
+    <value>Cria uma nova empresa no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedCompanyOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna empresa criada em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CompanyCreatedSuccessfully" xml:space="preserve">
+    <value>Empresa criada com sucesso.</value>
+  </data>
+  <data name="CompanyAlreadyExists" xml:space="preserve">
+    <value>Empresa já existe.</value>
+  </data>
+  <data name="DocumentationUpdateCompany" xml:space="preserve">
+    <value>Atualiza uma empresa existente.</value>
+  </data>
+  <data name="ReturnsUpdatedCompanyOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna empresa atualizada em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CompanyUpdatedSuccessfully" xml:space="preserve">
+    <value>Empresa atualizada com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteCompany" xml:space="preserve">
+    <value>Exclui uma empresa existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessCompanyDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CompanyDeletedSuccessfully" xml:space="preserve">
+    <value>Empresa excluída com sucesso.</value>
+  </data>
+
+<!-- Coverage Controller Resources -->
+  <data name="CoverageControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades Coverage. Fornece operações CRUD abrangentes para coberturas de planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetCoverages" xml:space="preserve">
+    <value>Recupera coberturas do sistema.</value>
+  </data>
+  <data name="ReturnsListOfCoverageObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos Coverage com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CoveragesRetrievedSuccessfully" xml:space="preserve">
+    <value>Coberturas recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetCoverageById" xml:space="preserve">
+    <value>Recupera uma cobertura específica por seu identificador único.</value>
+  </data>
+  <data name="ReturnsCoverageMatchingTheSpecifiedID" xml:space="preserve">
+    <value>Coverage correspondente ao ID especificado</value>
+  </data>
+  <data name="CoverageRetrievedSuccessfully" xml:space="preserve">
+    <value>Cobertura recuperada com sucesso.</value>
+  </data>
+  <data name="CoverageNotFound" xml:space="preserve">
+    <value>Cobertura não encontrada.</value>
+  </data>
+  <data name="DocumentationAddCoverage" xml:space="preserve">
+    <value>Cria uma nova cobertura no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedCoverageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna cobertura criada em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CoverageCreatedSuccessfully" xml:space="preserve">
+    <value>Cobertura criada com sucesso.</value>
+  </data>
+  <data name="CoverageAlreadyExists" xml:space="preserve">
+    <value>Cobertura já existe.</value>
+  </data>
+  <data name="DocumentationUpdateCoverage" xml:space="preserve">
+    <value>Atualiza uma cobertura existente.</value>
+  </data>
+  <data name="ReturnsUpdatedCoverageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna cobertura atualizada em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CoverageUpdatedSuccessfully" xml:space="preserve">
+    <value>Cobertura atualizada com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteCoverage" xml:space="preserve">
+    <value>Exclui uma cobertura existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessCoverageDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="CoverageDeletedSuccessfully" xml:space="preserve">
+    <value>Cobertura excluída com sucesso.</value>
+  </data>
+
+<!-- HealthPlan Controller Resources -->
+  <data name="HealthPlanControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades Health Plan. Fornece operações CRUD abrangentes para planos de seguro de saúde oferecidos por empresas.</value>
+  </data>
+  <data name="DocumentationGetHealthPlans" xml:space="preserve">
+    <value>Recupera planos de saúde do sistema.</value>
+  </data>
+  <data name="ReturnsListOfHealthPlanObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos HealthPlan com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="HealthPlansRetrievedSuccessfully" xml:space="preserve">
+    <value>Planos de saúde recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetHealthPlanById" xml:space="preserve">
+    <value>Recupera uma plano de saúde específica por seu identificador único.</value>
+  </data>
+  <data name="ReturnsHealthPlanMatchingTheSpecifiedID" xml:space="preserve">
+    <value>HealthPlan correspondente ao ID especificado</value>
+  </data>
+  <data name="HealthPlanRetrievedSuccessfully" xml:space="preserve">
+    <value>Plano de saúde recuperada com sucesso.</value>
+  </data>
+  <data name="HealthPlanNotFound" xml:space="preserve">
+    <value>Plano de saúde não encontrada.</value>
+  </data>
+  <data name="DocumentationAddHealthPlan" xml:space="preserve">
+    <value>Cria uma nova plano de saúde no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedHealthPlanOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna plano de saúde criada em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="HealthPlanCreatedSuccessfully" xml:space="preserve">
+    <value>Plano de saúde criada com sucesso.</value>
+  </data>
+  <data name="HealthPlanAlreadyExists" xml:space="preserve">
+    <value>Plano de saúde já existe.</value>
+  </data>
+  <data name="DocumentationUpdateHealthPlan" xml:space="preserve">
+    <value>Atualiza uma plano de saúde existente.</value>
+  </data>
+  <data name="ReturnsUpdatedHealthPlanOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna plano de saúde atualizada em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="HealthPlanUpdatedSuccessfully" xml:space="preserve">
+    <value>Plano de saúde atualizada com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteHealthPlan" xml:space="preserve">
+    <value>Exclui uma plano de saúde existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessHealthPlanDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="HealthPlanDeletedSuccessfully" xml:space="preserve">
+    <value>Plano de saúde excluída com sucesso.</value>
+  </data>
+
+<!-- PlanCoverage Controller Resources -->
+  <data name="PlanCoverageControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades PlanCoverage. Fornece operações CRUD abrangentes para associações de cobertura de planos.</value>
+  </data>
+  <data name="DocumentationGetPlanCoverages" xml:space="preserve">
+    <value>Recupera coberturas do plano do sistema.</value>
+  </data>
+  <data name="ReturnsListOfPlanCoverageObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos PlanCoverage com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanCoveragesRetrievedSuccessfully" xml:space="preserve">
+    <value>Coberturas do plano recuperados com sucesso.</value>
+  </data>
+  <data name="DocumentationGetPlanCoverageById" xml:space="preserve">
+    <value>Recupera um cobertura do plano específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsPlanCoverageMatchingTheSpecifiedID" xml:space="preserve">
+    <value>PlanCoverage correspondente ao ID especificado</value>
+  </data>
+  <data name="PlanCoverageRetrievedSuccessfully" xml:space="preserve">
+    <value>Cobertura do plano recuperado com sucesso.</value>
+  </data>
+  <data name="PlanCoverageNotFound" xml:space="preserve">
+    <value>Cobertura do plano não encontrado.</value>
+  </data>
+  <data name="DocumentationAddPlanCoverage" xml:space="preserve">
+    <value>Cria um novo cobertura do plano no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedPlanCoverageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna cobertura do plano criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanCoverageCreatedSuccessfully" xml:space="preserve">
+    <value>Cobertura do plano criado com sucesso.</value>
+  </data>
+  <data name="PlanCoverageAlreadyExists" xml:space="preserve">
+    <value>Cobertura do plano já existe.</value>
+  </data>
+  <data name="DocumentationUpdatePlanCoverage" xml:space="preserve">
+    <value>Atualiza um cobertura do plano existente.</value>
+  </data>
+  <data name="ReturnsUpdatedPlanCoverageOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna cobertura do plano atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanCoverageUpdatedSuccessfully" xml:space="preserve">
+    <value>Cobertura do plano atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeletePlanCoverage" xml:space="preserve">
+    <value>Exclui um cobertura do plano existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessPlanCoverageDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanCoverageDeletedSuccessfully" xml:space="preserve">
+    <value>Cobertura do plano excluído com sucesso.</value>
+  </data>
+
+<!-- PlanPriceRange Controller Resources -->
+  <data name="PlanPriceRangeControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades PlanPriceRange. Fornece operações CRUD abrangentes para faixas de preço de planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetPlanPriceRanges" xml:space="preserve">
+    <value>Recupera faixas de preço do plano do sistema.</value>
+  </data>
+  <data name="ReturnsListOfPlanPriceRangeObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos PlanPriceRange com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanPriceRangesRetrievedSuccessfully" xml:space="preserve">
+    <value>Faixas de preço do plano recuperados com sucesso.</value>
+  </data>
+  <data name="DocumentationGetPlanPriceRangeById" xml:space="preserve">
+    <value>Recupera um faixa de preço do plano específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsPlanPriceRangeMatchingTheSpecifiedID" xml:space="preserve">
+    <value>PlanPriceRange correspondente ao ID especificado</value>
+  </data>
+  <data name="PlanPriceRangeRetrievedSuccessfully" xml:space="preserve">
+    <value>Faixa de preço do plano recuperado com sucesso.</value>
+  </data>
+  <data name="PlanPriceRangeNotFound" xml:space="preserve">
+    <value>Faixa de preço do plano não encontrado.</value>
+  </data>
+  <data name="DocumentationAddPlanPriceRange" xml:space="preserve">
+    <value>Cria um novo faixa de preço do plano no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedPlanPriceRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna faixa de preço do plano criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanPriceRangeCreatedSuccessfully" xml:space="preserve">
+    <value>Faixa de preço do plano criado com sucesso.</value>
+  </data>
+  <data name="PlanPriceRangeAlreadyExists" xml:space="preserve">
+    <value>Faixa de preço do plano já existe.</value>
+  </data>
+  <data name="DocumentationUpdatePlanPriceRange" xml:space="preserve">
+    <value>Atualiza um faixa de preço do plano existente.</value>
+  </data>
+  <data name="ReturnsUpdatedPlanPriceRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna faixa de preço do plano atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanPriceRangeUpdatedSuccessfully" xml:space="preserve">
+    <value>Faixa de preço do plano atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeletePlanPriceRange" xml:space="preserve">
+    <value>Exclui um faixa de preço do plano existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessPlanPriceRangeDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PlanPriceRangeDeletedSuccessfully" xml:space="preserve">
+    <value>Faixa de preço do plano excluído com sucesso.</value>
+  </data>
+
+<!-- ProcedureCoparticipation Controller Resources -->
+  <data name="ProcedureCoparticipationControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades ProcedureCoparticipation. Fornece operações CRUD abrangentes para procedimentos de coparticipação de planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetProcedureCoparticipations" xml:space="preserve">
+    <value>Recupera coparticipações de procedimento do sistema.</value>
+  </data>
+  <data name="ReturnsListOfProcedureCoparticipationObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos ProcedureCoparticipation com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="ProcedureCoparticipationsRetrievedSuccessfully" xml:space="preserve">
+    <value>Coparticipações de procedimento recuperados com sucesso.</value>
+  </data>
+  <data name="DocumentationGetProcedureCoparticipationById" xml:space="preserve">
+    <value>Recupera um coparticipação de procedimento específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsProcedureCoparticipationMatchingTheSpecifiedID" xml:space="preserve">
+    <value>ProcedureCoparticipation correspondente ao ID especificado</value>
+  </data>
+  <data name="ProcedureCoparticipationRetrievedSuccessfully" xml:space="preserve">
+    <value>Coparticipação de procedimento recuperado com sucesso.</value>
+  </data>
+  <data name="ProcedureCoparticipationNotFound" xml:space="preserve">
+    <value>Coparticipação de procedimento não encontrado.</value>
+  </data>
+  <data name="DocumentationAddProcedureCoparticipation" xml:space="preserve">
+    <value>Cria um novo coparticipação de procedimento no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedProcedureCoparticipationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna coparticipação de procedimento criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="ProcedureCoparticipationCreatedSuccessfully" xml:space="preserve">
+    <value>Coparticipação de procedimento criado com sucesso.</value>
+  </data>
+  <data name="ProcedureCoparticipationAlreadyExists" xml:space="preserve">
+    <value>Coparticipação de procedimento já existe.</value>
+  </data>
+  <data name="DocumentationUpdateProcedureCoparticipation" xml:space="preserve">
+    <value>Atualiza um coparticipação de procedimento existente.</value>
+  </data>
+  <data name="ReturnsUpdatedProcedureCoparticipationOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna coparticipação de procedimento atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="ProcedureCoparticipationUpdatedSuccessfully" xml:space="preserve">
+    <value>Coparticipação de procedimento atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteProcedureCoparticipation" xml:space="preserve">
+    <value>Exclui um coparticipação de procedimento existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessProcedureCoparticipationDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="ProcedureCoparticipationDeletedSuccessfully" xml:space="preserve">
+    <value>Coparticipação de procedimento excluído com sucesso.</value>
+  </data>
+
+<!-- PromotionalDiscount Controller Resources -->
+  <data name="PromotionalDiscountControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades PromotionalDiscount. Fornece operações CRUD abrangentes para descontos promocionais de planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetPromotionalDiscounts" xml:space="preserve">
+    <value>Recupera descontos promocionais do sistema.</value>
+  </data>
+  <data name="ReturnsListOfPromotionalDiscountObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos PromotionalDiscount com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PromotionalDiscountsRetrievedSuccessfully" xml:space="preserve">
+    <value>Descontos promocionais recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetPromotionalDiscountById" xml:space="preserve">
+    <value>Recupera uma desconto promocional específica por seu identificador único.</value>
+  </data>
+  <data name="ReturnsPromotionalDiscountMatchingTheSpecifiedID" xml:space="preserve">
+    <value>PromotionalDiscount correspondente ao ID especificado</value>
+  </data>
+  <data name="PromotionalDiscountRetrievedSuccessfully" xml:space="preserve">
+    <value>Desconto promocional recuperada com sucesso.</value>
+  </data>
+  <data name="PromotionalDiscountNotFound" xml:space="preserve">
+    <value>Desconto promocional não encontrada.</value>
+  </data>
+  <data name="DocumentationAddPromotionalDiscount" xml:space="preserve">
+    <value>Cria uma nova desconto promocional no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedPromotionalDiscountOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna desconto promocional criada em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PromotionalDiscountCreatedSuccessfully" xml:space="preserve">
+    <value>Desconto promocional criada com sucesso.</value>
+  </data>
+  <data name="PromotionalDiscountAlreadyExists" xml:space="preserve">
+    <value>Desconto promocional já existe.</value>
+  </data>
+  <data name="DocumentationUpdatePromotionalDiscount" xml:space="preserve">
+    <value>Atualiza uma desconto promocional existente.</value>
+  </data>
+  <data name="ReturnsUpdatedPromotionalDiscountOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna desconto promocional atualizada em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PromotionalDiscountUpdatedSuccessfully" xml:space="preserve">
+    <value>Desconto promocional atualizada com sucesso.</value>
+  </data>
+  <data name="DocumentationDeletePromotionalDiscount" xml:space="preserve">
+    <value>Exclui uma desconto promocional existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessPromotionalDiscountDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="PromotionalDiscountDeletedSuccessfully" xml:space="preserve">
+    <value>Desconto promocional excluída com sucesso.</value>
+  </data>
+
+<!-- Quote Controller Resources -->
+  <data name="QuoteControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades Quote. Fornece operações CRUD abrangentes para cotações de planos de saúde.</value>
+  </data>
+  <data name="DocumentationGetQuotes" xml:space="preserve">
+    <value>Recupera cotações do sistema.</value>
+  </data>
+  <data name="ReturnsListOfQuoteObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos Quote com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuotesRetrievedSuccessfully" xml:space="preserve">
+    <value>Cotações recuperadas com sucesso.</value>
+  </data>
+  <data name="DocumentationGetQuoteById" xml:space="preserve">
+    <value>Recupera um cotação específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsQuoteMatchingTheSpecifiedID" xml:space="preserve">
+    <value>Quote correspondente ao ID especificado</value>
+  </data>
+  <data name="QuoteRetrievedSuccessfully" xml:space="preserve">
+    <value>Cotação recuperado com sucesso.</value>
+  </data>
+  <data name="QuoteNotFound" xml:space="preserve">
+    <value>Cotação não encontrado.</value>
+  </data>
+  <data name="DocumentationAddQuote" xml:space="preserve">
+    <value>Cria um novo cotação no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedQuoteOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna cotação criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuoteCreatedSuccessfully" xml:space="preserve">
+    <value>Cotação criado com sucesso.</value>
+  </data>
+  <data name="QuoteAlreadyExists" xml:space="preserve">
+    <value>Cotação já existe.</value>
+  </data>
+  <data name="DocumentationUpdateQuote" xml:space="preserve">
+    <value>Atualiza um cotação existente.</value>
+  </data>
+  <data name="ReturnsUpdatedQuoteOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna cotação atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuoteUpdatedSuccessfully" xml:space="preserve">
+    <value>Cotação atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteQuote" xml:space="preserve">
+    <value>Exclui um cotação existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessQuoteDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuoteDeletedSuccessfully" xml:space="preserve">
+    <value>Cotação excluído com sucesso.</value>
+  </data>
+
+<!-- QuoteHistory Controller Resources -->
+  <data name="QuoteHistoryControllerDescription" xml:space="preserve">
+    <value>Controller responsável por gerenciar entidades QuoteHistory. Fornece operações CRUD abrangentes para rastreamento de histórico de cotações.</value>
+  </data>
+  <data name="DocumentationGetQuoteHistoryEntries" xml:space="preserve">
+    <value>Recupera todos os registros de histórico de cotação do sistema.</value>
+  </data>
+  <data name="ReturnsListOfQuoteHistoryObjectsWithTheirDetailsAndStatusOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna lista de objetos QuoteHistory com seus detalhes e status em caso de sucesso (200), erros de validação (400), acesso não autorizado (401) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuoteHistorysRetrievedSuccessfully" xml:space="preserve">
+    <value>Históricos de cotação recuperados com sucesso.</value>
+  </data>
+  <data name="DocumentationGetQuoteHistoryById" xml:space="preserve">
+    <value>Recupera um histórico de cotação específico por seu identificador único.</value>
+  </data>
+  <data name="ReturnsQuoteHistoryMatchingTheSpecifiedID" xml:space="preserve">
+    <value>QuoteHistory correspondente ao ID especificado</value>
+  </data>
+  <data name="QuoteHistoryRetrievedSuccessfully" xml:space="preserve">
+    <value>Histórico de cotação recuperado com sucesso.</value>
+  </data>
+  <data name="QuoteHistoryNotFound" xml:space="preserve">
+    <value>Histórico de cotação não encontrado.</value>
+  </data>
+  <data name="DocumentationAddQuoteHistory" xml:space="preserve">
+    <value>Cria um novo histórico de cotação no sistema.</value>
+  </data>
+  <data name="ReturnsCreatedQuoteHistoryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna histórico de cotação criado em caso de sucesso (201), erros de validação (400), acesso não autorizado (401), conflito (409) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuoteHistoryCreatedSuccessfully" xml:space="preserve">
+    <value>Histórico de cotação criado com sucesso.</value>
+  </data>
+  <data name="QuoteHistoryAlreadyExists" xml:space="preserve">
+    <value>Histórico de cotação já existe.</value>
+  </data>
+  <data name="DocumentationUpdateQuoteHistory" xml:space="preserve">
+    <value>Atualiza um histórico de cotação existente.</value>
+  </data>
+  <data name="ReturnsUpdatedQuoteHistoryOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna histórico de cotação atualizado em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuoteHistoryUpdatedSuccessfully" xml:space="preserve">
+    <value>Histórico de cotação atualizado com sucesso.</value>
+  </data>
+  <data name="DocumentationDeleteQuoteHistory" xml:space="preserve">
+    <value>Exclui um histórico de cotação existente.</value>
+  </data>
+  <data name="ReturnsConfirmationMessageOnSuccessQuoteHistoryDeletionValidationErrorsUnauthorizedAccessOrInternalServerError" xml:space="preserve">
+    <value>Retorna mensagem de confirmação em caso de sucesso (200), erros de validação (400), acesso não autorizado (401), não encontrado (404) ou erro interno do servidor (500)</value>
+  </data>
+  <data name="QuoteHistoryDeletedSuccessfully" xml:space="preserve">
+    <value>Histórico de cotação excluído com sucesso.</value>
+  </data>
+
+
 </root>
