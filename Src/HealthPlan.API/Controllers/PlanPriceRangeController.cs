@@ -229,8 +229,8 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingPrecoPlanoFaixa = _planPriceRangeService.GetById(id);
-                if (existingPrecoPlanoFaixa == null)
+                var existingPlanPriceRange = _planPriceRangeService.GetById(id);
+                if (existingPlanPriceRange == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Plan price range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
@@ -286,8 +286,8 @@ namespace HealthPlan.API.Controllers
         {
             try
             {
-                var existingPrecoPlanoFaixa = _planPriceRangeService.GetById(id);
-                if (existingPrecoPlanoFaixa == null)
+                var existingPlanPriceRange = _planPriceRangeService.GetById(id);
+                if (existingPlanPriceRange == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Plan price range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);

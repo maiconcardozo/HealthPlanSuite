@@ -207,8 +207,8 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingTaxaAdesao = _adhesionFeeService.GetById(id);
-                if (existingTaxaAdesao == null)
+                var existingAdhesionFee = _adhesionFeeService.GetById(id);
+                if (existingAdhesionFee == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
                     return NotFound(problemDetails);
@@ -264,8 +264,8 @@ namespace HealthPlan.API.Controllers
         {
             try
             {
-                var existingTaxaAdesao = _adhesionFeeService.GetById(id);
-                if (existingTaxaAdesao == null)
+                var existingAdhesionFee = _adhesionFeeService.GetById(id);
+                if (existingAdhesionFee == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Adhesion fee not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);

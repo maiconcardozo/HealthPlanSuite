@@ -229,8 +229,8 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingCoparticipacaoProcedimento = _procedureCoparticipationService.GetById(id);
-                if (existingCoparticipacaoProcedimento == null)
+                var existingProcedureCoparticipation = _procedureCoparticipationService.GetById(id);
+                if (existingProcedureCoparticipation == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Co-participation procedure not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
@@ -286,8 +286,8 @@ namespace HealthPlan.API.Controllers
         {
             try
             {
-                var existingCoparticipacaoProcedimento = _procedureCoparticipationService.GetById(id);
-                if (existingCoparticipacaoProcedimento == null)
+                var existingProcedureCoparticipation = _procedureCoparticipationService.GetById(id);
+                if (existingProcedureCoparticipation == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Co-participation procedure not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);

@@ -229,8 +229,8 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingDescontoPromocional = _promotionalDiscountService.GetById(id);
-                if (existingDescontoPromocional == null)
+                var existingPromotionalDiscount = _promotionalDiscountService.GetById(id);
+                if (existingPromotionalDiscount == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
@@ -286,8 +286,8 @@ namespace HealthPlan.API.Controllers
         {
             try
             {
-                var existingDescontoPromocional = _promotionalDiscountService.GetById(id);
-                if (existingDescontoPromocional == null)
+                var existingPromotionalDiscount = _promotionalDiscountService.GetById(id);
+                if (existingPromotionalDiscount == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Promotional discount not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
