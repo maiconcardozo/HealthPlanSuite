@@ -24,8 +24,8 @@ namespace HealthPlan.Quote.Mapping
             CreateMap<Domain.Implementation.Quote, QuoteResponseDTO>();
             CreateMap<QuoteResponseDTO, Domain.Implementation.Quote>();
 
-            // TaxaAdesao mappings
-            CreateMap<TaxaAdesaoPayLoadDTO, TaxaAdesao>()
+            // AdhesionFee mappings
+            CreateMap<AdhesionFeePayLoadDTO, AdhesionFee>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.HealthPlan, opt => opt.Ignore())
                 .ForMember(dest => dest.IsActive, opt => opt.Ignore())
@@ -34,12 +34,12 @@ namespace HealthPlan.Quote.Mapping
                 .ForMember(dest => dest.DtDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.DeletedBy, opt => opt.Ignore());
             
-            CreateMap<TaxaAdesao, TaxaAdesaoPayLoadDTO>();
-            CreateMap<TaxaAdesao, TaxaAdesaoResponseDTO>();
-            CreateMap<TaxaAdesaoResponseDTO, TaxaAdesao>();
+            CreateMap<AdhesionFee, AdhesionFeePayLoadDTO>();
+            CreateMap<AdhesionFee, AdhesionFeeResponseDTO>();
+            CreateMap<AdhesionFeeResponseDTO, AdhesionFee>();
 
-            // DescontoPromocional mappings
-            CreateMap<DescontoPromocionalPayLoadDTO, DescontoPromocional>()
+            // PromotionalDiscount mappings
+            CreateMap<PromotionalDiscountPayLoadDTO, PromotionalDiscount>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.HealthPlan, opt => opt.Ignore())
                 .ForMember(dest => dest.IsActive, opt => opt.Ignore())
@@ -48,12 +48,12 @@ namespace HealthPlan.Quote.Mapping
                 .ForMember(dest => dest.DtDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.DeletedBy, opt => opt.Ignore());
             
-            CreateMap<DescontoPromocional, DescontoPromocionalPayLoadDTO>();
-            CreateMap<DescontoPromocional, DescontoPromocionalResponseDTO>();
-            CreateMap<DescontoPromocionalResponseDTO, DescontoPromocional>();
+            CreateMap<PromotionalDiscount, PromotionalDiscountPayLoadDTO>();
+            CreateMap<PromotionalDiscount, PromotionalDiscountResponseDTO>();
+            CreateMap<PromotionalDiscountResponseDTO, PromotionalDiscount>();
 
-            // CoparticipacaoProcedimento mappings
-            CreateMap<CoparticipacaoProcedimentoPayLoadDTO, CoparticipacaoProcedimento>()
+            // ProcedureCoparticipation mappings
+            CreateMap<ProcedureCoparticipationPayLoadDTO, ProcedureCoparticipation>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.HealthPlan, opt => opt.Ignore())
                 .ForMember(dest => dest.IsActive, opt => opt.Ignore())
@@ -62,12 +62,12 @@ namespace HealthPlan.Quote.Mapping
                 .ForMember(dest => dest.DtDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.DeletedBy, opt => opt.Ignore());
             
-            CreateMap<CoparticipacaoProcedimento, CoparticipacaoProcedimentoPayLoadDTO>();
-            CreateMap<CoparticipacaoProcedimento, CoparticipacaoProcedimentoResponseDTO>();
-            CreateMap<CoparticipacaoProcedimentoResponseDTO, CoparticipacaoProcedimento>();
+            CreateMap<ProcedureCoparticipation, ProcedureCoparticipationPayLoadDTO>();
+            CreateMap<ProcedureCoparticipation, ProcedureCoparticipationResponseDTO>();
+            CreateMap<ProcedureCoparticipationResponseDTO, ProcedureCoparticipation>();
 
-            // PrecoPlanoFaixa mappings
-            CreateMap<PrecoPlanoFaixaPayLoadDTO, PrecoPlanoFaixa>()
+            // PlanPriceRange mappings
+            CreateMap<PlanPriceRangePayLoadDTO, PlanPriceRange>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.HealthPlan, opt => opt.Ignore())
                 .ForMember(dest => dest.AgeRange, opt => opt.Ignore())
@@ -77,9 +77,9 @@ namespace HealthPlan.Quote.Mapping
                 .ForMember(dest => dest.DtDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.DeletedBy, opt => opt.Ignore());
             
-            CreateMap<PrecoPlanoFaixa, PrecoPlanoFaixaPayLoadDTO>();
-            CreateMap<PrecoPlanoFaixa, PrecoPlanoFaixaResponseDTO>();
-            CreateMap<PrecoPlanoFaixaResponseDTO, PrecoPlanoFaixa>();
+            CreateMap<PlanPriceRange, PlanPriceRangePayLoadDTO>();
+            CreateMap<PlanPriceRange, PlanPriceRangeResponseDTO>();
+            CreateMap<PlanPriceRangeResponseDTO, PlanPriceRange>();
         }
     }
 }

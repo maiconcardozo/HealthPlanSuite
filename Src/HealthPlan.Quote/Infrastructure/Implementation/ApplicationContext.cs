@@ -20,10 +20,10 @@ namespace HealthPlan.Quote.Infrastructure.Data
         public DbSet<Domain.Implementation.Quote> dbQuote { get; set; }
         
         // New entities for health plan requirements
-        public DbSet<TaxaAdesao> dbTaxaAdesao { get; set; }
-        public DbSet<DescontoPromocional> dbDescontoPromocional { get; set; }
-        public DbSet<CoparticipacaoProcedimento> dbCoparticipacaoProcedimento { get; set; }
-        public DbSet<PrecoPlanoFaixa> dbPrecoPlanoFaixa { get; set; }
+        public DbSet<AdhesionFee> dbAdhesionFee { get; set; }
+        public DbSet<PromotionalDiscount> dbPromotionalDiscount { get; set; }
+        public DbSet<ProcedureCoparticipation> dbProcedureCoparticipation { get; set; }
+        public DbSet<PlanPriceRange> dbPlanPriceRange { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,10 +37,10 @@ namespace HealthPlan.Quote.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CompanyMap());
             
             // New entity mappings
-            modelBuilder.ApplyConfiguration(new TaxaAdesaoMap());
-            modelBuilder.ApplyConfiguration(new DescontoPromocionalMap());
-            modelBuilder.ApplyConfiguration(new CoparticipacaoProcedimentoMap());
-            modelBuilder.ApplyConfiguration(new PrecoPlanoFaixaMap());
+            modelBuilder.ApplyConfiguration(new AdhesionFeeMap());
+            modelBuilder.ApplyConfiguration(new PromotionalDiscountMap());
+            modelBuilder.ApplyConfiguration(new ProcedureCoparticipationMap());
+            modelBuilder.ApplyConfiguration(new PlanPriceRangeMap());
             
             // Note: Other mappings need to be fixed and can be added back later
         }
