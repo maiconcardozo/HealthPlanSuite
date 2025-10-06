@@ -197,8 +197,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing acceptance rule.
         /// </summary>
-        /// <param name="id">AcceptanceRule ID to update</param>
-        /// <param name="acceptanceRulePayLoad">Updated acceptance rule data</param>
+        /// <param name="acceptanceRulePayLoad">Updated acceptance rule data including the ID</param>
         /// <returns>Returns updated AcceptanceRule on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Acceptance rule updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -216,7 +215,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAcceptanceRule(int id, [FromBody] AcceptanceRulePayLoadDTO acceptanceRulePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateAcceptanceRule([FromBody] AcceptanceRulePayLoadDTO acceptanceRulePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(acceptanceRulePayLoad);
             if (!validationResult.IsValid)
@@ -229,7 +228,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingAcceptanceRule = _acceptanceRuleService.GetById(id);
+                var existingAcceptanceRule = _acceptanceRuleService.GetById(acceptanceRulePayLoad.Id);
                 if (existingAcceptanceRule == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Acceptance rule not found", HttpContext.Request.Path);
@@ -237,7 +236,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var acceptanceRule = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRule>(acceptanceRulePayLoad);
-                acceptanceRule.Id = id;
+                acceptanceRule.Id = acceptanceRulePayLoad.Id;
                 _acceptanceRuleService.UpdateAcceptanceRule(acceptanceRule);
 
                 var acceptanceRuleResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AcceptanceRuleResponseDTO>(acceptanceRule);

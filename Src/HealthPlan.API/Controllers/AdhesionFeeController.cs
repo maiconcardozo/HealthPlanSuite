@@ -185,7 +185,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationUpdateAdhesionFee.
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdhesionFeeResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -196,7 +196,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> UpdateAdhesionFee(int id, [FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateAdhesionFee([FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = await ValidationHelper.ValidateEntityAsync(adhesionFeePayLoad, serviceProvider, this);
 
@@ -207,7 +207,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingAdhesionFee = _adhesionFeeService.GetById(id);
+                var existingAdhesionFee = _adhesionFeeService.GetById(adhesionFeePayLoad.Id);
                 if (existingAdhesionFee == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
@@ -215,7 +215,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var adhesionFee = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFee>(adhesionFeePayLoad);
-                adhesionFee.Id = id;
+                adhesionFee.Id = adhesionFeePayLoad.Id;
                 _adhesionFeeService.UpdateAdhesionFee(adhesionFee);
 
                 var adhesionFeeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(adhesionFee);

@@ -197,8 +197,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing accommodation.
         /// </summary>
-        /// <param name="id">Accommodation ID to update</param>
-        /// <param name="accommodationPayLoad">Updated accommodation data</param>
+        /// <param name="accommodationPayLoad">Updated accommodation data including the ID</param>
         /// <returns>Returns updated Accommodation on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Accommodation updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
@@ -216,7 +215,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAccommodation(int id, [FromBody] AccommodationPayLoadDTO accommodationPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateAccommodation([FromBody] AccommodationPayLoadDTO accommodationPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(accommodationPayLoad);
             if (!validationResult.IsValid)
@@ -229,7 +228,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingAccommodation = _accommodationService.GetById(id);
+                var existingAccommodation = _accommodationService.GetById(accommodationPayLoad.Id);
                 if (existingAccommodation == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Accommodation not found", HttpContext.Request.Path);
@@ -237,7 +236,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var accommodation = CleanTemplateApplicationMapperInitializer.Mapper.Map<Accommodation>(accommodationPayLoad);
-                accommodation.Id = id;
+                accommodation.Id = accommodationPayLoad.Id;
                 _accommodationService.UpdateAccommodation(accommodation);
 
                 var accommodationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AccommodationResponseDTO>(accommodation);

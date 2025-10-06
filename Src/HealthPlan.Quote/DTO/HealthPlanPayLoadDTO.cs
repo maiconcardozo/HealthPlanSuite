@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class HealthPlanPayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the health plan.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the company ID that offers this health plan.
         /// References the Company entity.
         /// </summary>

@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class AccommodationPayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the accommodation.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of accommodation.
         /// Examples: "Enfermaria", "Apartamento", "Apartamento Luxo", "UTI".
         /// </summary>

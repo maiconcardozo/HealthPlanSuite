@@ -31,7 +31,7 @@ namespace HealthPlan.API.Swagger
         /// <summary>
         /// Route for updating an existing quote.
         /// </summary>
-        public const string UpdateQuote = "{id}";
+        public const string UpdateQuote = "";
         
         /// <summary>
         /// Route for deleting a quote.

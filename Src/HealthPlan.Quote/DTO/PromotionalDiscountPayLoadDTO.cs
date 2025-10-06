@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class PromotionalDiscountPayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the promotional discount.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the health plan ID that this promotional discount applies to.
         /// References the HealthPlan entity.
         /// </summary>

@@ -31,7 +31,7 @@ namespace HealthPlan.API.Swagger
         /// <summary>
         /// Route for updating an existing acceptance rule.
         /// </summary>
-        public const string UpdateAcceptanceRule = "{id}";
+        public const string UpdateAcceptanceRule = "";
         
         /// <summary>
         /// Route for deleting an acceptance rule.

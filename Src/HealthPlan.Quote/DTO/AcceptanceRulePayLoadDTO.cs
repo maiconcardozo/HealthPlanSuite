@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class AcceptanceRulePayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the acceptance rule.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the health plan ID this rule applies to.
         /// </summary>
         public int HealthPlanId { get; set; }

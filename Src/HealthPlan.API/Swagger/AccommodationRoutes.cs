@@ -31,7 +31,7 @@ namespace HealthPlan.API.Swagger
         /// <summary>
         /// Route for updating an existing accommodation.
         /// </summary>
-        public const string UpdateAccommodation = "{id}";
+        public const string UpdateAccommodation = "";
         
         /// <summary>
         /// Route for deleting an accommodation.

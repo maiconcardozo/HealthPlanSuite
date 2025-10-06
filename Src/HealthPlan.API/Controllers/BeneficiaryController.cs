@@ -197,15 +197,14 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing beneficiary.
         /// </summary>
-        /// <param name="id">Beneficiary ID to update</param>
-        /// <param name="beneficiaryPayLoad">Updated beneficiary data</param>
+        /// <param name="beneficiaryPayLoad">Updated beneficiary data including the ID</param>
         /// <returns>Returns updated Beneficiary on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Beneficiary updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
         /// <response code="404">Beneficiary not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpPut("{id}")]
+        [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BeneficiaryResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -216,7 +215,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateBeneficiary(int id, [FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateBeneficiary([FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(beneficiaryPayLoad);
             if (!validationResult.IsValid)
@@ -229,7 +228,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingBeneficiary = _beneficiaryService.GetById(id);
+                var existingBeneficiary = _beneficiaryService.GetById(beneficiaryPayLoad.Id);
                 if (existingBeneficiary == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Beneficiary not found", HttpContext.Request.Path);
@@ -237,7 +236,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var beneficiary = CleanTemplateApplicationMapperInitializer.Mapper.Map<Beneficiary>(beneficiaryPayLoad);
-                beneficiary.Id = id;
+                beneficiary.Id = beneficiaryPayLoad.Id;
                 _beneficiaryService.UpdateBeneficiary(beneficiary);
 
                 var beneficiaryResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<BeneficiaryResponseDTO>(beneficiary);

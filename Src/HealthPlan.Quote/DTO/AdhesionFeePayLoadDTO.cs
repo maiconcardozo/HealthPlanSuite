@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class AdhesionFeePayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the adhesion fee.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the health plan ID that this adhesion fee belongs to.
         /// References the HealthPlan entity.
         /// </summary>

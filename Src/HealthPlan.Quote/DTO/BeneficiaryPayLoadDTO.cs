@@ -7,6 +7,12 @@ namespace HealthPlan.Quote.DTO
     public class BeneficiaryPayLoadDTO
     {
         /// <summary>
+        /// Gets or sets the unique identifier for the beneficiary.
+        /// Used for update operations.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the beneficiary's full name.
         /// </summary>
         public string Name { get; set; } = string.Empty;

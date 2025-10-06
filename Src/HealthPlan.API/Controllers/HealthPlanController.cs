@@ -197,15 +197,14 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// Updates an existing health plan.
         /// </summary>
-        /// <param name="id">Health plan ID to update</param>
-        /// <param name="healthPlanPayLoad">Updated health plan data</param>
+        /// <param name="healthPlanPayLoad">Updated health plan data including the ID</param>
         /// <returns>Returns updated HealthPlan on success, validation errors, unauthorized access, or internal server error</returns>
         /// <response code="200">Health plan updated successfully</response>
         /// <response code="400">Invalid request parameters</response>
         /// <response code="401">Unauthorized access</response>
         /// <response code="404">Health plan not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpPut("{id}")]
+        [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(HealthPlanResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -216,7 +215,7 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateHealthPlan(int id, [FromBody] HealthPlanPayLoadDTO healthPlanPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public IActionResult UpdateHealthPlan([FromBody] HealthPlanPayLoadDTO healthPlanPayLoad, [FromServices] IServiceProvider serviceProvider)
         {
             var validationResult = validator.Validate(healthPlanPayLoad);
             if (!validationResult.IsValid)
@@ -229,7 +228,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var existingHealthPlan = _healthPlanService.GetById(id);
+                var existingHealthPlan = _healthPlanService.GetById(healthPlanPayLoad.Id);
                 if (existingHealthPlan == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Health plan not found", HttpContext.Request.Path);
@@ -237,7 +236,7 @@ namespace HealthPlan.API.Controllers
                 }
 
                 var healthPlan = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.HealthPlan>(healthPlanPayLoad);
-                healthPlan.Id = id;
+                healthPlan.Id = healthPlanPayLoad.Id;
                 _healthPlanService.UpdateHealthPlan(healthPlan);
 
                 var healthPlanResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlanResponseDTO>(healthPlan);
