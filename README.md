@@ -8,7 +8,7 @@
 
 **HealthPlan Suite** is a comprehensive .NET application for managing health plan quotes and related insurance operations. This system follows Clean Architecture principles and includes complete health plan management functionality for insurance companies and brokers.
 
-## ⚠️ Framework Requirements
+## ⚠️ Framework Requirements.
 
 This application is built with **.NET 8.0** and uses the following technologies:
 
