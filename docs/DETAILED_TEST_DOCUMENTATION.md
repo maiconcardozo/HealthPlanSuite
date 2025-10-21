@@ -439,7 +439,7 @@ public AccountRepositoryTests()
 #### Implemented Tests:
 
 ##### 1. `Token_WhenCreated_ShouldRequireAccessTokenAndUserName()`
-**Purpose**: Verifies se Token pode ser criado com properties básicas  
+**Purpose**: Verifies if Token can be created with basic properties  
 **Setup**: Valores valids para AccessToken, UserName e Expiration  
 **Execution**: Creates Token com properties definidas  
 **Verification**: 
@@ -457,7 +457,7 @@ public AccountRepositoryTests()
 - JWT must have exatamente 3 partes
 
 ##### 3. `Token_WithFutureExpiration_ShouldBeValid()`
-**Purpose**: Verifies se Token aceita expiração futura  
+**Purpose**: Verifies if Token accepts future expiration  
 **Setup**: Data de expiração 2 horas no futuro  
 **Execution**: Creates Token com expiração futura  
 **Verification**: Expiration must be após momento atual
@@ -528,7 +528,7 @@ public AccountRepositoryTests()
 ### AccountPayloadValidatorTests
 
 **File**: `Src/Authentication.Tests/Unit/AccountPayloadValidatorTests.cs`  
-**Purpose**: Tests validação de payload para criação/atualização de accounts  
+**Purpose**: Tests payload validation for account creation/update  
 **Total Tests**: 20+ tests  
 **Framework**: FluentValidation with TestHelper
 
@@ -545,31 +545,31 @@ public AccountPayloadValidatorTests()
 ##### UserName Validation Tests
 
 ##### 1. `UserName_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se userName valid passa na validação  
+**Purpose**: Verifies if userName valid passes validation  
 **Setup**: DTO com userName = "validuser" e password valid  
 **Execution**: _validator.TestValidate(model)  
 **Verification**: Must not have validation error para UserName
 
 ##### 2. `UserName_WhenEmpty_ShouldHaveValidationError()`
-**Purpose**: Verifies se userName empty falha na validação  
+**Purpose**: Verifies if userName empty fails validation  
 **Setup**: DTO com userName = "" e password valid  
 **Execution**: _validator.TestValidate(model)  
 **Verification**: Must ter error com message ResourceLogin.UserNameRequired
 
 ##### 3. `UserName_WhenNull_ShouldHaveValidationError()`
-**Purpose**: Verifies se userName null falha na validação  
+**Purpose**: Verifies if userName null fails validation  
 **Setup**: DTO com userName = null e password valid  
 **Execution**: _validator.TestValidate(model)  
 **Verification**: Must ter error com message ResourceLogin.UserNameRequired
 
 ##### 4. `UserName_WhenTooLong_ShouldHaveValidationError()`
-**Purpose**: Tests limite maximum de caracteres for userName  
+**Purpose**: Tests maximum character limit for userName  
 **Setup**: DTO com userName muito longo (>50 caracteres)  
 **Execution**: _validator.TestValidate(model)  
-**Verification**: Must ter error de size maximum
+**Verification**: Must have maximum size error
 
 ##### 5. `UserName_WithSpecialCharacters_ShouldValidateCorrectly()`
-**Purpose**: Tests aceitação de caracteres especiais permitidos  
+**Purpose**: Tests acceptance of allowed special characters  
 **Setup**: DTO com userName contendo caracteres especiais valids  
 **Execution**: _validator.TestValidate(model)  
 **Verification**: Must passar na validação
@@ -577,31 +577,31 @@ public AccountPayloadValidatorTests()
 ##### Password Validation Tests
 
 ##### 6. `Password_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se password valid passa na validação  
+**Purpose**: Verifies if password valid passes validation  
 **Setup**: DTO com password = "validpass123" e userName valid  
 **Execution**: _validator.TestValidate(model)  
 **Verification**: Must not have validation error para Password
 
 ##### 7. `Password_WhenEmpty_ShouldHaveValidationError()`
-**Purpose**: Verifies se password empty falha na validação  
+**Purpose**: Verifies if password empty fails validation  
 **Setup**: DTO com password = "" e userName valid  
 **Execution**: _validator.TestValidate(model)  
 **Verification**: Must ter error com message ResourceLogin.PasswordRequired
 
 ##### 8. `Password_WhenTooShort_ShouldHaveValidationError()`
-**Purpose**: Tests size minimum de password  
+**Purpose**: Tests minimum password size  
 **Setup**: DTO com password muito curta (<6 caracteres)  
 **Execution**: _validator.TestValidate(model)  
-**Verification**: Must ter error de size minimum
+**Verification**: Must ter size error minimum
 
 ##### 9. `Password_WhenTooLong_ShouldHaveValidationError()`
-**Purpose**: Tests size maximum de password  
+**Purpose**: Tests size maximum password  
 **Setup**: DTO com password muito longa (>100 caracteres)  
 **Execution**: _validator.TestValidate(model)  
-**Verification**: Must ter error de size maximum
+**Verification**: Must have maximum size error
 
 ##### 10. `Password_WithRequiredComplexity_ShouldValidateCorrectly()`
-**Purpose**: Tests regras de complexidade de password  
+**Purpose**: Tests regras de complexidade password  
 **Setup**: DTOs com diferentes níveis de complexidade  
 **Execution**: _validator.TestValidate(model)  
 **Verification**: Must validar conforme regras de complexidade
@@ -620,7 +620,7 @@ public AccountPayloadValidatorTests()
 ##### Null Parameter Tests
 
 ##### 1. `GetAccountByUserName_WithNullUserName_ShouldNotThrow()`
-**Purpose**: Verifies se método lida graciosamente com userName null  
+**Purpose**: Verifies if método handles null userName gracefully  
 **Setup**: Repository mock returns null for userName null  
 **Execution**: _accountService.GetAccountByUserName(null!)  
 **Verification**: 
@@ -629,7 +629,7 @@ public AccountPayloadValidatorTests()
 - Repositório must be chamado once
 
 ##### 2. `AddAccount_WithNullAccount_ShouldThrowArgumentNullException()`
-**Purpose**: Verifies se método valida parâmetros nulls  
+**Purpose**: Verifies if método validates null parameters  
 **Setup**: Account = null  
 **Execution**: _accountService.AddAccount(null!)  
 **Verification**: Must lançar ArgumentNullException
@@ -671,13 +671,13 @@ public AccountPayloadValidatorTests()
 ##### Data Integrity Tests
 
 ##### 7. `UpdateAccount_WithNonExistentId_ShouldThrowNotFoundException()`
-**Purpose**: Tests atualização de account inexisting  
+**Purpose**: Tests atualização account inexisting  
 **Setup**: Repository mock returns null for GetById  
 **Execution**: _accountService.UpdateAccount(account)  
 **Verification**: Must lançar NotFoundException
 
 ##### 8. `DeleteAccount_WithNonExistentId_ShouldThrowNotFoundException()`
-**Purpose**: Tests remoção de account inexisting  
+**Purpose**: Tests remoção account inexisting  
 **Setup**: Repository mock returns null for GetById  
 **Execution**: _accountService.DeleteAccount(999)  
 **Verification**: Must lançar NotFoundException
@@ -687,13 +687,13 @@ public AccountPayloadValidatorTests()
 ### PasswordHashingTests
 
 **File**: `Src/Authentication.Tests/Unit/PasswordHashingTests.cs`  
-**Purpose**: Tests funções de hash de password usando Argon2  
+**Purpose**: Tests funções de hash password usando Argon2  
 **Total Tests**: 12+ tests  
 
 #### Implemented Tests:
 
 ##### 1. `ComputeArgon2Hash_WithValidPassword_ShouldReturnHash()`
-**Purpose**: Verifies se hash é gerado correctly  
+**Purpose**: Verifies if hash is generated correctly  
 **Setup**: Senha valid "testpassword123"  
 **Execution**: Calls StringHelper.ComputeArgon2Hash()  
 **Verification**: 
@@ -723,7 +723,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must return false
 
 ##### 5. `ComputeArgon2Hash_WithEmptyPassword_ShouldReturnHash()`
-**Purpose**: Tests hash de password empty  
+**Purpose**: Tests hash password empty  
 **Setup**: Password = ""  
 **Execution**: Calls ComputeArgon2Hash()  
 **Verification**: Must return hash valid
@@ -797,7 +797,7 @@ public AccountPayloadValidatorTests()
 ##### Name Validation Tests
 
 ##### 1. `Name_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se nome valid passa na validação  
+**Purpose**: Verifies if nome valid passes validation  
 **Setup**: ActionPayLoadDTO com Name valid  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
@@ -811,7 +811,7 @@ public AccountPayloadValidatorTests()
 ##### Description Validation Tests
 
 ##### 3. `Description_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se descrição valid passa na validação  
+**Purpose**: Verifies if descrição valid passes validation  
 **Setup**: ActionPayLoadDTO com Description valid  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
@@ -820,7 +820,7 @@ public AccountPayloadValidatorTests()
 **Purpose**: Tests limite de size da descrição  
 **Setup**: ActionPayLoadDTO com Description muito longa  
 **Execution**: _validator.TestValidate(dto)  
-**Verification**: Must ter error de size maximum
+**Verification**: Must have maximum size error
 
 ---
 
@@ -835,7 +835,7 @@ public AccountPayloadValidatorTests()
 ##### Type Validation Tests
 
 ##### 1. `Type_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se tipo de claim valid passa na validação  
+**Purpose**: Verifies if tipo de claim valid passes validation  
 **Setup**: ClaimPayLoadDTO com Type valid  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
@@ -849,7 +849,7 @@ public AccountPayloadValidatorTests()
 ##### Value Validation Tests
 
 ##### 3. `Value_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se value de claim valid passa na validação  
+**Purpose**: Verifies if value de claim valid passes validation  
 **Setup**: ClaimPayLoadDTO com Value valid  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
@@ -867,7 +867,7 @@ public AccountPayloadValidatorTests()
 ##### IdClaim Validation Tests
 
 ##### 1. `IdClaim_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se ID de claim valid passa na validação  
+**Purpose**: Verifies if ID de claim valid passes validation  
 **Setup**: ClaimActionPayLoadDTO com IdClaim > 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
@@ -881,7 +881,7 @@ public AccountPayloadValidatorTests()
 ##### IdAction Validation Tests
 
 ##### 3. `IdAction_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se ID de action valid passa na validação  
+**Purpose**: Verifies if ID de action valid passes validation  
 **Setup**: ClaimActionPayLoadDTO com IdAction > 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
@@ -905,13 +905,13 @@ public AccountPayloadValidatorTests()
 ##### IdAccount Validation Tests
 
 ##### 1. `IdAccount_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se ID de account valid passa na validação  
+**Purpose**: Verifies if ID account valid passes validation  
 **Setup**: AccountClaimActionPayLoadDTO com IdAccount > 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
 
 ##### 2. `IdAccount_WhenZero_ShouldHaveValidationError()`
-**Purpose**: Tests validação com ID de account zero  
+**Purpose**: Tests validação com ID account zero  
 **Setup**: AccountClaimActionPayLoadDTO com IdAccount = 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must ter error of validation
@@ -919,7 +919,7 @@ public AccountPayloadValidatorTests()
 ##### IdClaimAction Validation Tests
 
 ##### 3. `IdClaimAction_WhenValid_ShouldNotHaveValidationError()`
-**Purpose**: Verifies se ID de claim-action valid passa na validação  
+**Purpose**: Verifies if ID de claim-action valid passes validation  
 **Setup**: AccountClaimActionPayLoadDTO com IdClaimAction > 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must not have validation error
@@ -941,7 +941,7 @@ public AccountPayloadValidatorTests()
 #### Implemented Tests:
 
 ##### 1. `Apply_WithEnglishCulture_ShouldSetEnglishInfo()`
-**Purpose**: Verifies se informações do Swagger são definidas in English  
+**Purpose**: Verifies if Swagger information is defined in English  
 **Setup**: Cultura definida para "en"  
 **Execution**: Calls filter.Apply(swaggerDoc, context)  
 **Verification**: 
@@ -1097,7 +1097,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 ### AccountControllerTests
 
 **File**: `Src/Authentication.Tests/Integration/AccountControllerTests.cs`  
-**Purpose**: Tests operações CRUD de accounts  
+**Purpose**: Tests operações CRUD accounts  
 **Total Tests**: 25+ tests  
 
 #### Implemented Tests:
@@ -1111,21 +1111,21 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Se OK, must return array de contas
 
 ##### 2. `GetAccountById_WithExistingId_ShouldReturnAccount()`
-**Purpose**: Tests search de account por ID existing  
-**Setup**: ID de account valid  
+**Purpose**: Tests account search by existing ID  
+**Setup**: ID account valid  
 **Execution**: GET para /Account/{id}  
 **Verification**: 
 - Status must be OK ou NotFound
 - Se encontrada, data devem estar corrects
 
 ##### 3. `GetAccountById_WithNonExistingId_ShouldReturnNotFound()`
-**Purpose**: Tests search com ID inexisting  
+**Purpose**: Tests search with non-existent ID  
 **Setup**: ID muito alto (999999)  
 **Execution**: GET para /Account/999999  
 **Verification**: Must return NotFound
 
 ##### 4. `CreateAccount_WithValidData_ShouldReturnCreated()`
-**Purpose**: Tests criação de account valid  
+**Purpose**: Tests criação account valid  
 **Setup**: Payload com data uniques e valids  
 **Execution**: POST para /Account  
 **Verification**: 
@@ -1133,7 +1133,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Headers de localização devem estar presentes
 
 ##### 5. `UpdateAccount_WithValidData_ShouldReturnOk()`
-**Purpose**: Tests atualização de account existing  
+**Purpose**: Tests atualização account existing  
 **Setup**: 
 - Conta existing
 - Dados atualizados valids  
@@ -1143,8 +1143,8 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Dados devem ser atualizados
 
 ##### 6. `DeleteAccount_WithExistingId_ShouldReturnNoContent()`
-**Purpose**: Tests remoção de account existing  
-**Setup**: ID de account valid  
+**Purpose**: Tests remoção account existing  
+**Setup**: ID account valid  
 **Execution**: DELETE para /Account/{id}  
 **Verification**: 
 - Status must be NoContent ou NotFound
@@ -1161,7 +1161,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 #### Tests Specific to Advanced Scenarios:
 
 ##### 1. `CreateAccount_WithDuplicateUserName_ShouldReturnConflict()`
-**Purpose**: Teste específico para prevenção de userName duplicate  
+**Purpose**: Teste específico para prevenção userName duplicate  
 **Setup**: 
 - Primeira account criada com userName específico
 - Segunda tentativa com same userName  
@@ -1181,7 +1181,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Detalhes of validation na resposta
 
 ##### 3. `UpdateAccount_WithConflictingUserName_ShouldReturnConflict()`
-**Purpose**: Tests atualização que causaria conflito de userName  
+**Purpose**: Tests atualização que causaria conflito userName  
 **Setup**: 
 - Duas accounts existings
 - Atualização da primeira com userName da segunda  
@@ -1222,7 +1222,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be OK, Unauthorized ou InternalServerError
 
 ##### 2. `GetActionById_WithVariousIds_ShouldReturnExpectedStatusCode()` (Theory Test)
-**Purpose**: Tests search de ação por ID com diferentes values  
+**Purpose**: Tests action search by ID with different values  
 **Setup**: IDs test: 1 (valid), 999 (inexisting), -1 (invalid)  
 **Execution**: GET /Action/GetActionById/{id}  
 **Verification**: 
@@ -1259,7 +1259,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be NoContent, NotFound ou BadRequest
 
 ##### 7. `GetActionsByName_WithSearchTerm_ShouldReturnFilteredResults()`
-**Purpose**: Tests search de ações por nome  
+**Purpose**: Tests action search by name  
 **Setup**: Termo de search específico  
 **Execution**: GET /Action/GetActionsByName?name={searchTerm}  
 **Verification**: 
@@ -1283,7 +1283,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be OK, NoContent ou InternalServerError
 
 ##### 2. `GetClaimActionById_WithValidId_ShouldReturnExpectedStatusCode()`
-**Purpose**: Tests search de relacionamento por ID  
+**Purpose**: Tests relationship search by ID  
 **Setup**: ID de relacionamento valid  
 **Execution**: GET /ClaimAction/GetClaimActionById/{id}  
 **Verification**: Status must be OK ou NotFound
@@ -1311,7 +1311,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be NoContent ou NotFound
 
 ##### 6. `GetClaimActionsByClaim_WithValidClaimId_ShouldReturnFilteredResults()`
-**Purpose**: Tests search de ações por claim específico  
+**Purpose**: Tests action search by specific claim  
 **Setup**: ID de claim valid  
 **Execution**: GET /ClaimAction/GetByClaimId/{claimId}  
 **Verification**: 
@@ -1335,8 +1335,8 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be OK, NoContent ou InternalServerError
 
 ##### 2. `GetAccountClaimActionsByAccountId_WithValidId_ShouldReturnUserPermissions()`
-**Purpose**: Tests search de permissões de usuário específico  
-**Setup**: ID de account valid com permissões  
+**Purpose**: Tests specific user permissions search  
+**Setup**: ID account valid com permissões  
 **Execution**: GET /AccountClaimAction/GetByAccountId/{accountId}  
 **Verification**: 
 - Must return permissões do usuário
@@ -1345,7 +1345,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 ##### 3. `CreateAccountClaimAction_WithValidData_ShouldGrantPermission()`
 **Purpose**: Tests concessão de permissão a usuário  
 **Setup**: 
-- ID de account valid
+- ID account valid
 - ID de claim-action valid
 - Payload correct  
 **Execution**: POST /AccountClaimAction/CreateAccountClaimAction  
@@ -1368,7 +1368,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Permissão não deve mais existir
 
 ##### 6. `GetAccountPermissions_WithAdminAccount_ShouldReturnAllPermissions()`
-**Purpose**: Tests search de permissões de account administrativa  
+**Purpose**: Tests administrative account permissions search  
 **Setup**: Conta com privilégios administrativos  
 **Execution**: GET /AccountClaimAction/GetByAccountId/{adminAccountId}  
 **Verification**: 
@@ -1386,7 +1386,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 #### Implemented Tests:
 
 ##### 1. `SwaggerUI_WithEnglishCulture_ShouldDisplayEnglishContent()`
-**Purpose**: Verifies se Swagger UI exibe conteúdo in English  
+**Purpose**: Verifies if Swagger UI exibe conteúdo in English  
 **Setup**: 
 - Headers Accept-Language: en
 - Cliente HTTP configurado  
@@ -1396,7 +1396,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Conteúdo must contain textos in English
 
 ##### 2. `SwaggerUI_WithPortugueseCulture_ShouldDisplayPortugueseContent()`
-**Purpose**: Verifies se Swagger UI exibe conteúdo in Portuguese  
+**Purpose**: Verifies if Swagger UI exibe conteúdo in Portuguese  
 **Setup**: 
 - Headers Accept-Language: pt-BR
 - Cliente HTTP configurado  
@@ -1414,7 +1414,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Títulos devem estar na cultura correct
 
 ##### 4. `SwaggerEndpoints_ShouldHaveLocalizedDescriptions()`
-**Purpose**: Verifies se endpoints têm descrições localizadas  
+**Purpose**: Verifies if endpoints têm descrições localizadas  
 **Setup**: Swagger doc gerado  
 **Execution**: Analisa schema dos endpoints  
 **Verification**: 
@@ -1446,7 +1446,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be Created
 
 ##### 3. `ExampleEndpoints_ShouldFollowRESTConventions()`
-**Purpose**: Verifies se endpoints seguem convenções REST  
+**Purpose**: Verifies if endpoints seguem convenções REST  
 **Setup**: Múltiplas operações HTTP  
 **Execution**: GET, POST, PUT, DELETE no controller  
 **Verification**: 

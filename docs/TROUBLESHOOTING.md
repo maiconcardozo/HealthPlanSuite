@@ -154,7 +154,7 @@ curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
-**Importante:** `SecretKey` deve ter pelo menos 32 caracteres.
+**Importante:** `SecretKey` must have at least 32 characters.
 
 ### ❌ Erro de Hash de Senha
 
