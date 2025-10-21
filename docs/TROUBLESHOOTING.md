@@ -2,7 +2,7 @@
 
 Este guia aborda os problemas mais comuns encontrados ao configurar e usar o Authentication Service, com soluções detalhadas e dicas de prevenção.
 
-## 🚨 Problemas de Instalação e Configuração
+## 🚨 Installation and Configuration Issues
 
 ### ❌ Erro de Conexão com Banco de Dados
 
@@ -142,7 +142,7 @@ curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 - Cole seu token para verificar estrutura
 - Confirme se não está expirado
 
-#### 3. Verificar Configuração JWT
+#### 3. Verify JWT Configuration
 ```json
 {
   "JwtSettings": {
@@ -222,7 +222,7 @@ has been blocked by CORS policy
 
 **Soluções:**
 
-#### 1. Verificar Configuração CORS
+#### 1. Verify CORS Configuration
 ```csharp
 // Program.cs
 builder.Services.AddCors(options =>
@@ -292,7 +292,7 @@ Swagger UI not accessible
 
 **Soluções:**
 
-#### 1. Verificar Configuração Swagger
+#### 1. Verify Swagger Configuration
 ```csharp
 // Program.cs
 builder.Services.AddSwaggerGen(options =>

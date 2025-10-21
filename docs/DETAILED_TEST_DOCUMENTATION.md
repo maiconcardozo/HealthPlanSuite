@@ -434,7 +434,7 @@ public AccountRepositoryTests()
 
 **File**: `Src/Authentication.Tests/Unit/TokenTests.cs`  
 **Purpose**: Tests a entidade Token utilizada para JWT  
-**Total Tests**: 15+ testes  
+**Total Tests**: 15+ tests  
 
 #### Implemented Tests:
 
@@ -486,7 +486,7 @@ public AccountRepositoryTests()
 
 **File**: `Src/Authentication.Tests/Unit/ValidationTests.cs`  
 **Purpose**: Tests helper of validation utilizado nos controllers  
-**Total Tests**: 10+ testes  
+**Total Tests**: 10+ tests  
 **Dependências Mockadas**: IValidator, IServiceProvider
 
 #### Implemented Tests:
@@ -529,8 +529,8 @@ public AccountRepositoryTests()
 
 **File**: `Src/Authentication.Tests/Unit/AccountPayloadValidatorTests.cs`  
 **Purpose**: Tests validação de payload para criação/atualização de accounts  
-**Total Tests**: 20+ testes  
-**Framework**: FluentValidation com TestHelper
+**Total Tests**: 20+ tests  
+**Framework**: FluentValidation with TestHelper
 
 #### Test Setup:
 ```csharp
@@ -612,7 +612,7 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/AccountServiceErrorHandlingTests.cs`  
 **Purpose**: Tests cenários de error e tratamento de exceções no AccountService  
-**Total Tests**: 25+ testes  
+**Total Tests**: 25+ tests  
 **Foco**: Robustez e tratamento de erros
 
 #### Test Groups:
@@ -637,7 +637,7 @@ public AccountPayloadValidatorTests()
 ##### Repository Exception Tests
 
 ##### 3. `GetAllAccounts_WhenRepositoryThrows_ShouldPropagateException()`
-**Purpose**: Verifies se exceções do repository são propagadas correctmente  
+**Purpose**: Verifies if repository exceptions are propagated correctly  
 **Setup**: Repository mock configurado para lançar DatabaseException  
 **Execution**: _accountService.GetAllAccounts()  
 **Verification**: Must lançar a same DatabaseException
@@ -664,7 +664,7 @@ public AccountPayloadValidatorTests()
 **Purpose**: Tests behavior com credenciais invalids  
 **Setup**: 
 - Conta existing no repositório
-- Senha incorrect para verificação  
+- Incorrect password for verification  
 **Execution**: _accountService.GetAccountByUserNameAndPassword(account)  
 **Verification**: Must lançar UnauthorizedAccessException
 
@@ -688,12 +688,12 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/PasswordHashingTests.cs`  
 **Purpose**: Tests funções de hash de password usando Argon2  
-**Total Tests**: 12+ testes  
+**Total Tests**: 12+ tests  
 
 #### Implemented Tests:
 
 ##### 1. `ComputeArgon2Hash_WithValidPassword_ShouldReturnHash()`
-**Purpose**: Verifies se hash é gerado correctmente  
+**Purpose**: Verifies se hash é gerado correctly  
 **Setup**: Senha valid "testpassword123"  
 **Execution**: Calls StringHelper.ComputeArgon2Hash()  
 **Verification**: 
@@ -701,13 +701,13 @@ public AccountPayloadValidatorTests()
 - Hash must be diferente da password original
 
 ##### 2. `ComputeArgon2Hash_WithSamePassword_ShouldReturnDifferentHashes()`
-**Purpose**: Verifies se hashes são uniques (salt aleatório)  
+**Purpose**: Verifies if hashes are unique (random salt)  
 **Setup**: Mesma password hashada duas vezes  
 **Execution**: Calls ComputeArgon2Hash() duas vezes  
 **Verification**: Hashes devem ser diferentes
 
 ##### 3. `VerifyArgon2Hash_WithCorrectPassword_ShouldReturnTrue()`
-**Purpose**: Tests verificação com password correct  
+**Purpose**: Tests verification with correct password  
 **Setup**: 
 - Senha original
 - Hash gerado da password  
@@ -715,7 +715,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must return true
 
 ##### 4. `VerifyArgon2Hash_WithIncorrectPassword_ShouldReturnFalse()`
-**Purpose**: Tests verificação com password incorrect  
+**Purpose**: Tests verification with incorrect password  
 **Setup**: 
 - Hash de "password123"
 - Verification with "wrongpassword"  
@@ -740,13 +740,13 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/LocalizationTests.cs`  
 **Purpose**: Tests funcionalidades de internacionalização e localização  
-**Total Tests**: 15+ testes  
+**Total Tests**: 15+ tests  
 **Tested Cultures**: en (English), pt-BR (Portuguese brasileiro)
 
 #### Implemented Tests:
 
 ##### 1. `ResourceAPI_AccountCreatedSuccessfully_ReturnsCorrectTranslation()` (Theory Test)
-**Purpose**: Verifies se mensagens da API são traduzidas correctmente  
+**Purpose**: Verifies if API messages are correctly translated  
 **Setup**: 
 - Culturas: "en", "pt-BR"
 - Textos expecteds: "Account created successfully.", "Conta criada com sucesso."  
@@ -762,13 +762,13 @@ public AccountPayloadValidatorTests()
 **Verification**: Must return texto in English
 
 ##### 3. `ResourceLogin_DuplicateUserName_ReturnsCorrectTranslation()` (Theory Test)
-**Purpose**: Verifies tradução de mensagens de error de login  
-**Setup**: Múltiplas culturas e mensagens de error  
+**Purpose**: Verifies tradução de error messages de login  
+**Setup**: Múltiplas culturas e error messages  
 **Execution**: Accesses ResourceLogin.DuplicateUserName  
 **Verification**: Mensagem must be na cultura correct
 
 ##### 4. `Culture_SwitchDuringExecution_ShouldUpdateMessages()`
-**Purpose**: Tests mudança de cultura durante execução  
+**Purpose**: Tests culture change during execution  
 **Setup**: 
 - Inicia com cultura "en"
 - Troca para "pt-BR"  
@@ -790,7 +790,7 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/ActionPayloadValidatorTests.cs`  
 **Purpose**: Tests validação de payload para entidade Action  
-**Total Tests**: 15+ testes
+**Total Tests**: 15+ tests
 
 #### Test Groups:
 
@@ -828,7 +828,7 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/ClaimPayloadValidatorTests.cs`  
 **Purpose**: Tests validação de payload para entidade Claim  
-**Total Tests**: 12+ testes
+**Total Tests**: 12+ tests
 
 #### Test Groups:
 
@@ -860,7 +860,7 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/ClaimActionPayloadValidatorTests.cs`  
 **Purpose**: Tests validação de payload para relacionamento Claim-Action  
-**Total Tests**: 10+ testes
+**Total Tests**: 10+ tests
 
 #### Test Groups:
 
@@ -898,7 +898,7 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/AccountClaimActionPayloadValidatorTests.cs`  
 **Purpose**: Tests validação de payload para relacionamento Account-Claim-Action  
-**Total Tests**: 12+ testes
+**Total Tests**: 12+ tests
 
 #### Test Groups:
 
@@ -936,7 +936,7 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/LocalizedSwaggerDocumentFilterTests.cs`  
 **Purpose**: Tests filtro de localização para documentação Swagger  
-**Total Tests**: 8+ testes
+**Total Tests**: 8+ tests
 
 #### Implemented Tests:
 
@@ -949,7 +949,7 @@ public AccountPayloadValidatorTests()
 - Description must be in English
 
 ##### 2. `Apply_WithPortugueseCulture_ShouldSetPortugueseInfo()`
-**Purpose**: Verifies se informações do Swagger são definidas in Portuguese  
+**Purpose**: Verifies if Swagger information is defined in Portuguese  
 **Setup**: Cultura definida para "pt-BR"  
 **Execution**: Calls filter.Apply(swaggerDoc, context)  
 **Verification**: 
@@ -961,19 +961,19 @@ public AccountPayloadValidatorTests()
 ### LocalizedSwaggerOperationFilterTests
 
 **File**: `Src/Authentication.Tests/Unit/LocalizedSwaggerOperationFilterTests.cs`  
-**Purpose**: Tests filtro de localização para operações do Swagger  
-**Total Tests**: 8+ testes
+**Purpose**: Tests localization filter for Swagger operations  
+**Total Tests**: 8+ tests
 
 #### Implemented Tests:
 
 ##### 1. `Apply_WithLocalizedSummary_ShouldSetCorrectSummary()`
-**Purpose**: Verifies se resumos de operações são localizados  
+**Purpose**: Verifies if operation summaries are localized  
 **Setup**: Operação com atributo de localização  
 **Execution**: Calls filter.Apply(operation, context)  
 **Verification**: Summary must be na cultura correct
 
 ##### 2. `Apply_WithLocalizedDescription_ShouldSetCorrectDescription()`
-**Purpose**: Verifies se descrições de operações são localizadas  
+**Purpose**: Verifies if operation descriptions are localized  
 **Setup**: Operação com descrição localizada  
 **Execution**: Calls filter.Apply(operation, context)  
 **Verification**: Description must be na cultura correct
@@ -984,18 +984,18 @@ public AccountPayloadValidatorTests()
 
 **File**: `Src/Authentication.Tests/Unit/ResourceStartupTests.cs`  
 **Purpose**: Tests recursos utilizados na inicialização da aplicação  
-**Total Tests**: 5+ testes
+**Total Tests**: 5+ tests
 
 #### Implemented Tests:
 
 ##### 1. `SwaggerTitle_ShouldReturnCorrectValue()`
-**Purpose**: Verifies se título do Swagger está correct  
+**Purpose**: Verifies if Swagger title is correct  
 **Setup**: Cultura padrão  
 **Execution**: Accesses ResourceStartup.SwaggerTitle  
 **Verification**: Must return título expected
 
 ##### 2. `SwaggerVersion_ShouldReturnCorrectValue()`
-**Purpose**: Verifies se versão do Swagger está correct  
+**Purpose**: Verifies if Swagger version is correct  
 **Setup**: Cultura padrão  
 **Execution**: Accesses ResourceStartup.SwaggerVersion  
 **Verification**: Must return versão expected
@@ -1005,33 +1005,33 @@ public AccountPayloadValidatorTests()
 ### ApiLocalizationTests
 
 **File**: `Src/Authentication.Tests/Unit/ApiLocalizationTests.cs`  
-**Purpose**: Tests localização específica da API  
-**Total Tests**: 10+ testes
+**Purpose**: Tests API-specific localization  
+**Total Tests**: 10+ tests
 
 #### Implemented Tests:
 
 ##### 1. `ErrorMessages_ShouldBeLocalizedCorrectly()`
-**Purpose**: Verifies se mensagens de error são localizadas  
+**Purpose**: Verifies if error messages are localized  
 **Setup**: Diferentes culturas  
-**Execution**: Accesses mensagens de error da API  
+**Execution**: Accesses error messages da API  
 **Verification**: Mensagens devem estar na cultura correct
 
 ##### 2. `SuccessMessages_ShouldBeLocalizedCorrectly()`
-**Purpose**: Verifies se mensagens de sucesso são localizadas  
+**Purpose**: Verifies if success messages are localized  
 **Setup**: Diferentes culturas  
-**Execution**: Accesses mensagens de sucesso da API  
+**Execution**: Accesses success messages da API  
 **Verification**: Mensagens devem estar na cultura correct
 
 ---
 
-## 🔗 Testes de Integração
+## 🔗 Integration Tests
 
 ### AuthenticationControllerTests
 
 **File**: `Src/Authentication.Tests/Integration/AuthenticationControllerTests.cs`  
 **Purpose**: Tests endpoints de autenticação end-to-end  
-**Total Tests**: 15+ testes  
-**Setup**: WebApplicationFactory para testes de integração
+**Total Tests**: 15+ tests  
+**Setup**: WebApplicationFactory para tests de integração
 
 #### Test Setup:
 ```csharp
@@ -1098,7 +1098,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 **File**: `Src/Authentication.Tests/Integration/AccountControllerTests.cs`  
 **Purpose**: Tests operações CRUD de accounts  
-**Total Tests**: 25+ testes  
+**Total Tests**: 25+ tests  
 
 #### Implemented Tests:
 
@@ -1156,9 +1156,9 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 **File**: `Src/Authentication.Tests/Integration/AccountControllerEnhancedTests.cs`  
 **Purpose**: Tests cenários avançados e edge cases do AccountController  
-**Total Tests**: 30+ testes  
+**Total Tests**: 30+ tests  
 
-#### Testes Específicos para Cenários Avançados:
+#### Tests Specific to Advanced Scenarios:
 
 ##### 1. `CreateAccount_WithDuplicateUserName_ShouldReturnConflict()`
 **Purpose**: Teste específico para prevenção de userName duplicate  
@@ -1210,7 +1210,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 **File**: `Src/Authentication.Tests/Integration/ActionControllerTests.cs`  
 **Purpose**: Tests endpoints relacionados à entidade Action  
-**Total Tests**: 20+ testes  
+**Total Tests**: 20+ tests  
 **Setup**: AuthenticationWebApplicationFactory com data test
 
 #### Implemented Tests:
@@ -1272,7 +1272,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 **File**: `Src/Authentication.Tests/Integration/ClaimActionControllerTests.cs`  
 **Purpose**: Tests endpoints do relacionamento Claim-Action  
-**Total Tests**: 20+ testes
+**Total Tests**: 20+ tests
 
 #### Implemented Tests:
 
@@ -1324,7 +1324,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 **File**: `Src/Authentication.Tests/Integration/AccountClaimActionControllerTests.cs`  
 **Purpose**: Tests endpoints de permissões de usuário (Account-Claim-Action)  
-**Total Tests**: 20+ testes
+**Total Tests**: 20+ tests
 
 #### Implemented Tests:
 
@@ -1381,7 +1381,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 **File**: `Src/Authentication.Tests/Integration/SwaggerLocalizationTests.cs`  
 **Purpose**: Tests localização da documentação Swagger  
-**Total Tests**: 10+ testes
+**Total Tests**: 10+ tests
 
 #### Implemented Tests:
 
@@ -1427,7 +1427,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 **File**: `Src/Authentication.Tests/Integration/ExampleFixedControllerTests.cs`  
 **Purpose**: Tests controller de exemplo com correções aplicadas  
-**Total Tests**: 5+ testes
+**Total Tests**: 5+ tests
 
 #### Implemented Tests:
 
@@ -1458,52 +1458,52 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 ## 📊 Resumo de Cobertura por Categoria
 
-### Testes de Entidades (Entity Tests) - 35+ testes
-- **AccountEntityTests**: 20+ testes (propriedades, validações, values nulls/emptys)
-- **TokenTests**: 15+ testes (criação, formatos JWT, expiração)
+### Testes de Entidades (Entity Tests) - 35+ tests
+- **AccountEntityTests**: 20+ tests (propriedades, validações, values nulls/emptys)
+- **TokenTests**: 15+ tests (criação, formatos JWT, expiração)
 - **Cobertura**: Propriedades básicas, behavior com values edge case, integridade de dados
 
-### Testes de Serviços (Service Tests) - 75+ testes
-- **AccountServiceTests**: 50+ testes (CRUD operations, business logic)
-- **AccountServiceErrorHandlingTests**: 25+ testes (exception handling, null safety)
+### Testes de Serviços (Service Tests) - 75+ tests
+- **AccountServiceTests**: 50+ tests (CRUD operations, business logic)
+- **AccountServiceErrorHandlingTests**: 25+ tests (exception handling, null safety)
 - **Cobertura**: Lógica de negócio completa, regras of validation, tratamento robusto de erros
 
-### Testes de Repositório (Repository Tests) - 30+ testes
-- **AccountRepositoryTests**: 30+ testes (persistência, consultas, integridade)
+### Testes de Repositório (Repository Tests) - 30+ tests
+- **AccountRepositoryTests**: 30+ tests (persistência, consultas, integridade)
 - **Cobertura**: Operações CRUD, consultas específicas, behavior com data invalids
 
-### Testes de Validação (Validation Tests) - 85+ testes
-- **ValidationTests**: 10+ testes (helper of validation geral)
-- **AccountPayloadValidatorTests**: 20+ testes (validação de contas)
-- **ActionPayloadValidatorTests**: 15+ testes (validação de ações)
-- **ClaimPayloadValidatorTests**: 12+ testes (validação de claims)
-- **ClaimActionPayloadValidatorTests**: 10+ testes (validação relacionamento claim-action)
-- **AccountClaimActionPayloadValidatorTests**: 12+ testes (validação de permissões)
-- **PasswordHashingTests**: 12+ testes (hash Argon2, verificação de senhas)
-- **Cobertura**: Validação de entrada completa, regras de negócio, mensagens de error localizadas
+### Validation Tests (Validation Tests) - 85+ tests
+- **ValidationTests**: 10+ tests (helper of validation geral)
+- **AccountPayloadValidatorTests**: 20+ tests (validação de contas)
+- **ActionPayloadValidatorTests**: 15+ tests (validação de ações)
+- **ClaimPayloadValidatorTests**: 12+ tests (validação de claims)
+- **ClaimActionPayloadValidatorTests**: 10+ tests (validação relacionamento claim-action)
+- **AccountClaimActionPayloadValidatorTests**: 12+ tests (validação de permissões)
+- **PasswordHashingTests**: 12+ tests (hash Argon2, password verification)
+- **Cobertura**: Validação de entrada completa, regras de negócio, error messages localizadas
 
-### Testes de DTOs (DTO Tests) - 8+ testes
-- **AccountPayLoadDTOTests**: 8+ testes (serialização, propriedades, values especiais)
+### Testes de DTOs (DTO Tests) - 8+ tests
+- **AccountPayLoadDTOTests**: 8+ tests (serialização, propriedades, values especiais)
 - **Cobertura**: Comportamento de DTOs, aceitação de values Unicode e especiais
 
-### Testes de Integração (Integration Tests) - 110+ testes
-- **AuthenticationControllerTests**: 15+ testes (geração token, autenticação)
-- **AccountControllerTests**: 25+ testes (CRUD de contas)
-- **AccountControllerEnhancedTests**: 30+ testes (cenários avançados, edge cases)
-- **ActionControllerTests**: 20+ testes (gestão de ações)
-- **ClaimActionControllerTests**: 20+ testes (relacionamentos claim-action)
-- **AccountClaimActionControllerTests**: 20+ testes (permissões de usuário)
-- **SwaggerLocalizationTests**: 10+ testes (documentação localizada)
-- **ExampleFixedControllerTests**: 5+ testes (exemplos e convenções REST)
+### Integration Tests (Integration Tests) - 110+ tests
+- **AuthenticationControllerTests**: 15+ tests (geração token, autenticação)
+- **AccountControllerTests**: 25+ tests (CRUD de contas)
+- **AccountControllerEnhancedTests**: 30+ tests (cenários avançados, edge cases)
+- **ActionControllerTests**: 20+ tests (gestão de ações)
+- **ClaimActionControllerTests**: 20+ tests (relacionamentos claim-action)
+- **AccountClaimActionControllerTests**: 20+ tests (permissões de usuário)
+- **SwaggerLocalizationTests**: 10+ tests (documentação localizada)
+- **ExampleFixedControllerTests**: 5+ tests (exemplos e convenções REST)
 - **Cobertura**: Endpoints completos, status codes, integração end-to-end, cenários de erro
 
-### Testes de Localização (Localization Tests) - 55+ testes
-- **LocalizationTests**: 15+ testes (internacionalização básica)
-- **ApiLocalizationTests**: 10+ testes (mensagens da API)
-- **LocalizedSwaggerDocumentFilterTests**: 8+ testes (documentação Swagger)
-- **LocalizedSwaggerOperationFilterTests**: 8+ testes (operações Swagger)
-- **ResourceStartupTests**: 5+ testes (recursos de inicialização)
-- **SwaggerLocalizationTests**: 10+ testes (UI localizada)
+### Testes de Localização (Localization Tests) - 55+ tests
+- **LocalizationTests**: 15+ tests (internacionalização básica)
+- **ApiLocalizationTests**: 10+ tests (mensagens da API)
+- **LocalizedSwaggerDocumentFilterTests**: 8+ tests (documentação Swagger)
+- **LocalizedSwaggerOperationFilterTests**: 8+ tests (operações Swagger)
+- **ResourceStartupTests**: 5+ tests (recursos de inicialização)
+- **SwaggerLocalizationTests**: 10+ tests (UI localizada)
 - **Cobertura**: Suporte completo a pt-BR e en, fallback para cultura padrão
 
 ---
@@ -1511,7 +1511,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 ## 🛠️ Padrões e Convenções Utilizados
 
 ### Padrão Arrange-Act-Assert (AAA)
-Todos os testes seguem o padrão AAA rigorosamente:
+Todos os tests seguem o padrão AAA rigorosamente:
 ```csharp
 [Fact]
 public void Method_Scenario_ExpectedResult()
@@ -1540,43 +1540,43 @@ public void Method_Scenario_ExpectedResult()
 - **xUnit**: Framework test principal com atributos [Fact] e [Theory]
 - **FluentAssertions**: Assertions expressivas e legíveis (.Should().Be(), .Should().Contain())
 - **Moq**: Mocking avançado para isolamento de dependências
-- **FluentValidation.TestHelper**: Testes específicos para validadores
-- **EntityFrameworkCore.InMemory**: Banco em memória para testes de repositório
-- **Microsoft.AspNetCore.Mvc.Testing**: WebApplicationFactory para testes de integração
+- **FluentValidation.TestHelper**: Specific tests for validators
+- **EntityFrameworkCore.InMemory**: Banco em memória para tests de repositório
+- **Microsoft.AspNetCore.Mvc.Testing**: WebApplicationFactory para tests de integração
 
 ### Organização de Arquivos
 ```
 Src/Authentication.Tests/
 ├── Unit/                     # Testes unitários isolados
-│   ├── *EntityTests.cs       # Testes de entidades
-│   ├── *ServiceTests.cs      # Testes de serviços
-│   ├── *RepositoryTests.cs   # Testes de repositórios
+│   ├── *EntityTests.cs       # Entity tests
+│   ├── *ServiceTests.cs      # Service tests
+│   ├── *RepositoryTests.cs   # Repository tests
 │   ├── *ValidatorTests.cs    # Testes of validation
-│   └── *Tests.cs            # Outros testes unitários
-├── Integration/              # Testes de integração end-to-end
-│   └── *ControllerTests.cs   # Testes de controllers
+│   └── *Tests.cs            # Outros tests unitários
+├── Integration/              # End-to-end integration tests
+│   └── *ControllerTests.cs   # Controller tests
 ├── Fixtures/                 # Setup compartilhado
 │   ├── Startup.cs           # Test configuration teste
 │   └── AuthenticationWebApplicationFactory.cs
 └── Helpers/                  # Utilitários
-    └── TestHelpers.cs       # Helpers para testes
+    └── TestHelpers.cs       # Helpers para tests
 ```
 
 ### Estratégias de Teste
 
-#### Testes Unitários
+#### Unit Tests
 - **Isolamento**: Uso extensivo de mocks para dependências
 - **Cobertura**: Todos os caminhos de código testados
 - **Edge Cases**: Valores nulls, emptys, extremos
 - **Exception Testing**: Cenários de error bem definidos
 
-#### Testes de Integração
+#### Integration Tests
 - **End-to-End**: Requisições HTTP reais
 - **Status Codes**: Verification of códigos HTTP appropriates
 - **Scenarios**: Sucesso, validação, conflito, não encontrado
 - **Data Seeding**: Dados test pré-carregados
 
-#### Testes de Validação
+#### Validation Tests
 - **FluentValidation**: Uso de TestHelper para validações
 - **Localization**: Mensagens de error em múltiplas culturas
 - **Business Rules**: Regras de negócio específicas
@@ -1605,7 +1605,7 @@ Src/Authentication.Tests/
 - **Graceful Degradation**: Comportamento adequado em falhas
 
 ### Performance e Concorrência
-- **Operações Simultâneas**: Testes de concorrência
+- **Concurrent Operations**: Concurrency tests
 - **Paginação**: Resultados paginados adequadamente
 - **Resource Management**: Cleanup automático de recursos
 
@@ -1620,15 +1620,15 @@ Src/Authentication.Tests/
 ## 🎯 Métricas e Estatísticas
 
 ### Distribuição de Testes
-- **Testes Unitários**: ~245 testes (68%)
-- **Testes de Integração**: ~110 testes (31%)
-- **Outras Categorias**: ~3 testes (1%)
+- **Unit Tests**: ~245 tests (68%)
+- **Integration Tests**: ~110 tests (31%)
+- **Outras Categorias**: ~3 tests (1%)
 
 ### Cobertura por Funcionalidade
-- **Account Management**: ~40% dos testes
-- **Authentication & Security**: ~25% dos testes
-- **Validation & Localization**: ~20% dos testes
-- **API Integration**: ~15% dos testes
+- **Account Management**: ~40% dos tests
+- **Authentication & Security**: ~25% dos tests
+- **Validation & Localization**: ~20% dos tests
+- **API Integration**: ~15% dos tests
 
 ### Complexidade dos Testes
 - **Testes Simples** (1-3 asserts): ~60%
@@ -1636,27 +1636,27 @@ Src/Authentication.Tests/
 - **Testes Complexos** (7+ asserts): ~10%
 
 ### Padrões de Qualidade
-- ✅ **100%** dos testes seguem padrão AAA
-- ✅ **100%** dos testes têm nomes descritivos
-- ✅ **95%** dos testes têm comentários explicativos
-- ✅ **100%** dos testes são independentes
-- ✅ **100%** dos testes são determinísticos
+- ✅ **100%** dos tests seguem padrão AAA
+- ✅ **100%** dos tests têm nomes descritivos
+- ✅ **95%** dos tests têm comentários explicativos
+- ✅ **100%** dos tests são independentes
+- ✅ **100%** dos tests são determinísticos
 
 ---
 
 ## 🎯 Conclusão
 
-Esta documentação cobre all **349 testes** implementados no projeto Authentication.Tests, organizados em categorias lógicas e detalhadamente explicados. Cada teste é descrito com seu propósito específico, configuração necessária, execução e critérios de verificação.
+This documentation covers all **349 tests** implemented in the Authentication.Tests project, organized in logical categories and explained in detail. Each test is described with its specific purpose, required setup, execution and verification criteria.
 
 ### ✅ Status Atual dos Testes
-- **Total Tests**: 349 testes
+- **Total Tests**: 349 tests
 - **Status**: ✅ **100% passando** (349 sucessos, 0 falhas)
 - **Execution Time**: ~11 segundos
 - **Cobertura**: Funcionalidades principais e edge cases
 
 ### 🏆 Funcionalidades Cobertas
 
-Os testes garantem cobertura completa das funcionalidades:
+Os tests garantem cobertura completa das funcionalidades:
 
 #### Core Business Logic
 - ✅ **Entidades e DTOs**: Validação de properties e comportamento
@@ -1689,7 +1689,7 @@ Os testes garantem cobertura completa das funcionalidades:
 #### Técnicas Utilizadas
 - ✅ **Mocking**: Isolamento completo de dependências
 - ✅ **In-Memory Testing**: Testes de repository isolados
-- ✅ **Integration Testing**: WebApplicationFactory para testes E2E
+- ✅ **Integration Testing**: WebApplicationFactory para tests E2E
 - ✅ **Theory Testing**: Multiple cenários com data-driven tests
 - ✅ **Edge Case Testing**: Valores nulls, emptys, extremos
 
@@ -1702,14 +1702,14 @@ Os testes garantem cobertura completa das funcionalidades:
 - **Documentação viva** do behavior expected
 
 #### Manutenibilidade
-- **Refactoring seguro** com testes como rede de segurança
+- **Refactoring seguro** com tests como rede de segurança
 - **Onboarding facilitado** para novos desenvolvedores
 - **Specifications claras** de cada componente
 - **Feedback rápido** durante desenvolvimento
 
 #### Produtividade
-- **Desenvolvimento guiado por testes** (TDD)
-- **Debugging eficiente** com testes específicos
+- **Desenvolvimento guiado por tests** (TDD)
+- **Debugging eficiente** com tests específicos
 - **Deploy confiante** com validação automática
 - **Integração contínua** robusta
 
@@ -1719,11 +1719,11 @@ O projeto Authentication possui uma **infraestrutura tests robusta e abrangente*
 
 1. **📖 Guia de referência** para entender o behavior de cada componente
 2. **🎯 Especificação executável** das regras de negócio
-3. **🛠️ Base para novos testes** seguindo os padrões estabelecidos
+3. **🛠️ Base para novos tests** seguindo os padrões estabelecidos
 4. **📚 Material de treinamento** para equipe de desenvolvimento
 
 **O sistema está bem preparado para produção e evolução contínua!** 🎯
 
 ---
 
-*Documentação gerada automaticamente baseada na análise completa dos 349 testes implementados no projeto Authentication.Tests.*
+*Documentação gerada automaticamente baseada na análise completa dos 349 tests implementados no projeto Authentication.Tests.*

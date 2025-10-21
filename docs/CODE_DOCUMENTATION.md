@@ -56,7 +56,7 @@ public class QuoteController : ControllerBase
 
 ### 🔧 Services and Interfaces
 
-Interfaces e services devem documentar o propósito, parâmetros, retornos e exceções:
+Interfaces and services must document the purpose, parameters, returns and exceptions:
 
 ```csharp
 /// <summary>
@@ -87,7 +87,7 @@ public interface IAccountService
 
 ### 🏗️ Domain Entities
 
-Entidades de domínio devem explicar seu propósito e propriedades importantes:
+Domain entities must explain their purpose and important properties:
 
 ```csharp
 /// <summary>
@@ -114,7 +114,7 @@ public class Account : Entity, IAccount
 
 ### 🛠️ Validators
 
-Validadores devem explicar as regras de negócio aplicadas:
+Validators must explain the applied business rules:
 
 ```csharp
 /// <summary>
@@ -139,7 +139,7 @@ public class AccountPayloadValidator : AbstractValidator<AccountPayLoadDTO>
 
 ### 🔐 Security Logic
 
-Explicar implementações de segurança, hashing e validações:
+Explain security implementations, hashing and validations:
 
 ```csharp
 public void AddAccount(Account account)
@@ -172,7 +172,7 @@ public void AddAccount(Account account)
 
 ### 🔑 JWT Token Generation
 
-Explicar cada etapa da criação de tokens:
+Explain each step of token creation:
 
 ```csharp
 public Token? GenerateToken(Account account, IJwtSettings jwtSettings)
@@ -235,7 +235,7 @@ public Token? GenerateToken(Account account, IJwtSettings jwtSettings)
 
 ### ⚙️ Complex Configuration
 
-Explicar configurações e middleware complexos:
+Explain complex configurations and middleware:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -277,7 +277,7 @@ builder.Services.AddCors(options =>
 
 ### 🧪 Validation and Business Rules
 
-Explicar validações complexas:
+Explain complex validations:
 
 ```csharp
 public Account GetAccountByUserNameAndPassword(Account account)
@@ -311,32 +311,32 @@ public Account GetAccountByUserNameAndPassword(Account account)
 
 ### ❌ Avoid
 
-1. **Obvious Comments**: `// Incrementa i` para `i++`
-2. **Outdated Comments**: Comentários que não refletem o código atual
+1. **Obvious Comments**: `// Increment i` for `i++`
+2. **Outdated Comments**: Comments that don't reflect current code
 3. **Unnecessary Comments**: In self-explanatory code
 4. **Explain Syntax**: Focus on logic, not language syntax
 
 ### 🏷️ Recommended XML Tags
 
 - `<summary>`: Descrição principal do elemento
-- `<param>`: Descrição de parâmetros
+- `<param>`: Parameter description
 - `<returns>`: Descrição do valor de retorno
 - `<exception>`: Exceções que podem ser lançadas
-- `<example>`: Exemplos de uso
-- `<remarks>`: Informações adicionais
-- `<see>`: Referências a outros elementos
-- `<seealso>`: Referências relacionadas
+- `<example>`: Usage examples
+- `<remarks>`: Additional information
+- `<see>`: References to other elements
+- `<seealso>`: Related references
 
 ### 📏 Formatting
 
 ```csharp
 /// <summary>
-/// Descrição concisa em uma linha.
-/// Descrição mais detalhada em múltiplas linhas se necessário.
+/// Concise single-line description.
+/// More detailed multi-line description if needed.
 /// </summary>
-/// <param name="parameter1">Descrição do primeiro parâmetro</param>
-/// <param name="parameter2">Descrição do segundo parâmetro</param>
-/// <returns>Descrição do que é retornado</returns>
+/// <param name="parameter1">Description of first parameter</param>
+/// <param name="parameter2">Description of second parameter</param>
+/// <returns>Description of what is returned</returns>
 /// <exception cref="ArgumentNullException">Quando parameter1 é null</exception>
 /// <exception cref="InvalidOperationException">Quando operação não é válida</exception>
 /// <example>
@@ -347,13 +347,13 @@ public Account GetAccountByUserNameAndPassword(Account account)
 /// </example>
 public string MyMethod(string parameter1, string parameter2)
 {
-    // Comentário inline explicando lógica específica
-    // que não é óbvia pelo código
+    // Inline comment explaining specific logic
+    // that is not obvious from the code
     if (parameter1 == null)
         throw new ArgumentNullException(nameof(parameter1));
     
-    // Explica o algoritmo ou regra de negócio
-    // Por exemplo: concatena parâmetros com separador padrão
+    // Explains the algorithm or business rule
+    // For example: concatenates parameters with default separator
     return $"{parameter1}_{parameter2}";
 }
 ```
@@ -366,7 +366,7 @@ public string MyMethod(string parameter1, string parameter2)
 - Validação de referências em tempo real
 
 ### Swagger/OpenAPI
-- XML comments são automaticamente convertidos em documentação da API
+- XML comments are automatically converted to API documentation
 - `<summary>` vira descrição do endpoint
 - `<param>` documenta parâmetros da API
 - `<response>` documenta códigos de status HTTP
@@ -378,18 +378,18 @@ public string MyMethod(string parameter1, string parameter2)
 
 ## 📊 Quality Metrics
 
-### Cobertura de Documentação
-- **Controllers**: 100% dos métodos públicos documentados
-- **Services**: 100% das interfaces e implementações principais
-- **Domain Entities**: 100% das propriedades públicas
-- **Complex Logic**: 80%+ dos blocos complexos comentados
+### Documentation Coverage
+- **Controllers**: 100% of public methods documented
+- **Services**: 100% of interfaces and main implementations
+- **Domain Entities**: 100% of public properties
+- **Complex Logic**: 80%+ of complex blocks commented
 
-### Qualidade dos Comentários
+### Comment Quality
 - Explicam o "porquê", não apenas o "o quê"
-- Incluem exemplos quando apropriado
-- Documentam todos os parâmetros e retornos
-- Listam todas as exceções possíveis
+- Include examples when appropriate
+- Document all parameters and returns
+- List all possible exceptions
 
 ---
 
-💡 **Lembre-se**: Boa documentação é um investimento no futuro do projeto. Ela facilita manutenção, onboarding de novos desenvolvedores e reduz bugs.
+💡 **Lembre-se**: Good documentation is an investment in the project's future. It facilitates maintenance, onboarding of new developers and reduces bugs.
