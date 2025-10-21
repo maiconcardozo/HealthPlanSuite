@@ -1,20 +1,20 @@
 # 📖 Code Documentation Standards
 
-Este documento define os padrões de documentação de código para o projeto Authentication, incluindo XML comments, inline comments e exemplos práticos.
+This document defines the code documentation standards for the Authentication project, including XML comments, inline comments and practical examples.
 
-## 🎯 Visão Geral
+## 🎯 Overview
 
-O projeto Authentication utiliza documentação de código abrangente para garantir que:
-- **Novos desenvolvedores** possam entender rapidamente o código
-- **Manutenção** seja facilitada com explicações claras
-- **APIs** sejam autodocumentadas via Swagger
-- **Lógica complexa** seja explicada com comentários inline
+The Authentication project uses comprehensive code documentation to ensure that:
+- **New developers** can quickly understand the code
+- **Maintenance** is facilitated with clear explanations
+- **APIs** are self-documented via Swagger
+- **Complex logic** is explained with inline comments
 
 ## 📝 XML Documentation Comments
 
 ### 🏛️ Controllers
 
-Os controllers devem ter documentação XML completa para geração automática do Swagger. **Importante**: Use chaves de recursos (ResourceAPI) para permitir internacionalização (i18n):
+Controllers must have complete XML documentation for automatic Swagger generation. **Important**: Use resource keys (ResourceAPI) to allow internationalization (i18n):
 
 ```csharp
 /// <summary>
@@ -42,21 +42,21 @@ public class QuoteController : ControllerBase
 }
 ```
 
-**Padrão de Nomenclatura de Chaves ResourceAPI:**
-- Descrição do Controller: `{EntityName}ControllerDescription`
-- Documentação de Métodos: `DocumentationGet{EntityName}s`, `DocumentationGet{EntityName}ById`, `DocumentationAdd{EntityName}`, `DocumentationUpdate{EntityName}`, `DocumentationDelete{EntityName}`
-- Retornos: `ReturnsListOf{EntityName}ObjectsWithTheirDetailsAndStatusOnSuccess...`, `Returns{EntityName}MatchingTheSpecifiedID`, etc.
-- Respostas: `{EntityName}sRetrievedSuccessfully`, `{EntityName}RetrievedSuccessfully`, `{EntityName}CreatedSuccessfully`, `{EntityName}UpdatedSuccessfully`, `{EntityName}DeletedSuccessfully`, `{EntityName}NotFound`, `{EntityName}AlreadyExists`
+**ResourceAPI Key Naming Pattern:**
+- Controller Description: `{EntityName}ControllerDescription`
+- Method Documentation: `DocumentationGet{EntityName}s`, `DocumentationGet{EntityName}ById`, `DocumentationAdd{EntityName}`, `DocumentationUpdate{EntityName}`, `DocumentationDelete{EntityName}`
+- Returns: `ReturnsListOf{EntityName}ObjectsWithTheirDetailsAndStatusOnSuccess...`, `Returns{EntityName}MatchingTheSpecifiedID`, etc.
+- Responses: `{EntityName}sRetrievedSuccessfully`, `{EntityName}RetrievedSuccessfully`, `{EntityName}CreatedSuccessfully`, `{EntityName}UpdatedSuccessfully`, `{EntityName}DeletedSuccessfully`, `{EntityName}NotFound`, `{EntityName}AlreadyExists`
 
-**Benefícios:**
-- ✅ Suporte automático para múltiplos idiomas (inglês e português)
-- ✅ Centralização da documentação em arquivos de recursos
-- ✅ Facilita manutenção e atualização de textos
-- ✅ Swagger automaticamente localizado com base na cultura do usuário
+**Benefits:**
+- ✅ Automatic support for multiple languages (English and Portuguese)
+- ✅ Centralization documentation in resource files
+- ✅ Facilitates maintenance and text updates
+- ✅ Swagger automatically localized based on user culture
 
-### 🔧 Services e Interfaces
+### 🔧 Services and Interfaces
 
-Interfaces e services devem documentar o propósito, parâmetros, retornos e exceções:
+Interfaces and services must document the purpose, parameters, returns and exceptions:
 
 ```csharp
 /// <summary>
@@ -87,7 +87,7 @@ public interface IAccountService
 
 ### 🏗️ Domain Entities
 
-Entidades de domínio devem explicar seu propósito e propriedades importantes:
+Domain entities must explain their purpose and important properties:
 
 ```csharp
 /// <summary>
@@ -114,7 +114,7 @@ public class Account : Entity, IAccount
 
 ### 🛠️ Validators
 
-Validadores devem explicar as regras de negócio aplicadas:
+Validators must explain the applied business rules:
 
 ```csharp
 /// <summary>
@@ -135,11 +135,11 @@ public class AccountPayloadValidator : AbstractValidator<AccountPayLoadDTO>
 }
 ```
 
-## 💬 Inline Comments (Comentários Explicativos)
+## 💬 Inline Comments (Explanatory Comments)
 
-### 🔐 Lógica de Segurança
+### 🔐 Security Logic
 
-Explicar implementações de segurança, hashing e validações:
+Explain security implementations, hashing and validations:
 
 ```csharp
 public void AddAccount(Account account)
@@ -170,9 +170,9 @@ public void AddAccount(Account account)
 }
 ```
 
-### 🔑 Geração de Tokens JWT
+### 🔑 JWT Token Generation
 
-Explicar cada etapa da criação de tokens:
+Explain each step of token creation:
 
 ```csharp
 public Token? GenerateToken(Account account, IJwtSettings jwtSettings)
@@ -233,9 +233,9 @@ public Token? GenerateToken(Account account, IJwtSettings jwtSettings)
 }
 ```
 
-### ⚙️ Configuração Complexa
+### ⚙️ Complex Configuration
 
-Explicar configurações e middleware complexos:
+Explain complex configurations and middleware:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -275,9 +275,9 @@ builder.Services.AddCors(options =>
 });
 ```
 
-### 🧪 Validação e Regras de Negócio
+### 🧪 Validation and Business Rules
 
-Explicar validações complexas:
+Explain complex validations:
 
 ```csharp
 public Account GetAccountByUserNameAndPassword(Account account)
@@ -299,44 +299,44 @@ public Account GetAccountByUserNameAndPassword(Account account)
 }
 ```
 
-## 📋 Padrões e Convenções
+## 📋 Patterns and Conventions
 
-### ✅ Boas Práticas
+### ✅ Best Practices
 
-1. **Seja Específico**: Explique o "porquê", não apenas o "o quê"
-2. **Use Exemplos**: Inclua exemplos de uso quando apropriado
-3. **Documente Exceções**: Sempre documente exceções que podem ser lançadas
-4. **Explique Lógica de Negócio**: Comentários detalhados para regras complexas
-5. **Mantenha Atualizado**: Atualize comentários quando o código mudar
+1. **Be Specific**: Explain the "why", not just the "what"
+2. **Use Examples**: Include usage examples when appropriate
+3. **Document Exceptions**: Always document exceptions that can be thrown
+4. **Explain Business Logic**: Detailed comments for complex rules
+5. **Keep Updated**: Update comments when code changes
 
-### ❌ Evite
+### ❌ Avoid
 
-1. **Comentários Óbvios**: `// Incrementa i` para `i++`
-2. **Comentários Desatualizados**: Comentários que não refletem o código atual
-3. **Comentários Desnecessários**: Em código auto-explicativo
-4. **Explicar Sintaxe**: Focar na lógica, não na sintaxe da linguagem
+1. **Obvious Comments**: `// Increment i` for `i++`
+2. **Outdated Comments**: Comments that don't reflect current code
+3. **Unnecessary Comments**: In self-explanatory code
+4. **Explain Syntax**: Focus on logic, not language syntax
 
-### 🏷️ Tags XML Recomendadas
+### 🏷️ Recommended XML Tags
 
 - `<summary>`: Descrição principal do elemento
-- `<param>`: Descrição de parâmetros
+- `<param>`: Parameter description
 - `<returns>`: Descrição do valor de retorno
 - `<exception>`: Exceções que podem ser lançadas
-- `<example>`: Exemplos de uso
-- `<remarks>`: Informações adicionais
-- `<see>`: Referências a outros elementos
-- `<seealso>`: Referências relacionadas
+- `<example>`: Usage examples
+- `<remarks>`: Additional information
+- `<see>`: References to other elements
+- `<seealso>`: Related references
 
-### 📏 Formatação
+### 📏 Formatting
 
 ```csharp
 /// <summary>
-/// Descrição concisa em uma linha.
-/// Descrição mais detalhada em múltiplas linhas se necessário.
+/// Concise single-line description.
+/// More detailed multi-line description if needed.
 /// </summary>
-/// <param name="parameter1">Descrição do primeiro parâmetro</param>
-/// <param name="parameter2">Descrição do segundo parâmetro</param>
-/// <returns>Descrição do que é retornado</returns>
+/// <param name="parameter1">Description of first parameter</param>
+/// <param name="parameter2">Description of second parameter</param>
+/// <returns>Description of what is returned</returns>
 /// <exception cref="ArgumentNullException">Quando parameter1 é null</exception>
 /// <exception cref="InvalidOperationException">Quando operação não é válida</exception>
 /// <example>
@@ -347,18 +347,18 @@ public Account GetAccountByUserNameAndPassword(Account account)
 /// </example>
 public string MyMethod(string parameter1, string parameter2)
 {
-    // Comentário inline explicando lógica específica
-    // que não é óbvia pelo código
+    // Inline comment explaining specific logic
+    // that is not obvious from the code
     if (parameter1 == null)
         throw new ArgumentNullException(nameof(parameter1));
     
-    // Explica o algoritmo ou regra de negócio
-    // Por exemplo: concatena parâmetros com separador padrão
+    // Explains the algorithm or business rule
+    // For example: concatenates parameters with default separator
     return $"{parameter1}_{parameter2}";
 }
 ```
 
-## 🛠️ Ferramentas e Integração
+## 🛠️ Tools and Integration
 
 ### Visual Studio
 - IntelliSense automático para XML comments
@@ -366,7 +366,7 @@ public string MyMethod(string parameter1, string parameter2)
 - Validação de referências em tempo real
 
 ### Swagger/OpenAPI
-- XML comments são automaticamente convertidos em documentação da API
+- XML comments are automatically converted to API documentation
 - `<summary>` vira descrição do endpoint
 - `<param>` documenta parâmetros da API
 - `<response>` documenta códigos de status HTTP
@@ -376,20 +376,20 @@ public string MyMethod(string parameter1, string parameter2)
 - Identifica métodos públicos sem documentação
 - Valida qualidade dos comentários
 
-## 📊 Métricas de Qualidade
+## 📊 Quality Metrics
 
-### Cobertura de Documentação
-- **Controllers**: 100% dos métodos públicos documentados
-- **Services**: 100% das interfaces e implementações principais
-- **Domain Entities**: 100% das propriedades públicas
-- **Complex Logic**: 80%+ dos blocos complexos comentados
+### Documentation Coverage
+- **Controllers**: 100% of public methods documented
+- **Services**: 100% of interfaces and main implementations
+- **Domain Entities**: 100% of public properties
+- **Complex Logic**: 80%+ of complex blocks commented
 
-### Qualidade dos Comentários
+### Comment Quality
 - Explicam o "porquê", não apenas o "o quê"
-- Incluem exemplos quando apropriado
-- Documentam todos os parâmetros e retornos
-- Listam todas as exceções possíveis
+- Include examples when appropriate
+- Document all parameters and returns
+- List all possible exceptions
 
 ---
 
-💡 **Lembre-se**: Boa documentação é um investimento no futuro do projeto. Ela facilita manutenção, onboarding de novos desenvolvedores e reduz bugs.
+💡 **Lembre-se**: Good documentation is an investment in the project's future. It facilitates maintenance, onboarding of new developers and reduces bugs.
