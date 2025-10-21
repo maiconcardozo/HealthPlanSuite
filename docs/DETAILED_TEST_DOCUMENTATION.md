@@ -1052,7 +1052,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Execution**: POST para /Authentication/GenerateToken  
 **Verification**: 
 - Status must be OK, BadRequest, Unauthorized ou InternalServerError
-- Resposta must be adequada ao estado do sistema
+- Response must be appropriate to the system state
 
 ##### 2. `GenerateToken_WithInvalidCredentials_ShouldReturnUnauthorized()`
 **Purpose**: Tests behavior com credenciais invalids  
@@ -1073,7 +1073,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Must return BadRequest
 
 ##### 5. `AddAccount_WithValidData_ShouldCreateAccount()`
-**Purpose**: Tests criação de account com data valids  
+**Purpose**: Tests account creation with valid data  
 **Setup**: 
 - Payload com userName e password uniques
 - Headers appropriates  
@@ -1175,7 +1175,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 ##### 2. `CreateAccount_WithInvalidData_ShouldReturnValidationErrors()`
 **Purpose**: Tests validação of data de entrada  
 **Setup**: Payloads com data invalids (campos obrigatórios emptys)  
-**Execution**: POST /Account com data invalids  
+**Execution**: POST /Account with invalid data  
 **Verification**: 
 - Status BadRequest
 - Detalhes of validation na resposta
@@ -1239,7 +1239,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be Created, BadRequest ou InternalServerError
 
 ##### 4. `CreateAction_WithInvalidData_ShouldReturnBadRequest()`
-**Purpose**: Tests criação com data invalids  
+**Purpose**: Tests creation with invalid data  
 **Setup**: Payload com campos obrigatórios emptys  
 **Execution**: POST /Action/CreateAction  
 **Verification**: Status must be BadRequest
@@ -1248,7 +1248,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Purpose**: Tests atualização de ação existing  
 **Setup**: 
 - ID de ação existing
-- Payload com data atualizados  
+- Payload with updated data  
 **Execution**: PUT /Action/UpdateAction/{id}  
 **Verification**: Status must be OK, NotFound ou BadRequest
 
@@ -1323,7 +1323,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 ### AccountClaimActionControllerTests
 
 **File**: `Src/Authentication.Tests/Integration/AccountClaimActionControllerTests.cs`  
-**Purpose**: Tests endpoints de permissões de usuário (Account-Claim-Action)  
+**Purpose**: Tests user permissions endpoints (Account-Claim-Action)  
 **Total Tests**: 20+ tests
 
 #### Implemented Tests:
@@ -1458,17 +1458,17 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 
 ## 📊 Resumo de Cobertura por Categoria
 
-### Testes de Entidades (Entity Tests) - 35+ tests
+### Entity Tests - 35+ tests
 - **AccountEntityTests**: 20+ tests (propriedades, validações, values nulls/emptys)
 - **TokenTests**: 15+ tests (criação, formatos JWT, expiração)
 - **Cobertura**: Propriedades básicas, behavior com values edge case, integridade de dados
 
-### Testes de Serviços (Service Tests) - 75+ tests
+### Service Tests - 75+ tests
 - **AccountServiceTests**: 50+ tests (CRUD operations, business logic)
 - **AccountServiceErrorHandlingTests**: 25+ tests (exception handling, null safety)
 - **Cobertura**: Lógica de negócio completa, regras of validation, tratamento robusto de erros
 
-### Testes de Repositório (Repository Tests) - 30+ tests
+### Repository Tests - 30+ tests
 - **AccountRepositoryTests**: 30+ tests (persistência, consultas, integridade)
 - **Cobertura**: Operações CRUD, consultas específicas, behavior com data invalids
 
@@ -1482,7 +1482,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - **PasswordHashingTests**: 12+ tests (hash Argon2, password verification)
 - **Cobertura**: Validação de entrada completa, regras de negócio, error messages localizadas
 
-### Testes de DTOs (DTO Tests) - 8+ tests
+### DTO Tests - 8+ tests
 - **AccountPayLoadDTOTests**: 8+ tests (serialização, propriedades, values especiais)
 - **Cobertura**: Comportamento de DTOs, aceitação de values Unicode e especiais
 
@@ -1497,7 +1497,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - **ExampleFixedControllerTests**: 5+ tests (exemplos e convenções REST)
 - **Cobertura**: Endpoints completos, status codes, integração end-to-end, cenários de erro
 
-### Testes de Localização (Localization Tests) - 55+ tests
+### Localization Tests - 55+ tests
 - **LocalizationTests**: 15+ tests (internacionalização básica)
 - **ApiLocalizationTests**: 10+ tests (mensagens da API)
 - **LocalizedSwaggerDocumentFilterTests**: 8+ tests (documentação Swagger)
@@ -1547,7 +1547,7 @@ public void Method_Scenario_ExpectedResult()
 ### Organização de Arquivos
 ```
 Src/Authentication.Tests/
-├── Unit/                     # Testes unitários isolados
+├── Unit/                     # Isolated unit tests
 │   ├── *EntityTests.cs       # Entity tests
 │   ├── *ServiceTests.cs      # Service tests
 │   ├── *RepositoryTests.cs   # Repository tests
@@ -1688,7 +1688,7 @@ Os tests garantem cobertura completa das funcionalidades:
 
 #### Técnicas Utilizadas
 - ✅ **Mocking**: Isolamento completo de dependências
-- ✅ **In-Memory Testing**: Testes de repository isolados
+- ✅ **In-Memory Testing**: Isolated repository tests
 - ✅ **Integration Testing**: WebApplicationFactory para tests E2E
 - ✅ **Theory Testing**: Multiple cenários com data-driven tests
 - ✅ **Edge Case Testing**: Valores nulls, emptys, extremos

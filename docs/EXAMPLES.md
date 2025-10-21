@@ -764,7 +764,7 @@ export function useAuth() {
 }
 ```
 
-## 🧪 Exemplos de Teste
+## 🧪 Test Examples
 
 ### Teste de Integração Completo
 ```javascript
@@ -776,7 +776,7 @@ describe('Authentication API Integration', () => {
   beforeAll(async () => {
     authClient = new AuthenticationClient();
     
-    // Criar conta de teste
+    // Create test account
     await authClient.createAccount('testuser', 'TestPassword123!', 'test@example.com');
     
     // Fazer login e obter token
@@ -786,7 +786,7 @@ describe('Authentication API Integration', () => {
 
   test('Deve criar e gerenciar claims', async () => {
     // Criar claim
-    const claimResponse = await authClient.createClaim('Role', 'TestRole', 'Função de teste');
+    const claimResponse = await authClient.createClaim('Role', 'TestRole', 'Test role');
     expect(claimResponse).toHaveProperty('id');
 
     // Listar claims
@@ -797,7 +797,7 @@ describe('Authentication API Integration', () => {
 
   test('Deve criar e gerenciar actions', async () => {
     // Criar action
-    const actionResponse = await authClient.createAction('TestAction', 'Ação de teste');
+    const actionResponse = await authClient.createAction('TestAction', 'Test action');
     expect(actionResponse).toHaveProperty('id');
 
     // Listar actions
