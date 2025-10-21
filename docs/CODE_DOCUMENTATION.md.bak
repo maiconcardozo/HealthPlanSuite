@@ -14,7 +14,7 @@ The Authentication project uses comprehensive code documentation to ensure that:
 
 ### 🏛️ Controllers
 
-Controllers must have complete XML documentation for automatic Swagger generation. **Important**: Use resource keys (ResourceAPI) to allow internationalization (i18n):
+Os controllers devem ter documentação XML completa para geração automática do Swagger. **Important**: Use resource keys (ResourceAPI) to allow internationalization (i18n):
 
 ```csharp
 /// <summary>
