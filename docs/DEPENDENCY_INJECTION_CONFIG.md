@@ -9,13 +9,13 @@ Add the following service registrations to your Startup.cs or Program.cs file to
 services.AddScoped<ITaxaAdesaoRepository, TaxaAdesaoRepository>();
 services.AddScoped<IDescontoPromocionalRepository, DescontoPromocionalRepository>();
 services.AddScoped<ICoparticipacaoProcedimentoRepository, CoparticipacaoProcedimentoRepository>();
-services.AddScoped<IPrecoPlanoFaixaRepository, PrecoPlanoFaixaRepository>();
+services.AddScoped<IPlanPriceRangeRepository, PlanPriceRangeRepository>();
 
 // Service registrations
 services.AddScoped<ITaxaAdesaoService, TaxaAdesaoService>();
 services.AddScoped<IDescontoPromocionalService, DescontoPromocionalService>();
 services.AddScoped<ICoparticipacaoProcedimentoService, CoparticipacaoProcedimentoService>();
-services.AddScoped<IPrecoPlanoFaixaService, PrecoPlanoFaixaService>();
+services.AddScoped<IPlanPriceRangeService, PlanPriceRangeService>();
 ```
 
 ## Using Statements Required
