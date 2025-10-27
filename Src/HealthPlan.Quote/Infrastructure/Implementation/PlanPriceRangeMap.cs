@@ -96,10 +96,10 @@ namespace HealthPlan.Quote.Infrastructure.Implementation
 
             // Create indexes for efficient lookup
             builder.HasIndex(e => new { e.HealthPlanId, e.AgeRangeId, e.ContractType, e.CoparticipationType, e.ValidityStart, e.ValidityEnd })
-                .HasDatabaseName("IX_PrecoPlanoFaixa_Lookup");
+                .HasDatabaseName("IX_PlanPriceRange_Lookup");
 
             builder.HasIndex(e => new { e.ValidityStart, e.ValidityEnd })
-                .HasDatabaseName("IX_PrecoPlanoFaixa_Validity");
+                .HasDatabaseName("IX_PlanPriceRange_Validity");
         }
     }
 }

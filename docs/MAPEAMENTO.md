@@ -229,19 +229,19 @@ This document provides a complete mapping of controllers, endpoints, main classe
 
 ---
 
-### 14. PrecoPlanoFaixaController
+### 14. PlanPriceRangeController
 **Description**: Manages plan prices by age range.
 
-**Base Route**: `/PrecoPlanoFaixa`
+**Base Route**: `/PlanPriceRange`
 
 **Endpoints**:
-- `GET /PrecoPlanoFaixa/precos` - Lists all prices
-- `GET /PrecoPlanoFaixa/{id}` - Retrieves price by ID
-- `POST /PrecoPlanoFaixa` - Creates new price
-- `PUT /PrecoPlanoFaixa/{id}` - Updates price
-- `DELETE /PrecoPlanoFaixa/{id}` - Deletes price
+- `GET /PlanPriceRange` - Lists all prices
+- `GET /PlanPriceRange/{id}` - Retrieves price by ID
+- `POST /PlanPriceRange` - Creates new price
+- `PUT /PlanPriceRange` - Updates price
+- `DELETE /PlanPriceRange/{id}` - Deletes price
 
-**File**: `Src/HealthPlan.API/Controllers/PrecoPlanoFaixaController.cs`
+**File**: `Src/HealthPlan.API/Controllers/PlanPriceRangeController.cs`
 
 ---
 

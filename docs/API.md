@@ -1466,7 +1466,7 @@ The Health Plan API includes the following controller categories:
 - **Companies**: CompanyController
 - **Beneficiaries**: BeneficiaryController
 - **Configuration**: AgeRangeController, AccommodationController, AcceptanceRuleController
-- **Pricing**: PrecoPlanoFaixaController, TaxaAdesaoController, DescontoPromocionalController, CoparticipacaoProcedimentoController
+- **Pricing**: PlanPriceRangeController, AdhesionFeeController, PromotionalDiscountController, ProcedureCoparticipationController
 
 For complete endpoint listings, see [docs/MAPEAMENTO.md](./MAPEAMENTO.md).
 

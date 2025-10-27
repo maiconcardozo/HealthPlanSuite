@@ -63,28 +63,28 @@ This document summarizes the implementation of the new entities requested for th
 - Repository Implementation: `CoparticipacaoProcedimentoRepository.cs`
 - Entity Mapping: `CoparticipacaoProcedimentoMap.cs`
 
-### 4. PrecoPlanoFaixa (Plan Price Range)
+### 4. PlanPriceRange (Plan Price Range)
 **Purpose**: Defines pricing based on age ranges, contract types, and co-participation types.
 
 **Fields**:
 - `HealthPlanId` (int): References the HealthPlan entity
 - `AgeRangeId` (int): References the AgeRange entity
-- `TipoContratacao` (string): Contract type ("Individual", "Coletivo por Adesão", "Empresarial")
-- `TipoCoparticipacao` (string): Co-participation type ("Parcial", "Total", "Sem Coparticipação")
-- `ValorOriginal` (decimal): Base price before discounts
-- `ValorDesconto` (decimal): Discount amount
-- `ValidadeInicio` (DateTime): Start date of validity
-- `ValidadeFim` (DateTime): End date of validity
+- `ContractType` (string): Contract type ("Individual", "Coletivo por Adesão", "Empresarial")
+- `CoparticipationType` (string): Co-participation type ("Parcial", "Total", "Sem Coparticipação")
+- `OriginalValue` (decimal): Base price before discounts
+- `DiscountValue` (decimal): Discount amount
+- `ValidityStart` (DateTime): Start date of validity
+- `ValidityEnd` (DateTime): End date of validity
 
 **Files Created**:
-- DTO: `PrecoPlanoFaixaPayLoadDTO.cs`, `PrecoPlanoFaixaResponseDTO.cs`
-- Domain Model: `PrecoPlanoFaixa.cs`
-- Controller: `PrecoPlanoFaixaController.cs`
-- Service Interface: `IPrecoPlanoFaixaService.cs`
-- Service Implementation: `PrecoPlanoFaixaService.cs`
-- Repository Interface: `IPrecoPlanoFaixaRepository.cs`
-- Repository Implementation: `PrecoPlanoFaixaRepository.cs`
-- Entity Mapping: `PrecoPlanoFaixaMap.cs`
+- DTO: `PlanPriceRangePayLoadDTO.cs`, `PlanPriceRangeResponseDTO.cs`
+- Domain Model: `PlanPriceRange.cs`
+- Controller: `PlanPriceRangeController.cs`
+- Service Interface: `IPlanPriceRangeService.cs`
+- Service Implementation: `PlanPriceRangeService.cs`
+- Repository Interface: `IPlanPriceRangeRepository.cs`
+- Repository Implementation: `PlanPriceRangeRepository.cs`
+- Entity Mapping: `PlanPriceRangeMap.cs`
 
 ## Architecture Pattern
 
@@ -112,7 +112,7 @@ All entities will create the following tables when migrations are run:
 - `TaxaAdesao`
 - `DescontoPromocional`
 - `CoparticipacaoProcedimento`
-- `PrecoPlanoFaixa`
+- `PlanPriceRange`
 
 ### API Endpoints
 Each controller provides the following RESTful endpoints:

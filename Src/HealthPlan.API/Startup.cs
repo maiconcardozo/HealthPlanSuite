@@ -143,7 +143,6 @@ namespace HealthPlan.API
                             controllerName?.Equals("PromotionalDiscount", StringComparison.OrdinalIgnoreCase) == true ||
                             controllerName?.Equals("HealthPlan", StringComparison.OrdinalIgnoreCase) == true ||
                             controllerName?.Equals("PlanCoverage", StringComparison.OrdinalIgnoreCase) == true ||
-                            controllerName?.Equals("PrecoPlanoFaixa", StringComparison.OrdinalIgnoreCase) == true ||
                             controllerName?.Equals("PlanPriceRange", StringComparison.OrdinalIgnoreCase) == true ||
                             controllerName?.Equals("Quote", StringComparison.OrdinalIgnoreCase) == true ||
                             controllerName?.Equals("QuoteHistory", StringComparison.OrdinalIgnoreCase) == true ||
