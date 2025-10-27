@@ -15,30 +15,68 @@ Sua função é ajudar usuários a realizar operações CRUD (Create, Read, Upda
 - Coverages (Coberturas)
 - AgeRanges (Faixas Etárias)
 - Accommodations (Acomodações)
+- PlanCoverages (Coberturas de Planos)
+- AcceptanceRules (Regras de Aceitação)
+- AdhesionFees (Taxas de Adesão)
+- PromotionalDiscounts (Descontos Promocionais)
+- ProcedureCoparticipations (Coparticipações de Procedimentos)
+- PlanPriceRanges (Faixas de Preços de Planos)
 
 Você tem acesso a ferramentas (tools) que permitem interagir com a API REST do HealthPlan Suite.
 
 INSTRUÇÕES IMPORTANTES:
-1. Sempre responda em português (PT-BR)
-2. Seja objetivo e claro nas respostas
-3. Se não tiver certeza sobre algo, pergunte ao usuário
-4. Use as ferramentas disponíveis para buscar dados reais
+1. Sempre responda em português (PT-BR) de forma natural e conversacional
+2. Seja objetivo e claro nas respostas, mas também amigável
+3. Se não tiver certeza sobre algo, pergunte ao usuário antes de prosseguir
+4. Use as ferramentas disponíveis para buscar dados reais da API
 5. Formate as respostas de forma legível e organizada
-6. Se uma operação falhar, explique o motivo de forma clara
-7. Ao criar ou atualizar entidades, valide os dados antes de enviar
+6. Se uma operação falhar, explique o motivo de forma clara e sugira alternativas
+7. Ao criar ou atualizar entidades, valide os dados antes de enviar para a API
+8. Sempre forneça IDs dos recursos nas respostas para facilitar operações futuras
+9. Quando criar recursos, confirme a criação e mostre os dados principais
+10. Para operações complexas que envolvem múltiplas entidades, guie o usuário passo a passo
+
+DIRETRIZES DE FORMATAÇÃO DE RESPOSTAS:
+- Use emojis para tornar as respostas mais amigáveis (✅, ❌, 📋, 💼, etc.)
+- Para listagens, mostre apenas as informações mais relevantes
+- Para detalhes de um item específico, mostre todos os campos disponíveis
+- Agrupe informações relacionadas
+- Use formatação para destacar valores importantes (IDs, nomes, preços)
+
+VALIDAÇÕES E REGRAS DE NEGÓCIO:
+- Valide campos obrigatórios antes de criar/atualizar
+- Verifique se IDs referenciados existem (ex: ao criar PlanCoverage, valide que HealthPlanId e CoverageId existem)
+- Valide formatos de dados (datas, valores monetários, percentuais)
+- Informe claramente quais campos são obrigatórios e quais são opcionais
+- Para datas, aceite formatos flexíveis e converta para ISO 8601 (YYYY-MM-DDTHH:mm:ss)
 
 EXEMPLOS DE INTERAÇÃO:
 
 Usuário: "liste todas as empresas"
-Você: [Usa a ferramenta get_all_companies e formata a resposta]
+Você: [Usa a ferramenta get_all_companies e formata a resposta de forma organizada]
 
 Usuário: "crie uma empresa chamada Unimed"
-Você: [Pergunta os dados necessários ou usa a ferramenta create_company se tiver todos os dados]
+Você: "Para criar a empresa Unimed, preciso de alguns dados:
+- Nome: Unimed ✓
+- CNPJ: (opcional)
+- Telefone: (opcional)
+- Email: (opcional)
+
+Posso criar com apenas o nome, ou você deseja fornecer mais informações?"
 
 Usuário: "qual o plano mais barato?"
-Você: [Usa get_all_healthplans e analisa os preços]
+Você: [Usa get_all_healthplans, analisa os preços e apresenta o resultado de forma clara]
 
-Sempre que possível, forneça IDs dos recursos nas respostas para facilitar operações futuras.
+Usuário: "crie uma cobertura de plano"
+Você: "Para criar uma cobertura de plano, preciso de:
+- ID do Plano de Saúde (healthPlanId): obrigatório
+- ID da Cobertura (coverageId): obrigatório
+- Valor Premium (premiumValue): opcional, padrão R$ 0,00
+- Incluída no plano (isIncluded): opcional, padrão Sim
+
+Por favor, forneça pelo menos o ID do plano e o ID da cobertura."
+
+Sempre que possível, antecipe dúvidas do usuário e ofereça orientação proativa.
 """
 
 WELCOME_MESSAGE = """
@@ -52,6 +90,12 @@ Eu posso ajudá-lo a gerenciar:
 • 🛡️ Coberturas (Coverages)
 • 📊 Faixas Etárias (AgeRanges)
 • 🏨 Acomodações (Accommodations)
+• 🔗 Coberturas de Planos (PlanCoverages)
+• 📋 Regras de Aceitação (AcceptanceRules)
+• 💵 Taxas de Adesão (AdhesionFees)
+• 🎁 Descontos Promocionais (PromotionalDiscounts)
+• 🏥 Coparticipações de Procedimentos (ProcedureCoparticipations)
+• 💰 Faixas de Preços (PlanPriceRanges)
 
 Digite sua pergunta ou comando em linguagem natural.
 Para ajuda, digite 'ajuda'. Para sair, digite 'sair'.
@@ -72,28 +116,46 @@ EXEMPLOS DE COMANDOS:
 • "liste todas as empresas"
 • "mostre os planos de saúde"
 • "quais são as coberturas disponíveis?"
+• "liste as taxas de adesão"
+• "mostre os descontos promocionais"
 
 🔍 BUSCAR:
 • "mostre detalhes da empresa 1"
 • "informações do plano de saúde com ID 5"
 • "busque o beneficiário 10"
+• "detalhes da cobertura de plano 3"
 
 ➕ CRIAR:
 • "crie uma nova empresa chamada Unimed"
 • "adicione um plano de saúde"
 • "cadastre um novo beneficiário"
+• "crie uma cobertura de plano para o plano 1 e cobertura 2"
+• "adicione uma regra de aceitação para idade mínima"
+• "crie uma taxa de adesão de R$ 150 para o plano 1"
+• "cadastre um desconto promocional de 10%"
+• "adicione coparticipação para consultas"
+• "crie uma faixa de preços para o plano 1"
 
 ✏️ ATUALIZAR:
 • "atualize o nome da empresa 1 para Bradesco Saúde"
 • "altere o preço do plano 5"
 • "modifique os dados do beneficiário 10"
+• "atualize o valor da taxa de adesão 2"
+• "altere o percentual do desconto promocional 1"
 
 ❌ DELETAR:
 • "delete a empresa 3"
 • "remova o plano de saúde 7"
 • "apague a cobertura 2"
+• "delete a cobertura de plano 5"
+• "remova a taxa de adesão 3"
 
-💡 DICA: Seja específico nos seus comandos e forneça IDs quando possível!
+💡 DICAS:
+• Seja específico nos seus comandos e forneça IDs quando possível
+• Para criar entidades complexas, forneça os dados gradualmente
+• Use datas no formato ISO (YYYY-MM-DD ou YYYY-MM-DDTHH:mm:ss)
+• Para valores monetários, use formato decimal (ex: 150.50)
+• Para percentuais, use números de 0 a 100 (ex: 10 para 10%)
 """.strip()
 
 ERROR_MESSAGES = {

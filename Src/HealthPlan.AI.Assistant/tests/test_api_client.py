@@ -195,3 +195,69 @@ class TestHealthPlanAPIClient:
 
         assert len(result) == 1
         mock_request.assert_called_once_with("GET", "Accommodation/GetAccommodations")
+
+    @patch.object(HealthPlanAPIClient, "_make_request")
+    def test_get_plancoverages(self, mock_request):
+        """Testa busca de todas as coberturas de planos."""
+        mock_request.return_value = [{"id": 1, "healthPlanId": 1}]
+
+        client = HealthPlanAPIClient()
+        result = client.get_plancoverages()
+
+        assert len(result) == 1
+        mock_request.assert_called_once_with("GET", "PlanCoverage/plan-coverages")
+
+    @patch.object(HealthPlanAPIClient, "_make_request")
+    def test_get_acceptancerules(self, mock_request):
+        """Testa busca de todas as regras de aceitação."""
+        mock_request.return_value = [{"id": 1, "ruleType": "Age"}]
+
+        client = HealthPlanAPIClient()
+        result = client.get_acceptancerules()
+
+        assert len(result) == 1
+        mock_request.assert_called_once_with("GET", "AcceptanceRule")
+
+    @patch.object(HealthPlanAPIClient, "_make_request")
+    def test_get_adhesionfees(self, mock_request):
+        """Testa busca de todas as taxas de adesão."""
+        mock_request.return_value = [{"id": 1, "value": 150.0}]
+
+        client = HealthPlanAPIClient()
+        result = client.get_adhesionfees()
+
+        assert len(result) == 1
+        mock_request.assert_called_once_with("GET", "AdhesionFee")
+
+    @patch.object(HealthPlanAPIClient, "_make_request")
+    def test_get_promotionaldiscounts(self, mock_request):
+        """Testa busca de todos os descontos promocionais."""
+        mock_request.return_value = [{"id": 1, "discountPercentage": 10.0}]
+
+        client = HealthPlanAPIClient()
+        result = client.get_promotionaldiscounts()
+
+        assert len(result) == 1
+        mock_request.assert_called_once_with("GET", "PromotionalDiscount")
+
+    @patch.object(HealthPlanAPIClient, "_make_request")
+    def test_get_procedurecoparticipations(self, mock_request):
+        """Testa busca de todas as coparticipações de procedimentos."""
+        mock_request.return_value = [{"id": 1, "procedure": "Consulta"}]
+
+        client = HealthPlanAPIClient()
+        result = client.get_procedurecoparticipations()
+
+        assert len(result) == 1
+        mock_request.assert_called_once_with("GET", "ProcedureCoparticipation")
+
+    @patch.object(HealthPlanAPIClient, "_make_request")
+    def test_get_planpriceranges(self, mock_request):
+        """Testa busca de todas as faixas de preços de planos."""
+        mock_request.return_value = [{"id": 1, "originalValue": 500.0}]
+
+        client = HealthPlanAPIClient()
+        result = client.get_planpriceranges()
+
+        assert len(result) == 1
+        mock_request.assert_called_once_with("GET", "PlanPriceRange")

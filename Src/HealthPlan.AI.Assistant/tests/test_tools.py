@@ -156,3 +156,123 @@ class TestToolsMetadata:
         """Verifica se as ferramentas são chamáveis."""
         assert callable(get_all_companies.invoke)
         assert callable(create_company.invoke)
+
+
+class TestPlanCoverageTools:
+    """Testes para as ferramentas de coberturas de planos."""
+
+    @patch("tools.plancoverage_tools.api_client")
+    def test_get_all_plancoverages_success(self, mock_client):
+        """Testa busca de todas as coberturas de planos com sucesso."""
+        from tools.plancoverage_tools import get_all_plancoverages
+        
+        mock_client.get_plancoverages.return_value = [
+            {"id": 1, "healthPlanId": 1, "coverageId": 1, "premiumValue": 50.0},
+            {"id": 2, "healthPlanId": 1, "coverageId": 2, "premiumValue": 100.0},
+        ]
+
+        result = get_all_plancoverages.invoke({})
+
+        assert "2 cobertura(s) de plano" in result
+        assert mock_client.get_plancoverages.called
+
+    @patch("tools.plancoverage_tools.api_client")
+    def test_create_plancoverage_success(self, mock_client):
+        """Testa criação de cobertura de plano com sucesso."""
+        from tools.plancoverage_tools import create_plancoverage
+        
+        mock_client.create_plancoverage.return_value = {"id": 1}
+
+        result = create_plancoverage.invoke({
+            "health_plan_id": 1,
+            "coverage_id": 1,
+            "premium_value": 50.0,
+        })
+
+        assert "✅" in result
+        assert "criada com sucesso" in result
+
+
+class TestAcceptanceRuleTools:
+    """Testes para as ferramentas de regras de aceitação."""
+
+    @patch("tools.acceptancerule_tools.api_client")
+    def test_get_all_acceptancerules_success(self, mock_client):
+        """Testa busca de todas as regras de aceitação com sucesso."""
+        from tools.acceptancerule_tools import get_all_acceptancerules
+        
+        mock_client.get_acceptancerules.return_value = [
+            {"id": 1, "healthPlanId": 1, "ruleType": "Age", "operator": ">="},
+        ]
+
+        result = get_all_acceptancerules.invoke({})
+
+        assert "1 regra(s) de aceitação" in result
+
+
+class TestAdhesionFeeTools:
+    """Testes para as ferramentas de taxas de adesão."""
+
+    @patch("tools.adhesionfee_tools.api_client")
+    def test_get_all_adhesionfees_success(self, mock_client):
+        """Testa busca de todas as taxas de adesão com sucesso."""
+        from tools.adhesionfee_tools import get_all_adhesionfees
+        
+        mock_client.get_adhesionfees.return_value = [
+            {"id": 1, "healthPlanId": 1, "value": 150.0},
+        ]
+
+        result = get_all_adhesionfees.invoke({})
+
+        assert "1 taxa(s) de adesão" in result
+
+
+class TestPromotionalDiscountTools:
+    """Testes para as ferramentas de descontos promocionais."""
+
+    @patch("tools.promotionaldiscount_tools.api_client")
+    def test_get_all_promotionaldiscounts_success(self, mock_client):
+        """Testa busca de todos os descontos promocionais com sucesso."""
+        from tools.promotionaldiscount_tools import get_all_promotionaldiscounts
+        
+        mock_client.get_promotionaldiscounts.return_value = [
+            {"id": 1, "healthPlanId": 1, "discountPercentage": 10.0},
+        ]
+
+        result = get_all_promotionaldiscounts.invoke({})
+
+        assert "1 desconto(s) promocional(is)" in result
+
+
+class TestProcedureCoparticipationTools:
+    """Testes para as ferramentas de coparticipações de procedimentos."""
+
+    @patch("tools.procedurecoparticipation_tools.api_client")
+    def test_get_all_procedurecoparticipations_success(self, mock_client):
+        """Testa busca de todas as coparticipações de procedimentos com sucesso."""
+        from tools.procedurecoparticipation_tools import get_all_procedurecoparticipations
+        
+        mock_client.get_procedurecoparticipations.return_value = [
+            {"id": 1, "healthPlanId": 1, "procedure": "Consulta", "value": 30.0},
+        ]
+
+        result = get_all_procedurecoparticipations.invoke({})
+
+        assert "1 coparticipação(ões) de procedimento" in result
+
+
+class TestPlanPriceRangeTools:
+    """Testes para as ferramentas de faixas de preços de planos."""
+
+    @patch("tools.planpricerange_tools.api_client")
+    def test_get_all_planpriceranges_success(self, mock_client):
+        """Testa busca de todas as faixas de preços de planos com sucesso."""
+        from tools.planpricerange_tools import get_all_planpriceranges
+        
+        mock_client.get_planpriceranges.return_value = [
+            {"id": 1, "healthPlanId": 1, "ageRangeId": 1, "originalValue": 500.0},
+        ]
+
+        result = get_all_planpriceranges.invoke({})
+
+        assert "1 faixa(s) de preços de plano" in result
