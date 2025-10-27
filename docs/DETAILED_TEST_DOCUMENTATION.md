@@ -433,95 +433,95 @@ public AccountRepositoryTests()
 ### TokenTests
 
 **File**: `Src/Authentication.Tests/Unit/TokenTests.cs`  
-**Purpose**: Tests a entidade Token utilizada para JWT  
+**Purpose**: Tests the Token entity used for JWT  
 **Total Tests**: 15+ tests  
 
 #### Implemented Tests:
 
 ##### 1. `Token_WhenCreated_ShouldRequireAccessTokenAndUserName()`
 **Purpose**: Verifies if Token can be created with basic properties  
-**Setup**: Valores valids para AccessToken, UserName e Expiration  
-**Execution**: Creates Token com properties definidas  
+**Setup**: Valid values for AccessToken, UserName and Expiration  
+**Execution**: Creates Token with defined properties  
 **Verification**: 
-- AccessToken must have value correct
-- UserName must have value correct
-- Expiration must be no futuro
+- AccessToken must have correct value
+- UserName must have correct value
+- Expiration must be in the future
 
 ##### 2. `Token_WithValidJwtFormat_ShouldAcceptToken()`
-**Purpose**: Tests Token com JWT valid  
-**Setup**: JWT real de exemplo com 3 partes  
-**Execution**: Creates Token com JWT valid  
+**Purpose**: Tests Token with valid JWT  
+**Setup**: Real example JWT with 3 parts  
+**Execution**: Creates Token with valid JWT  
 **Verification**: 
-- AccessToken must have value do JWT
-- Token must contain pontos (separadores)
-- JWT must have exatamente 3 partes
+- AccessToken must have JWT value
+- Token must contain dots (separators)
+- JWT must have exactly 3 parts
 
 ##### 3. `Token_WithFutureExpiration_ShouldBeValid()`
 **Purpose**: Verifies if Token accepts future expiration  
-**Setup**: Data de expiração 2 horas no futuro  
-**Execution**: Creates Token com expiração futura  
-**Verification**: Expiration must be após momento atual
+**Setup**: Expiration date 2 hours in the future  
+**Execution**: Creates Token with future expiration  
+**Verification**: Expiration must be after current moment
 
 ##### 4. `Token_WithPastExpiration_ShouldStillAllowCreation()`
-**Purpose**: Tests if Token aceita data passada (para test cases)  
-**Setup**: Data de expiração no passado  
-**Execution**: Creates Token com expiração passada  
-**Verification**: Token must be criado normalmente
+**Purpose**: Tests if Token accepts past date (for test cases)  
+**Setup**: Expiration date in the past  
+**Execution**: Creates Token with past expiration  
+**Verification**: Token must be created normally
 
 ##### 5. `Token_WithEmptyAccessToken_ShouldAllowValue()`
-**Purpose**: Tests behavior com AccessToken empty  
+**Purpose**: Tests behavior with empty AccessToken  
 **Setup**: AccessToken = ""  
-**Execution**: Creates Token com AccessToken empty  
-**Verification**: AccessToken must accept string empty
+**Execution**: Creates Token with empty AccessToken  
+**Verification**: AccessToken must accept empty string
 
 ##### 6. `Token_WithNullUserName_ShouldAllowValue()`
-**Purpose**: Tests behavior com UserName null  
+**Purpose**: Tests behavior with null UserName  
 **Setup**: UserName = null  
-**Execution**: Creates Token com UserName null  
-**Verification**: UserName must accept value null
+**Execution**: Creates Token with null UserName  
+**Verification**: UserName must accept null value
 
 ---
 
 ### ValidationTests
 
 **File**: `Src/Authentication.Tests/Unit/ValidationTests.cs`  
-**Purpose**: Tests helper of validation utilizado nos controllers  
+**Purpose**: Tests validation helper used in controllers  
 **Total Tests**: 10+ tests  
 **Dependências Mockadas**: IValidator, IServiceProvider
 
 #### Implemented Tests:
 
 ##### 1. `ValidationHelper_WithValidEntity_ShouldReturnNull()`
-**Purpose**: Tests validação com entidade valid  
+**Purpose**: Tests validation with valid entity  
 **Setup**: 
-- Entity TestEntity valid
+- Valid TestEntity entity
 - Mock validator returns ValidationResult without errors  
 **Execution**: Calls ValidationHelper.ValidateEntityAsync()  
 **Verification**: Must return null (without errors)
 
 ##### 2. `ValidationHelper_WithInvalidEntity_ShouldReturnBadRequest()`
-**Purpose**: Tests validação com entidade invalid  
+**Purpose**: Tests validation with invalid entity  
 **Setup**: 
-- Entity TestEntity invalid
-- Mock validator returns errors of validation  
+- Invalid TestEntity entity
+- Mock validator returns validation errors  
 **Execution**: Calls ValidationHelper.ValidateEntityAsync()  
 **Verification**: Must return BadRequestObjectResult
 
 ##### 3. `ValidationHelper_WithMultipleErrors_ShouldReturnAllErrors()`
-**Purpose**: Tests if all errors of validation are returned  
+**Purpose**: Tests if all validation errors are returned  
 **Setup**: 
-- Multiple errors of validation (Name e Email)
+- Multiple validation errors (Name and Email)
 - Mock validator returns list of errors  
 **Execution**: Calls ValidationHelper.ValidateEntityAsync()  
 **Verification**: 
 - Must return BadRequest
-- Must conter all erros
+- Must contain all errors
 
 ##### 4. `ValidationHelper_WithNullValidator_ShouldThrowException()`
-**Purpose**: Tests behavior quando validator não está registrado  
+**Purpose**: Tests behavior when validator is not registered  
 **Setup**: ServiceProvider returns null for validator  
 **Execution**: Calls ValidationHelper.ValidateEntityAsync()  
-**Verification**: Must lançar exception appropriate
+**Verification**: Must throw appropriate exception
 
 ---
 
@@ -572,7 +572,7 @@ public AccountPayloadValidatorTests()
 **Purpose**: Tests acceptance of allowed special characters  
 **Setup**: DTO com userName contendo caracteres especiais valids  
 **Execution**: _validator.TestValidate(model)  
-**Verification**: Must passar na validação
+**Verification**: Must pass validation
 
 ##### Password Validation Tests
 
@@ -671,7 +671,7 @@ public AccountPayloadValidatorTests()
 ##### Data Integrity Tests
 
 ##### 7. `UpdateAccount_WithNonExistentId_ShouldThrowNotFoundException()`
-**Purpose**: Tests atualização account inexisting  
+**Purpose**: Tests updating nonexistent account  
 **Setup**: Repository mock returns null for GetById  
 **Execution**: _accountService.UpdateAccount(account)  
 **Verification**: Must lançar NotFoundException
@@ -687,14 +687,14 @@ public AccountPayloadValidatorTests()
 ### PasswordHashingTests
 
 **File**: `Src/Authentication.Tests/Unit/PasswordHashingTests.cs`  
-**Purpose**: Tests funções de hash password usando Argon2  
+**Purpose**: Tests password hashing functions using Argon2  
 **Total Tests**: 12+ tests  
 
 #### Implemented Tests:
 
 ##### 1. `ComputeArgon2Hash_WithValidPassword_ShouldReturnHash()`
 **Purpose**: Verifies if hash is generated correctly  
-**Setup**: Senha valid "testpassword123"  
+**Setup**: Valid password "testpassword123"  
 **Execution**: Calls StringHelper.ComputeArgon2Hash()  
 **Verification**: 
 - Must return hash not empty
@@ -702,35 +702,35 @@ public AccountPayloadValidatorTests()
 
 ##### 2. `ComputeArgon2Hash_WithSamePassword_ShouldReturnDifferentHashes()`
 **Purpose**: Verifies if hashes are unique (random salt)  
-**Setup**: Mesma password hashada duas vezes  
-**Execution**: Calls ComputeArgon2Hash() duas vezes  
-**Verification**: Hashes devem ser diferentes
+**Setup**: Same password hashed twice  
+**Execution**: Calls ComputeArgon2Hash() twice  
+**Verification**: Hashes must be different
 
 ##### 3. `VerifyArgon2Hash_WithCorrectPassword_ShouldReturnTrue()`
 **Purpose**: Tests verification with correct password  
 **Setup**: 
-- Senha original
-- Hash gerado da password  
+- Original password
+- Generated hash of password  
 **Execution**: Calls StringHelper.VerifyArgon2Hash()  
 **Verification**: Must return true
 
 ##### 4. `VerifyArgon2Hash_WithIncorrectPassword_ShouldReturnFalse()`
 **Purpose**: Tests verification with incorrect password  
 **Setup**: 
-- Hash de "password123"
+- Hash of "password123"
 - Verification with "wrongpassword"  
 **Execution**: Calls VerifyArgon2Hash()  
 **Verification**: Must return false
 
 ##### 5. `ComputeArgon2Hash_WithEmptyPassword_ShouldReturnHash()`
-**Purpose**: Tests hash password empty  
+**Purpose**: Tests hash of empty password  
 **Setup**: Password = ""  
 **Execution**: Calls ComputeArgon2Hash()  
-**Verification**: Must return hash valid
+**Verification**: Must return valid hash
 
 ##### 6. `VerifyArgon2Hash_WithNullValues_ShouldHandleGracefully()`
-**Purpose**: Tests behavior com values nulls  
-**Setup**: password = null ou hash = null  
+**Purpose**: Tests behavior with null values  
+**Setup**: password = null or hash = null  
 **Execution**: Calls VerifyArgon2Hash()  
 **Verification**: Must return false without throwing exception
 
@@ -739,57 +739,57 @@ public AccountPayloadValidatorTests()
 ### LocalizationTests
 
 **File**: `Src/Authentication.Tests/Unit/LocalizationTests.cs`  
-**Purpose**: Tests funcionalidades de internacionalização e localização  
+**Purpose**: Tests internationalization and localization functionalities  
 **Total Tests**: 15+ tests  
-**Tested Cultures**: en (English), pt-BR (Portuguese brasileiro)
+**Tested Cultures**: en (English), pt-BR (Brazilian Portuguese)
 
 #### Implemented Tests:
 
 ##### 1. `ResourceAPI_AccountCreatedSuccessfully_ReturnsCorrectTranslation()` (Theory Test)
 **Purpose**: Verifies if API messages are correctly translated  
 **Setup**: 
-- Culturas: "en", "pt-BR"
-- Textos expecteds: "Account created successfully.", "Conta criada com sucesso."  
+- Cultures: "en", "pt-BR"
+- Expected texts: "Account created successfully.", "Conta criada com sucesso."  
 **Execution**: 
 - Sets CultureInfo.CurrentUICulture
 - Accesses ResourceAPI.AccountCreatedSuccessfully  
-**Verification**: Texto deve corresponder à cultura definida
+**Verification**: Text must match the defined culture
 
 ##### 2. `ResourceStartup_SwaggerAuthenticationDescription_ReturnsCorrectTranslation()`
-**Purpose**: Tests localização de descrições do Swagger  
-**Setup**: Cultura "en" com descrição expected  
+**Purpose**: Tests localization of Swagger descriptions  
+**Setup**: Culture "en" with expected description  
 **Execution**: Accesses ResourceStartup.SwaggerAuthenticationDescription  
-**Verification**: Must return texto in English
+**Verification**: Must return text in English
 
 ##### 3. `ResourceLogin_DuplicateUserName_ReturnsCorrectTranslation()` (Theory Test)
-**Purpose**: Verifies tradução de error messages de login  
-**Setup**: Múltiplas culturas e error messages  
+**Purpose**: Verifies translation of login error messages  
+**Setup**: Multiple cultures and error messages  
 **Execution**: Accesses ResourceLogin.DuplicateUserName  
-**Verification**: Mensagem must be na cultura correct
+**Verification**: Message must be in correct culture
 
 ##### 4. `Culture_SwitchDuringExecution_ShouldUpdateMessages()`
 **Purpose**: Tests culture change during execution  
 **Setup**: 
-- Inicia com cultura "en"
-- Troca para "pt-BR"  
+- Starts with "en" culture
+- Switches to "pt-BR"  
 **Execution**: 
-- Accesses recursos in English
-- Troca cultura
-- Accesses sames recursos  
-**Verification**: Mensagens devem refletir mudança de cultura
+- Accesses resources in English
+- Changes culture
+- Accesses same resources  
+**Verification**: Messages must reflect culture change
 
 ##### 5. `ResourceManager_WithUnsupportedCulture_ShouldFallbackToDefault()`
-**Purpose**: Tests fallback para cultura padrão  
-**Setup**: Cultura não suportada (ex: "fr-FR")  
-**Execution**: Sets cultura não suportada e acessa recursos  
-**Verification**: Must usar cultura padrão (English)
+**Purpose**: Tests fallback to default culture  
+**Setup**: Unsupported culture (e.g., "fr-FR")  
+**Execution**: Sets unsupported culture and accesses resources  
+**Verification**: Must use default culture (English)
 
 ---
 
 ### ActionPayloadValidatorTests
 
 **File**: `Src/Authentication.Tests/Unit/ActionPayloadValidatorTests.cs`  
-**Purpose**: Tests validação de payload para entidade Action  
+**Purpose**: Tests payload validation for Action entity  
 **Total Tests**: 15+ tests
 
 #### Test Groups:
@@ -803,7 +803,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must not have validation error
 
 ##### 2. `Name_WhenEmpty_ShouldHaveValidationError()`
-**Purpose**: Tests validação com nome empty  
+**Purpose**: Tests validation with empty name  
 **Setup**: ActionPayLoadDTO com Name = ""  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must ter error of validation
@@ -827,7 +827,7 @@ public AccountPayloadValidatorTests()
 ### ClaimPayloadValidatorTests
 
 **File**: `Src/Authentication.Tests/Unit/ClaimPayloadValidatorTests.cs`  
-**Purpose**: Tests validação de payload para entidade Claim  
+**Purpose**: Tests payload validation for Claim entity  
 **Total Tests**: 12+ tests
 
 #### Test Groups:
@@ -841,7 +841,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must not have validation error
 
 ##### 2. `Type_WhenInvalidEnum_ShouldHaveValidationError()`
-**Purpose**: Tests validação com tipo de claim invalid  
+**Purpose**: Tests validation with invalid claim type  
 **Setup**: ClaimPayLoadDTO com Type fora do enum  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must ter error of validation
@@ -859,7 +859,7 @@ public AccountPayloadValidatorTests()
 ### ClaimActionPayloadValidatorTests
 
 **File**: `Src/Authentication.Tests/Unit/ClaimActionPayloadValidatorTests.cs`  
-**Purpose**: Tests validação de payload para relacionamento Claim-Action  
+**Purpose**: Tests payload validation for Claim-Action relationship  
 **Total Tests**: 10+ tests
 
 #### Test Groups:
@@ -873,7 +873,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must not have validation error
 
 ##### 2. `IdClaim_WhenZero_ShouldHaveValidationError()`
-**Purpose**: Tests validação com ID de claim zero  
+**Purpose**: Tests validation with zero claim ID  
 **Setup**: ClaimActionPayLoadDTO com IdClaim = 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must ter error of validation
@@ -887,7 +887,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must not have validation error
 
 ##### 4. `IdAction_WhenNegative_ShouldHaveValidationError()`
-**Purpose**: Tests validação com ID de action negativo  
+**Purpose**: Tests validation with negative action ID  
 **Setup**: ClaimActionPayLoadDTO com IdAction < 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must ter error of validation
@@ -897,7 +897,7 @@ public AccountPayloadValidatorTests()
 ### AccountClaimActionPayloadValidatorTests
 
 **File**: `Src/Authentication.Tests/Unit/AccountClaimActionPayloadValidatorTests.cs`  
-**Purpose**: Tests validação de payload para relacionamento Account-Claim-Action  
+**Purpose**: Tests payload validation for Account-Claim-Action relationship  
 **Total Tests**: 12+ tests
 
 #### Test Groups:
@@ -911,7 +911,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must not have validation error
 
 ##### 2. `IdAccount_WhenZero_ShouldHaveValidationError()`
-**Purpose**: Tests validação com ID account zero  
+**Purpose**: Tests validation with zero account ID  
 **Setup**: AccountClaimActionPayLoadDTO com IdAccount = 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must ter error of validation
@@ -925,7 +925,7 @@ public AccountPayloadValidatorTests()
 **Verification**: Must not have validation error
 
 ##### 4. `IdClaimAction_WhenNegative_ShouldHaveValidationError()`
-**Purpose**: Tests validação com ID de claim-action negativo  
+**Purpose**: Tests validation with negative claim-action ID  
 **Setup**: AccountClaimActionPayLoadDTO com IdClaimAction < 0  
 **Execution**: _validator.TestValidate(dto)  
 **Verification**: Must ter error of validation
@@ -983,7 +983,7 @@ public AccountPayloadValidatorTests()
 ### ResourceStartupTests
 
 **File**: `Src/Authentication.Tests/Unit/ResourceStartupTests.cs`  
-**Purpose**: Tests recursos utilizados na inicialização da aplicação  
+**Purpose**: Tests resources used in application startup  
 **Total Tests**: 5+ tests
 
 #### Implemented Tests:
@@ -1083,7 +1083,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Se criada, resposta must contain data da conta
 
 ##### 6. `AddAccount_WithDuplicateUserName_ShouldReturnConflict()`
-**Purpose**: Tests criação com userName duplicate  
+**Purpose**: Tests creation with duplicate userName  
 **Setup**: 
 - Primeira requisição para criar conta
 - Segunda requisição com same userName  
@@ -1125,7 +1125,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Must return NotFound
 
 ##### 4. `CreateAccount_WithValidData_ShouldReturnCreated()`
-**Purpose**: Tests criação account valid  
+**Purpose**: Tests creating valid account  
 **Setup**: Payload com data uniques e valids  
 **Execution**: POST para /Account  
 **Verification**: 
@@ -1133,7 +1133,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Headers de localização devem estar presentes
 
 ##### 5. `UpdateAccount_WithValidData_ShouldReturnOk()`
-**Purpose**: Tests atualização account existing  
+**Purpose**: Tests updating existing account  
 **Setup**: 
 - Conta existing
 - Dados atualizados valids  
@@ -1173,7 +1173,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Segunda requisição: Conflict (409)
 
 ##### 2. `CreateAccount_WithInvalidData_ShouldReturnValidationErrors()`
-**Purpose**: Tests validação of data de entrada  
+**Purpose**: Tests input data validation  
 **Setup**: Payloads com data invalids (campos obrigatórios emptys)  
 **Execution**: POST /Account with invalid data  
 **Verification**: 
@@ -1181,7 +1181,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Detalhes of validation na resposta
 
 ##### 3. `UpdateAccount_WithConflictingUserName_ShouldReturnConflict()`
-**Purpose**: Tests atualização que causaria conflito userName  
+**Purpose**: Tests update that would cause userName conflict  
 **Setup**: 
 - Duas accounts existings
 - Atualização da primeira com userName da segunda  
@@ -1209,7 +1209,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 ### ActionControllerTests
 
 **File**: `Src/Authentication.Tests/Integration/ActionControllerTests.cs`  
-**Purpose**: Tests endpoints relacionados à entidade Action  
+**Purpose**: Tests endpoints related to Action entity  
 **Total Tests**: 20+ tests  
 **Setup**: AuthenticationWebApplicationFactory com data test
 
@@ -1231,7 +1231,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - ID invalid: BadRequest ou NotFound
 
 ##### 3. `CreateAction_WithValidData_ShouldReturnExpectedStatusCode()`
-**Purpose**: Tests criação de nova ação  
+**Purpose**: Tests creating new action  
 **Setup**: 
 - Payload JSON valid com Name e Description
 - Headers appropriates  
@@ -1245,7 +1245,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be BadRequest
 
 ##### 5. `UpdateAction_WithValidData_ShouldReturnExpectedStatusCode()`
-**Purpose**: Tests atualização de ação existing  
+**Purpose**: Tests updating existing action  
 **Setup**: 
 - ID de ação existing
 - Payload with updated data  
@@ -1289,7 +1289,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be OK ou NotFound
 
 ##### 3. `CreateClaimAction_WithValidData_ShouldReturnExpectedStatusCode()`
-**Purpose**: Tests criação de relacionamento claim-action  
+**Purpose**: Tests creating claim-action relationship  
 **Setup**: 
 - IDs valids de Claim e Action existings
 - Payload JSON correct  
@@ -1297,7 +1297,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 **Verification**: Status must be Created ou BadRequest
 
 ##### 4. `CreateClaimAction_WithNonExistentIds_ShouldReturnBadRequest()`
-**Purpose**: Tests criação com IDs inexistings  
+**Purpose**: Tests creation with nonexistent IDs  
 **Setup**: 
 - IdClaim ou IdAction que não existem no sistema
 - Payload bem formado  
@@ -1440,7 +1440,7 @@ public AuthenticationControllerTests(AuthenticationWebApplicationFactory factory
 - Resposta must have formato expected
 
 ##### 2. `PostExample_WithValidData_ShouldReturnCreated()`
-**Purpose**: Tests criação via endpoint de exemplo  
+**Purpose**: Tests creation via example endpoint  
 **Setup**: Payload valid  
 **Execution**: POST /Example/Create  
 **Verification**: Status must be Created

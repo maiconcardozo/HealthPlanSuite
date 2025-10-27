@@ -1,105 +1,105 @@
 #!/bin/bash
 
 # Authentication Tests Runner
-# Este script facilita a execução dos testes do projeto Authentication
+# This script facilitates the execution of Authentication project tests
 
 set -e
 
 echo "🧪 Authentication Tests Runner"
 echo "================================"
 
-# Função para mostrar ajuda
+# Function to show help
 show_help() {
-    echo "Uso: $0 [opção]"
+    echo "Usage: $0 [option]"
     echo ""
-    echo "Opções:"
-    echo "  all           Executa todos os testes (padrão)"
-    echo "  integration   Executa apenas testes de integração"
-    echo "  unit          Executa apenas testes unitários"
-    echo "  coverage      Executa testes com cobertura de código"
-    echo "  watch         Executa testes em modo watch"
-    echo "  verbose       Executa testes com saída detalhada"
-    echo "  clean         Limpa e reconstrói antes de executar"
-    echo "  help          Mostra esta ajuda"
+    echo "Options:"
+    echo "  all           Run all tests (default)"
+    echo "  integration   Run only integration tests"
+    echo "  unit          Run only unit tests"
+    echo "  coverage      Run tests with code coverage"
+    echo "  watch         Run tests in watch mode"
+    echo "  verbose       Run tests with detailed output"
+    echo "  clean         Clean and rebuild before running"
+    echo "  help          Show this help"
     echo ""
-    echo "Exemplos:"
-    echo "  $0                # Executa todos os testes"
-    echo "  $0 integration    # Executa apenas testes de integração"
-    echo "  $0 coverage       # Executa com cobertura de código"
+    echo "Examples:"
+    echo "  $0                # Run all tests"
+    echo "  $0 integration    # Run only integration tests"
+    echo "  $0 coverage       # Run with code coverage"
 }
 
-# Navegar para o diretório raiz do projeto
+# Navigate to the project root directory
 cd "$(dirname "$0")/.."
 
-# Verificar se o projeto de testes existe
+# Check if test project exists
 if [ ! -f "Src/Authentication.Tests/Authentication.Tests.csproj" ]; then
-    echo "❌ Projeto de testes não encontrado!"
-    echo "Verifique se você está na raiz do projeto Authentication."
+    echo "❌ Test project not found!"
+    echo "Check if you are in the Authentication project root."
     exit 1
 fi
 
-# Restaurar dependências se necessário
+# Restore dependencies if necessary
 if [ ! -d "Src/Authentication.Tests/bin" ]; then
-    echo "📦 Restaurando dependências..."
+    echo "📦 Restoring dependencies..."
     dotnet restore Solution/Authentication.sln
 fi
 
-# Função para executar testes
+# Function to run tests
 run_tests() {
     local test_command="$1"
-    echo "🏃 Executando: $test_command"
+    echo "🏃 Running: $test_command"
     echo ""
     
     if eval "$test_command"; then
         echo ""
-        echo "✅ Testes executados com sucesso!"
+        echo "✅ Tests executed successfully!"
     else
         echo ""
-        echo "❌ Alguns testes falharam!"
+        echo "❌ Some tests failed!"
         exit 1
     fi
 }
 
-# Processar argumentos
+# Process arguments
 case "${1:-all}" in
     "all")
-        echo "🎯 Executando todos os testes..."
+        echo "🎯 Running all tests..."
         run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj"
         ;;
     
     "integration")
-        echo "🔗 Executando testes de integração..."
+        echo "🔗 Running integration tests..."
         run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --filter \"FullyQualifiedName~Integration\""
         ;;
     
     "unit")
-        echo "🧩 Executando testes unitários..."
+        echo "🧩 Running unit tests..."
         run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --filter \"FullyQualifiedName~Unit\""
         ;;
     
     "coverage")
-        echo "📊 Executando testes com cobertura de código..."
+        echo "📊 Running tests with code coverage..."
         run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --collect:\"XPlat Code Coverage\""
         echo ""
-        echo "📈 Relatório de cobertura gerado em: TestResults/"
+        echo "📈 Coverage report generated in: TestResults/"
         ;;
     
     "watch")
-        echo "👀 Executando testes em modo watch..."
-        echo "Pressione Ctrl+C para parar"
+        echo "👀 Running tests in watch mode..."
+        echo "Press Ctrl+C to stop"
         dotnet watch test Src/Authentication.Tests/Authentication.Tests.csproj
         ;;
     
     "verbose")
-        echo "📝 Executando testes com saída detalhada..."
+        echo "📝 Running tests with detailed output..."
         run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --verbosity normal"
         ;;
     
     "clean")
-        echo "🧹 Limpando e reconstruindo..."
+        echo "🧹 Cleaning and rebuilding..."
         dotnet clean Solution/Authentication.sln
         dotnet build Solution/Authentication.sln
-        echo "🎯 Executando todos os testes..."
+        echo "🎯 Running all tests..."
         run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj"
         ;;
     
@@ -108,7 +108,7 @@ case "${1:-all}" in
         ;;
     
     *)
-        echo "❌ Opção inválida: $1"
+        echo "❌ Invalid option: $1"
         echo ""
         show_help
         exit 1
@@ -116,4 +116,4 @@ case "${1:-all}" in
 esac
 
 echo ""
-echo "🎉 Script executado com sucesso!"
+echo "🎉 Script executed successfully!"
