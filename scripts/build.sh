@@ -1,120 +1,120 @@
 #!/bin/bash
 
 # Authentication Build Script
-# Este script facilita a compilação do projeto Authentication
+# This script facilitates the compilation of the Authentication project
 
 set -e
 
 echo "🏗️ Authentication Build Script"
 echo "=============================="
 
-# Função para mostrar ajuda
+# Function to show help
 show_help() {
-    echo "Uso: $0 [opção]"
+    echo "Usage: $0 [option]"
     echo ""
-    echo "Opções:"
-    echo "  debug         Compila em modo Debug (padrão)"
-    echo "  release       Compila em modo Release"
-    echo "  clean         Limpa e reconstrói"
-    echo "  restore       Apenas restaura dependências"
-    echo "  verify        Verifica compilação e testes"
-    echo "  help          Mostra esta ajuda"
+    echo "Options:"
+    echo "  debug         Compile in Debug mode (default)"
+    echo "  release       Compile in Release mode"
+    echo "  clean         Clean and rebuild"
+    echo "  restore       Only restore dependencies"
+    echo "  verify        Verify compilation and tests"
+    echo "  help          Show this help"
     echo ""
-    echo "Exemplos:"
-    echo "  $0              # Compila em modo Debug"
-    echo "  $0 release      # Compila em modo Release"
-    echo "  $0 verify       # Verifica tudo funciona"
+    echo "Examples:"
+    echo "  $0              # Compile in Debug mode"
+    echo "  $0 release      # Compile in Release mode"
+    echo "  $0 verify       # Verify everything works"
 }
 
-# Navegar para o diretório raiz do projeto
+# Navigate to the project root directory
 cd "$(dirname "$0")/.."
 
-# Verificar se o arquivo de solução existe
+# Check if solution file exists
 if [ ! -f "Solution/Authentication.sln" ]; then
-    echo "❌ Arquivo de solução não encontrado!"
-    echo "Verifique se você está na raiz do projeto Authentication."
+    echo "❌ Solution file not found!"
+    echo "Check if you are in the Authentication project root."
     exit 1
 fi
 
-# Verificar .NET 9.0
-echo "🔍 Verificando versão do .NET..."
+# Check .NET 9.0
+echo "🔍 Checking .NET version..."
 DOTNET_VERSION=$(dotnet --version 2>/dev/null || echo "not found")
 if [[ ! "$DOTNET_VERSION" =~ ^9\. ]]; then
-    echo "❌ .NET 9.0 SDK não encontrado!"
-    echo "Versão atual: $DOTNET_VERSION"
-    echo "Instale o .NET 9.0 SDK de: https://dotnet.microsoft.com/download/dotnet/9.0"
+    echo "❌ .NET 9.0 SDK not found!"
+    echo "Current version: $DOTNET_VERSION"
+    echo "Install .NET 9.0 SDK from: https://dotnet.microsoft.com/download/dotnet/9.0"
     exit 1
 fi
-echo "✅ .NET versão: $DOTNET_VERSION"
+echo "✅ .NET version: $DOTNET_VERSION"
 
-# Função para executar build
+# Function to execute build
 run_build() {
     local configuration="$1"
-    echo "🏃 Compilando em modo $configuration..."
+    echo "🏃 Compiling in $configuration mode..."
     echo ""
     
     if dotnet build Solution/Authentication.sln --configuration "$configuration"; then
         echo ""
-        echo "✅ Compilação concluída com sucesso!"
+        echo "✅ Compilation completed successfully!"
     else
         echo ""
-        echo "❌ Falha na compilação!"
+        echo "❌ Compilation failed!"
         exit 1
     fi
 }
 
-# Processar argumentos
+# Process arguments
 case "${1:-debug}" in
     "debug")
-        echo "🛠️ Restaurando dependências..."
+        echo "🛠️ Restoring dependencies..."
         dotnet restore Solution/Authentication.sln
         run_build "Debug"
         ;;
     
     "release")
-        echo "🛠️ Restaurando dependências..."
+        echo "🛠️ Restoring dependencies..."
         dotnet restore Solution/Authentication.sln
         run_build "Release"
         ;;
     
     "clean")
-        echo "🧹 Limpando projeto..."
+        echo "🧹 Cleaning project..."
         dotnet clean Solution/Authentication.sln
-        echo "🛠️ Restaurando dependências..."
+        echo "🛠️ Restoring dependencies..."
         dotnet restore Solution/Authentication.sln
         run_build "Debug"
         ;;
     
     "restore")
-        echo "📦 Restaurando dependências..."
+        echo "📦 Restoring dependencies..."
         if dotnet restore Solution/Authentication.sln; then
-            echo "✅ Dependências restauradas com sucesso!"
+            echo "✅ Dependencies restored successfully!"
         else
-            echo "❌ Falha ao restaurar dependências!"
+            echo "❌ Failed to restore dependencies!"
             exit 1
         fi
         ;;
     
     "verify")
-        echo "🔍 Verificação completa do projeto..."
+        echo "🔍 Full project verification..."
         echo ""
         
-        # Restaurar
-        echo "📦 Restaurando dependências..."
+        # Restore
+        echo "📦 Restoring dependencies..."
         dotnet restore Solution/Authentication.sln
         
-        # Compilar Release
+        # Compile Release
         run_build "Release"
         
-        # Executar testes
+        # Run tests
         echo ""
-        echo "🧪 Executando testes..."
+        echo "🧪 Running tests..."
         scripts/run-tests.sh all
         
         echo ""
-        echo "🎉 Verificação completa bem-sucedida!"
-        echo "✅ Projeto compila corretamente"
-        echo "✅ Todos os testes passaram"
+        echo "🎉 Full verification successful!"
+        echo "✅ Project compiles correctly"
+        echo "✅ All tests passed"
         ;;
     
     "help"|"-h"|"--help")
@@ -122,7 +122,7 @@ case "${1:-debug}" in
         ;;
     
     *)
-        echo "❌ Opção inválida: $1"
+        echo "❌ Invalid option: $1"
         echo ""
         show_help
         exit 1
@@ -130,4 +130,4 @@ case "${1:-debug}" in
 esac
 
 echo ""
-echo "🎉 Script executado com sucesso!"
+echo "🎉 Script executed successfully!"

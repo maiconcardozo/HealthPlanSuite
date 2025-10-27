@@ -28,7 +28,7 @@ namespace HealthPlan.API
         public void ConfigureServices(IServiceCollection services)
         {
             // ==============================
-            // CONFIGURAÇÃO DO AMBIENTE
+            // ENVIRONMENT CONFIGURATION
             // ==============================
             // Detect if running under test (xUnit, NUnit, MSTest, etc.)
             var isTest = AppDomain.CurrentDomain.GetAssemblies()
@@ -57,7 +57,7 @@ namespace HealthPlan.API
             services.AddHttpContextAccessor();
 
             // ==============================
-            // LOCALIZAÇÃO
+            // LOCALIZATION
             // ==============================
             services.AddLocalization(options => options.ResourcesPath = "Resource");
             services.Configure<RequestLocalizationOptions>(options =>
@@ -67,7 +67,7 @@ namespace HealthPlan.API
                        .AddSupportedCultures(supportedCultures)
                        .AddSupportedUICultures(supportedCultures);
 
-                // Adicione os providers manualmente!
+                // Add the providers manually!
                 options.RequestCultureProviders = new List<IRequestCultureProvider>
                 {
                     new QueryStringRequestCultureProvider(),
@@ -77,12 +77,12 @@ namespace HealthPlan.API
             });
 
             // ==============================
-            // AUTENTICAÇÃO & DOMÍNIO
+            // AUTHENTICATION & DOMAIN
             // ==============================
             services.AddAuthenticationLoginServices(HealthPlan.API.Helper.Utils.GetConnectionString(appsettings));
 
             // ==============================
-            // CONTROLLERS & VALIDAÇÃO
+            // CONTROLLERS & VALIDATION
             // ==============================
             services.AddControllers();
             services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.AcceptanceRulePayLoadDTO>, HealthPlan.Quote.Validators.AcceptanceRulePayloadValidator>();
@@ -112,7 +112,7 @@ namespace HealthPlan.API
                 options.EnableAnnotations();
                 options.ExampleFilters();
 
-                // Filtros para internacionalização
+                // Filters for internationalization
                 options.OperationFilter<LocalizedSwaggerOperationFilter>();
                 options.DocumentFilter<LocalizedSwaggerDocumentFilter>();
 
@@ -182,7 +182,7 @@ namespace HealthPlan.API
             }
 
             // ==============================
-            // SEGURANÇA & STATIC FILES
+            // SECURITY & STATIC FILES
             // ==============================
             app.UseMiddleware<HealthPlan.API.Middleware.SwaggerAuthMiddleware>();
             app.UseStaticFiles();
@@ -194,12 +194,12 @@ namespace HealthPlan.API
             app.UseCors(ApplicationConstants.Cors.AllowAllPolicy);
 
             // ==============================
-            // CULTURE COOKIE FROM QUERY (deve vir ANTES da localização!)
+            // CULTURE COOKIE FROM QUERY (must come BEFORE localization!)
             // ==============================
             app.UseMiddleware<HealthPlan.API.Middleware.CultureCookieFromQueryMiddleware>();
 
             // ==============================
-            // LOCALIZAÇÃO (deve vir ANTES do Swagger!)
+            // LOCALIZATION (must come BEFORE Swagger!)
             // ==============================
             app.UseRequestLocalization();
 
@@ -219,12 +219,12 @@ namespace HealthPlan.API
             });
 
             // ==============================
-            // EXCEÇÕES
+            // EXCEPTIONS
             // ==============================
             app.UseMiddleware<HealthPlan.API.Middleware.ExceptionHandlingMiddleware>();
 
             // ==============================
-            // ROTEAMENTO & AUTORIZAÇÃO
+            // ROUTING & AUTHORIZATION
             // ==============================
             app.UseRouting();
             app.UseAuthorization();
