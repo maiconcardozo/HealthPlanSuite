@@ -231,3 +231,141 @@ class HealthPlanAPIClient:
     def delete_accommodation(self, accommodation_id: int) -> Dict[str, Any]:
         """Deleta uma acomodação."""
         return self._make_request("DELETE", f"Accommodation/DeleteAccommodation/{accommodation_id}")
+
+    # ==================== PLANCOVERAGES ====================
+
+    def get_plancoverages(self) -> List[Dict[str, Any]]:
+        """Busca todas as coberturas de planos."""
+        return self._make_request("GET", "PlanCoverage/plan-coverages")
+
+    def get_plancoverage(self, plancoverage_id: int) -> Dict[str, Any]:
+        """Busca uma cobertura de plano por ID."""
+        return self._make_request("GET", f"PlanCoverage/{plancoverage_id}")
+
+    def create_plancoverage(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Cria uma nova cobertura de plano."""
+        return self._make_request("POST", "PlanCoverage", data=data)
+
+    def update_plancoverage(self, plancoverage_id: int, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Atualiza uma cobertura de plano existente."""
+        data["id"] = plancoverage_id
+        return self._make_request("PUT", "PlanCoverage", data=data)
+
+    def delete_plancoverage(self, plancoverage_id: int) -> Dict[str, Any]:
+        """Deleta uma cobertura de plano."""
+        return self._make_request("DELETE", f"PlanCoverage/{plancoverage_id}")
+
+    # ==================== ACCEPTANCERULES ====================
+
+    def get_acceptancerules(self) -> List[Dict[str, Any]]:
+        """Busca todas as regras de aceitação."""
+        return self._make_request("GET", "AcceptanceRule")
+
+    def get_acceptancerule(self, acceptancerule_id: int) -> Dict[str, Any]:
+        """Busca uma regra de aceitação por ID."""
+        return self._make_request("GET", f"AcceptanceRule/{acceptancerule_id}")
+
+    def create_acceptancerule(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Cria uma nova regra de aceitação."""
+        return self._make_request("POST", "AcceptanceRule", data=data)
+
+    def update_acceptancerule(self, acceptancerule_id: int, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Atualiza uma regra de aceitação existente."""
+        data["id"] = acceptancerule_id
+        return self._make_request("PUT", "AcceptanceRule", data=data)
+
+    def delete_acceptancerule(self, acceptancerule_id: int) -> Dict[str, Any]:
+        """Deleta uma regra de aceitação."""
+        return self._make_request("DELETE", f"AcceptanceRule/{acceptancerule_id}")
+
+    # ==================== ADHESIONFEES ====================
+
+    def get_adhesionfees(self) -> List[Dict[str, Any]]:
+        """Busca todas as taxas de adesão."""
+        return self._make_request("GET", "AdhesionFee")
+
+    def get_adhesionfee(self, adhesionfee_id: int) -> Dict[str, Any]:
+        """Busca uma taxa de adesão por ID."""
+        return self._make_request("GET", f"AdhesionFee/{adhesionfee_id}")
+
+    def create_adhesionfee(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Cria uma nova taxa de adesão."""
+        return self._make_request("POST", "AdhesionFee", data=data)
+
+    def update_adhesionfee(self, adhesionfee_id: int, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Atualiza uma taxa de adesão existente."""
+        data["id"] = adhesionfee_id
+        return self._make_request("PUT", "AdhesionFee", data=data)
+
+    def delete_adhesionfee(self, adhesionfee_id: int) -> Dict[str, Any]:
+        """Deleta uma taxa de adesão."""
+        return self._make_request("DELETE", f"AdhesionFee/{adhesionfee_id}")
+
+    # ==================== PROMOTIONALDISCOUNTS ====================
+
+    def get_promotionaldiscounts(self) -> List[Dict[str, Any]]:
+        """Busca todos os descontos promocionais."""
+        return self._make_request("GET", "PromotionalDiscount")
+
+    def get_promotionaldiscount(self, promotionaldiscount_id: int) -> Dict[str, Any]:
+        """Busca um desconto promocional por ID."""
+        return self._make_request("GET", f"PromotionalDiscount/{promotionaldiscount_id}")
+
+    def create_promotionaldiscount(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Cria um novo desconto promocional."""
+        return self._make_request("POST", "PromotionalDiscount", data=data)
+
+    def update_promotionaldiscount(self, promotionaldiscount_id: int, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Atualiza um desconto promocional existente."""
+        data["id"] = promotionaldiscount_id
+        return self._make_request("PUT", "PromotionalDiscount", data=data)
+
+    def delete_promotionaldiscount(self, promotionaldiscount_id: int) -> Dict[str, Any]:
+        """Deleta um desconto promocional."""
+        return self._make_request("DELETE", f"PromotionalDiscount/{promotionaldiscount_id}")
+
+    # ==================== PROCEDURECOPARTICIPATIONS ====================
+
+    def get_procedurecoparticipations(self) -> List[Dict[str, Any]]:
+        """Busca todas as coparticipações de procedimentos."""
+        return self._make_request("GET", "ProcedureCoparticipation")
+
+    def get_procedurecoparticipation(self, procedurecoparticipation_id: int) -> Dict[str, Any]:
+        """Busca uma coparticipação de procedimento por ID."""
+        return self._make_request("GET", f"ProcedureCoparticipation/{procedurecoparticipation_id}")
+
+    def create_procedurecoparticipation(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Cria uma nova coparticipação de procedimento."""
+        return self._make_request("POST", "ProcedureCoparticipation", data=data)
+
+    def update_procedurecoparticipation(self, procedurecoparticipation_id: int, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Atualiza uma coparticipação de procedimento existente."""
+        data["id"] = procedurecoparticipation_id
+        return self._make_request("PUT", "ProcedureCoparticipation", data=data)
+
+    def delete_procedurecoparticipation(self, procedurecoparticipation_id: int) -> Dict[str, Any]:
+        """Deleta uma coparticipação de procedimento."""
+        return self._make_request("DELETE", f"ProcedureCoparticipation/{procedurecoparticipation_id}")
+
+    # ==================== PLANPRICERANGES ====================
+
+    def get_planpriceranges(self) -> List[Dict[str, Any]]:
+        """Busca todas as faixas de preços de planos."""
+        return self._make_request("GET", "PlanPriceRange")
+
+    def get_planpricerange(self, planpricerange_id: int) -> Dict[str, Any]:
+        """Busca uma faixa de preços de plano por ID."""
+        return self._make_request("GET", f"PlanPriceRange/{planpricerange_id}")
+
+    def create_planpricerange(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Cria uma nova faixa de preços de plano."""
+        return self._make_request("POST", "PlanPriceRange", data=data)
+
+    def update_planpricerange(self, planpricerange_id: int, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Atualiza uma faixa de preços de plano existente."""
+        data["id"] = planpricerange_id
+        return self._make_request("PUT", "PlanPriceRange", data=data)
+
+    def delete_planpricerange(self, planpricerange_id: int) -> Dict[str, Any]:
+        """Deleta uma faixa de preços de plano."""
+        return self._make_request("DELETE", f"PlanPriceRange/{planpricerange_id}")

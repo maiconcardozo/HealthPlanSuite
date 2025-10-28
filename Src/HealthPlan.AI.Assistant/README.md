@@ -207,6 +207,7 @@ isort .
 
 O assistente suporta operações CRUD para as seguintes entidades:
 
+### Entidades Principais
 - **Companies** (Empresas)
 - **HealthPlans** (Planos de Saúde)
 - **Beneficiaries** (Beneficiários)
@@ -214,6 +215,16 @@ O assistente suporta operações CRUD para as seguintes entidades:
 - **Coverages** (Coberturas)
 - **AgeRanges** (Faixas Etárias)
 - **Accommodations** (Acomodações)
+
+### Entidades de Configuração de Planos
+- **PlanCoverages** (Coberturas de Planos) - Relaciona planos com coberturas
+- **AcceptanceRules** (Regras de Aceitação) - Define regras para aceitar beneficiários
+- **AdhesionFees** (Taxas de Adesão) - Taxas cobradas na adesão ao plano
+- **PromotionalDiscounts** (Descontos Promocionais) - Descontos temporários
+- **ProcedureCoparticipations** (Coparticipações) - Valores de coparticipação por procedimento
+- **PlanPriceRanges** (Faixas de Preços) - Preços por faixa etária e tipo de contrato
+
+**Total: 13 entidades com 65 ferramentas LangChain (5 operações CRUD × 13 entidades)**
 
 ### Endpoints da API
 

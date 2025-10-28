@@ -49,6 +49,48 @@ from .accommodation_tools import (
     update_accommodation,
     delete_accommodation,
 )
+from .plancoverage_tools import (
+    get_all_plancoverages,
+    get_plancoverage_by_id,
+    create_plancoverage,
+    update_plancoverage,
+    delete_plancoverage,
+)
+from .acceptancerule_tools import (
+    get_all_acceptancerules,
+    get_acceptancerule_by_id,
+    create_acceptancerule,
+    update_acceptancerule,
+    delete_acceptancerule,
+)
+from .adhesionfee_tools import (
+    get_all_adhesionfees,
+    get_adhesionfee_by_id,
+    create_adhesionfee,
+    update_adhesionfee,
+    delete_adhesionfee,
+)
+from .promotionaldiscount_tools import (
+    get_all_promotionaldiscounts,
+    get_promotionaldiscount_by_id,
+    create_promotionaldiscount,
+    update_promotionaldiscount,
+    delete_promotionaldiscount,
+)
+from .procedurecoparticipation_tools import (
+    get_all_procedurecoparticipations,
+    get_procedurecoparticipation_by_id,
+    create_procedurecoparticipation,
+    update_procedurecoparticipation,
+    delete_procedurecoparticipation,
+)
+from .planpricerange_tools import (
+    get_all_planpriceranges,
+    get_planpricerange_by_id,
+    create_planpricerange,
+    update_planpricerange,
+    delete_planpricerange,
+)
 
 # Lista de todas as ferramentas disponíveis
 ALL_TOOLS = [
@@ -94,6 +136,42 @@ ALL_TOOLS = [
     create_accommodation,
     update_accommodation,
     delete_accommodation,
+    # PlanCoverage tools
+    get_all_plancoverages,
+    get_plancoverage_by_id,
+    create_plancoverage,
+    update_plancoverage,
+    delete_plancoverage,
+    # AcceptanceRule tools
+    get_all_acceptancerules,
+    get_acceptancerule_by_id,
+    create_acceptancerule,
+    update_acceptancerule,
+    delete_acceptancerule,
+    # AdhesionFee tools
+    get_all_adhesionfees,
+    get_adhesionfee_by_id,
+    create_adhesionfee,
+    update_adhesionfee,
+    delete_adhesionfee,
+    # PromotionalDiscount tools
+    get_all_promotionaldiscounts,
+    get_promotionaldiscount_by_id,
+    create_promotionaldiscount,
+    update_promotionaldiscount,
+    delete_promotionaldiscount,
+    # ProcedureCoparticipation tools
+    get_all_procedurecoparticipations,
+    get_procedurecoparticipation_by_id,
+    create_procedurecoparticipation,
+    update_procedurecoparticipation,
+    delete_procedurecoparticipation,
+    # PlanPriceRange tools
+    get_all_planpriceranges,
+    get_planpricerange_by_id,
+    create_planpricerange,
+    update_planpricerange,
+    delete_planpricerange,
 ]
 
 __all__ = ["ALL_TOOLS"]

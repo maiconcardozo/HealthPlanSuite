@@ -200,3 +200,181 @@ def validate_id(entity_id: Any) -> tuple[bool, Optional[str]]:
         return True, None
     except (ValueError, TypeError):
         return False, "ID deve ser um número inteiro."
+
+
+def validate_plancoverage_data(data: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+    """
+    Valida dados de uma cobertura de plano.
+
+    Args:
+        data: Dicionário com dados da cobertura de plano.
+
+    Returns:
+        Tupla (válido, mensagem_erro).
+    """
+    required_fields = ["healthPlanId", "coverageId"]
+
+    for field in required_fields:
+        if field not in data or data[field] is None:
+            return False, f"Campo obrigatório ausente: {field}"
+
+    # Validar valor premium se fornecido
+    if "premiumValue" in data and data["premiumValue"] is not None:
+        try:
+            value = float(data["premiumValue"])
+            if value < 0:
+                return False, "Valor premium não pode ser negativo."
+        except (ValueError, TypeError):
+            return False, "Valor premium inválido."
+
+    return True, None
+
+
+def validate_acceptancerule_data(data: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+    """
+    Valida dados de uma regra de aceitação.
+
+    Args:
+        data: Dicionário com dados da regra de aceitação.
+
+    Returns:
+        Tupla (válido, mensagem_erro).
+    """
+    required_fields = ["healthPlanId", "ruleType", "operator", "description"]
+
+    for field in required_fields:
+        if field not in data or not data[field]:
+            return False, f"Campo obrigatório ausente: {field}"
+
+    # Validar operador
+    valid_operators = ["=", ">", "<", ">=", "<=", "BETWEEN", "IN"]
+    if data["operator"] not in valid_operators:
+        return False, f"Operador inválido. Valores permitidos: {', '.join(valid_operators)}"
+
+    return True, None
+
+
+def validate_adhesionfee_data(data: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+    """
+    Valida dados de uma taxa de adesão.
+
+    Args:
+        data: Dicionário com dados da taxa de adesão.
+
+    Returns:
+        Tupla (válido, mensagem_erro).
+    """
+    required_fields = ["healthPlanId", "value", "validityStart", "validityEnd"]
+
+    for field in required_fields:
+        if field not in data or data[field] is None:
+            return False, f"Campo obrigatório ausente: {field}"
+
+    # Validar valor
+    try:
+        value = float(data["value"])
+        if value < 0:
+            return False, "Valor não pode ser negativo."
+    except (ValueError, TypeError):
+        return False, "Valor inválido."
+
+    return True, None
+
+
+def validate_promotionaldiscount_data(data: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+    """
+    Valida dados de um desconto promocional.
+
+    Args:
+        data: Dicionário com dados do desconto promocional.
+
+    Returns:
+        Tupla (válido, mensagem_erro).
+    """
+    required_fields = ["healthPlanId", "discountPercentage", "validityStart", "validityEnd"]
+
+    for field in required_fields:
+        if field not in data or data[field] is None:
+            return False, f"Campo obrigatório ausente: {field}"
+
+    # Validar percentual de desconto
+    try:
+        discount = float(data["discountPercentage"])
+        if discount < 0 or discount > 100:
+            return False, "Percentual de desconto deve estar entre 0 e 100."
+    except (ValueError, TypeError):
+        return False, "Percentual de desconto inválido."
+
+    return True, None
+
+
+def validate_procedurecoparticipation_data(data: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+    """
+    Valida dados de uma coparticipação de procedimento.
+
+    Args:
+        data: Dicionário com dados da coparticipação de procedimento.
+
+    Returns:
+        Tupla (válido, mensagem_erro).
+    """
+    required_fields = ["healthPlanId", "coparticipationType", "procedure", "value"]
+
+    for field in required_fields:
+        if field not in data or not data[field]:
+            return False, f"Campo obrigatório ausente: {field}"
+
+    # Validar valor
+    try:
+        value = float(data["value"])
+        if value < 0:
+            return False, "Valor não pode ser negativo."
+    except (ValueError, TypeError):
+        return False, "Valor inválido."
+
+    # Validar limite se fornecido
+    if "limit" in data and data["limit"] is not None:
+        try:
+            limit = float(data["limit"])
+            if limit < 0:
+                return False, "Limite não pode ser negativo."
+        except (ValueError, TypeError):
+            return False, "Limite inválido."
+
+    return True, None
+
+
+def validate_planpricerange_data(data: Dict[str, Any]) -> tuple[bool, Optional[str]]:
+    """
+    Valida dados de uma faixa de preços de plano.
+
+    Args:
+        data: Dicionário com dados da faixa de preços de plano.
+
+    Returns:
+        Tupla (válido, mensagem_erro).
+    """
+    required_fields = ["healthPlanId", "ageRangeId", "contractType", "coparticipationType", "originalValue", "validityStart", "validityEnd"]
+
+    for field in required_fields:
+        if field not in data or data[field] is None:
+            return False, f"Campo obrigatório ausente: {field}"
+
+    # Validar valor original
+    try:
+        original_value = float(data["originalValue"])
+        if original_value < 0:
+            return False, "Valor original não pode ser negativo."
+    except (ValueError, TypeError):
+        return False, "Valor original inválido."
+
+    # Validar valor de desconto se fornecido
+    if "discountValue" in data and data["discountValue"] is not None:
+        try:
+            discount = float(data["discountValue"])
+            if discount < 0:
+                return False, "Valor de desconto não pode ser negativo."
+        except (ValueError, TypeError):
+            return False, "Valor de desconto inválido."
+
+    return True, None
