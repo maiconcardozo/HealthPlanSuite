@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🧪 Authentication Project - Test Runner"
+echo "🧪 HealthPlanSuite Project - Test Runner"
 echo "========================================"
 
 # Set up .NET path if needed
@@ -15,20 +15,20 @@ fi
 
 # Function to check .NET version compatibility
 check_dotnet_version() {
-    local required_version="9.0"
+    local required_version="8.0"
     local current_version=$(dotnet --version 2>/dev/null || echo "not found")
     
     echo "🔧 .NET Version: $current_version"
     
     if [[ "$current_version" == "not found" ]]; then
-        echo "❌ .NET SDK not found. Please install .NET 9.0 SDK."
-        echo "📥 Download from: https://dotnet.microsoft.com/download/dotnet/9.0"
+        echo "❌ .NET SDK not found. Please install .NET 8.0 SDK."
+        echo "📥 Download from: https://dotnet.microsoft.com/download/dotnet/8.0"
         exit 1
     fi
     
-    if [[ ! "$current_version" =~ ^9\. ]]; then
-        echo "⚠️  Warning: This project requires .NET 9.0, but found $current_version"
-        echo "📥 Download .NET 9.0 from: https://dotnet.microsoft.com/download/dotnet/9.0"
+    if [[ ! "$current_version" =~ ^8\. ]]; then
+        echo "⚠️  Warning: This project requires .NET 8.0, but found $current_version"
+        echo "📥 Download .NET 8.0 from: https://dotnet.microsoft.com/download/dotnet/8.0"
         echo "🔄 Attempting to continue with current version..."
     else
         echo "✅ .NET version compatible"
@@ -42,8 +42,8 @@ cd "$(dirname "$0")/.."
 check_dotnet_version
 
 # Check if solution exists
-if [ ! -f "Solution/Authentication.sln" ]; then
-    echo "❌ Solution file not found at Solution/Authentication.sln"
+if [ ! -f "Solution/HealthPlan.sln" ]; then
+    echo "❌ Solution file not found at Solution/HealthPlan.sln"
     echo "📂 Current directory: $(pwd)"
     echo "📁 Available files:"
     ls -la | head -10
@@ -51,7 +51,7 @@ if [ ! -f "Solution/Authentication.sln" ]; then
 fi
 
 echo "📦 Restoring packages..."
-if dotnet restore Solution/Authentication.sln; then
+if dotnet restore Solution/HealthPlan.sln; then
     echo "✅ Package restore successful"
 else
     echo "❌ Package restore failed"
@@ -59,7 +59,7 @@ else
 fi
 
 echo "🏗️ Building solution..."
-if dotnet build Solution/Authentication.sln --configuration Release --no-restore; then
+if dotnet build Solution/HealthPlan.sln --configuration Release --no-restore; then
     echo "✅ Build successful"
 else
     echo "❌ Build failed"
@@ -76,7 +76,7 @@ echo ""
 # Create TestResults directory if it doesn't exist
 mkdir -p TestResults
 
-if dotnet test Solution/Authentication.sln \
+if dotnet test Solution/HealthPlan.sln \
     --configuration Release \
     --no-build \
     --verbosity normal \
