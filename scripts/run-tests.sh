@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Authentication Tests Runner
-# This script facilitates the execution of Authentication project tests
+# HealthPlanSuite Tests Runner
+# This script facilitates the execution of HealthPlanSuite project tests
 
 set -e
 
-echo "🧪 Authentication Tests Runner"
+echo "🧪 HealthPlanSuite Tests Runner"
 echo "================================"
 
 # Function to show help
@@ -32,16 +32,16 @@ show_help() {
 cd "$(dirname "$0")/.."
 
 # Check if test project exists
-if [ ! -f "Src/Authentication.Tests/Authentication.Tests.csproj" ]; then
+if [ ! -f "Src/HealthPlan.Test/HealthPlan.Test.csproj" ]; then
     echo "❌ Test project not found!"
-    echo "Check if you are in the Authentication project root."
+    echo "Check if you are in the HealthPlanSuite project root."
     exit 1
 fi
 
 # Restore dependencies if necessary
-if [ ! -d "Src/Authentication.Tests/bin" ]; then
+if [ ! -d "Src/HealthPlan.Test/bin" ]; then
     echo "📦 Restoring dependencies..."
-    dotnet restore Solution/Authentication.sln
+    dotnet restore Solution/HealthPlan.sln
 fi
 
 # Function to run tests
@@ -64,22 +64,22 @@ run_tests() {
 case "${1:-all}" in
     "all")
         echo "🎯 Running all tests..."
-        run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj"
+        run_tests "dotnet test Src/HealthPlan.Test/HealthPlan.Test.csproj"
         ;;
     
     "integration")
         echo "🔗 Running integration tests..."
-        run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --filter \"FullyQualifiedName~Integration\""
+        run_tests "dotnet test Src/HealthPlan.Test/HealthPlan.Test.csproj --filter \"FullyQualifiedName~Integration\""
         ;;
     
     "unit")
         echo "🧩 Running unit tests..."
-        run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --filter \"FullyQualifiedName~Unit\""
+        run_tests "dotnet test Src/HealthPlan.Test/HealthPlan.Test.csproj --filter \"FullyQualifiedName~Unit\""
         ;;
     
     "coverage")
         echo "📊 Running tests with code coverage..."
-        run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --collect:\"XPlat Code Coverage\""
+        run_tests "dotnet test Src/HealthPlan.Test/HealthPlan.Test.csproj --collect:\"XPlat Code Coverage\""
         echo ""
         echo "📈 Coverage report generated in: TestResults/"
         ;;
@@ -87,20 +87,20 @@ case "${1:-all}" in
     "watch")
         echo "👀 Running tests in watch mode..."
         echo "Press Ctrl+C to stop"
-        dotnet watch test Src/Authentication.Tests/Authentication.Tests.csproj
+        dotnet watch test Src/HealthPlan.Test/HealthPlan.Test.csproj
         ;;
     
     "verbose")
         echo "📝 Running tests with detailed output..."
-        run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj --verbosity normal"
+        run_tests "dotnet test Src/HealthPlan.Test/HealthPlan.Test.csproj --verbosity normal"
         ;;
     
     "clean")
         echo "🧹 Cleaning and rebuilding..."
-        dotnet clean Solution/Authentication.sln
-        dotnet build Solution/Authentication.sln
+        dotnet clean Solution/HealthPlan.sln
+        dotnet build Solution/HealthPlan.sln
         echo "🎯 Running all tests..."
-        run_tests "dotnet test Src/Authentication.Tests/Authentication.Tests.csproj"
+        run_tests "dotnet test Src/HealthPlan.Test/HealthPlan.Test.csproj"
         ;;
     
     "help"|"-h"|"--help")

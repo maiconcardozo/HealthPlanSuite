@@ -1,10 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Authentication Tests Runner para Windows
-REM Este script facilita a execução dos testes do projeto Authentication
+REM HealthPlanSuite Tests Runner para Windows
+REM Este script facilita a execução dos testes do projeto HealthPlanSuite
 
-echo 🧪 Authentication Tests Runner
+echo 🧪 HealthPlanSuite Tests Runner
 echo ================================
 
 REM Função para mostrar ajuda
@@ -13,16 +13,16 @@ if "%1"=="-h" goto :show_help
 if "%1"=="--help" goto :show_help
 
 REM Verificar se o projeto de testes existe
-if not exist "Src\Authentication.Tests\Authentication.Tests.csproj" (
+if not exist "Src\HealthPlan.Test\HealthPlan.Test.csproj" (
     echo ❌ Projeto de testes não encontrado!
-    echo Verifique se você está na raiz do projeto Authentication.
+    echo Verifique se você está na raiz do projeto HealthPlanSuite.
     exit /b 1
 )
 
 REM Restaurar dependências se necessário
-if not exist "Src\Authentication.Tests\bin" (
+if not exist "Src\HealthPlan.Test\bin" (
     echo 📦 Restaurando dependências...
-    dotnet restore Solution\Authentication.sln
+    dotnet restore Solution\HealthPlan.sln
 )
 
 REM Processar argumentos
@@ -43,9 +43,9 @@ goto :show_help
 
 :run_all
 echo 🎯 Executando todos os testes...
-echo 🏃 Executando: dotnet test Src\Authentication.Tests\Authentication.Tests.csproj
+echo 🏃 Executando: dotnet test Src\HealthPlan.Test\HealthPlan.Test.csproj
 echo.
-dotnet test Src\Authentication.Tests\Authentication.Tests.csproj
+dotnet test Src\HealthPlan.Test\HealthPlan.Test.csproj
 if %errorlevel% equ 0 (
     echo.
     echo ✅ Testes executados com sucesso!
@@ -60,7 +60,7 @@ goto :end
 echo 🔗 Executando testes de integração...
 echo 🏃 Executando: dotnet test com filtro Integration
 echo.
-dotnet test Src\Authentication.Tests\Authentication.Tests.csproj --filter "FullyQualifiedName~Integration"
+dotnet test Src\HealthPlan.Test\HealthPlan.Test.csproj --filter "FullyQualifiedName~Integration"
 if %errorlevel% equ 0 (
     echo.
     echo ✅ Testes executados com sucesso!
@@ -75,7 +75,7 @@ goto :end
 echo 🧩 Executando testes unitários...
 echo 🏃 Executando: dotnet test com filtro Unit
 echo.
-dotnet test Src\Authentication.Tests\Authentication.Tests.csproj --filter "FullyQualifiedName~Unit"
+dotnet test Src\HealthPlan.Test\HealthPlan.Test.csproj --filter "FullyQualifiedName~Unit"
 if %errorlevel% equ 0 (
     echo.
     echo ✅ Testes executados com sucesso!
@@ -90,7 +90,7 @@ goto :end
 echo 📊 Executando testes com cobertura de código...
 echo 🏃 Executando: dotnet test com cobertura
 echo.
-dotnet test Src\Authentication.Tests\Authentication.Tests.csproj --collect:"XPlat Code Coverage"
+dotnet test Src\HealthPlan.Test\HealthPlan.Test.csproj --collect:"XPlat Code Coverage"
 if %errorlevel% equ 0 (
     echo.
     echo ✅ Testes executados com sucesso!
@@ -105,14 +105,14 @@ goto :end
 :run_watch
 echo 👀 Executando testes em modo watch...
 echo Pressione Ctrl+C para parar
-dotnet watch test Src\Authentication.Tests\Authentication.Tests.csproj
+dotnet watch test Src\HealthPlan.Test\HealthPlan.Test.csproj
 goto :end
 
 :run_verbose
 echo 📝 Executando testes com saída detalhada...
 echo 🏃 Executando: dotnet test com verbosidade normal
 echo.
-dotnet test Src\Authentication.Tests\Authentication.Tests.csproj --verbosity normal
+dotnet test Src\HealthPlan.Test\HealthPlan.Test.csproj --verbosity normal
 if %errorlevel% equ 0 (
     echo.
     echo ✅ Testes executados com sucesso!
@@ -125,12 +125,12 @@ goto :end
 
 :run_clean
 echo 🧹 Limpando e reconstruindo...
-dotnet clean Solution\Authentication.sln
-dotnet build Solution\Authentication.sln
+dotnet clean Solution\HealthPlan.sln
+dotnet build Solution\HealthPlan.sln
 echo 🎯 Executando todos os testes...
 echo 🏃 Executando: dotnet test
 echo.
-dotnet test Src\Authentication.Tests\Authentication.Tests.csproj
+dotnet test Src\HealthPlan.Test\HealthPlan.Test.csproj
 if %errorlevel% equ 0 (
     echo.
     echo ✅ Testes executados com sucesso!
