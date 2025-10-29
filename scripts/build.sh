@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Authentication Build Script
-# This script facilitates the compilation of the Authentication project
+# HealthPlanSuite Build Script
+# This script facilitates the compilation of the HealthPlanSuite project
 
 set -e
 
-echo "🏗️ Authentication Build Script"
-echo "=============================="
+echo "🏗️ HealthPlanSuite Build Script"
+echo "================================"
 
 # Function to show help
 show_help() {
@@ -30,19 +30,19 @@ show_help() {
 cd "$(dirname "$0")/.."
 
 # Check if solution file exists
-if [ ! -f "Solution/Authentication.sln" ]; then
+if [ ! -f "Solution/HealthPlan.sln" ]; then
     echo "❌ Solution file not found!"
-    echo "Check if you are in the Authentication project root."
+    echo "Check if you are in the HealthPlanSuite project root."
     exit 1
 fi
 
-# Check .NET 9.0
+# Check .NET 8.0
 echo "🔍 Checking .NET version..."
 DOTNET_VERSION=$(dotnet --version 2>/dev/null || echo "not found")
-if [[ ! "$DOTNET_VERSION" =~ ^9\. ]]; then
-    echo "❌ .NET 9.0 SDK not found!"
+if [[ ! "$DOTNET_VERSION" =~ ^8\. ]]; then
+    echo "❌ .NET 8.0 SDK not found!"
     echo "Current version: $DOTNET_VERSION"
-    echo "Install .NET 9.0 SDK from: https://dotnet.microsoft.com/download/dotnet/9.0"
+    echo "Install .NET 8.0 SDK from: https://dotnet.microsoft.com/download/dotnet/8.0"
     exit 1
 fi
 echo "✅ .NET version: $DOTNET_VERSION"
@@ -53,7 +53,7 @@ run_build() {
     echo "🏃 Compiling in $configuration mode..."
     echo ""
     
-    if dotnet build Solution/Authentication.sln --configuration "$configuration"; then
+    if dotnet build Solution/HealthPlan.sln --configuration "$configuration"; then
         echo ""
         echo "✅ Compilation completed successfully!"
     else
@@ -67,27 +67,27 @@ run_build() {
 case "${1:-debug}" in
     "debug")
         echo "🛠️ Restoring dependencies..."
-        dotnet restore Solution/Authentication.sln
+        dotnet restore Solution/HealthPlan.sln
         run_build "Debug"
         ;;
     
     "release")
         echo "🛠️ Restoring dependencies..."
-        dotnet restore Solution/Authentication.sln
+        dotnet restore Solution/HealthPlan.sln
         run_build "Release"
         ;;
     
     "clean")
         echo "🧹 Cleaning project..."
-        dotnet clean Solution/Authentication.sln
+        dotnet clean Solution/HealthPlan.sln
         echo "🛠️ Restoring dependencies..."
-        dotnet restore Solution/Authentication.sln
+        dotnet restore Solution/HealthPlan.sln
         run_build "Debug"
         ;;
     
     "restore")
         echo "📦 Restoring dependencies..."
-        if dotnet restore Solution/Authentication.sln; then
+        if dotnet restore Solution/HealthPlan.sln; then
             echo "✅ Dependencies restored successfully!"
         else
             echo "❌ Failed to restore dependencies!"
@@ -101,7 +101,7 @@ case "${1:-debug}" in
         
         # Restore
         echo "📦 Restoring dependencies..."
-        dotnet restore Solution/Authentication.sln
+        dotnet restore Solution/HealthPlan.sln
         
         # Compile Release
         run_build "Release"
