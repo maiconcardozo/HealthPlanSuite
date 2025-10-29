@@ -1,13 +1,13 @@
 # CI/CD Status
 
-This file tracks the status of the Authentication project's CI/CD pipeline.
+This file tracks the status of the HealthPlanSuite project's CI/CD pipeline.
 
 ## Current Configuration
 
 - **Workflow File**: `.github/workflows/ci.yml`
 - **Trigger Branches**: `main`, `develop`
-- **Test Framework**: xUnit with 349 tests
-- **Runtime**: .NET 9.0 on Ubuntu Latest
+- **Test Framework**: xUnit with 34 tests
+- **Runtime**: .NET 8.0 on Ubuntu Latest
 - **Coverage**: Code coverage with Cobertura format
 
 ## Pipeline Jobs
@@ -19,7 +19,7 @@ This file tracks the status of the Authentication project's CI/CD pipeline.
 
 ## Test Results
 
-- **Total Tests**: 349
+- **Total Tests**: 34
 - **Test Categories**: Unit tests and Integration tests
 - **Test Artifacts**: TRX files and code coverage reports
 - **Retention**: 30 days
