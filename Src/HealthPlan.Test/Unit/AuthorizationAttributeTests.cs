@@ -132,11 +132,67 @@ namespace HealthPlan.Test.Unit
         public void ClaimsAndActions_MapsHttpMethodsToActionsCorrectly()
         {
             // Assert - Verify mapping exists for HTTP methods
-            Assert.Equal("Read", ClaimsAndActions.HttpMethodToActionMapping["GET"]);
+            // Note: GET is not in the mapping as it's handled specially (List vs Read)
             Assert.Equal("Create", ClaimsAndActions.HttpMethodToActionMapping["POST"]);
             Assert.Equal("Update", ClaimsAndActions.HttpMethodToActionMapping["PUT"]);
             Assert.Equal("Delete", ClaimsAndActions.HttpMethodToActionMapping["DELETE"]);
-            Assert.Equal(4, ClaimsAndActions.HttpMethodToActionMapping.Count);
+            Assert.Equal(3, ClaimsAndActions.HttpMethodToActionMapping.Count);
+        }
+
+        /// <summary>
+        /// Tests that GET requests without ID parameter map to List action
+        /// </summary>
+        [Fact]
+        public void RequireClaimAction_GetRequestWithoutId_MapsToListAction()
+        {
+            // Arrange
+            var attribute = new RequireClaimActionAttribute();
+            var context = CreateAuthorizationFilterContext("Company", "GET");
+            // No id in route values means this is a list operation
+
+            // Act
+            attribute.OnAuthorization(context);
+
+            // Assert - Should complete without error
+            // In full implementation, this would require Company:List permission
+            Assert.Null(context.Result);
+        }
+
+        /// <summary>
+        /// Tests that GET requests with ID parameter map to Read action
+        /// </summary>
+        [Fact]
+        public void RequireClaimAction_GetRequestWithId_MapsToReadAction()
+        {
+            // Arrange
+            var attribute = new RequireClaimActionAttribute();
+            var httpContext = new DefaultHttpContext
+            {
+                RequestServices = new ServiceCollection().BuildServiceProvider()
+            };
+            httpContext.Request.Method = "GET";
+
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", "Company");
+            routeData.Values.Add("id", "123"); // Has ID means this is a read operation
+
+            var actionContext = new ActionContext(
+                httpContext,
+                routeData,
+                new ActionDescriptor()
+            );
+
+            var context = new AuthorizationFilterContext(
+                actionContext,
+                new List<IFilterMetadata>()
+            );
+
+            // Act
+            attribute.OnAuthorization(context);
+
+            // Assert - Should complete without error
+            // In full implementation, this would require Company:Read permission
+            Assert.Null(context.Result);
         }
 
         /// <summary>

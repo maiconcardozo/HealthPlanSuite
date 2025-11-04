@@ -61,11 +61,11 @@ namespace HealthPlan.API.Authorization
         };
 
         /// <summary>
-        /// Gets a dictionary mapping HTTP methods to action names
+        /// Gets a dictionary mapping HTTP methods to action names.
+        /// Note: GET is handled specially to distinguish between List and Read operations.
         /// </summary>
         public static Dictionary<string, string> HttpMethodToActionMapping = new()
         {
-            { "GET", Actions.Read },
             { "POST", Actions.Create },
             { "PUT", Actions.Update },
             { "DELETE", Actions.Delete }

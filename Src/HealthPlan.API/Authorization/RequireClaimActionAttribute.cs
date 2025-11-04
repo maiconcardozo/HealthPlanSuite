@@ -60,9 +60,21 @@ namespace HealthPlan.API.Authorization
                     claim = detectedClaim;
                 }
 
-                if (httpMethod != null && ClaimsAndActions.HttpMethodToActionMapping.TryGetValue(httpMethod, out var detectedAction))
+                if (httpMethod != null)
                 {
-                    action = detectedAction;
+                    // Special handling for GET requests
+                    if (httpMethod == "GET")
+                    {
+                        // Check if this is a list operation (no ID in route) or single item read (has ID)
+                        var hasId = context.RouteData.Values.ContainsKey("id") || 
+                                    context.HttpContext.Request.Path.Value?.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.All(char.IsDigit) == true;
+                        
+                        action = hasId ? ClaimsAndActions.Actions.Read : ClaimsAndActions.Actions.List;
+                    }
+                    else if (ClaimsAndActions.HttpMethodToActionMapping.TryGetValue(httpMethod, out var detectedAction))
+                    {
+                        action = detectedAction;
+                    }
                 }
             }
 
@@ -91,7 +103,8 @@ namespace HealthPlan.API.Authorization
 
             // For now, log the required permission for documentation purposes
             // In production, this would enforce the permission check
-            Console.WriteLine($"[Authorization] Required: Claim='{claim}', Action='{action}'");
+            // TODO: Replace with ILogger when implementing full enforcement
+            // Example: _logger.LogInformation("Authorization required: Claim={Claim}, Action={Action}", claim, action);
         }
     }
 }

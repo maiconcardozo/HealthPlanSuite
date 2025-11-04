@@ -17,21 +17,27 @@ The Authentication.Login system requires the following tables:
 Insert the following claims into the `Claim` table:
 
 ```sql
+-- MySQL/MariaDB: Use CURRENT_TIMESTAMP or CURRENT_TIMESTAMP
+-- SQL Server: Use GETDATE() or CURRENT_TIMESTAMP
+-- PostgreSQL: Use CURRENT_TIMESTAMP or CURRENT_TIMESTAMP
+-- SQLite: Use datetime('now')
+
+-- For MySQL/MariaDB:
 INSERT INTO Claim (Name, Description, CreatedAt, UpdatedAt, Active) VALUES
-('AcceptanceRule', 'Access to acceptance rules for health plans', NOW(), NOW(), 1),
-('Accommodation', 'Access to accommodation types configuration', NOW(), NOW(), 1),
-('AdhesionFee', 'Access to adhesion fee management', NOW(), NOW(), 1),
-('AgeRange', 'Access to age range pricing configuration', NOW(), NOW(), 1),
-('Beneficiary', 'Access to beneficiary information management', NOW(), NOW(), 1),
-('Company', 'Access to insurance company data management', NOW(), NOW(), 1),
-('Coverage', 'Access to coverage types management', NOW(), NOW(), 1),
-('HealthPlan', 'Access to health plan definitions', NOW(), NOW(), 1),
-('PlanCoverage', 'Access to plan-coverage associations', NOW(), NOW(), 1),
-('PlanPriceRange', 'Access to plan price range configuration', NOW(), NOW(), 1),
-('ProcedureCoparticipation', 'Access to procedure coparticipation rules', NOW(), NOW(), 1),
-('PromotionalDiscount', 'Access to promotional discount configuration', NOW(), NOW(), 1),
-('Quote', 'Access to quote management', NOW(), NOW(), 1),
-('QuoteHistory', 'Access to quote history tracking', NOW(), NOW(), 1);
+('AcceptanceRule', 'Access to acceptance rules for health plans', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Accommodation', 'Access to accommodation types configuration', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('AdhesionFee', 'Access to adhesion fee management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('AgeRange', 'Access to age range pricing configuration', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Beneficiary', 'Access to beneficiary information management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Company', 'Access to insurance company data management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Coverage', 'Access to coverage types management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('HealthPlan', 'Access to health plan definitions', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('PlanCoverage', 'Access to plan-coverage associations', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('PlanPriceRange', 'Access to plan price range configuration', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('ProcedureCoparticipation', 'Access to procedure coparticipation rules', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('PromotionalDiscount', 'Access to promotional discount configuration', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Quote', 'Access to quote management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('QuoteHistory', 'Access to quote history tracking', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 ```
 
 ## Actions to Seed
@@ -40,11 +46,11 @@ Insert the following actions into the `Action` table:
 
 ```sql
 INSERT INTO Action (Name, Description, CreatedAt, UpdatedAt, Active) VALUES
-('Read', 'Read/view a single resource by ID', NOW(), NOW(), 1),
-('List', 'List/view multiple resources', NOW(), NOW(), 1),
-('Create', 'Create a new resource', NOW(), NOW(), 1),
-('Update', 'Update an existing resource', NOW(), NOW(), 1),
-('Delete', 'Delete/remove a resource', NOW(), NOW(), 1);
+('Read', 'Read/view a single resource by ID', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('List', 'List/view multiple resources', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Create', 'Create a new resource', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Update', 'Update an existing resource', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+('Delete', 'Delete/remove a resource', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 ```
 
 ## ClaimAction Combinations to Seed
@@ -54,7 +60,7 @@ Create all valid claim-action combinations. Assuming all claims support all acti
 ```sql
 -- This creates 70 combinations (14 claims × 5 actions)
 INSERT INTO ClaimAction (ClaimId, ActionId, CreatedAt, UpdatedAt, Active)
-SELECT c.Id, a.Id, NOW(), NOW(), 1
+SELECT c.Id, a.Id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1
 FROM Claim c
 CROSS JOIN Action a
 WHERE c.Active = 1 AND a.Active = 1;
@@ -65,7 +71,7 @@ If you want to be more selective about which combinations are valid:
 ```sql
 -- Example: Create specific combinations
 INSERT INTO ClaimAction (ClaimId, ActionId, CreatedAt, UpdatedAt, Active)
-SELECT c.Id, a.Id, NOW(), NOW(), 1
+SELECT c.Id, a.Id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1
 FROM Claim c
 JOIN Action a ON 1=1
 WHERE c.Name = 'AcceptanceRule' 
@@ -82,14 +88,14 @@ Create an admin user with all permissions:
 ```sql
 -- First, create an admin account (password should be hashed using Argon2)
 INSERT INTO Account (UserName, Password, Email, CreatedAt, UpdatedAt, Active) VALUES
-('admin', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'admin@example.com', NOW(), NOW(), 1);
+('admin', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
 -- Get the account ID
 SET @adminAccountId = LAST_INSERT_ID();
 
 -- Grant all permissions to admin
 INSERT INTO AccountClaimAction (AccountId, ClaimActionId, CreatedAt, UpdatedAt, Active)
-SELECT @adminAccountId, ca.Id, NOW(), NOW(), 1
+SELECT @adminAccountId, ca.Id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1
 FROM ClaimAction ca
 WHERE ca.Active = 1;
 ```
@@ -101,13 +107,13 @@ WHERE ca.Active = 1;
 ```sql
 -- Create manager account
 INSERT INTO Account (UserName, Password, Email, CreatedAt, UpdatedAt, Active) VALUES
-('manager', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'manager@example.com', NOW(), NOW(), 1);
+('manager', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'manager@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
 SET @managerAccountId = LAST_INSERT_ID();
 
 -- Grant Read and Update permissions to manager
 INSERT INTO AccountClaimAction (AccountId, ClaimActionId, CreatedAt, UpdatedAt, Active)
-SELECT @managerAccountId, ca.Id, NOW(), NOW(), 1
+SELECT @managerAccountId, ca.Id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1
 FROM ClaimAction ca
 JOIN Action a ON ca.ActionId = a.Id
 WHERE a.Name IN ('Read', 'List', 'Update')
@@ -119,13 +125,13 @@ WHERE a.Name IN ('Read', 'List', 'Update')
 ```sql
 -- Create viewer account
 INSERT INTO Account (UserName, Password, Email, CreatedAt, UpdatedAt, Active) VALUES
-('viewer', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'viewer@example.com', NOW(), NOW(), 1);
+('viewer', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'viewer@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
 SET @viewerAccountId = LAST_INSERT_ID();
 
 -- Grant Read-only permissions to viewer
 INSERT INTO AccountClaimAction (AccountId, ClaimActionId, CreatedAt, UpdatedAt, Active)
-SELECT @viewerAccountId, ca.Id, NOW(), NOW(), 1
+SELECT @viewerAccountId, ca.Id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1
 FROM ClaimAction ca
 JOIN Action a ON ca.ActionId = a.Id
 WHERE a.Name IN ('Read', 'List')
@@ -137,13 +143,13 @@ WHERE a.Name IN ('Read', 'List')
 ```sql
 -- Create quote specialist account
 INSERT INTO Account (UserName, Password, Email, CreatedAt, UpdatedAt, Active) VALUES
-('quote_specialist', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'specialist@example.com', NOW(), NOW(), 1);
+('quote_specialist', '$argon2id$v=19$m=65536,t=3,p=1$SALT$HASH', 'specialist@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
 SET @specialistAccountId = LAST_INSERT_ID();
 
 -- Grant Quote-related permissions
 INSERT INTO AccountClaimAction (AccountId, ClaimActionId, CreatedAt, UpdatedAt, Active)
-SELECT @specialistAccountId, ca.Id, NOW(), NOW(), 1
+SELECT @specialistAccountId, ca.Id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1
 FROM ClaimAction ca
 JOIN Claim c ON ca.ClaimId = c.Id
 JOIN Action a ON ca.ActionId = a.Id
