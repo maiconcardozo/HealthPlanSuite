@@ -84,6 +84,16 @@ namespace HealthPlan.API
             // ==============================
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
+            
+            // Validate that placeholder secret key has been replaced (skip validation in test environment)
+            if (!isTest && (secretKey.Contains("REPLACE-WITH") || secretKey.Length < 32))
+            {
+                throw new InvalidOperationException(
+                    "JWT SecretKey must be replaced with a secure value. " +
+                    "Use environment variables (JwtSettings__SecretKey) or Azure Key Vault. " +
+                    "Secret key must be at least 32 characters long.");
+            }
+            
             var key = Encoding.UTF8.GetBytes(secretKey);
 
             services.AddAuthentication(options =>
