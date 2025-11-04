@@ -93,7 +93,7 @@ namespace HealthPlan.API
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // Set to true in production if using HTTPS
+                options.RequireHttpsMetadata = !_environment.IsDevelopment();
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
