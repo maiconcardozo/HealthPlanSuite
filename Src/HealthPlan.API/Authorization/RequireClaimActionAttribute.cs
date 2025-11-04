@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -66,8 +68,14 @@ namespace HealthPlan.API.Authorization
                     if (httpMethod == "GET")
                     {
                         // Check if this is a list operation (no ID in route) or single item read (has ID)
-                        var hasId = context.RouteData.Values.ContainsKey("id") || 
-                                    context.HttpContext.Request.Path.Value?.Split('/', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.All(char.IsDigit) == true;
+                        // Primary check: look for 'id' parameter in route values
+                        // Secondary check: look for any route parameter that might be an ID (common patterns)
+                        var hasId = context.RouteData.Values.ContainsKey("id") ||
+                                    context.RouteData.Values.ContainsKey("beneficiaryId") ||
+                                    context.RouteData.Values.ContainsKey("companyId") ||
+                                    context.RouteData.Values.ContainsKey("cnpj") ||
+                                    context.RouteData.Values.ContainsKey("code") ||
+                                    context.RouteData.Values.Any(kvp => kvp.Key.EndsWith("Id", StringComparison.OrdinalIgnoreCase));
                         
                         action = hasId ? ClaimsAndActions.Actions.Read : ClaimsAndActions.Actions.List;
                     }
