@@ -1,3 +1,4 @@
+using HealthPlan.API.Authorization;
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
 using HealthPlan.Quote.Domain.Implementation;
@@ -16,6 +17,7 @@ namespace HealthPlan.API.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
+    [RequireClaimAction]
     public class QuoteHistoryController : ControllerBase
     {
         private readonly IQuoteHistoryService _quoteHistoryService;
