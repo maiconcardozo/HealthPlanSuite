@@ -1,11 +1,14 @@
 using System.Reflection;
+using System.Text;
 using HealthPlan.API.Data;
 using HealthPlan.API.Resource;
 using HealthPlan.API.Services;
 using HealthPlan.API.Swagger;
 using HealthPlan.Quote.Constants;
 using HealthPlan.Quote.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace HealthPlan.API
@@ -77,6 +80,45 @@ namespace HealthPlan.API
             });
 
             // ==============================
+            // JWT AUTHENTICATION
+            // ==============================
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
+            
+            // Validate that placeholder secret key has been replaced (skip validation in test environment)
+            if (!isTest && (secretKey.Contains("REPLACE-WITH") || secretKey.Length < 32))
+            {
+                throw new InvalidOperationException(
+                    "JWT SecretKey must be replaced with a secure value. " +
+                    "Use environment variables (JwtSettings__SecretKey) or Azure Key Vault. " +
+                    "Secret key must be at least 32 characters long.");
+            }
+            
+            var key = Encoding.UTF8.GetBytes(secretKey);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = !_environment.IsDevelopment();
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            // ==============================
             // AUTHENTICATION & DOMAIN
             // ==============================
             services.AddAuthenticationLoginServices(HealthPlan.API.Helper.Utils.GetConnectionString(appsettings));
@@ -122,6 +164,31 @@ namespace HealthPlan.API
                     Title = "Health Plan API",
                     Version = ApplicationConstants.Api.Version,
                     Description = "API for managing health plan quotes, companies, coverages, and related operations"
+                });
+
+                // Add JWT Authentication to Swagger
+                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
+                    Name = "Authorization",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
                 });
 
                 options.DocInclusionPredicate((docName, apiDescription) =>
@@ -226,6 +293,7 @@ namespace HealthPlan.API
             // ROUTING & AUTHORIZATION
             // ==============================
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
