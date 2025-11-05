@@ -25,6 +25,7 @@ This application is built with **.NET 8.0** and uses the following technologies:
 
 ### 🔐 Key Features
 
+- **JWT Authentication**: Secure token-based authentication with complete documentation ([docs/AUTENTICACAO.md](docs/AUTENTICACAO.md))
 - **Health Plan Management**: Complete health plan quote and coverage management
 - **Clean Architecture**: Well-organized layers with proper separation of concerns
 - **Repository Pattern**: Generic repository with Entity Framework implementation
@@ -726,7 +727,7 @@ curl -X POST "https://localhost:7001/Account/AddAccount" \
 
 ### 📚 **Technical Documentation**
 - [Service Architecture](docs/ARCHITECTURE.md) - Clean Architecture patterns and design decisions
-- [JWT Authentication Guide](docs/JWT.md) - Token-based authentication implementation
+- **[JWT Authentication Guide (PT-BR)](docs/AUTENTICACAO.md)** - **Guia completo de autenticação JWT: funcionamento, obtenção de tokens, validação, exemplos e boas práticas de segurança**
 - [Security Configuration](docs/SECURITY.md) - Argon2 hashing and security best practices
 - [Complete API Reference](docs/API.md) - Detailed endpoint documentation
 - [Deployment Guide](docs/DEPLOYMENT.md) - Production deployment strategies
