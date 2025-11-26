@@ -21,7 +21,13 @@ namespace HealthPlan.Quote.Application.Queries.Quote
         {
             var quote = unitOfWork.QuoteRepository.GetById(request.Id);
 
-            return Task.FromResult(quote == null ? null : CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote));
+            if (quote == null)
+            {
+                return Task.FromResult<QuoteResponseDTO?>(null);
+            }
+
+            var quoteDto = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
+            return Task.FromResult<QuoteResponseDTO?>(quoteDto);
         }
     }
 }
