@@ -1,57 +1,27 @@
+using HealthPlan.Quote.DTO;
+using HealthPlan.Quote.Mapping;
+using HealthPlan.Quote.UnitOfWork.Interface;
 using MediatR;
-using HealthPlan.Quote.Services.Interface;
 
 namespace HealthPlan.Quote.Application.Queries.Quote
 {
     /// <summary>
-    /// Handler for the GetQuoteByIdQuery.
-    /// Retrieves a quote by its ID.
+    /// Handler for retrieving a quote by ID.
     /// </summary>
-    public class GetQuoteByIdQueryHandler : IRequestHandler<GetQuoteByIdQuery, GetQuoteByIdResponse?>
+    public class GetQuoteByIdQueryHandler : IRequestHandler<GetQuoteByIdQuery, QuoteResponseDTO?>
     {
-        private readonly IQuoteService _quoteService;
+        private readonly IApplicationUnitOfWork unitOfWork;
 
-        /// <summary>
-        /// Initializes a new instance of the GetQuoteByIdQueryHandler class.
-        /// </summary>
-        /// <param name="quoteService">Quote service for data retrieval</param>
-        public GetQuoteByIdQueryHandler(IQuoteService quoteService)
+        public GetQuoteByIdQueryHandler(IApplicationUnitOfWork unitOfWork)
         {
-            _quoteService = quoteService;
+            this.unitOfWork = unitOfWork;
         }
 
-        /// <summary>
-        /// Handles the GetQuoteByIdQuery.
-        /// </summary>
-        /// <param name="request">The query containing the quote ID</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>The quote details if found, null otherwise</returns>
-        public Task<GetQuoteByIdResponse?> Handle(GetQuoteByIdQuery request, CancellationToken cancellationToken)
+        public Task<QuoteResponseDTO?> Handle(GetQuoteByIdQuery request, CancellationToken cancellationToken)
         {
-            var quote = _quoteService.GetById(request.Id);
+            var quote = unitOfWork.QuoteRepository.GetById(request.Id);
 
-            if (quote == null)
-            {
-                return Task.FromResult<GetQuoteByIdResponse?>(null);
-            }
-
-            var response = new GetQuoteByIdResponse
-            {
-                Id = quote.Id,
-                QuoteNumber = quote.QuoteNumber,
-                IdCompany = quote.IdCompany,
-                IdBeneficiary = quote.IdBeneficiary,
-                IdHealthPlan = quote.IdHealthPlan,
-                IdAgeRange = quote.IdAgeRange,
-                MonthlyPremium = quote.MonthlyPremium,
-                Status = quote.Status,
-                ValidUntil = quote.ValidUntil,
-                QuoteDate = quote.QuoteDate,
-                CreatedBy = quote.CreatedBy,
-                Notes = quote.Notes
-            };
-
-            return Task.FromResult<GetQuoteByIdResponse?>(response);
+            return Task.FromResult(quote == null ? null : CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote));
         }
     }
 }

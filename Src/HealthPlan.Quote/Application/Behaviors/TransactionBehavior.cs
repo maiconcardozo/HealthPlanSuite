@@ -1,85 +1,44 @@
-using MediatR;
-using Microsoft.Extensions.Logging;
 using HealthPlan.Quote.UnitOfWork.Interface;
+using MediatR;
 
 namespace HealthPlan.Quote.Application.Behaviors
 {
     /// <summary>
-    /// Marker interface to identify commands that require transaction handling.
-    /// Commands implementing this interface will be wrapped in a database transaction.
-    /// </summary>
-    public interface ITransactionalRequest
-    {
-    }
-
-    /// <summary>
     /// Pipeline behavior that wraps command execution in a database transaction.
-    /// Only applies to requests that implement ITransactionalRequest marker interface.
+    /// Automatically commits on success and rolls back on exception.
+    /// Only applies to commands (requests that end with "Command").
     /// </summary>
-    /// <typeparam name="TRequest">The type of request</typeparam>
-    /// <typeparam name="TResponse">The type of response</typeparam>
+    /// <typeparam name="TRequest">The request type.</typeparam>
+    /// <typeparam name="TResponse">The response type.</typeparam>
     public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : notnull
+        where TRequest : IRequest<TResponse>
     {
-        private readonly IApplicationUnitOfWork _unitOfWork;
-        private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger;
+        private readonly IApplicationUnitOfWork unitOfWork;
 
-        /// <summary>
-        /// Initializes a new instance of the TransactionBehavior class.
-        /// </summary>
-        /// <param name="unitOfWork">Unit of work for transaction management</param>
-        /// <param name="logger">Logger instance for this behavior</param>
-        public TransactionBehavior(
-            IApplicationUnitOfWork unitOfWork,
-            ILogger<TransactionBehavior<TRequest, TResponse>> logger)
+        public TransactionBehavior(IApplicationUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
+            this.unitOfWork = unitOfWork;
         }
 
-        /// <summary>
-        /// Wraps the handler execution in a transaction if the request implements ITransactionalRequest.
-        /// </summary>
-        /// <param name="request">The request being handled</param>
-        /// <param name="next">The next handler in the pipeline</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>The response from the handler</returns>
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(
+            TRequest request,
+            RequestHandlerDelegate<TResponse> next,
+            CancellationToken cancellationToken)
         {
-            // Only wrap in transaction if the request implements ITransactionalRequest
-            if (request is not ITransactionalRequest)
-            {
-                return await next();
-            }
-
             var requestName = typeof(TRequest).Name;
 
-            _logger.LogInformation(
-                "Beginning transaction for {RequestName}",
-                requestName);
-
-            try
+            // Only apply transaction to commands (not queries)
+            if (!requestName.EndsWith("Command", StringComparison.OrdinalIgnoreCase))
             {
-                var response = await next();
-
-                await _unitOfWork.CompleteAsync();
-
-                _logger.LogInformation(
-                    "Transaction committed for {RequestName}",
-                    requestName);
-
-                return response;
+                return await next().ConfigureAwait(false);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    ex,
-                    "Transaction rolled back for {RequestName}: {Message}",
-                    requestName,
-                    ex.Message);
 
-                throw;
-            }
+            var response = await next().ConfigureAwait(false);
+            
+            // Commit transaction after successful command execution
+            await unitOfWork.CompleteAsync().ConfigureAwait(false);
+            
+            return response;
         }
     }
 }

@@ -1,32 +1,23 @@
+using HealthPlan.Quote.DTO;
+using HealthPlan.Quote.Mapping;
+using HealthPlan.Quote.UnitOfWork.Interface;
 using MediatR;
-using HealthPlan.Quote.Services.Interface;
 
 namespace HealthPlan.Quote.Application.Commands.Quote
 {
     /// <summary>
-    /// Handler for the CreateQuoteCommand.
-    /// Creates a new quote in the system.
+    /// Handler for creating new quotes.
     /// </summary>
-    public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, CreateQuoteResponse>
+    public class CreateQuoteCommandHandler : IRequestHandler<CreateQuoteCommand, QuoteResponseDTO>
     {
-        private readonly IQuoteService _quoteService;
+        private readonly IApplicationUnitOfWork unitOfWork;
 
-        /// <summary>
-        /// Initializes a new instance of the CreateQuoteCommandHandler class.
-        /// </summary>
-        /// <param name="quoteService">Quote service for business operations</param>
-        public CreateQuoteCommandHandler(IQuoteService quoteService)
+        public CreateQuoteCommandHandler(IApplicationUnitOfWork unitOfWork)
         {
-            _quoteService = quoteService;
+            this.unitOfWork = unitOfWork;
         }
 
-        /// <summary>
-        /// Handles the CreateQuoteCommand.
-        /// </summary>
-        /// <param name="request">The command containing quote data</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Response with the created quote details</returns>
-        public Task<CreateQuoteResponse> Handle(CreateQuoteCommand request, CancellationToken cancellationToken)
+        public Task<QuoteResponseDTO> Handle(CreateQuoteCommand request, CancellationToken cancellationToken)
         {
             var quote = new Domain.Implementation.Quote
             {
@@ -41,18 +32,11 @@ namespace HealthPlan.Quote.Application.Commands.Quote
                 Status = "Pending"
             };
 
-            _quoteService.AddQuote(quote);
+            unitOfWork.QuoteRepository.Add(quote);
 
-            var response = new CreateQuoteResponse
-            {
-                Id = quote.Id,
-                QuoteNumber = quote.QuoteNumber,
-                Status = quote.Status,
-                MonthlyPremium = quote.MonthlyPremium,
-                QuoteDate = quote.QuoteDate
-            };
+            // Transaction will be committed by TransactionBehavior
 
-            return Task.FromResult(response);
+            return Task.FromResult(CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote));
         }
     }
 }

@@ -1,58 +1,35 @@
+using HealthPlan.Quote.DTO;
+using HealthPlan.Quote.Mapping;
+using HealthPlan.Quote.UnitOfWork.Interface;
 using MediatR;
 
 namespace HealthPlan.Quote.Application.Queries.Quote
 {
     /// <summary>
-    /// Query to get all active quotes.
+    /// Query to retrieve all quotes.
     /// </summary>
-    public class GetAllQuotesQuery : IRequest<IEnumerable<GetQuoteByIdResponse>>
+    public class GetAllQuotesQuery : IRequest<IEnumerable<QuoteResponseDTO>>
     {
     }
 
     /// <summary>
-    /// Handler for the GetAllQuotesQuery.
-    /// Retrieves all active quotes from the system.
+    /// Handler for retrieving all quotes.
     /// </summary>
-    public class GetAllQuotesQueryHandler : IRequestHandler<GetAllQuotesQuery, IEnumerable<GetQuoteByIdResponse>>
+    public class GetAllQuotesQueryHandler : IRequestHandler<GetAllQuotesQuery, IEnumerable<QuoteResponseDTO>>
     {
-        private readonly Services.Interface.IQuoteService _quoteService;
+        private readonly IApplicationUnitOfWork unitOfWork;
 
-        /// <summary>
-        /// Initializes a new instance of the GetAllQuotesQueryHandler class.
-        /// </summary>
-        /// <param name="quoteService">Quote service for data retrieval</param>
-        public GetAllQuotesQueryHandler(Services.Interface.IQuoteService quoteService)
+        public GetAllQuotesQueryHandler(IApplicationUnitOfWork unitOfWork)
         {
-            _quoteService = quoteService;
+            this.unitOfWork = unitOfWork;
         }
 
-        /// <summary>
-        /// Handles the GetAllQuotesQuery.
-        /// </summary>
-        /// <param name="request">The query</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Collection of all active quotes</returns>
-        public Task<IEnumerable<GetQuoteByIdResponse>> Handle(GetAllQuotesQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<QuoteResponseDTO>> Handle(GetAllQuotesQuery request, CancellationToken cancellationToken)
         {
-            var quotes = _quoteService.GetAllActiveQuotes();
-
-            var response = quotes.Select(quote => new GetQuoteByIdResponse
-            {
-                Id = quote.Id,
-                QuoteNumber = quote.QuoteNumber,
-                IdCompany = quote.IdCompany,
-                IdBeneficiary = quote.IdBeneficiary,
-                IdHealthPlan = quote.IdHealthPlan,
-                IdAgeRange = quote.IdAgeRange,
-                MonthlyPremium = quote.MonthlyPremium,
-                Status = quote.Status,
-                ValidUntil = quote.ValidUntil,
-                QuoteDate = quote.QuoteDate,
-                CreatedBy = quote.CreatedBy,
-                Notes = quote.Notes
-            });
-
-            return Task.FromResult(response);
+            var quotes = unitOfWork.QuoteRepository.GetAll();
+            var quoteDtos = quotes.Select(q => CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(q));
+            
+            return Task.FromResult(quoteDtos);
         }
     }
 }
