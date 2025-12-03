@@ -25,9 +25,11 @@ namespace HealthPlan.Infrastructure.Repositories
 
         public IEnumerable<QuoteHistory> GetByStatus(string status)
         {
-            return _context.Set<QuoteHistory>()
-                .Where(qh => qh.NewStatus == status && qh.IsActive)
-                .ToList();
+            return !IsValidStatus(status)
+                ? Enumerable.Empty<QuoteHistory>()
+                : _context.Set<QuoteHistory>()
+                    .Where(qh => qh.NewStatus == status && qh.IsActive)
+                    .ToList();
         }
 
         public IEnumerable<QuoteHistory> GetByResponsibleUser(string responsibleUser)
