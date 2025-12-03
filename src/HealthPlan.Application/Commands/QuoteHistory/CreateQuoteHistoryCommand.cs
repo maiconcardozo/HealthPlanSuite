@@ -1,0 +1,17 @@
+using HealthPlan.Application.DTOs;
+using MediatR;
+
+namespace HealthPlan.Application.Commands
+{
+    public class CreateQuoteHistoryCommand : IRequest<QuoteHistoryResponseDTO>
+    {
+        public int QuoteId { get; set; }
+        public string? PreviousStatus { get; set; }
+        public string NewStatus { get; set; } = string.Empty;
+        public string? Reason { get; set; }
+        public string? Observations { get; set; }
+        public DateTime ChangeDate { get; set; } = DateTime.UtcNow;
+        public string ResponsibleUser { get; set; } = string.Empty;
+        public string CreatedBy { get; set; } = string.Empty;
+    }
+}

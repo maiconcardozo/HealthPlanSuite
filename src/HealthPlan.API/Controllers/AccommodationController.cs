@@ -1,10 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.Domain.Entities;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
-using HealthPlan.Application.Mappers;
-using HealthPlan.Application.Services;
-using FluentValidation;
+using HealthPlan.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -18,18 +17,15 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class AccommodationController : ControllerBase
     {
-        private readonly IAccommodationService _accommodationService;
-        private readonly IValidator<AccommodationPayLoadDTO> validator;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Initializes a new instance of the AccommodationController.
         /// </summary>
-        /// <param name="accommodationService">Service for accommodation management operations</param>
-        /// <param name="validator">Validator for AccommodationPayLoadDTO</param>
-        public AccommodationController(IAccommodationService accommodationService, IValidator<AccommodationPayLoadDTO> validator)
+        /// <param name="mediator">MediatR mediator for command/query handling.</param>
+        public AccommodationController(IMediator mediator)
         {
-            _accommodationService = accommodationService;
-            this.validator = validator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -42,7 +38,7 @@ namespace HealthPlan.API.Controllers
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
         /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpGet(AccommodationRoutes.GetAccommodations)]
+        [HttpGet("")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<AccommodationResponseDTO>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -51,13 +47,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAccommodations()
+        public async Task<IActionResult> GetAccommodations()
         {
             try
             {
-                var accommodations = _accommodationService.GetAllActiveAccommodations();
-                var accommodationsResponse = accommodations.Select(a => CleanTemplateApplicationMapperInitializer.Mapper.Map<AccommodationResponseDTO>(a));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodationsResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetAllAccommodationsQuery();
+                var accommodations = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodations, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -87,7 +83,7 @@ namespace HealthPlan.API.Controllers
         /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="404">ResourceAPI.AccommodationNotFound</response>
         /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpGet(AccommodationRoutes.GetAccommodationById)]
+        [HttpGet("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AccommodationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -98,19 +94,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAccommodation(int id)
+        public async Task<IActionResult> GetAccommodation(int id)
         {
             try
             {
-                var accommodation = _accommodationService.GetById(id);
+                var query = new GetAccommodationByIdQuery { Id = id };
+                var accommodation = await mediator.Send(query);
                 if (accommodation == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Accommodation not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var accommodationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AccommodationResponseDTO>(accommodation);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodationResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodation, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -140,7 +136,7 @@ namespace HealthPlan.API.Controllers
         /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="409">ResourceAPI.AccommodationAlreadyExists</response>
         /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpPost(AccommodationRoutes.AddAccommodation)]
+        [HttpPost("")]
         [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AccommodationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -151,25 +147,27 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateAccommodation([FromBody] AccommodationPayLoadDTO accommodationPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateAccommodation([FromBody] AccommodationPayLoadDTO accommodationPayLoad)
         {
-            var validationResult = validator.Validate(accommodationPayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var accommodation = CleanTemplateApplicationMapperInitializer.Mapper.Map<Accommodation>(accommodationPayLoad);
-                _accommodationService.AddAccommodation(accommodation);
-
-                var accommodationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AccommodationResponseDTO>(accommodation);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodationResponse, "Accommodation created successfully", HttpContext.Request.Path);
+                var command = new CreateAccommodationCommand
+                {
+                    Type = accommodationPayLoad.Type,
+                    Description = accommodationPayLoad.Description,
+                    AdditionalValue = accommodationPayLoad.AdditionalValue,
+                    CreatedBy = accommodationPayLoad.CreatedBy,
+                };
+                var accommodation = await mediator.Send(command);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodation, "Accommodation created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (InvalidOperationException ex)
             {
@@ -203,7 +201,7 @@ namespace HealthPlan.API.Controllers
         /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="404">ResourceAPI.AccommodationNotFound</response>
         /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpPut(AccommodationRoutes.UpdateAccommodation)]
+        [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AccommodationResponseDTO))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -214,33 +212,34 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAccommodation([FromBody] AccommodationPayLoadDTO accommodationPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateAccommodation([FromBody] AccommodationPayLoadDTO accommodationPayLoad)
         {
-            var validationResult = validator.Validate(accommodationPayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var existingAccommodation = _accommodationService.GetById(accommodationPayLoad.Id);
-                if (existingAccommodation == null)
+                var command = new UpdateAccommodationCommand
+                {
+                    Id = accommodationPayLoad.Id,
+                    Type = accommodationPayLoad.Type,
+                    Description = accommodationPayLoad.Description,
+                    AdditionalValue = accommodationPayLoad.AdditionalValue,
+                    UpdatedBy = accommodationPayLoad.UpdatedBy,
+                };
+                var accommodation = await mediator.Send(command);
+                if (accommodation == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Accommodation not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var accommodation = CleanTemplateApplicationMapperInitializer.Mapper.Map<Accommodation>(accommodationPayLoad);
-                accommodation.Id = accommodationPayLoad.Id;
-                _accommodationService.UpdateAccommodation(accommodation);
-
-                var accommodationResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AccommodationResponseDTO>(accommodation);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodationResponse, "Accommodation updated successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(accommodation, "Accommodation updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (ArgumentException ex)
             {
@@ -269,7 +268,7 @@ namespace HealthPlan.API.Controllers
         /// <response code="401">ResourceAPI.ResponseUnauthorizedAccess</response>
         /// <response code="404">ResourceAPI.AccommodationNotFound</response>
         /// <response code="500">ResourceAPI.InternalServerError</response>
-        [HttpDelete(AccommodationRoutes.DeleteAccommodation)]
+        [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
@@ -280,18 +279,18 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteAccommodation(int id)
+        public async Task<IActionResult> DeleteAccommodation(int id)
         {
             try
             {
-                var existingAccommodation = _accommodationService.GetById(id);
-                if (existingAccommodation == null)
+                var command = new DeleteAccommodationCommand { Id = id };
+                var result = await mediator.Send(command);
+                if (!result)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Accommodation not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _accommodationService.DeleteAccommodation(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Accommodation deleted successfully", "Accommodation deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }

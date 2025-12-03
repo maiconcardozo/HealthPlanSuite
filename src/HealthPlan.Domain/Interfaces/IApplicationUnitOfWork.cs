@@ -7,12 +7,20 @@ namespace HealthPlan.Domain.Interfaces
     /// </summary>
     public interface IApplicationUnitOfWork : IDisposable
     {
+        IAcceptanceRuleRepository AcceptanceRuleRepository { get; }
+        IAccommodationRepository AccommodationRepository { get; }
+        IAdhesionFeeRepository AdhesionFeeRepository { get; }
         IAgeRangeRepository AgeRangeRepository { get; }
         IBeneficiaryRepository BeneficiaryRepository { get; }
         ICompanyRepository CompanyRepository { get; }
         ICoverageRepository CoverageRepository { get; }
         IHealthPlanRepository HealthPlanRepository { get; }
+        IPlanCoverageRepository PlanCoverageRepository { get; }
+        IPlanPriceRangeRepository PlanPriceRangeRepository { get; }
+        IProcedureCoparticipationRepository ProcedureCoparticipationRepository { get; }
+        IPromotionalDiscountRepository PromotionalDiscountRepository { get; }
         IQuoteRepository QuoteRepository { get; }
+        IQuoteHistoryRepository QuoteHistoryRepository { get; }
         
         /// <summary>
         /// Saves all changes made in this unit of work to the database
