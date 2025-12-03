@@ -4,8 +4,8 @@ using HealthPlan.API.Data;
 using HealthPlan.API.Resource;
 using HealthPlan.API.Services;
 using HealthPlan.API.Swagger;
-using HealthPlan.Quote.Constants;
-using HealthPlan.Quote.Extensions;
+using HealthPlan.Application.Constants;
+using HealthPlan.Shared.Kernel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Tokens;
@@ -127,20 +127,20 @@ namespace HealthPlan.API
             // CONTROLLERS & VALIDATION
             // ==============================
             services.AddControllers();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.AcceptanceRulePayLoadDTO>, HealthPlan.Quote.Validators.AcceptanceRulePayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.AccommodationPayLoadDTO>, HealthPlan.Quote.Validators.AccommodationPayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.AgeRangePayLoadDTO>, HealthPlan.Quote.Validators.AgeRangePayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.BeneficiaryPayLoadDTO>, HealthPlan.Quote.Validators.BeneficiaryPayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.CompanyPayLoadDTO>, HealthPlan.Quote.Validators.CompanyPayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.ProcedureCoparticipationPayLoadDTO>, HealthPlan.Quote.Validators.ProcedureCoparticipationPayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.CoveragePayLoadDTO>, HealthPlan.Quote.Validators.CoveragePayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.PromotionalDiscountPayLoadDTO>, HealthPlan.Quote.Validators.PromotionalDiscountPayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.HealthPlanPayLoadDTO>, HealthPlan.Quote.Validators.HealthPlanPayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.PlanCoveragePayLoadDTO>, HealthPlan.Quote.Validators.PlanCoveragePayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.PlanPriceRangePayLoadDTO>, HealthPlan.Quote.Validators.PlanPriceRangePayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.QuoteHistoryPayLoadDTO>, HealthPlan.Quote.Validators.QuoteHistoryPayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.QuotePayLoadDTO>, HealthPlan.Quote.Validators.QuotePayloadValidator>();
-            services.AddTransient<FluentValidation.IValidator<HealthPlan.Quote.DTO.AdhesionFeePayLoadDTO>, HealthPlan.Quote.Validators.AdhesionFeePayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.AcceptanceRulePayLoadDTO>, HealthPlan.Application.Validators.AcceptanceRulePayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.AccommodationPayLoadDTO>, HealthPlan.Application.Validators.AccommodationPayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.AgeRangePayLoadDTO>, HealthPlan.Application.Validators.AgeRangePayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.BeneficiaryPayLoadDTO>, HealthPlan.Application.Validators.BeneficiaryPayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.CompanyPayLoadDTO>, HealthPlan.Application.Validators.CompanyPayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.ProcedureCoparticipationPayLoadDTO>, HealthPlan.Application.Validators.ProcedureCoparticipationPayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.CoveragePayLoadDTO>, HealthPlan.Application.Validators.CoveragePayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.PromotionalDiscountPayLoadDTO>, HealthPlan.Application.Validators.PromotionalDiscountPayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.HealthPlanPayLoadDTO>, HealthPlan.Application.Validators.HealthPlanPayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.PlanCoveragePayLoadDTO>, HealthPlan.Application.Validators.PlanCoveragePayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.PlanPriceRangePayLoadDTO>, HealthPlan.Application.Validators.PlanPriceRangePayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.QuoteHistoryPayLoadDTO>, HealthPlan.Application.Validators.QuoteHistoryPayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.QuotePayLoadDTO>, HealthPlan.Application.Validators.QuotePayloadValidator>();
+            services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.AdhesionFeePayLoadDTO>, HealthPlan.Application.Validators.AdhesionFeePayloadValidator>();
 
             // ==============================
             // SWAGGER

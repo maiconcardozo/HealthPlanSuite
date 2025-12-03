@@ -5,9 +5,15 @@ VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.API", "..\src\HealthPlan.API\HealthPlan.API.csproj", "{CE1283AA-5CAD-43AB-A973-2162B12096B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Quote", "..\src\HealthPlan.Quote\HealthPlan.Quote.csproj", "{B56204F9-7AA5-DCD3-A14A-65F0DD219B60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Domain", "..\src\HealthPlan.Domain\HealthPlan.Domain.csproj", "{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Test", "..\src\HealthPlan.Test\HealthPlan.Test.csproj", "{C1F0B2A1-8E3D-4567-9ABC-DEF123456789}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Application", "..\src\HealthPlan.Application\HealthPlan.Application.csproj", "{A1B2C3D4-E5F6-7890-1234-567890ABCDEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Infrastructure", "..\src\HealthPlan.Infrastructure\HealthPlan.Infrastructure.csproj", "{F1E2D3C4-B5A6-9870-1234-FEDCBA098765}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Shared", "..\src\HealthPlan.Shared\HealthPlan.Shared.csproj", "{12345678-9ABC-DEF0-1234-567890ABCDEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPlan.Tests", "..\src\HealthPlan.Tests\HealthPlan.Tests.csproj", "{C1F0B2A1-8E3D-4567-9ABC-DEF123456789}"
 EndProject
 
 Global
@@ -20,10 +26,22 @@ Global
 		{CE1283AA-5CAD-43AB-A973-2162B12096B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE1283AA-5CAD-43AB-A973-2162B12096B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE1283AA-5CAD-43AB-A973-2162B12096B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B56204F9-7AA5-DCD3-A14A-65F0DD219B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B56204F9-7AA5-DCD3-A14A-65F0DD219B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B56204F9-7AA5-DCD3-A14A-65F0DD219B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B56204F9-7AA5-DCD3-A14A-65F0DD219B60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-567890ABCDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-567890ABCDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-567890ABCDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-567890ABCDEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1E2D3C4-B5A6-9870-1234-FEDCBA098765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1E2D3C4-B5A6-9870-1234-FEDCBA098765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1E2D3C4-B5A6-9870-1234-FEDCBA098765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1E2D3C4-B5A6-9870-1234-FEDCBA098765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12345678-9ABC-DEF0-1234-567890ABCDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12345678-9ABC-DEF0-1234-567890ABCDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12345678-9ABC-DEF0-1234-567890ABCDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12345678-9ABC-DEF0-1234-567890ABCDEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C1F0B2A1-8E3D-4567-9ABC-DEF123456789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1F0B2A1-8E3D-4567-9ABC-DEF123456789}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1F0B2A1-8E3D-4567-9ABC-DEF123456789}.Release|Any CPU.ActiveCfg = Release|Any CPU

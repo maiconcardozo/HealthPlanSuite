@@ -1,9 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.Quote.Domain.Implementation;
-using HealthPlan.Quote.DTO;
-using HealthPlan.Quote.Mapping;
-using HealthPlan.Quote.Services.Interface;
+using HealthPlan.Domain.Entities;
+using HealthPlan.Application.DTOs;
+using HealthPlan.Application.Mappers;
+using HealthPlan.Application.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -164,7 +164,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var healthPlan = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.HealthPlan>(healthPlanPayLoad);
+                var healthPlan = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.HealthPlan>(healthPlanPayLoad);
                 _healthPlanService.AddHealthPlan(healthPlan);
 
                 var healthPlanResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlanResponseDTO>(healthPlan);
@@ -234,7 +234,7 @@ namespace HealthPlan.API.Controllers
                     return NotFound(problemDetails);
                 }
 
-                var healthPlan = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.HealthPlan>(healthPlanPayLoad);
+                var healthPlan = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.HealthPlan>(healthPlanPayLoad);
                 healthPlan.Id = healthPlanPayLoad.Id;
                 _healthPlanService.UpdateHealthPlan(healthPlan);
 

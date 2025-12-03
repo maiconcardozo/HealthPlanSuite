@@ -1,10 +1,10 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
 using HealthPlan.API.Util;
-using HealthPlan.Quote.Domain.Implementation;
-using HealthPlan.Quote.DTO;
-using HealthPlan.Quote.Mapping;
-using HealthPlan.Quote.Services.Interface;
+using HealthPlan.Domain.Entities;
+using HealthPlan.Application.DTOs;
+using HealthPlan.Application.Mappers;
+using HealthPlan.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -203,7 +203,7 @@ namespace HealthPlan.API.Controllers
 
             try
             {
-                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
+                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.Quote>(quotePayLoad);
                 _quoteService.AddQuote(quote);
 
                 var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
@@ -271,7 +271,7 @@ namespace HealthPlan.API.Controllers
                     return NotFound(problemDetails);
                 }
 
-                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Quote.Domain.Implementation.Quote>(quotePayLoad);
+                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.Quote>(quotePayLoad);
                 quote.Id = quotePayLoad.Id;
                 _quoteService.UpdateQuote(quote);
 

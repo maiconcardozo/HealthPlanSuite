@@ -1,4 +1,4 @@
-using HealthPlan.Quote.Constants;
+using HealthPlan.Application.Constants;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 

@@ -22,7 +22,7 @@ namespace HealthPlan.API.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.Account", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +73,7 @@ namespace HealthPlan.API.Migrations
                     b.ToTable("Account", (string)null);
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.AccountClaimAction", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.AccountClaimAction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,7 +121,7 @@ namespace HealthPlan.API.Migrations
                     b.ToTable("AccountClaimAction", (string)null);
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.Action", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.Action", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,7 +164,7 @@ namespace HealthPlan.API.Migrations
                     b.ToTable("Action", (string)null);
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.Claim", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.Claim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -215,7 +215,7 @@ namespace HealthPlan.API.Migrations
                     b.ToTable("Claim", (string)null);
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.ClaimAction", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.ClaimAction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,15 +263,15 @@ namespace HealthPlan.API.Migrations
                     b.ToTable("ClaimAction", (string)null);
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.AccountClaimAction", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.AccountClaimAction", b =>
                 {
-                    b.HasOne("HealthPlan.Quote.Domain.Implementation.Account", "Account")
+                    b.HasOne("HealthPlan.Domain.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("IdAccount")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HealthPlan.Quote.Domain.Implementation.ClaimAction", "ClaimAction")
+                    b.HasOne("HealthPlan.Domain.Entities.ClaimAction", "ClaimAction")
                         .WithMany("LstAccountClaimAction")
                         .HasForeignKey("IdClaimAction")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -282,15 +282,15 @@ namespace HealthPlan.API.Migrations
                     b.Navigation("ClaimAction");
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.ClaimAction", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.ClaimAction", b =>
                 {
-                    b.HasOne("HealthPlan.Quote.Domain.Implementation.Action", "Action")
+                    b.HasOne("HealthPlan.Domain.Entities.Action", "Action")
                         .WithMany("LstClaimAction")
                         .HasForeignKey("IdAction")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HealthPlan.Quote.Domain.Implementation.Claim", "Claim")
+                    b.HasOne("HealthPlan.Domain.Entities.Claim", "Claim")
                         .WithMany("LstClaimAction")
                         .HasForeignKey("IdClaim")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -301,17 +301,17 @@ namespace HealthPlan.API.Migrations
                     b.Navigation("Claim");
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.Action", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.Action", b =>
                 {
                     b.Navigation("LstClaimAction");
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.Claim", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.Claim", b =>
                 {
                     b.Navigation("LstClaimAction");
                 });
 
-            modelBuilder.Entity("HealthPlan.Quote.Domain.Implementation.ClaimAction", b =>
+            modelBuilder.Entity("HealthPlan.Domain.Entities.ClaimAction", b =>
                 {
                     b.Navigation("LstAccountClaimAction");
                 });

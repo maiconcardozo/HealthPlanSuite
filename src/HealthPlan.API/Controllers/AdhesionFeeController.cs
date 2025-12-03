@@ -1,10 +1,10 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
 using HealthPlan.API.Util;
-using HealthPlan.Quote.Domain.Implementation;
-using HealthPlan.Quote.DTO;
-using HealthPlan.Quote.Mapping;
-using HealthPlan.Quote.Services.Interface;
+using HealthPlan.Domain.Entities;
+using HealthPlan.Application.DTOs;
+using HealthPlan.Application.Mappers;
+using HealthPlan.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
