@@ -3,7 +3,6 @@ using HealthPlan.API.Swagger;
 using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
 using HealthPlan.Application.Queries;
-using HealthPlan.Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -19,17 +18,14 @@ namespace HealthPlan.API.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly IMediator mediator;
-        private readonly ICompanyService companyService;
 
         /// <summary>
         /// Initializes a new instance of the CompanyController.
         /// </summary>
         /// <param name="mediator">MediatR mediator for command/query handling.</param>
-        /// <param name="companyService">Service for company-specific operations like CNPJ lookup.</param>
-        public CompanyController(IMediator mediator, ICompanyService companyService)
+        public CompanyController(IMediator mediator)
         {
             this.mediator = mediator;
-            this.companyService = companyService;
         }
 
         /// <summary>
@@ -151,19 +147,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetCompanyByCNPJ(string cnpj)
+        public async Task<IActionResult> GetCompanyByCNPJ(string cnpj)
         {
             try
             {
-                var company = companyService.GetCompanyByCNPJ(cnpj);
+                var query = new GetCompanyByCNPJQuery { CNPJ = cnpj };
+                var company = await mediator.Send(query);
                 if (company == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Company not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var companyResponse = HealthPlan.Application.Mappers.CleanTemplateApplicationMapperInitializer.Mapper.Map<CompanyResponseDTO>(company);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(companyResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(company, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
