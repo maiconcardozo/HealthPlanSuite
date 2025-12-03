@@ -40,8 +40,7 @@ For detailed security implementation and best practices used in this project, se
 ### Key Security Features
 
 - **JWT Authentication**: Secure token-based authentication
-- **Password Hashing**: Industry-standard hashing for password storage
-- **RBAC**: Role-Based Access Control
+- **Password Hashing**: Argon2 for password storage
 - **HTTPS**: Enforced encrypted connections
 - **Input Validation**: Comprehensive validation on all inputs
 - **SQL Injection Protection**: Parameterized queries with Entity Framework
@@ -61,4 +60,4 @@ For detailed security implementation and best practices used in this project, se
 
 ---
 
-Thank you for helping keep the HealthPlanSuite and its users safe!
+Thank you for helping keep HealthPlanSuite and its users safe!
