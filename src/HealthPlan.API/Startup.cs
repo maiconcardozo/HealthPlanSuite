@@ -4,6 +4,8 @@ using HealthPlan.API.Data;
 using HealthPlan.API.Resource;
 using HealthPlan.API.Services;
 using HealthPlan.API.Swagger;
+using HealthPlan.Application.Behaviors;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.Constants;
 using HealthPlan.Shared.Kernel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -141,6 +143,17 @@ namespace HealthPlan.API
             services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.QuoteHistoryPayLoadDTO>, HealthPlan.Application.Validators.QuoteHistoryPayloadValidator>();
             services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.QuotePayLoadDTO>, HealthPlan.Application.Validators.QuotePayloadValidator>();
             services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.AdhesionFeePayLoadDTO>, HealthPlan.Application.Validators.AdhesionFeePayloadValidator>();
+
+            // ==============================
+            // MEDIATR (CQRS Pattern)
+            // ==============================
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(CreateQuoteCommand).Assembly);
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
+            });
 
             // ==============================
             // SWAGGER

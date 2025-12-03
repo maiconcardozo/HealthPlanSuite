@@ -1,10 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.Domain.Entities;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
-using HealthPlan.Application.Mappers;
-using HealthPlan.Application.Services;
-using FluentValidation;
+using HealthPlan.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -18,18 +17,15 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class CoverageController : ControllerBase
     {
-        private readonly ICoverageService _coverageService;
-        private readonly IValidator<CoveragePayLoadDTO> validator;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Initializes a new instance of the CoverageController.
         /// </summary>
-        /// <param name="coverageService">Service for coverage management operations</param>
-        /// <param name="validator">Validator for CoveragePayLoadDTO</param>
-        public CoverageController(ICoverageService coverageService, IValidator<CoveragePayLoadDTO> validator)
+        /// <param name="mediator">MediatR mediator for command/query handling.</param>
+        public CoverageController(IMediator mediator)
         {
-            _coverageService = coverageService;
-            this.validator = validator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -51,13 +47,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetCoverages()
+        public async Task<IActionResult> GetCoverages()
         {
             try
             {
-                var coverages = _coverageService.GetAllActiveCoverages();
-                var coveragesResponse = coverages.Select(c => CleanTemplateApplicationMapperInitializer.Mapper.Map<CoverageResponseDTO>(c));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(coveragesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetAllCoveragesQuery();
+                var coverages = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverages, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -98,19 +94,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetCoverage(int id)
+        public async Task<IActionResult> GetCoverage(int id)
         {
             try
             {
-                var coverage = _coverageService.GetById(id);
+                var query = new GetCoverageByIdQuery { Id = id };
+                var coverage = await mediator.Send(query);
                 if (coverage == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Coverage not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var coverageResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CoverageResponseDTO>(coverage);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverageResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverage, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -148,13 +144,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetCoveragesByType(string coverageType)
+        public async Task<IActionResult> GetCoveragesByType(string coverageType)
         {
             try
             {
-                var coverages = _coverageService.GetCoveragesByType(coverageType);
-                var coveragesResponse = coverages.Select(c => CleanTemplateApplicationMapperInitializer.Mapper.Map<CoverageResponseDTO>(c));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(coveragesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetCoveragesByTypeQuery { CoverageType = coverageType };
+                var coverages = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverages, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -195,25 +191,27 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateCoverage([FromBody] CoveragePayLoadDTO coveragePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateCoverage([FromBody] CoveragePayLoadDTO coveragePayLoad)
         {
-            var validationResult = validator.Validate(coveragePayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var coverage = CleanTemplateApplicationMapperInitializer.Mapper.Map<Coverage>(coveragePayLoad);
-                _coverageService.AddCoverage(coverage);
-
-                var coverageResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CoverageResponseDTO>(coverage);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverageResponse, "Coverage created successfully", HttpContext.Request.Path);
+                var command = new CreateCoverageCommand
+                {
+                    Name = coveragePayLoad.Name,
+                    Description = coveragePayLoad.Description,
+                    CoverageType = coveragePayLoad.CoverageType,
+                    CreatedBy = coveragePayLoad.CreatedBy,
+                };
+                var coverage = await mediator.Send(command);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverage, "Coverage created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (InvalidOperationException ex)
             {
@@ -258,33 +256,34 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateCoverage([FromBody] CoveragePayLoadDTO coveragePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateCoverage([FromBody] CoveragePayLoadDTO coveragePayLoad)
         {
-            var validationResult = validator.Validate(coveragePayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var existingCoverage = _coverageService.GetById(coveragePayLoad.Id);
-                if (existingCoverage == null)
+                var command = new UpdateCoverageCommand
+                {
+                    Id = coveragePayLoad.Id,
+                    Name = coveragePayLoad.Name,
+                    Description = coveragePayLoad.Description,
+                    CoverageType = coveragePayLoad.CoverageType,
+                    UpdatedBy = coveragePayLoad.UpdatedBy,
+                };
+                var coverage = await mediator.Send(command);
+                if (coverage == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Coverage not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var coverage = CleanTemplateApplicationMapperInitializer.Mapper.Map<Coverage>(coveragePayLoad);
-                coverage.Id = coveragePayLoad.Id;
-                _coverageService.UpdateCoverage(coverage);
-
-                var coverageResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<CoverageResponseDTO>(coverage);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverageResponse, "Coverage updated successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(coverage, "Coverage updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (ArgumentException ex)
             {
@@ -324,18 +323,18 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteCoverage(int id)
+        public async Task<IActionResult> DeleteCoverage(int id)
         {
             try
             {
-                var existingCoverage = _coverageService.GetById(id);
-                if (existingCoverage == null)
+                var command = new DeleteCoverageCommand { Id = id };
+                var result = await mediator.Send(command);
+                if (!result)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Coverage not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _coverageService.DeleteCoverage(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Coverage deleted successfully", "Coverage deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }

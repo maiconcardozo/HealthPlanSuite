@@ -29,7 +29,8 @@ namespace HealthPlan.Application.Commands
                 ValidUntil = request.ValidUntil,
                 CreatedBy = request.CreatedBy,
                 Notes = request.Notes,
-                Status = "Pending"
+                Status = "Pending",
+                DtCreated = DateTime.UtcNow,
             };
 
             unitOfWork.QuoteRepository.Add(quote);

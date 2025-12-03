@@ -1,10 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.Domain.Entities;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
-using HealthPlan.Application.Mappers;
-using HealthPlan.Application.Services;
-using FluentValidation;
+using HealthPlan.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -18,18 +17,15 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class AgeRangeController : ControllerBase
     {
-        private readonly IAgeRangeService _ageRangeService;
-        private readonly IValidator<AgeRangePayLoadDTO> validator;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Initializes a new instance of the AgeRangeController.
         /// </summary>
-        /// <param name="ageRangeService">Service for age range management operations</param>
-        /// <param name="validator">Validator for AgeRangePayLoadDTO</param>
-        public AgeRangeController(IAgeRangeService ageRangeService, IValidator<AgeRangePayLoadDTO> validator)
+        /// <param name="mediator">MediatR mediator for command/query handling.</param>
+        public AgeRangeController(IMediator mediator)
         {
-            _ageRangeService = ageRangeService;
-            this.validator = validator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -51,13 +47,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAgeRanges()
+        public async Task<IActionResult> GetAgeRanges()
         {
             try
             {
-                var ageRanges = _ageRangeService.GetAllActiveAgeRanges();
-                var ageRangesResponse = ageRanges.Select(ar => CleanTemplateApplicationMapperInitializer.Mapper.Map<AgeRangeResponseDTO>(ar));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRangesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetAllAgeRangesQuery();
+                var ageRanges = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRanges, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -80,7 +76,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationGetAgeRangeById
         /// </summary>
-        /// <param name="id">Age range ID to search for</param>
+        /// <param name="id">Age Range ID to search for</param>
         /// <returns>ResourceAPI.ReturnsAgeRangeMatchingTheSpecifiedID</returns>
         /// <response code="200">ResourceAPI.AgeRangesRetrievedSuccessfully</response>
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
@@ -98,19 +94,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAgeRange(int id)
+        public async Task<IActionResult> GetAgeRange(int id)
         {
             try
             {
-                var ageRange = _ageRangeService.GetById(id);
+                var query = new GetAgeRangeByIdQuery { Id = id };
+                var ageRange = await mediator.Send(query);
                 if (ageRange == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Age range not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Age Range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var ageRangeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AgeRangeResponseDTO>(ageRange);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRangeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRange, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -133,7 +129,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationAddAgeRange
         /// </summary>
-        /// <param name="ageRangePayLoad">Age range data to create</param>
+        /// <param name="ageRangePayLoad">Age Range data to create</param>
         /// <returns>ResourceAPI.ReturnsCreatedAgeRangeOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="201">ResourceAPI.AgeRangeCreatedSuccessfully</response>
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
@@ -151,25 +147,27 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateAgeRange([FromBody] AgeRangePayLoadDTO ageRangePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateAgeRange([FromBody] AgeRangePayLoadDTO ageRangePayLoad)
         {
-            var validationResult = validator.Validate(ageRangePayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var ageRange = CleanTemplateApplicationMapperInitializer.Mapper.Map<AgeRange>(ageRangePayLoad);
-                _ageRangeService.AddAgeRange(ageRange);
-
-                var ageRangeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AgeRangeResponseDTO>(ageRange);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRangeResponse, "Age range created successfully", HttpContext.Request.Path);
+                var command = new CreateAgeRangeCommand
+                {
+                    MinAge = ageRangePayLoad.MinAge,
+                    MaxAge = ageRangePayLoad.MaxAge,
+                    Description = ageRangePayLoad.Description,
+                    CreatedBy = ageRangePayLoad.CreatedBy,
+                };
+                var ageRange = await mediator.Send(command);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRange, "Age Range created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (InvalidOperationException ex)
             {
@@ -214,33 +212,34 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateAgeRange([FromBody] AgeRangePayLoadDTO ageRangePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateAgeRange([FromBody] AgeRangePayLoadDTO ageRangePayLoad)
         {
-            var validationResult = validator.Validate(ageRangePayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var existingAgeRange = _ageRangeService.GetById(ageRangePayLoad.Id);
-                if (existingAgeRange == null)
+                var command = new UpdateAgeRangeCommand
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Age range not found", HttpContext.Request.Path);
+                    Id = ageRangePayLoad.Id,
+                    MinAge = ageRangePayLoad.MinAge,
+                    MaxAge = ageRangePayLoad.MaxAge,
+                    Description = ageRangePayLoad.Description,
+                    UpdatedBy = ageRangePayLoad.UpdatedBy,
+                };
+                var ageRange = await mediator.Send(command);
+                if (ageRange == null)
+                {
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Age Range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var ageRange = CleanTemplateApplicationMapperInitializer.Mapper.Map<AgeRange>(ageRangePayLoad);
-                ageRange.Id = ageRangePayLoad.Id;
-                _ageRangeService.UpdateAgeRange(ageRange);
-
-                var ageRangeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AgeRangeResponseDTO>(ageRange);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRangeResponse, "Age range updated successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(ageRange, "Age Range updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (ArgumentException ex)
             {
@@ -262,7 +261,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationDeleteAgeRange
         /// </summary>
-        /// <param name="id">Age range ID to delete</param>
+        /// <param name="id">Age Range ID to delete</param>
         /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessAgeRangeDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="200">ResourceAPI.AgeRangeDeletedSuccessfully</response>
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
@@ -280,19 +279,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteAgeRange(int id)
+        public async Task<IActionResult> DeleteAgeRange(int id)
         {
             try
             {
-                var existingAgeRange = _ageRangeService.GetById(id);
-                if (existingAgeRange == null)
+                var command = new DeleteAgeRangeCommand { Id = id };
+                var result = await mediator.Send(command);
+                if (!result)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Age range not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Age Range not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _ageRangeService.DeleteAgeRange(id);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess("Age range deleted successfully", "Age range deleted successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess("Age Range deleted successfully", "Age Range deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -310,22 +309,6 @@ namespace HealthPlan.API.Controllers
                 var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
-        }
-
-        /// <summary>
-        /// Gets the appropriate age range for a specific age.
-        /// Note: This functionality is not implemented in the current service layer.
-        /// </summary>
-        /// <param name="age">Age to find the range for</param>
-        /// <returns>Returns message indicating feature not available</returns>
-        /// <response code="501">Feature not implemented</response>
-        [HttpGet("age/{age}")]
-        [SwaggerResponse(StatusCodes.Status501NotImplemented, Type = typeof(string))]
-        public IActionResult GetAgeRangeByAge(int age)
-        {
-            // This would require implementing GetByAge method in IAgeRangeService
-            var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError("GetByAge feature not yet implemented in service layer", HttpContext.Request.Path);
-            return StatusCode(StatusCodes.Status501NotImplemented, problemDetails);
         }
     }
 }

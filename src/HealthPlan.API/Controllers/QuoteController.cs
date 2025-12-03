@@ -1,10 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.API.Util;
-using HealthPlan.Domain.Entities;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
-using HealthPlan.Application.Mappers;
-using HealthPlan.Application.Services;
+using HealthPlan.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -18,15 +17,15 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class QuoteController : ControllerBase
     {
-        private readonly IQuoteService _quoteService;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Initializes a new instance of the QuoteController.
         /// </summary>
-        /// <param name="quoteService">Service for quote management operations</param>
-        public QuoteController(IQuoteService quoteService)
+        /// <param name="mediator">MediatR mediator for command/query handling.</param>
+        public QuoteController(IMediator mediator)
         {
-            _quoteService = quoteService;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -48,13 +47,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetQuotes()
+        public async Task<IActionResult> GetQuotes()
         {
             try
             {
-                var quotes = _quoteService.GetAllActiveQuotes();
-                var quotesResponse = quotes.Select(q => CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(q));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetAllQuotesQuery();
+                var quotes = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotes, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -95,19 +94,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetQuote(int id)
+        public async Task<IActionResult> GetQuote(int id)
         {
             try
             {
-                var quote = _quoteService.GetById(id);
+                var query = new GetQuoteByIdQuery { Id = id };
+                var quote = await mediator.Send(query);
                 if (quote == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quote, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -145,13 +144,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetQuotesByBeneficiary(int beneficiaryId)
+        public async Task<IActionResult> GetQuotesByBeneficiary(int beneficiaryId)
         {
             try
             {
-                var quotes = _quoteService.GetQuotesByBeneficiary(beneficiaryId);
-                var quotesResponse = quotes.Select(q => CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(q));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetQuotesByBeneficiaryQuery { BeneficiaryId = beneficiaryId };
+                var quotes = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quotes, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -192,23 +191,31 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> CreateQuote([FromBody] QuotePayLoadDTO quotePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateQuote([FromBody] QuotePayLoadDTO quotePayLoad)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(quotePayLoad, serviceProvider, this);
-
-            if (validationResult != null)
-            {
-                return validationResult;
-            }
-
             try
             {
-                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.Quote>(quotePayLoad);
-                _quoteService.AddQuote(quote);
-
-                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var command = new CreateQuoteCommand
+                {
+                    IdCompany = quotePayLoad.IdCompany,
+                    IdBeneficiary = quotePayLoad.IdBeneficiary,
+                    IdHealthPlan = quotePayLoad.IdHealthPlan,
+                    IdAgeRange = quotePayLoad.IdAgeRange,
+                    MonthlyPremium = quotePayLoad.MonthlyPremium,
+                    ValidUntil = quotePayLoad.ValidUntil,
+                    CreatedBy = quotePayLoad.CreatedBy,
+                    Notes = quotePayLoad.Notes,
+                };
+                var quote = await mediator.Send(command);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quote, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (InvalidOperationException ex)
             {
@@ -253,31 +260,38 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> UpdateQuote([FromBody] QuotePayLoadDTO quotePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateQuote([FromBody] QuotePayLoadDTO quotePayLoad)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(quotePayLoad, serviceProvider, this);
-
-            if (validationResult != null)
-            {
-                return validationResult;
-            }
-
             try
             {
-                var existingQuote = _quoteService.GetById(quotePayLoad.Id);
-                if (existingQuote == null)
+                var command = new UpdateQuoteCommand
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
+                    Id = quotePayLoad.Id,
+                    IdCompany = quotePayLoad.IdCompany,
+                    IdBeneficiary = quotePayLoad.IdBeneficiary,
+                    IdHealthPlan = quotePayLoad.IdHealthPlan,
+                    IdAgeRange = quotePayLoad.IdAgeRange,
+                    MonthlyPremium = quotePayLoad.MonthlyPremium,
+                    ValidUntil = quotePayLoad.ValidUntil,
+                    Notes = quotePayLoad.Notes,
+                    UpdatedBy = quotePayLoad.UpdatedBy,
+                };
+                var quote = await mediator.Send(command);
+                if (quote == null)
+                {
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var quote = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.Quote>(quotePayLoad);
-                quote.Id = quotePayLoad.Id;
-                _quoteService.UpdateQuote(quote);
-
-                var quoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(quoteResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(quote, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (ArgumentException ex)
             {
@@ -317,108 +331,22 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteQuote(int id)
+        public async Task<IActionResult> DeleteQuote(int id)
         {
             try
             {
-                var existingQuote = _quoteService.GetById(id);
-                if (existingQuote == null)
+                var command = new DeleteQuoteCommand { Id = id };
+                var result = await mediator.Send(command);
+                if (!result)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _quoteService.DeleteQuote(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Quote deleted successfully", "Quote deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForUnauthorized(ex.Message, HttpContext.Request.Path);
-                return Unauthorized(problemDetails);
-            }
-            catch (Exception)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
-                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
-            }
-        }
-
-        /// <summary>
-        /// Retrieves a complete quote with all related entities and relationships.
-        /// </summary>
-        /// <param name="id">Quote ID to retrieve complete information for</param>
-        /// <returns>Returns complete Quote object with all relationships populated</returns>
-        /// <response code="200">Complete quote retrieved successfully</response>
-        /// <response code="400">Invalid request parameters</response>
-        /// <response code="401">Unauthorized access</response>
-        /// <response code="404">Quote not found</response>
-        /// <response code="500">Internal server error</response>
-        [HttpGet("{id}/complete")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(object))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(SucessDetailsExample))]
-        [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
-        [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
-        [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
-        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetCompleteQuote(int id)
-        {
-            try
-            {
-                var quote = _quoteService.GetById(id);
-                if (quote == null)
-                {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Quote not found", HttpContext.Request.Path);
-                    return NotFound(problemDetails);
-                }
-
-                // Note: This endpoint provides the structure for complete quote retrieval
-                // The actual implementation with full relationships would require:
-                // 1. Service method to load all related entities (Company, Beneficiary, HealthPlan, AgeRange, etc.)
-                // 2. CompleteQuoteResponseDTO to structure the response with all relationships
-                // 3. Mapping configuration to handle the complex object relationships
-                
-                // For now, return the basic quote structure with a note about the complete implementation
-                var basicQuoteResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<QuoteResponseDTO>(quote);
-                
-                // Create a placeholder complete response structure
-                var completeQuoteResponse = new
-                {
-                    Quote = basicQuoteResponse,
-                    Message = "Complete quote endpoint structure created. Full implementation requires:",
-                    RequiredImplementations = new[]
-                    {
-                        "CompleteQuoteResponseDTO with all relationship properties",
-                        "Service methods to load related entities (Company, Beneficiary, HealthPlan, AgeRange)",
-                        "Navigation property loading for PlanCoverages, AcceptanceRules, QuoteHistory",
-                        "Mapping configuration for complex object relationships"
-                    },
-                    PlannedStructure = new
-                    {
-                        QuoteDetails = "Basic quote information",
-                        Company = "Company details and information",
-                        Beneficiary = "Beneficiary personal information",
-                        HealthPlan = "Health plan details with accommodations",
-                        AgeRange = "Age range and premium multiplier",
-                        PlanCoverages = "List of coverages included in the plan",
-                        AcceptanceRules = "Rules that must be met for plan acceptance",
-                        QuoteHistory = "History of quote status changes"
-                    }
-                };
-
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(completeQuoteResponse, "Complete quote structure endpoint", HttpContext.Request.Path);
-                return Ok(successResponse);
-            }
-            catch (InvalidOperationException ex)
             {
                 var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(ex.Message, HttpContext.Request.Path);
                 return BadRequest(problemDetails);
