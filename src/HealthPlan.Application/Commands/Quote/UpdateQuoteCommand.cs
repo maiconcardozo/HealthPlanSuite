@@ -15,7 +15,6 @@ namespace HealthPlan.Application.Commands
         public int IdAgeRange { get; set; }
         public decimal MonthlyPremium { get; set; }
         public DateTime ValidUntil { get; set; }
-        public string? Status { get; set; }
         public string? Notes { get; set; }
         public string? UpdatedBy { get; set; }
     }

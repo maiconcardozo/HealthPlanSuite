@@ -1,10 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.Domain.Entities;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
-using HealthPlan.Application.Mappers;
-using HealthPlan.Application.Services;
-using FluentValidation;
+using HealthPlan.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -18,18 +17,15 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class BeneficiaryController : ControllerBase
     {
-        private readonly IBeneficiaryService _beneficiaryService;
-        private readonly IValidator<BeneficiaryPayLoadDTO> validator;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Initializes a new instance of the BeneficiaryController.
         /// </summary>
-        /// <param name="beneficiaryService">Service for beneficiary management operations</param>
-        /// <param name="validator">Validator for BeneficiaryPayLoadDTO</param>
-        public BeneficiaryController(IBeneficiaryService beneficiaryService, IValidator<BeneficiaryPayLoadDTO> validator)
+        /// <param name="mediator">MediatR mediator for command/query handling.</param>
+        public BeneficiaryController(IMediator mediator)
         {
-            _beneficiaryService = beneficiaryService;
-            this.validator = validator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -51,13 +47,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetBeneficiaries()
+        public async Task<IActionResult> GetBeneficiaries()
         {
             try
             {
-                var beneficiaries = _beneficiaryService.GetAllActiveBeneficiaries();
-                var beneficiariesResponse = beneficiaries.Select(b => CleanTemplateApplicationMapperInitializer.Mapper.Map<BeneficiaryResponseDTO>(b));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiariesResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetAllBeneficiariesQuery();
+                var beneficiaries = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiaries, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -98,19 +94,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetBeneficiary(int id)
+        public async Task<IActionResult> GetBeneficiary(int id)
         {
             try
             {
-                var beneficiary = _beneficiaryService.GetById(id);
+                var query = new GetBeneficiaryByIdQuery { Id = id };
+                var beneficiary = await mediator.Send(query);
                 if (beneficiary == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Beneficiary not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var beneficiaryResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<BeneficiaryResponseDTO>(beneficiary);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiaryResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiary, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -151,25 +147,34 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateBeneficiary([FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateBeneficiary([FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad)
         {
-            var validationResult = validator.Validate(beneficiaryPayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var beneficiary = CleanTemplateApplicationMapperInitializer.Mapper.Map<Beneficiary>(beneficiaryPayLoad);
-                _beneficiaryService.AddBeneficiary(beneficiary);
-
-                var beneficiaryResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<BeneficiaryResponseDTO>(beneficiary);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiaryResponse, "Beneficiary created successfully", HttpContext.Request.Path);
+                var command = new CreateBeneficiaryCommand
+                {
+                    Name = beneficiaryPayLoad.Name,
+                    CPF = beneficiaryPayLoad.CPF,
+                    Email = beneficiaryPayLoad.Email,
+                    Phone = beneficiaryPayLoad.Phone,
+                    DateOfBirth = beneficiaryPayLoad.DateOfBirth,
+                    Gender = beneficiaryPayLoad.Gender,
+                    Address = beneficiaryPayLoad.Address,
+                    City = beneficiaryPayLoad.City,
+                    State = beneficiaryPayLoad.State,
+                    ZipCode = beneficiaryPayLoad.ZipCode,
+                    CreatedBy = beneficiaryPayLoad.CreatedBy,
+                };
+                var beneficiary = await mediator.Send(command);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiary, "Beneficiary created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (InvalidOperationException ex)
             {
@@ -214,33 +219,41 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateBeneficiary([FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateBeneficiary([FromBody] BeneficiaryPayLoadDTO beneficiaryPayLoad)
         {
-            var validationResult = validator.Validate(beneficiaryPayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var existingBeneficiary = _beneficiaryService.GetById(beneficiaryPayLoad.Id);
-                if (existingBeneficiary == null)
+                var command = new UpdateBeneficiaryCommand
+                {
+                    Id = beneficiaryPayLoad.Id,
+                    Name = beneficiaryPayLoad.Name,
+                    CPF = beneficiaryPayLoad.CPF,
+                    Email = beneficiaryPayLoad.Email,
+                    Phone = beneficiaryPayLoad.Phone,
+                    DateOfBirth = beneficiaryPayLoad.DateOfBirth,
+                    Gender = beneficiaryPayLoad.Gender,
+                    Address = beneficiaryPayLoad.Address,
+                    City = beneficiaryPayLoad.City,
+                    State = beneficiaryPayLoad.State,
+                    ZipCode = beneficiaryPayLoad.ZipCode,
+                    UpdatedBy = beneficiaryPayLoad.UpdatedBy,
+                };
+                var beneficiary = await mediator.Send(command);
+                if (beneficiary == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Beneficiary not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var beneficiary = CleanTemplateApplicationMapperInitializer.Mapper.Map<Beneficiary>(beneficiaryPayLoad);
-                beneficiary.Id = beneficiaryPayLoad.Id;
-                _beneficiaryService.UpdateBeneficiary(beneficiary);
-
-                var beneficiaryResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<BeneficiaryResponseDTO>(beneficiary);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiaryResponse, "Beneficiary updated successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(beneficiary, "Beneficiary updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (ArgumentException ex)
             {
@@ -280,18 +293,18 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteBeneficiary(int id)
+        public async Task<IActionResult> DeleteBeneficiary(int id)
         {
             try
             {
-                var existingBeneficiary = _beneficiaryService.GetById(id);
-                if (existingBeneficiary == null)
+                var command = new DeleteBeneficiaryCommand { Id = id };
+                var result = await mediator.Send(command);
+                if (!result)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Beneficiary not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _beneficiaryService.DeleteBeneficiary(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Beneficiary deleted successfully", "Beneficiary deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
@@ -310,22 +323,6 @@ namespace HealthPlan.API.Controllers
                 var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
-        }
-
-        /// <summary>
-        /// Searches beneficiaries by CPF.
-        /// Note: This functionality is not implemented in the current service layer.
-        /// </summary>
-        /// <param name="cpf">CPF to search for</param>
-        /// <returns>Returns message indicating feature not available</returns>
-        /// <response code="501">Feature not implemented</response>
-        [HttpGet("cpf/{cpf}")]
-        [SwaggerResponse(StatusCodes.Status501NotImplemented, Type = typeof(string))]
-        public IActionResult GetBeneficiaryByCPF(string cpf)
-        {
-            // This would require implementing GetByCPF method in IBeneficiaryService
-            var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError("GetByCPF feature not yet implemented in service layer", HttpContext.Request.Path);
-            return StatusCode(StatusCodes.Status501NotImplemented, problemDetails);
         }
     }
 }

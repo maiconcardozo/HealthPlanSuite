@@ -32,7 +32,6 @@ namespace HealthPlan.Application.Commands
             quote.IdAgeRange = request.IdAgeRange;
             quote.MonthlyPremium = request.MonthlyPremium;
             quote.ValidUntil = request.ValidUntil;
-            quote.Status = request.Status ?? quote.Status;
             quote.Notes = request.Notes;
             quote.UpdatedBy = request.UpdatedBy;
             quote.DtUpdated = DateTime.UtcNow;

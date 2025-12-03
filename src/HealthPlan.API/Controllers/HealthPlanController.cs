@@ -1,10 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.Domain.Entities;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
-using HealthPlan.Application.Mappers;
-using HealthPlan.Application.Services;
-using FluentValidation;
+using HealthPlan.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -18,18 +17,15 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class HealthPlanController : ControllerBase
     {
-        private readonly IHealthPlanService _healthPlanService;
-        private readonly IValidator<HealthPlanPayLoadDTO> validator;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Initializes a new instance of the HealthPlanController.
         /// </summary>
-        /// <param name="healthPlanService">Service for health plan management operations</param>
-        /// <param name="validator">Validator for HealthPlanPayLoadDTO</param>
-        public HealthPlanController(IHealthPlanService healthPlanService, IValidator<HealthPlanPayLoadDTO> validator)
+        /// <param name="mediator">MediatR mediator for command/query handling.</param>
+        public HealthPlanController(IMediator mediator)
         {
-            _healthPlanService = healthPlanService;
-            this.validator = validator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -51,13 +47,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetHealthPlans()
+        public async Task<IActionResult> GetHealthPlans()
         {
             try
             {
-                var healthPlans = _healthPlanService.GetAllActiveHealthPlans();
-                var healthPlansResponse = healthPlans.Select(hp => CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlanResponseDTO>(hp));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlansResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetAllHealthPlansQuery();
+                var healthPlans = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlans, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -80,7 +76,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationGetHealthPlanById
         /// </summary>
-        /// <param name="id">Health plan ID to search for</param>
+        /// <param name="id">Health Plan ID to search for</param>
         /// <returns>ResourceAPI.ReturnsHealthPlanMatchingTheSpecifiedID</returns>
         /// <response code="200">ResourceAPI.HealthPlansRetrievedSuccessfully</response>
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
@@ -98,19 +94,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetHealthPlan(int id)
+        public async Task<IActionResult> GetHealthPlan(int id)
         {
             try
             {
-                var healthPlan = _healthPlanService.GetById(id);
+                var query = new GetHealthPlanByIdQuery { Id = id };
+                var healthPlan = await mediator.Send(query);
                 if (healthPlan == null)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Health plan not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Health Plan not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var healthPlanResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlanResponseDTO>(healthPlan);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlanResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlan, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -133,7 +129,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationAddHealthPlan
         /// </summary>
-        /// <param name="healthPlanPayLoad">Health plan data to create</param>
+        /// <param name="healthPlanPayLoad">Health Plan data to create</param>
         /// <returns>ResourceAPI.ReturnsCreatedHealthPlanOnSuccessValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="201">ResourceAPI.HealthPlanCreatedSuccessfully</response>
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
@@ -151,25 +147,29 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult CreateHealthPlan([FromBody] HealthPlanPayLoadDTO healthPlanPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateHealthPlan([FromBody] HealthPlanPayLoadDTO healthPlanPayLoad)
         {
-            var validationResult = validator.Validate(healthPlanPayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var healthPlan = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.HealthPlan>(healthPlanPayLoad);
-                _healthPlanService.AddHealthPlan(healthPlan);
-
-                var healthPlanResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlanResponseDTO>(healthPlan);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlanResponse, "Health plan created successfully", HttpContext.Request.Path);
+                var command = new CreateHealthPlanCommand
+                {
+                    CompanyId = healthPlanPayLoad.CompanyId,
+                    Name = healthPlanPayLoad.Name,
+                    Code = healthPlanPayLoad.Code,
+                    Description = healthPlanPayLoad.Description,
+                    PlanType = healthPlanPayLoad.PlanType,
+                    CreatedBy = healthPlanPayLoad.CreatedBy,
+                };
+                var healthPlan = await mediator.Send(command);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlan, "Health Plan created successfully", HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (InvalidOperationException ex)
             {
@@ -214,33 +214,36 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult UpdateHealthPlan([FromBody] HealthPlanPayLoadDTO healthPlanPayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateHealthPlan([FromBody] HealthPlanPayLoadDTO healthPlanPayLoad)
         {
-            var validationResult = validator.Validate(healthPlanPayLoad);
-            if (!validationResult.IsValid)
-            {
-                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
-                    string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)),
-                    HttpContext.Request.Path);
-                return BadRequest(problemDetails);
-            }
-
             try
             {
-                var existingHealthPlan = _healthPlanService.GetById(healthPlanPayLoad.Id);
-                if (existingHealthPlan == null)
+                var command = new UpdateHealthPlanCommand
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Health plan not found", HttpContext.Request.Path);
+                    Id = healthPlanPayLoad.Id,
+                    CompanyId = healthPlanPayLoad.CompanyId,
+                    Name = healthPlanPayLoad.Name,
+                    Code = healthPlanPayLoad.Code,
+                    Description = healthPlanPayLoad.Description,
+                    PlanType = healthPlanPayLoad.PlanType,
+                    UpdatedBy = healthPlanPayLoad.UpdatedBy,
+                };
+                var healthPlan = await mediator.Send(command);
+                if (healthPlan == null)
+                {
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Health Plan not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var healthPlan = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlan.Domain.Entities.HealthPlan>(healthPlanPayLoad);
-                healthPlan.Id = healthPlanPayLoad.Id;
-                _healthPlanService.UpdateHealthPlan(healthPlan);
-
-                var healthPlanResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<HealthPlanResponseDTO>(healthPlan);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlanResponse, "Health plan updated successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(healthPlan, "Health Plan updated successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (ArgumentException ex)
             {
@@ -262,7 +265,7 @@ namespace HealthPlan.API.Controllers
         /// <summary>
         /// ResourceAPI.DocumentationDeleteHealthPlan
         /// </summary>
-        /// <param name="id">Health plan ID to delete</param>
+        /// <param name="id">Health Plan ID to delete</param>
         /// <returns>ResourceAPI.ReturnsConfirmationMessageOnSuccessHealthPlanDeletionValidationErrorsUnauthorizedAccessOrInternalServerError</returns>
         /// <response code="200">ResourceAPI.HealthPlanDeletedSuccessfully</response>
         /// <response code="400">ResourceAPI.ResponseInvalidRequestParameters</response>
@@ -280,19 +283,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteHealthPlan(int id)
+        public async Task<IActionResult> DeleteHealthPlan(int id)
         {
             try
             {
-                var existingHealthPlan = _healthPlanService.GetById(id);
-                if (existingHealthPlan == null)
+                var command = new DeleteHealthPlanCommand { Id = id };
+                var result = await mediator.Send(command);
+                if (!result)
                 {
-                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Health plan not found", HttpContext.Request.Path);
+                    var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Health Plan not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _healthPlanService.DeleteHealthPlan(id);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess("Health plan deleted successfully", "Health plan deleted successfully", HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess("Health Plan deleted successfully", "Health Plan deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (ArgumentException ex)
@@ -310,38 +313,6 @@ namespace HealthPlan.API.Controllers
                 var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError(ResourceAPI.InternalServerError, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
-        }
-
-        /// <summary>
-        /// Retrieves health plans by company.
-        /// Note: This functionality is not implemented in the current service layer.
-        /// </summary>
-        /// <param name="companyId">Company ID to search health plans for</param>
-        /// <returns>Returns message indicating feature not available</returns>
-        /// <response code="501">Feature not implemented</response>
-        [HttpGet("company/{companyId}")]
-        [SwaggerResponse(StatusCodes.Status501NotImplemented, Type = typeof(string))]
-        public IActionResult GetHealthPlansByCompany(int companyId)
-        {
-            // This would require implementing GetHealthPlansByCompany method in IHealthPlanService
-            var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError("GetHealthPlansByCompany feature not yet implemented in service layer", HttpContext.Request.Path);
-            return StatusCode(StatusCodes.Status501NotImplemented, problemDetails);
-        }
-
-        /// <summary>
-        /// Searches health plans by code.
-        /// Note: This functionality is not implemented in the current service layer.
-        /// </summary>
-        /// <param name="code">Health plan code to search for</param>
-        /// <returns>Returns message indicating feature not available</returns>
-        /// <response code="501">Feature not implemented</response>
-        [HttpGet("code/{code}")]
-        [SwaggerResponse(StatusCodes.Status501NotImplemented, Type = typeof(string))]
-        public IActionResult GetHealthPlanByCode(string code)
-        {
-            // This would require implementing GetByCode method in IHealthPlanService
-            var problemDetails = ProblemDetailsExampleFactory.ForInternalServerError("GetByCode feature not yet implemented in service layer", HttpContext.Request.Path);
-            return StatusCode(StatusCodes.Status501NotImplemented, problemDetails);
         }
     }
 }
