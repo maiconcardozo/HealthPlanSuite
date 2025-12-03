@@ -1,0 +1,99 @@
+﻿using Foundation.Base.Domain.Implementation;
+using HealthPlan.Domain.Interfaces;
+
+namespace HealthPlan.Domain.Entities
+{
+    /// <summary>
+    /// Represents acceptance rules for health plans.
+    /// These rules define criteria that beneficiaries must meet to be eligible for a health plan.
+    /// Inherits from Entity base class providing audit fields and implements IAcceptanceRule interface.
+    /// </summary>
+    public class AcceptanceRule : Entity, IAcceptanceRule
+    {
+        /// <summary>
+        /// Gets or sets the acceptance rule ID.
+        /// Maps to SQL column: IdRegraAceitacao
+        /// </summary>
+        public int IdRegraAceitacao 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the health plan ID this rule applies to.
+        /// References the HealthPlan entity.
+        /// Maps to SQL column: IdHealthPlan
+        /// </summary>
+        public int IdHealthPlan { get; set; }
+
+        /// <summary>
+        /// Gets or sets the health plan this rule applies to.
+        /// Navigation property for IdHealthPlan foreign key.
+        /// </summary>
+        public HealthPlan? HealthPlan { get; set; }
+        
+        // DEPRECATED property for backward compatibility
+        /// <summary>
+        /// Gets or sets the health plan ID this rule applies to.
+        /// DEPRECATED: Use IdHealthPlan instead.
+        /// </summary>
+        [Obsolete("Use IdHealthPlan instead")]
+        public int HealthPlanId 
+        { 
+            get => IdHealthPlan; 
+            set => IdHealthPlan = value; 
+        }
+
+        /// <summary>
+        /// Gets or sets the type of rule.
+        /// Examples: "Age", "Income", "Profession", "Marital Status".
+        /// Maps to SQL column: TipoRegra
+        /// </summary>
+        public string RuleType { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the operator for the rule.
+        /// Possible values: "=", ">", "<", ">=", "<=", "BETWEEN", "IN".
+        /// Maps to SQL column: Operador
+        /// </summary>
+        public string Operator { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the minimum value for the rule.
+        /// Maps to SQL column: ValorMinimo
+        /// </summary>
+        public string? MinValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum value for the rule.
+        /// Maps to SQL column: ValorMaximo
+        /// </summary>
+        public string? MaxValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of accepted values (JSON format).
+        /// Used for "IN" operator rules.
+        /// Maps to SQL column: ListaValores
+        /// </summary>
+        public string? ValuesList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of the rule.
+        /// Maps to SQL column: Descricao
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the rejection message displayed when rule is not met.
+        /// Maps to SQL column: MensagemRejeicao
+        /// </summary>
+        public string? RejectionMessage { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether this rule is mandatory.
+        /// Maps to SQL column: IsObrigatoria
+        /// </summary>
+        public bool IsMandatory { get; set; } = true;
+    }
+}

@@ -43,7 +43,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\HealthPlan.Quote\HealthPlan.Quote.csproj" />
+		<ProjectReference Include="..\HealthPlan.Application\HealthPlan.Application.csproj" />
+		<ProjectReference Include="..\HealthPlan.Infrastructure\HealthPlan.Infrastructure.csproj" />
+		<ProjectReference Include="..\HealthPlan.Shared\HealthPlan.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
