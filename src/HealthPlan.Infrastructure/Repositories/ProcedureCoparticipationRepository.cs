@@ -1,6 +1,6 @@
 using HealthPlan.Domain.Entities;
 using HealthPlan.Domain.Interfaces;
-using HealthPlan.Domain.Interfaces;
+using HealthPlan.Infrastructure.Repositories;
 using HealthPlan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,6 @@
 ﻿using HealthPlan.Domain.Entities;
 using HealthPlan.Infrastructure.Persistence;
-using HealthPlan.Domain.Interfaces;
+using HealthPlan.Infrastructure.Repositories;
 using HealthPlan.Domain.Interfaces;
 
 namespace HealthPlan.Infrastructure.Repositories
