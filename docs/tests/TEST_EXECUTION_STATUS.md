@@ -106,7 +106,7 @@
 #### **Installation Instructions**:
 ```bash
 # 1. Download .NET 8.0 SDK
-# Visit: https://dotnet.microsoft.com/download/dotnet/9.0
+# Visit: https://dotnet.microsoft.com/download/dotnet/8.0
 
 # 2. Verify installation
 dotnet --version
@@ -164,7 +164,7 @@ dotnet test Solution/Authentication.sln --verbosity minimal
 #### **"NETSDK1045: .NET SDK not found"**
 ```bash
 # Solution: Install .NET 8.0 SDK
-# Download from: https://dotnet.microsoft.com/download/dotnet/9.0
+# Download from: https://dotnet.microsoft.com/download/dotnet/8.0
 ```
 
 #### **"Build failed before tests"**

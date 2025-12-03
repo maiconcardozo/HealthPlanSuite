@@ -518,8 +518,8 @@ Actual: [O que realmente aconteceu]
 ```
 
 ### 🔗 Recursos de Ajuda
-- **GitHub Issues**: [Criar nova issue](https://github.com/maiconcardozo/CleanTemplateRepository/issues)
-- **Stack Overflow**: Tag `authentication-service`
+- **GitHub Issues**: [Criar nova issue](https://github.com/maiconcardozo/HealthPlanSuite/issues)
+- **Stack Overflow**: Tag `healthplan-suite`
 - **Documentation**: [docs/](../docs/)
 - **Community**: Discussões no GitHub
 
