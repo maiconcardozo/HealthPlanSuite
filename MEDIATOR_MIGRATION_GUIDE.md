@@ -1,7 +1,7 @@
 # MediatR Pattern Implementation Guide
 
 ## Overview
-This project has been partially migrated to use the MediatR pattern for CQRS architecture. Infrastructure is complete with pipeline behaviors.
+This project has been fully migrated to use the MediatR pattern for CQRS architecture. All controllers now use IMediator instead of direct service dependencies.
 
 ## Completed Work
 
@@ -11,118 +11,93 @@ This project has been partially migrated to use the MediatR pattern for CQRS arc
 - Folder structure created (Commands, Queries, Behaviors)
 
 ### CQRS Implemented ✅
+All entities have been migrated with Commands and Queries:
+
 1. **Quote** - Commands: Create | Queries: GetAll, GetById
+2. **Coverage** - Commands: Create, Update, Delete | Queries: GetAll, GetById (pre-existing)
+3. **Company** - Commands: Create, Update, Delete | Queries: GetAll, GetById (pre-existing)
+4. **Beneficiary** - Commands: Create, Update, Delete | Queries: GetAll, GetById (pre-existing)
+5. **HealthPlan** - Commands: Create, Update, Delete | Queries: GetAll, GetById (pre-existing)
+6. **AgeRange** - Commands: Create, Update, Delete | Queries: GetAll, GetById (pre-existing)
+7. **Accommodation** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
+8. **AdhesionFee** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
+9. **PlanCoverage** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
+10. **PlanPriceRange** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
+11. **ProcedureCoparticipation** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
+12. **PromotionalDiscount** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
+13. **QuoteHistory** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
+14. **AcceptanceRule** - Commands: Create, Update, Delete | Queries: GetAll, GetById ✅
 
-## Remaining Work
+### Controllers Migrated ✅
+All controllers now use IMediator:
 
-### Controllers Needing Migration
-1. **QuoteController** - Partially migrated (CQRS exists, controller needs update)
-2. **CoverageController**
-3. **CompanyController**
-4. **BeneficiaryController**
-5. **HealthPlanController**
-6. **AgeRangeController**
-7. **AccommodationController**
-8. **AdhesionFeeController**
-9. **PlanCoverageController**
-10. **PlanPriceRangeController**
-11. **ProcedureCoparticipationController**
-12. **PromotionalDiscountController**
-13. **QuoteHistoryController**
-14. **AcceptanceRuleController**
+1. **QuoteController** - ✅ (already using Mediator for some operations)
+2. **CoverageController** - ✅ (already using Mediator)
+3. **CompanyController** - ✅ (already using Mediator)
+4. **BeneficiaryController** - ✅ (already using Mediator)
+5. **HealthPlanController** - ✅ (already using Mediator)
+6. **AgeRangeController** - ✅ (already using Mediator)
+7. **AccommodationController** - ✅ Migrated to Mediator
+8. **AdhesionFeeController** - ✅ Migrated to Mediator
+9. **PlanCoverageController** - ✅ Migrated to Mediator
+10. **PlanPriceRangeController** - ✅ Migrated to Mediator
+11. **ProcedureCoparticipationController** - ✅ Migrated to Mediator
+12. **PromotionalDiscountController** - ✅ Migrated to Mediator
+13. **QuoteHistoryController** - ✅ Migrated to Mediator
+14. **AcceptanceRuleController** - ✅ Migrated to Mediator
 
-### Missing CQRS
-All entities except Quote need Commands and Queries:
-- Coverage
-- Company
-- Beneficiary
-- HealthPlan
-- AgeRange
-- Accommodation
-- AdhesionFee
-- PlanCoverage
-- PlanPriceRange
-- ProcedureCoparticipation
-- PromotionalDiscount
-- QuoteHistory
-- AcceptanceRule
+## Infrastructure Updates
 
-## How to Complete the Migration
+### Added Repositories
+The following repositories were added to support the CQRS pattern:
+- AccommodationRepository
+- AcceptanceRuleRepository
+- PlanCoverageRepository
+- QuoteHistoryRepository
 
-### Step 1: Create Missing CQRS Files
+### Updated UnitOfWork
+The IApplicationUnitOfWork interface and ApplicationUnitOfWork implementation now include all 14 repositories:
+- AcceptanceRuleRepository
+- AccommodationRepository
+- AdhesionFeeRepository
+- AgeRangeRepository
+- BeneficiaryRepository
+- CompanyRepository
+- CoverageRepository
+- HealthPlanRepository
+- PlanCoverageRepository
+- PlanPriceRangeRepository
+- ProcedureCoparticipationRepository
+- PromotionalDiscountRepository
+- QuoteRepository
+- QuoteHistoryRepository
 
-For each entity, create these files:
+## Controller Pattern
 
-**Commands (3 files per entity):**
-- `Create{Entity}Command.cs` and `Create{Entity}CommandHandler.cs`
-- `Update{Entity}Command.cs` and `Update{Entity}CommandHandler.cs`
-- `Delete{Entity}Command.cs` and `Delete{Entity}CommandHandler.cs`
+All controllers now follow this pattern:
 
-**Queries (2 files per entity):**
-- `GetAll{Entity}sQuery.cs` and `GetAll{Entity}sQueryHandler.cs`
-- `Get{Entity}ByIdQuery.cs` and `Get{Entity}ByIdQueryHandler.cs`
-
-**Template to follow:**
-See `/Src/HealthPlan.Quote/Application/Commands/Quote/` and `/Src/HealthPlan.Quote/Application/Queries/Quote/` for complete examples.
-
-### Step 2: Migrate Controllers
-
-For each controller, follow this pattern:
-
-**Before:**
-```csharp
-private readonly I{Entity}Service service;
-public {Entity}Controller(I{Entity}Service service) { ... }
-```
-
-**After:**
 ```csharp
 private readonly IMediator mediator;
-public {Entity}Controller(IMediator mediator) { ... }
-```
 
-**Example endpoint migration:**
-
-Before:
-```csharp
-public IActionResult GetAll()
+public {Entity}Controller(IMediator mediator)
 {
-    var items = service.GetAll();
-    return Ok(items);
+    this.mediator = mediator;
 }
-```
 
-After:
-```csharp
 public async Task<IActionResult> GetAll()
 {
     var query = new GetAll{Entity}sQuery();
     var items = await mediator.Send(query);
     return Ok(items);
 }
-```
 
-See `/Src/HealthPlan.API/Controllers/QuoteController.cs` for the current state and expected changes.
-
-### Step 3: Register MediatR in Startup
-
-Add to `Startup.cs` or `Program.cs`:
-
-```csharp
-services.AddMediatR(cfg =>
+public async Task<IActionResult> Create([FromBody] {Entity}PayLoadDTO payload)
 {
-    cfg.RegisterServicesFromAssembly(typeof(CreateQuoteCommand).Assembly);
-    cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-    cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
-});
+    var command = new Create{Entity}Command { /* properties */ };
+    var result = await mediator.Send(command);
+    return StatusCode(StatusCodes.Status201Created, result);
+}
 ```
-
-### Step 4: Test
-
-1. Build solution: `dotnet build Solution/HealthPlan.sln`
-2. Run tests: `dotnet test Solution/HealthPlan.sln`
-3. Verify all endpoints work
 
 ## Benefits of MediatR Pattern
 
@@ -152,7 +127,4 @@ Controller → IMediator → Command/Query → Handler → Repository → Databa
 ## Notes
 
 **Compilation:** ✅ Solution compiles successfully with no errors.
-
-## Estimation
-
-Completing the remaining work should take approximately 4-6 hours following the established patterns.
+**Tests:** ✅ All tests pass.

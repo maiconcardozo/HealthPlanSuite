@@ -1,10 +1,9 @@
 using HealthPlan.API.Resource;
 using HealthPlan.API.Swagger;
-using HealthPlan.API.Util;
-using HealthPlan.Domain.Entities;
+using HealthPlan.Application.Commands;
 using HealthPlan.Application.DTOs;
-using HealthPlan.Application.Mappers;
-using HealthPlan.Application.Services;
+using HealthPlan.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -18,15 +17,15 @@ namespace HealthPlan.API.Controllers
     [Route("[controller]")]
     public class AdhesionFeeController : ControllerBase
     {
-        private readonly IAdhesionFeeService _adhesionFeeService;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Initializes a new instance of the AdhesionFeeController.
         /// </summary>
-        /// <param name="adhesionFeeService">Service for adhesion fee management operations</param>
-        public AdhesionFeeController(IAdhesionFeeService adhesionFeeService)
+        /// <param name="mediator">MediatR mediator for command/query handling.</param>
+        public AdhesionFeeController(IMediator mediator)
         {
-            _adhesionFeeService = adhesionFeeService;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -48,13 +47,13 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(ProblemDetailsBadRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAdhesionFees()
+        public async Task<IActionResult> GetAdhesionFees()
         {
             try
             {
-                var adhesionFee = _adhesionFeeService.GetAllActiveAdhesionFees();
-                var adhesionFeeResponse = adhesionFee.Select(ta => CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(ta));
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var query = new GetAllAdhesionFeesQuery();
+                var adhesionFees = await mediator.Send(query);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFees, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -95,19 +94,19 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult GetAdhesionFees(int id)
+        public async Task<IActionResult> GetAdhesionFee(int id)
         {
             try
             {
-                var adhesionFee = _adhesionFeeService.GetById(id);
+                var query = new GetAdhesionFeeByIdQuery { Id = id };
+                var adhesionFee = await mediator.Send(query);
                 if (adhesionFee == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Adhesion fee not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var adhesionFeeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(adhesionFee);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFee, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
             }
             catch (InvalidOperationException ex)
@@ -141,23 +140,28 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(ProblemDetailsConflictExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> CreateAdhesionFee([FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> CreateAdhesionFee([FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(adhesionFeePayLoad, serviceProvider, this);
-
-            if (validationResult != null)
-            {
-                return validationResult;
-            }
-
             try
             {
-                var adhesionFee = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFee>(adhesionFeePayLoad);
-                _adhesionFeeService.AddAdhesionFee(adhesionFee);
-
-                var adhesionFeeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(adhesionFee);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var command = new CreateAdhesionFeeCommand
+                {
+                    HealthPlanId = adhesionFeePayLoad.HealthPlanId,
+                    Value = adhesionFeePayLoad.Value,
+                    ValidityStart = adhesionFeePayLoad.ValidityStart,
+                    ValidityEnd = adhesionFeePayLoad.ValidityEnd,
+                    CreatedBy = adhesionFeePayLoad.CreatedBy,
+                };
+                var adhesionFee = await mediator.Send(command);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFee, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (InvalidOperationException ex)
             {
@@ -195,31 +199,35 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public async Task<IActionResult> UpdateAdhesionFee([FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad, [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> UpdateAdhesionFee([FromBody] AdhesionFeePayLoadDTO adhesionFeePayLoad)
         {
-            var validationResult = await ValidationHelper.ValidateEntityAsync(adhesionFeePayLoad, serviceProvider, this);
-
-            if (validationResult != null)
-            {
-                return validationResult;
-            }
-
             try
             {
-                var existingAdhesionFee = _adhesionFeeService.GetById(adhesionFeePayLoad.Id);
-                if (existingAdhesionFee == null)
+                var command = new UpdateAdhesionFeeCommand
+                {
+                    Id = adhesionFeePayLoad.Id,
+                    HealthPlanId = adhesionFeePayLoad.HealthPlanId,
+                    Value = adhesionFeePayLoad.Value,
+                    ValidityStart = adhesionFeePayLoad.ValidityStart,
+                    ValidityEnd = adhesionFeePayLoad.ValidityEnd,
+                    UpdatedBy = adhesionFeePayLoad.UpdatedBy,
+                };
+                var adhesionFee = await mediator.Send(command);
+                if (adhesionFee == null)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound(ResourceAPI.AccountNotFound, HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                var adhesionFee = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFee>(adhesionFeePayLoad);
-                adhesionFee.Id = adhesionFeePayLoad.Id;
-                _adhesionFeeService.UpdateAdhesionFee(adhesionFee);
-
-                var adhesionFeeResponse = CleanTemplateApplicationMapperInitializer.Mapper.Map<AdhesionFeeResponseDTO>(adhesionFee);
-                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFeeResponse, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
+                var successResponse = SuccessResponseExampleFactory.ForSuccess(adhesionFee, ResourceAPI.RequestWasSuccessful, HttpContext.Request.Path);
                 return Ok(successResponse);
+            }
+            catch (FluentValidation.ValidationException ex)
+            {
+                var problemDetails = ProblemDetailsExampleFactory.ForBadRequest(
+                    string.Join("; ", ex.Errors.Select(e => e.ErrorMessage)),
+                    HttpContext.Request.Path);
+                return BadRequest(problemDetails);
             }
             catch (ArgumentException ex)
             {
@@ -259,18 +267,18 @@ namespace HealthPlan.API.Controllers
         [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(ProblemDetailsUnauthorizedExample))]
         [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(ProblemDetailsNotFoundExample))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ProblemDetailsInternalServerErrorExample))]
-        public IActionResult DeleteAdhesionFee(int id)
+        public async Task<IActionResult> DeleteAdhesionFee(int id)
         {
             try
             {
-                var existingAdhesionFee = _adhesionFeeService.GetById(id);
-                if (existingAdhesionFee == null)
+                var command = new DeleteAdhesionFeeCommand { Id = id };
+                var result = await mediator.Send(command);
+                if (!result)
                 {
                     var problemDetails = ProblemDetailsExampleFactory.ForNotFound("Adhesion fee not found", HttpContext.Request.Path);
                     return NotFound(problemDetails);
                 }
 
-                _adhesionFeeService.DeleteAdhesionFee(id);
                 var successResponse = SuccessResponseExampleFactory.ForSuccess("Adhesion fee deleted successfully", "Adhesion fee deleted successfully", HttpContext.Request.Path);
                 return Ok(successResponse);
             }

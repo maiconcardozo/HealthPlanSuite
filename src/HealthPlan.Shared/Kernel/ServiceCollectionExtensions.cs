@@ -37,12 +37,20 @@ namespace HealthPlan.Shared.Kernel
             services.AddScoped<IApplicationContext, ApplicationContext>();
 
             // Repositories
+            services.AddScoped<IAcceptanceRuleRepository, AcceptanceRuleRepository>();
+            services.AddScoped<IAccommodationRepository, AccommodationRepository>();
+            services.AddScoped<IAdhesionFeeRepository, AdhesionFeeRepository>();
             services.AddScoped<IAgeRangeRepository, AgeRangeRepository>();
             services.AddScoped<IBeneficiaryRepository, BeneficiaryRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICoverageRepository, CoverageRepository>();
             services.AddScoped<IHealthPlanRepository, HealthPlanRepository>();
+            services.AddScoped<IPlanCoverageRepository, PlanCoverageRepository>();
+            services.AddScoped<IPlanPriceRangeRepository, PlanPriceRangeRepository>();
+            services.AddScoped<IProcedureCoparticipationRepository, ProcedureCoparticipationRepository>();
+            services.AddScoped<IPromotionalDiscountRepository, PromotionalDiscountRepository>();
             services.AddScoped<IQuoteRepository, QuoteRepository>();
+            services.AddScoped<IQuoteHistoryRepository, QuoteHistoryRepository>();
 
             // Unit of Work
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
