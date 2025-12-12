@@ -374,7 +374,7 @@ public string MyMethod(string parameter1, string parameter2)
 ### SonarQube/Code Analysis
 - Checks documentation coverage
 - Identifies public methods without documentation
-- Valida qualidade dos comentários
+- Validates comment quality
 
 ## 📊 Quality Metrics
 

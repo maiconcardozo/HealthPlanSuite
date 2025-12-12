@@ -65,9 +65,9 @@ No database provider has been configured for this DbContext
 
 **Solutions:**
 
-#### 1. Verificar Context Registration
+#### 1. Check Context Registration
 ```csharp
-// No Program.cs ou Startup.cs
+// In Program.cs or Startup.cs
 builder.Services.AddDbContext<ApiContextDevelopment>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 ```
@@ -199,7 +199,7 @@ WHERE a.UserName = 'admin';
 
 #### 2. Debug Token Generation
 ```csharp
-// Adicione logs no AccountService.GenerateToken
+// Add logs in AccountService.GenerateToken
 _logger.LogDebug("User {UserName} has {ClaimCount} claims", 
     account.UserName, accountClaimActions.Count);
 
