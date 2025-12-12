@@ -69,8 +69,8 @@ This document summarizes the implementation of the new entities requested for th
 **Fields**:
 - `HealthPlanId` (int): References the HealthPlan entity
 - `AgeRangeId` (int): References the AgeRange entity
-- `ContractType` (string): Contract type ("Individual", "Coletivo por Adesão", "Empresarial")
-- `CoparticipationType` (string): Co-participation type ("Parcial", "Total", "Sem Coparticipação")
+- `ContractType` (string): Contract type ("Individual", "Group by Adhesion", "Corporate")
+- `CoparticipationType` (string): Co-participation type ("Partial", "Total", "No Co-participation")
 - `OriginalValue` (decimal): Base price before discounts
 - `DiscountValue` (decimal): Discount amount
 - `ValidityStart` (DateTime): Start date of validity

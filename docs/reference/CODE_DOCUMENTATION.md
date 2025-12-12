@@ -318,10 +318,10 @@ public Account GetAccountByUserNameAndPassword(Account account)
 
 ### 🏷️ Recommended XML Tags
 
-- `<summary>`: Descrição principal do elemento
+- `<summary>`: Main description of the element
 - `<param>`: Parameter description
-- `<returns>`: Descrição do valor de retorno
-- `<exception>`: Exceções que podem ser lançadas
+- `<returns>`: Description of the return value
+- `<exception>`: Exceptions that can be thrown
 - `<example>`: Usage examples
 - `<remarks>`: Additional information
 - `<see>`: References to other elements
@@ -337,8 +337,8 @@ public Account GetAccountByUserNameAndPassword(Account account)
 /// <param name="parameter1">Description of first parameter</param>
 /// <param name="parameter2">Description of second parameter</param>
 /// <returns>Description of what is returned</returns>
-/// <exception cref="ArgumentNullException">Quando parameter1 é null</exception>
-/// <exception cref="InvalidOperationException">Quando operação não é válida</exception>
+/// <exception cref="ArgumentNullException">When parameter1 is null</exception>
+/// <exception cref="InvalidOperationException">When operation is not valid</exception>
 /// <example>
 /// <code>
 /// var result = MyMethod("value1", "value2");
@@ -361,19 +361,19 @@ public string MyMethod(string parameter1, string parameter2)
 ## 🛠️ Tools and Integration
 
 ### Visual Studio
-- IntelliSense automático para XML comments
-- Geração automática de templates com `///`
-- Validação de referências em tempo real
+- Automatic IntelliSense for XML comments
+- Automatic template generation with `///`
+- Real-time reference validation
 
 ### Swagger/OpenAPI
 - XML comments are automatically converted to API documentation
-- `<summary>` vira descrição do endpoint
-- `<param>` documenta parâmetros da API
-- `<response>` documenta códigos de status HTTP
+- `<summary>` becomes the endpoint description
+- `<param>` documents API parameters
+- `<response>` documents HTTP status codes
 
-### SonarQube/Análise de Código
-- Verifica cobertura de documentação
-- Identifica métodos públicos sem documentação
+### SonarQube/Code Analysis
+- Checks documentation coverage
+- Identifies public methods without documentation
 - Valida qualidade dos comentários
 
 ## 📊 Quality Metrics
