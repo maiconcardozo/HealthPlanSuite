@@ -1,61 +1,61 @@
-# 🔐 Documentação de Autenticação JWT
+# 🔐 JWT Authentication Documentation
 
-## Índice
-- [Visão Geral](#visão-geral)
-- [Funcionamento do JWT](#funcionamento-do-jwt)
-- [Como Obter e Usar o Token](#como-obter-e-usar-o-token)
-- [Validação do Token](#validação-do-token)
-- [Exemplos de Comunicação](#exemplos-de-comunicação)
-- [Segurança e Boas Práticas](#segurança-e-boas-práticas)
-- [Extensões para Outros Métodos](#extensões-para-outros-métodos)
+## Table of Contents
+- [Overview](#overview)
+- [How JWT Works](#how-jwt-works)
+- [How to Obtain and Use the Token](#how-to-obtain-and-use-the-token)
+- [Token Validation](#token-validation)
+- [Communication Examples](#communication-examples)
+- [Security and Best Practices](#security-and-best-practices)
+- [Extensions for Other Methods](#extensions-for-other-methods)
 
 ---
 
-## Visão Geral
+## Overview
 
-O **HealthPlan Suite** utiliza autenticação baseada em **JWT (JSON Web Token)** integrada ao **Authentication Service** para proteger os endpoints da API e gerenciar o controle de acesso dos usuários.
+**HealthPlan Suite** uses **JWT (JSON Web Token)**-based authentication integrated with the **Authentication Service** to protect API endpoints and manage user access control.
 
-### Por que JWT?
+### Why JWT?
 
-- **Stateless**: Não requer armazenamento de sessão no servidor
-- **Escalável**: Facilita a distribuição horizontal da aplicação
-- **Seguro**: Assinatura criptográfica garante integridade do token
-- **Portátil**: Pode ser usado entre diferentes domínios e serviços
-- **Auto-contido**: Contém todas as informações necessárias sobre o usuário
+- **Stateless**: No need for server-side session storage
+- **Scalable**: Facilitates horizontal application distribution
+- **Secure**: Cryptographic signature ensures token integrity
+- **Portable**: Can be used across different domains and services
+- **Self-contained**: Contains all necessary information about the user
 
-### Arquitetura de Autenticação
+### Authentication Architecture
 
 ```
 ┌─────────────┐         ┌──────────────────┐         ┌─────────────┐
-│   Cliente   │────1───>│ Authentication   │────2───>│  Database   │
+│   Client    │────1───>│ Authentication   │────2───>│  Database   │
 │             │         │    Service       │         │             │
 │             │<───4────│                  │<───3────│             │
 └─────────────┘         └──────────────────┘         └─────────────┘
       │
-      │ 5. Requisições com Token JWT
+      │ 5. Requests with JWT Token
       ↓
 ┌─────────────────────────────────────────────────────────┐
-│              API Protegida (Endpoints)                   │
-│  - JWT Middleware valida token                          │
-│  - Extrai claims e permissões                           │
-│  - Autoriza acesso aos recursos                         │
+│              Protected API (Endpoints)                   │
+│  - JWT Middleware validates token                       │
+│  - Extracts claims and permissions                      │
+│  - Authorizes access to resources                       │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Fluxo:**
-1. Cliente envia credenciais (usuário/senha)
-2. Authentication Service valida credenciais no banco de dados
-3. Banco retorna dados do usuário e suas permissões
-4. Serviço gera JWT token e retorna ao cliente
-5. Cliente usa token JWT para acessar endpoints protegidos
+**Flow:**
+1. Client sends credentials (username/password)
+2. Authentication Service validates credentials in the database
+3. Database returns user data and their permissions
+4. Service generates JWT token and returns it to the client
+5. Client uses JWT token to access protected endpoints
 
 ---
 
-## Funcionamento do JWT
+## How JWT Works
 
-### Estrutura do Token JWT
+### JWT Token Structure
 
-Um token JWT é composto por três partes separadas por pontos (`.`):
+A JWT token consists of three parts separated by dots (`.`):
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6IjEyMzQ1Njc4LTkwYWItY2RlZi0xMjM0LTU2Nzg5MGFiY2RlZiIsImlhdCI6MTY0MjY4MDAwMCwiZXhwIjoxNjQyNjgzNjAwLCJpc3MiOiJBdXRoZW50aWNhdGlvbiIsImF1ZCI6IkF1dGhlbnRpY2F0aW9uQ2xpZW50cyJ9.signature_hash_value
@@ -63,8 +63,8 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6IjEyMzQ1Njc4LTk
 │                  Header                  │                          Payload                                    │  Signature  │
 ```
 
-#### 1. Header (Cabeçalho)
-Contém informações sobre o tipo de token e algoritmo de assinatura:
+#### 1. Header
+Contains information about the token type and signing algorithm:
 
 ```json
 {
@@ -73,11 +73,11 @@ Contém informações sobre o tipo de token e algoritmo de assinatura:
 }
 ```
 
-- **alg**: Algoritmo de criptografia usado (HMAC-SHA256)
-- **typ**: Tipo do token (JWT)
+- **alg**: Encryption algorithm used (HMAC-SHA256)
+- **typ**: Token type (JWT)
 
-#### 2. Payload (Carga Útil)
-Contém as claims (declarações) sobre o usuário e metadados do token:
+#### 2. Payload
+Contains the claims (declarations) about the user and token metadata:
 
 ```json
 {
@@ -93,21 +93,21 @@ Contém as claims (declarações) sobre o usuário e metadados do token:
 }
 ```
 
-**Claims Padrão (Registered Claims):**
-- **sub** (Subject): Identificador do usuário
-- **jti** (JWT ID): ID único do token
-- **iat** (Issued At): Timestamp de quando o token foi criado
-- **exp** (Expiration): Timestamp de quando o token expira
-- **iss** (Issuer): Emissor do token (Authentication Service)
-- **aud** (Audience): Destinatário do token (quem pode usá-lo)
+**Standard Claims (Registered Claims):**
+- **sub** (Subject): User identifier
+- **jti** (JWT ID): Unique token ID
+- **iat** (Issued At): Timestamp when the token was created
+- **exp** (Expiration): Timestamp when the token expires
+- **iss** (Issuer): Token issuer (Authentication Service)
+- **aud** (Audience): Token recipient (who can use it)
 
-**Claims Customizadas:**
-- **userName**: Nome do usuário
-- **userId**: ID do usuário no sistema
-- **claims**: Array de permissões do usuário
+**Custom Claims:**
+- **userName**: User name
+- **userId**: User ID in the system
+- **claims**: Array of user permissions
 
-#### 3. Signature (Assinatura)
-Garante a integridade do token e verifica que não foi alterado:
+#### 3. Signature
+Ensures the token integrity and verifies that it hasn't been altered:
 
 ```
 HMACSHA256(
@@ -116,9 +116,9 @@ HMACSHA256(
 )
 ```
 
-### Configuração JWT no HealthPlan Suite
+### JWT Configuration in HealthPlan Suite
 
-A configuração JWT está definida no `appsettings.json`:
+The JWT configuration is defined in `appsettings.json`:
 
 ```json
 {
@@ -131,17 +131,17 @@ A configuração JWT está definida no `appsettings.json`:
 }
 ```
 
-**Parâmetros:**
-- **Issuer**: Identifica quem emitiu o token
-- **Audience**: Define para quem o token é válido
-- **SecretKey**: Chave secreta para assinar tokens (mínimo 32 caracteres)
-- **ExpirationMinutes**: Tempo de validade do token em minutos
+**Parameters:**
+- **Issuer**: Identifies who issued the token
+- **Audience**: Defines for whom the token is valid
+- **SecretKey**: Secret key for signing tokens (minimum 32 characters)
+- **ExpirationMinutes**: Token validity time in minutes
 
-⚠️ **IMPORTANTE**: Em produção, NUNCA armazene a `SecretKey` diretamente no arquivo de configuração. Use variáveis de ambiente ou Azure Key Vault.
+⚠️ **IMPORTANT**: In production, NEVER store the `SecretKey` directly in the configuration file. Use environment variables or Azure Key Vault.
 
-### Validação do Token pelo Servidor
+### Token Validation by the Server
 
-O servidor valida automaticamente os seguintes aspectos:
+The server automatically validates the following aspects:
 
 ```csharp
 services.AddAuthentication(options =>
@@ -155,40 +155,40 @@ services.AddAuthentication(options =>
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,              // Valida o emissor
-        ValidateAudience = true,            // Valida o destinatário
-        ValidateLifetime = true,            // Valida expiração
-        ValidateIssuerSigningKey = true,    // Valida assinatura
+        ValidateIssuer = true,              // Validates the issuer
+        ValidateAudience = true,            // Validates the audience
+        ValidateLifetime = true,            // Validates expiration
+        ValidateIssuerSigningKey = true,    // Validates signature
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        ClockSkew = TimeSpan.Zero           // Sem tolerância de tempo
+        ClockSkew = TimeSpan.Zero           // No time tolerance
     };
 });
 ```
 
 ---
 
-## Como Obter e Usar o Token
+## How to Obtain and Use the Token
 
-### Passo 1: Criar uma Conta de Usuário
+### Step 1: Create a User Account
 
-Antes de autenticar, você precisa ter uma conta cadastrada.
+Before authenticating, you need to have a registered account.
 
 **Endpoint:** `POST /Account/AddAccount`
 
-**Requisição:**
+**Request:**
 ```bash
 curl -X POST "https://localhost:7001/Account/AddAccount" \
   -H "Content-Type: application/json" \
   -d '{
-    "userName": "usuario_exemplo",
-    "password": "SenhaSegura123!",
-    "email": "usuario@exemplo.com"
+    "userName": "example_user",
+    "password": "SecurePassword123!",
+    "email": "user@example.com"
   }'
 ```
 
-**Resposta de Sucesso (200):**
+**Success Response (200):**
 ```json
 {
   "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.3.1",
@@ -198,35 +198,35 @@ curl -X POST "https://localhost:7001/Account/AddAccount" \
   "instance": "/Account/AddAccount",
   "data": {
     "userId": 123,
-    "userName": "usuario_exemplo",
-    "email": "usuario@exemplo.com"
+    "userName": "example_user",
+    "email": "user@example.com"
   }
 }
 ```
 
-### Passo 2: Autenticar e Obter Token JWT
+### Step 2: Authenticate and Obtain JWT Token
 
-Uma vez que você tem uma conta, pode autenticar para obter o token JWT.
+Once you have an account, you can authenticate to obtain the JWT token.
 
 **Endpoint:** `POST /Authentication/GenerateToken`
 
-**Requisição:**
+**Request:**
 ```bash
 curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
   -H "Content-Type: application/json" \
   -d '{
-    "userName": "usuario_exemplo",
-    "password": "SenhaSegura123!"
+    "userName": "example_user",
+    "password": "SecurePassword123!"
   }'
 ```
 
-**Resposta de Sucesso (200):**
+**Success Response (200):**
 ```json
 {
   "data": {
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3VhcmlvX2V4ZW1wbG8iLCJqdGkiOiIxMjM0NTY3OC05MGFiLWNkZWYtMTIzNC01Njc4OTBhYmNkZWYiLCJpYXQiOjE2NDI2ODAwMDAsImV4cCI6MTY0MjY4MzYwMCwiaXNzIjoiQXV0aGVudGljYXRpb24iLCJhdWQiOiJBdXRoZW50aWNhdGlvbkNsaWVudHMifQ.signature",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJleGFtcGxlX3VzZXIiLCJqdGkiOiIxMjM0NTY3OC05MGFiLWNkZWYtMTIzNC01Njc4OTBhYmNkZWYiLCJpYXQiOjE2NDI2ODAwMDAsImV4cCI6MTY0MjY4MzYwMCwiaXNzIjoiQXV0aGVudGljYXRpb24iLCJhdWQiOiJBdXRoZW50aWNhdGlvbkNsaWVudHMifQ.signature",
     "expiresIn": 3600,
-    "userName": "usuario_exemplo",
+    "userName": "example_user",
     "claims": [
       "user:read",
       "user:write"
@@ -235,32 +235,32 @@ curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
 }
 ```
 
-**Campos da Resposta:**
-- **accessToken**: Token JWT para usar nas requisições
-- **expiresIn**: Tempo de validade em segundos (3600 = 1 hora)
-- **userName**: Nome do usuário autenticado
-- **claims**: Permissões do usuário
+**Response Fields:**
+- **accessToken**: JWT token to use in requests
+- **expiresIn**: Validity time in seconds (3600 = 1 hour)
+- **userName**: Authenticated user name
+- **claims**: User permissions
 
-### Passo 3: Usar o Token em Requisições
+### Step 3: Use the Token in Requests
 
-Inclua o token JWT no header `Authorization` com o prefixo `Bearer`:
+Include the JWT token in the `Authorization` header with the `Bearer` prefix:
 
 ```bash
 curl -X GET "https://localhost:7001/Quote/GetQuotes" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
-**Formato do Header:**
+**Header Format:**
 ```
-Authorization: Bearer <seu_token_jwt>
+Authorization: Bearer <your_jwt_token>
 ```
 
-### Exemplo Completo em Diferentes Linguagens
+### Complete Example in Different Languages
 
 #### JavaScript/TypeScript (Fetch API)
 
 ```javascript
-// 1. Função para autenticar e obter token
+// 1. Function to authenticate and obtain token
 async function authenticate(userName, password) {
   const response = await fetch('https://localhost:7001/Authentication/GenerateToken', {
     method: 'POST',
@@ -271,14 +271,14 @@ async function authenticate(userName, password) {
   });
 
   if (!response.ok) {
-    throw new Error('Autenticação falhou');
+    throw new Error('Authentication failed');
   }
 
   const data = await response.json();
   return data.data.accessToken;
 }
 
-// 2. Função para fazer requisição autenticada
+// 2. Function to make authenticated request
 async function getQuotes(token) {
   const response = await fetch('https://localhost:7001/Quote/GetQuotes', {
     method: 'GET',
@@ -289,27 +289,27 @@ async function getQuotes(token) {
   });
 
   if (!response.ok) {
-    throw new Error('Erro ao buscar cotações');
+    throw new Error('Failed to fetch quotes');
   }
 
   return await response.json();
 }
 
-// 3. Uso
+// 3. Usage
 async function main() {
   try {
-    // Obter token
-    const token = await authenticate('usuario_exemplo', 'SenhaSegura123!');
-    console.log('Token obtido:', token);
+    // Obtain token
+    const token = await authenticate('example_user', 'SecurePassword123!');
+    console.log('Token obtained:', token);
 
-    // Armazenar token (localStorage, sessionStorage, etc.)
+    // Store token (localStorage, sessionStorage, etc.)
     localStorage.setItem('jwt_token', token);
 
-    // Usar token para fazer requisição
+    // Use token to make request
     const quotes = await getQuotes(token);
-    console.log('Cotações:', quotes);
+    console.log('Quotes:', quotes);
   } catch (error) {
-    console.error('Erro:', error);
+    console.error('Error:', error);
   }
 }
 
@@ -335,7 +335,7 @@ public class AuthenticationClient
         _httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
     }
 
-    // 1. Autenticar e obter token
+    // 1. Authenticate and obtain token
     public async Task<string> AuthenticateAsync(string userName, string password)
     {
         var loginRequest = new { userName, password };
@@ -352,11 +352,11 @@ public class AuthenticationClient
         return _token;
     }
 
-    // 2. Fazer requisição autenticada
+    // 2. Make authenticated request
     public async Task<List<Quote>> GetQuotesAsync()
     {
         if (string.IsNullOrEmpty(_token))
-            throw new InvalidOperationException("Não autenticado. Chame AuthenticateAsync primeiro.");
+            throw new InvalidOperationException("Not authenticated. Call AuthenticateAsync first.");
 
         _httpClient.DefaultRequestHeaders.Authorization = 
             new AuthenticationHeaderValue("Bearer", _token);
@@ -369,7 +369,7 @@ public class AuthenticationClient
     }
 }
 
-// Classes de modelo
+// Model classes
 public class AuthResponse
 {
     public AuthData Data { get; set; }
@@ -383,9 +383,9 @@ public class AuthData
     public List<string> Claims { get; set; }
 }
 
-// Uso
+// Usage
 var client = new AuthenticationClient();
-await client.AuthenticateAsync("usuario_exemplo", "SenhaSegura123!");
+await client.AuthenticateAsync("example_user", "SecurePassword123!");
 var quotes = await client.GetQuotesAsync();
 ```
 
@@ -402,7 +402,7 @@ class AuthenticationClient:
         self.session = requests.Session()
 
     def authenticate(self, username, password):
-        """Autentica e obtém token JWT"""
+        """Authenticate and obtain JWT token"""
         url = f"{self.base_url}/Authentication/GenerateToken"
         payload = {
             "userName": username,
@@ -415,7 +415,7 @@ class AuthenticationClient:
         data = response.json()
         self.token = data['data']['accessToken']
         
-        # Configura header de autenticação para próximas requisições
+        # Configure authentication header for next requests
         self.session.headers.update({
             'Authorization': f'Bearer {self.token}'
         })
@@ -423,9 +423,9 @@ class AuthenticationClient:
         return self.token
 
     def get_quotes(self):
-        """Busca cotações usando token JWT"""
+        """Fetch quotes using JWT token"""
         if not self.token:
-            raise ValueError("Não autenticado. Chame authenticate() primeiro.")
+            raise ValueError("Not authenticated. Call authenticate() first.")
         
         url = f"{self.base_url}/Quote/GetQuotes"
         response = self.session.get(url, verify=False)
@@ -433,71 +433,71 @@ class AuthenticationClient:
         
         return response.json()
 
-# Uso
+# Usage
 client = AuthenticationClient()
-token = client.authenticate("usuario_exemplo", "SenhaSegura123!")
-print(f"Token obtido: {token[:50]}...")
+token = client.authenticate("example_user", "SecurePassword123!")
+print(f"Token obtained: {token[:50]}...")
 
 quotes = client.get_quotes()
-print(f"Cotações encontradas: {len(quotes)}")
+print(f"Quotes found: {len(quotes)}")
 ```
 
 ---
 
-## Validação do Token
+## Token Validation
 
-### Validação Automática
+### Automatic Validation
 
-O middleware JWT do ASP.NET Core valida automaticamente todos os tokens recebidos:
+The ASP.NET Core JWT middleware automatically validates all received tokens:
 
 ```csharp
-// Configurado em Startup.cs
-app.UseAuthentication();  // Middleware de autenticação JWT
-app.UseAuthorization();   // Middleware de autorização
+// Configured in Startup.cs
+app.UseAuthentication();  // JWT authentication middleware
+app.UseAuthorization();   // Authorization middleware
 ```
 
-### O que é Validado?
+### What is Validated?
 
-1. **Assinatura**: Verifica se o token foi assinado com a chave secreta correta
-2. **Emissor (Issuer)**: Confirma que o token foi emitido pelo servidor esperado
-3. **Destinatário (Audience)**: Verifica se o token é destinado a esta aplicação
-4. **Expiração (Expiration)**: Garante que o token ainda não expirou
-5. **Formato**: Valida a estrutura do token JWT
+1. **Signature**: Verifies if the token was signed with the correct secret key
+2. **Issuer**: Confirms that the token was issued by the expected server
+3. **Audience**: Verifies if the token is intended for this application
+4. **Expiration**: Ensures that the token hasn't expired yet
+5. **Format**: Validates the JWT token structure
 
-### Fluxo de Validação
+### Validation Flow
 
 ```
-Cliente envia requisição
+Client sends request
         ↓
 ┌───────────────────────────────────┐
-│   JWT Middleware Intercepta       │
+│   JWT Middleware Intercepts       │
 └───────────────────────────────────┘
         ↓
 ┌───────────────────────────────────┐
-│   Extrai token do header          │
+│   Extracts token from header      │
 │   Authorization: Bearer <token>   │
 └───────────────────────────────────┘
         ↓
 ┌───────────────────────────────────┐
-│   Valida Assinatura               │
-│   ✓ Token foi assinado com        │
-│     SecretKey correto?             │
+│   Validates Signature             │
+│   ✓ Token signed with             │
+│     correct SecretKey?            │
 └───────────────────────────────────┘
         ↓
 ┌───────────────────────────────────┐
-│   Valida Claims                   │
-│   ✓ Issuer correto?               │
-│   ✓ Audience correto?             │
-│   ✓ Token não expirado?           │
+│   Validates Claims                │
+│   ✓ Correct Issuer?               │
+│   ✓ Correct Audience?             │
+│   ✓ Token not expired?            │
 └───────────────────────────────────┘
         ↓
     ┌───────┐
-    │Válido?│
+    │Valid? │
     └───┬───┘
         │
     ┌───┴────────────────┐
     │                    │
-   Sim                  Não
+   Yes                  No
     │                    │
     ↓                    ↓
 ┌────────┐       ┌──────────────┐
@@ -505,9 +505,9 @@ Cliente envia requisição
 └────────┘       └──────────────┘
 ```
 
-### Respostas de Erro de Validação
+### Validation Error Responses
 
-#### Token Expirado (401)
+#### Expired Token (401)
 ```json
 {
   "title": "Unauthorized",
@@ -517,7 +517,7 @@ Cliente envia requisição
 }
 ```
 
-#### Token Inválido ou Assinatura Incorreta (401)
+#### Invalid Token or Incorrect Signature (401)
 ```json
 {
   "title": "Unauthorized",
@@ -527,7 +527,7 @@ Cliente envia requisição
 }
 ```
 
-#### Token Ausente (401)
+#### Missing Token (401)
 ```json
 {
   "title": "Unauthorized",
@@ -537,9 +537,9 @@ Cliente envia requisição
 }
 ```
 
-### Validação Manual (Opcional)
+### Manual Validation (Optional)
 
-Se você precisar validar manualmente um token JWT (por exemplo, em um serviço externo):
+If you need to manually validate a JWT token (for example, in an external service):
 
 ```csharp
 using System.IdentityModel.Tokens.Jwt;
@@ -576,48 +576,48 @@ public bool ValidateToken(string token, string secretKey)
 
 ---
 
-## Exemplos de Comunicação
+## Communication Examples
 
-### Cenário 1: Fluxo Completo de Autenticação
+### Scenario 1: Complete Authentication Flow
 
 ```bash
-# 1. Criar conta
+# 1. Create account
 curl -X POST "https://localhost:7001/Account/AddAccount" \
   -H "Content-Type: application/json" \
   -d '{
-    "userName": "joao_silva",
-    "password": "MinhaSenh@123",
-    "email": "joao@exemplo.com"
+    "userName": "john_silva",
+    "password": "MyPass@123",
+    "email": "john@example.com"
   }'
 
-# Resposta:
+# Response:
 # {
 #   "status": 200,
 #   "data": {
 #     "userId": 456,
-#     "userName": "joao_silva",
-#     "email": "joao@exemplo.com"
+#     "userName": "john_silva",
+#     "email": "john@example.com"
 #   }
 # }
 
-# 2. Autenticar e obter token
+# 2. Authenticate and obtain token
 TOKEN=$(curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
   -H "Content-Type: application/json" \
   -d '{
-    "userName": "joao_silva",
-    "password": "MinhaSenh@123"
+    "userName": "john_silva",
+    "password": "MyPass@123"
   }' | jq -r '.data.accessToken')
 
 echo "Token: $TOKEN"
 
-# 3. Usar token para acessar recurso protegido
+# 3. Use token to access protected resource
 curl -X GET "https://localhost:7001/Quote/GetQuotes" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### Cenário 2: Renovação de Token
+### Scenario 2: Token Renewal
 
-Quando o token expira, você precisa autenticar novamente:
+When the token expires, you need to authenticate again:
 
 ```javascript
 class TokenManager {
@@ -627,12 +627,12 @@ class TokenManager {
   }
 
   async getValidToken(userName, password) {
-    // Verifica se o token ainda é válido
+    // Check if the token is still valid
     if (this.token && this.expiresAt && Date.now() < this.expiresAt) {
       return this.token;
     }
 
-    // Token expirado ou inexistente, obter novo
+    // Token expired or non-existent, obtain new one
     return await this.refreshToken(userName, password);
   }
 
@@ -646,18 +646,18 @@ class TokenManager {
     const data = await response.json();
     this.token = data.data.accessToken;
     
-    // Define tempo de expiração (diminui 5 minutos para margem de segurança)
+    // Set expiration time (subtract 5 minutes for safety margin)
     this.expiresAt = Date.now() + (data.data.expiresIn - 300) * 1000;
     
     return this.token;
   }
 }
 
-// Uso
+// Usage
 const tokenManager = new TokenManager();
 
 async function makeAuthenticatedRequest() {
-  const token = await tokenManager.getValidToken('joao_silva', 'MinhaSenh@123');
+  const token = await tokenManager.getValidToken('john_silva', 'MyPass@123');
   
   const response = await fetch('https://localhost:7001/Quote/GetQuotes', {
     headers: { 'Authorization': `Bearer ${token}` }
@@ -667,17 +667,17 @@ async function makeAuthenticatedRequest() {
 }
 ```
 
-### Cenário 3: Tratamento de Erros de Autenticação
+### Scenario 3: Authentication Error Handling
 
 ```javascript
 async function authenticatedFetch(url, options = {}) {
   const token = localStorage.getItem('jwt_token');
   
   if (!token) {
-    throw new Error('Token não encontrado. Por favor, faça login.');
+    throw new Error('Token not found. Please log in.');
   }
 
-  // Adiciona token ao header
+  // Add token to header
   const headers = {
     ...options.headers,
     'Authorization': `Bearer ${token}`
@@ -685,43 +685,43 @@ async function authenticatedFetch(url, options = {}) {
 
   const response = await fetch(url, { ...options, headers });
 
-  // Trata erro de autenticação
+  // Handle authentication error
   if (response.status === 401) {
-    // Token inválido ou expirado
+    // Invalid or expired token
     localStorage.removeItem('jwt_token');
-    throw new Error('Sessão expirada. Por favor, faça login novamente.');
+    throw new Error('Session expired. Please log in again.');
   }
 
-  // Trata erro de autorização (sem permissão)
+  // Handle authorization error (no permission)
   if (response.status === 403) {
-    throw new Error('Você não tem permissão para acessar este recurso.');
+    throw new Error('You do not have permission to access this resource.');
   }
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.detail || 'Erro na requisição');
+    throw new Error(error.detail || 'Request error');
   }
 
   return await response.json();
 }
 
-// Uso com tratamento de erro
+// Usage with error handling
 try {
   const quotes = await authenticatedFetch('https://localhost:7001/Quote/GetQuotes');
-  console.log('Cotações:', quotes);
+  console.log('Quotes:', quotes);
 } catch (error) {
-  console.error('Erro:', error.message);
-  // Redirecionar para página de login se necessário
+  console.error('Error:', error.message);
+  // Redirect to login page if necessary
   if (error.message.includes('login')) {
     window.location.href = '/login';
   }
 }
 ```
 
-### Cenário 4: Sistema RBAC - Verificação de Permissões
+### Scenario 4: RBAC System - Permission Verification
 
 ```bash
-# 1. Autenticar como administrador
+# 1. Authenticate as administrator
 TOKEN=$(curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
   -H "Content-Type: application/json" \
   -d '{
@@ -729,26 +729,26 @@ TOKEN=$(curl -X POST "https://localhost:7001/Authentication/GenerateToken" \
     "password": "AdminPassword123!"
   }' | jq -r '.data.accessToken')
 
-# 2. Criar uma permissão (Claim)
+# 2. Create a permission (Claim)
 CLAIM_ID=$(curl -X POST "https://localhost:7001/Claim/AddClaim" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "type": "Permission",
     "value": "quote:manage",
-    "description": "Gerenciar cotações"
+    "description": "Manage quotes"
   }' | jq -r '.data.claimId')
 
-# 3. Criar uma ação
+# 3. Create an action
 ACTION_ID=$(curl -X POST "https://localhost:7001/Action/AddAction" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "CreateQuote",
-    "description": "Criar nova cotação"
+    "description": "Create new quote"
   }' | jq -r '.data.actionId')
 
-# 4. Associar Claim à Ação
+# 4. Associate Claim with Action
 CLAIM_ACTION_ID=$(curl -X POST "https://localhost:7001/ClaimAction/AddClaimAction" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
@@ -757,7 +757,7 @@ CLAIM_ACTION_ID=$(curl -X POST "https://localhost:7001/ClaimAction/AddClaimActio
     "actionId": '$ACTION_ID'
   }' | jq -r '.data.claimActionId')
 
-# 5. Atribuir permissão a um usuário
+# 5. Assign permission to a user
 curl -X POST "https://localhost:7001/AccountClaimAction/AddAccountClaimAction" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
@@ -766,45 +766,45 @@ curl -X POST "https://localhost:7001/AccountClaimAction/AddAccountClaimAction" \
     "claimActionId": '$CLAIM_ACTION_ID'
   }'
 
-# Agora o usuário com accountId 456 tem permissão para criar cotações
+# Now the user with accountId 456 has permission to create quotes
 ```
 
 ---
 
-## Segurança e Boas Práticas
+## Security and Best Practices
 
-### 🔒 Configuração Segura da SecretKey
+### 🔒 Secure SecretKey Configuration
 
-#### ❌ NUNCA FAÇA ISSO (Produção)
+#### ❌ NEVER DO THIS (Production)
 ```json
 // appsettings.json
 {
   "JwtSettings": {
-    "SecretKey": "minha-chave-secreta-123"  // ❌ INSEGURO!
+    "SecretKey": "my-secret-key-123"  // ❌ INSECURE!
   }
 }
 ```
 
-#### ✅ FAÇA ISSO
+#### ✅ DO THIS
 
-**Opção 1: Variáveis de Ambiente**
+**Option 1: Environment Variables**
 ```bash
 # Linux/Mac
-export JwtSettings__SecretKey="sua-chave-muito-segura-com-no-minimo-32-caracteres-aleatorios"
+export JwtSettings__SecretKey="your-very-secure-key-with-at-least-32-random-characters"
 
 # Windows PowerShell
-$env:JwtSettings__SecretKey="sua-chave-muito-segura-com-no-minimo-32-caracteres-aleatorios"
+$env:JwtSettings__SecretKey="your-very-secure-key-with-at-least-32-random-characters"
 
 # Docker
-docker run -e JwtSettings__SecretKey="sua-chave-segura" myapp
+docker run -e JwtSettings__SecretKey="your-secure-key" myapp
 ```
 
-**Opção 2: Azure Key Vault**
+**Option 2: Azure Key Vault**
 ```csharp
 // Program.cs
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona Azure Key Vault
+// Add Azure Key Vault
 if (!builder.Environment.IsDevelopment())
 {
     var keyVaultEndpoint = new Uri(builder.Configuration["KeyVaultEndpoint"]);
@@ -812,27 +812,27 @@ if (!builder.Environment.IsDevelopment())
 }
 ```
 
-**Opção 3: User Secrets (Desenvolvimento)**
+**Option 3: User Secrets (Development)**
 ```bash
-# Inicializar user secrets
+# Initialize user secrets
 dotnet user-secrets init --project Src/HealthPlan.API
 
-# Adicionar secret
-dotnet user-secrets set "JwtSettings:SecretKey" "chave-de-desenvolvimento-32-chars" --project Src/HealthPlan.API
+# Add secret
+dotnet user-secrets set "JwtSettings:SecretKey" "development-key-32-chars" --project Src/HealthPlan.API
 
-# Listar secrets
+# List secrets
 dotnet user-secrets list --project Src/HealthPlan.API
 ```
 
-### 🛡️ Segurança da SecretKey
+### 🛡️ SecretKey Security
 
-**Requisitos da Chave:**
-- Mínimo de **32 caracteres**
-- Use caracteres aleatórios (letras, números, símbolos)
-- Nunca compartilhe ou versione no Git
-- Rotacione periodicamente (a cada 90 dias recomendado)
+**Key Requirements:**
+- Minimum of **32 characters**
+- Use random characters (letters, numbers, symbols)
+- Never share or version in Git
+- Rotate periodically (every 90 days recommended)
 
-**Gerar Chave Segura:**
+**Generate Secure Key:**
 ```bash
 # Linux/Mac
 openssl rand -base64 48
@@ -846,58 +846,58 @@ $bytes = New-Object byte[] 48
 python -c "import secrets; print(secrets.token_urlsafe(48))"
 ```
 
-### 🔐 Armazenamento Seguro do Token (Cliente)
+### 🔐 Secure Token Storage (Client)
 
-#### ❌ NÃO Armazene em localStorage (Vulnerável a XSS)
+#### ❌ DO NOT Store in localStorage (Vulnerable to XSS)
 ```javascript
-// ❌ INSEGURO - Vulnerável a ataques XSS
+// ❌ INSECURE - Vulnerable to XSS attacks
 localStorage.setItem('jwt_token', token);
 ```
 
-#### ✅ Armazene em httpOnly Cookie
+#### ✅ Store in httpOnly Cookie
 ```javascript
-// Servidor (ASP.NET Core) - Define cookie httpOnly
+// Server (ASP.NET Core) - Set httpOnly cookie
 Response.Cookies.Append("jwt_token", token, new CookieOptions
 {
-    HttpOnly = true,    // Não acessível via JavaScript
-    Secure = true,      // Apenas HTTPS
-    SameSite = SameSiteMode.Strict,  // Proteção CSRF
+    HttpOnly = true,    // Not accessible via JavaScript
+    Secure = true,      // HTTPS only
+    SameSite = SameSiteMode.Strict,  // CSRF protection
     Expires = DateTimeOffset.UtcNow.AddHours(1)
 });
 
-// Cliente - O cookie é enviado automaticamente
+// Client - Cookie is sent automatically
 fetch('https://localhost:7001/Quote/GetQuotes', {
-    credentials: 'include'  // Inclui cookies na requisição
+    credentials: 'include'  // Include cookies in request
 });
 ```
 
-#### ✅ Alternativa: sessionStorage (Mais Seguro que localStorage)
+#### ✅ Alternative: sessionStorage (More Secure than localStorage)
 ```javascript
-// Melhor que localStorage, mas ainda vulnerável a XSS
-// Use apenas se não puder usar httpOnly cookies
+// Better than localStorage, but still vulnerable to XSS
+// Use only if you can't use httpOnly cookies
 sessionStorage.setItem('jwt_token', token);
 ```
 
-### ⏱️ Tempo de Expiração Apropriado
+### ⏱️ Appropriate Expiration Time
 
-| Ambiente | Tempo Recomendado | Motivo |
+| Environment | Recommended Time | Reason |
 |----------|-------------------|--------|
-| **Desenvolvimento** | 60 minutos | Conveniência para testes |
-| **Produção (Público)** | 15-30 minutos | Balance entre segurança e UX |
-| **Produção (Admin)** | 5-15 minutos | Alta segurança para operações críticas |
-| **API Interna** | 1-2 horas | Comunicação entre serviços confiáveis |
+| **Development** | 60 minutes | Convenience for testing |
+| **Production (Public)** | 15-30 minutes | Balance between security and UX |
+| **Production (Admin)** | 5-15 minutes | High security for critical operations |
+| **Internal API** | 1-2 hours | Communication between trusted services |
 
 ```json
 {
   "JwtSettings": {
-    "ExpirationMinutes": 15  // 15 minutos para produção
+    "ExpirationMinutes": 15  // 15 minutes for production
   }
 }
 ```
 
-### 🔒 HTTPS Obrigatório
+### 🔒 HTTPS Required
 
-**Desenvolvimento:**
+**Development:**
 ```json
 {
   "Kestrel": {
@@ -910,19 +910,19 @@ sessionStorage.setItem('jwt_token', token);
 }
 ```
 
-**Produção:**
+**Production:**
 ```csharp
 // Startup.cs
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();  // HTTP Strict Transport Security
-    app.UseHttpsRedirection();  // Redireciona HTTP para HTTPS
+    app.UseHttpsRedirection();  // Redirect HTTP to HTTPS
 }
 ```
 
-### 🛡️ Validação de Entrada
+### 🛡️ Input Validation
 
-Sempre valide entradas para prevenir ataques:
+Always validate inputs to prevent attacks:
 
 ```csharp
 public class LoginRequestValidator : AbstractValidator<LoginRequestDTO>
@@ -930,98 +930,98 @@ public class LoginRequestValidator : AbstractValidator<LoginRequestDTO>
     public LoginRequestValidator()
     {
         RuleFor(x => x.UserName)
-            .NotEmpty().WithMessage("Username é obrigatório")
-            .Length(3, 50).WithMessage("Username deve ter entre 3 e 50 caracteres")
-            .Matches("^[a-zA-Z0-9_]+$").WithMessage("Username deve conter apenas letras, números e underscore");
+            .NotEmpty().WithMessage("Username is required")
+            .Length(3, 50).WithMessage("Username must be between 3 and 50 characters")
+            .Matches("^[a-zA-Z0-9_]+$").WithMessage("Username must contain only letters, numbers and underscore");
 
         RuleFor(x => x.Password)
-            .NotEmpty().WithMessage("Password é obrigatório")
-            .MinimumLength(8).WithMessage("Password deve ter no mínimo 8 caracteres");
+            .NotEmpty().WithMessage("Password is required")
+            .MinimumLength(8).WithMessage("Password must be at least 8 characters");
     }
 }
 ```
 
-### 🔐 Hash de Senha (Argon2)
+### 🔐 Password Hashing (Argon2)
 
-O sistema usa **Argon2** para hash de senhas (melhor que bcrypt/SHA):
+The system uses **Argon2** for password hashing (better than bcrypt/SHA):
 
 ```csharp
-// A senha nunca é armazenada em texto puro
+// Password is never stored in plain text
 public void AddAccount(Account account)
 {
-    // Gera hash seguro com Argon2
+    // Generate secure hash with Argon2
     account.Password = _passwordHasher.Hash(account.Password);
     _unitOfWork.AccountRepository.Add(account);
     _unitOfWork.Complete();
 }
 
-// Verificação segura
+// Secure verification
 public Account GetAccountByUserNameAndPassword(Account account)
 {
     var dbAccount = _unitOfWork.AccountRepository.GetByUserName(account.UserName);
     if (dbAccount == null)
-        throw new InvalidOperationException("Conta não encontrada");
+        throw new InvalidOperationException("Account not found");
     
-    // Verifica hash de forma segura (constant-time comparison)
+    // Verify hash securely (constant-time comparison)
     if (_passwordHasher.Verify(account.Password, dbAccount.Password))
         return dbAccount;
     
-    throw new UnauthorizedAccessException("Senha inválida");
+    throw new UnauthorizedAccessException("Invalid password");
 }
 ```
 
-### 📋 Checklist de Segurança
+### 📋 Security Checklist
 
-- [ ] **SecretKey** possui no mínimo 32 caracteres aleatórios
-- [ ] **SecretKey** armazenada em variável de ambiente ou Key Vault
-- [ ] **HTTPS** habilitado em produção
-- [ ] **Tempo de expiração** apropriado (15-30min produção)
-- [ ] **Token** armazenado em httpOnly cookie (não localStorage)
-- [ ] **Validação de entrada** implementada (FluentValidation)
-- [ ] **Hash de senha** usando Argon2
-- [ ] **Rate limiting** configurado para prevenir brute force
-- [ ] **CORS** configurado adequadamente
-- [ ] **Security headers** adicionados (HSTS, X-Frame-Options, etc.)
-- [ ] **Logging** de tentativas de autenticação falhadas
-- [ ] **Rotação de chaves** agendada (90 dias)
+- [ ] **SecretKey** has at least 32 random characters
+- [ ] **SecretKey** stored in environment variable or Key Vault
+- [ ] **HTTPS** enabled in production
+- [ ] **Expiration time** appropriate (15-30min production)
+- [ ] **Token** stored in httpOnly cookie (not localStorage)
+- [ ] **Input validation** implemented (FluentValidation)
+- [ ] **Password hashing** using Argon2
+- [ ] **Rate limiting** configured to prevent brute force
+- [ ] **CORS** configured appropriately
+- [ ] **Security headers** added (HSTS, X-Frame-Options, etc.)
+- [ ] **Logging** of failed authentication attempts
+- [ ] **Key rotation** scheduled (90 days)
 
-### 🚨 Monitoramento e Logging
+### 🚨 Monitoring and Logging
 
 ```csharp
 public async Task<IActionResult> GenerateToken([FromBody] LoginRequestDTO request)
 {
     try
     {
-        _logger.LogInformation("Tentativa de login para usuário: {UserName}", request.UserName);
+        _logger.LogInformation("Login attempt for user: {UserName}", request.UserName);
         
         var response = await _authService.AuthenticateAsync(request);
         
-        _logger.LogInformation("Login bem-sucedido para usuário: {UserName}", request.UserName);
+        _logger.LogInformation("Successful login for user: {UserName}", request.UserName);
         return Ok(response);
     }
     catch (UnauthorizedAccessException ex)
     {
-        _logger.LogWarning("Falha de autenticação para usuário: {UserName}. Motivo: {Reason}", 
+        _logger.LogWarning("Authentication failure for user: {UserName}. Reason: {Reason}", 
             request.UserName, ex.Message);
-        return Unauthorized("Credenciais inválidas");
+        return Unauthorized("Invalid credentials");
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "Erro durante autenticação para usuário: {UserName}", request.UserName);
-        return StatusCode(500, "Erro interno do servidor");
+        _logger.LogError(ex, "Error during authentication for user: {UserName}", request.UserName);
+        return StatusCode(500, "Internal server error");
     }
 }
 ```
 
 ---
 
-## Extensões para Outros Métodos
+## Extensions for Other Methods
 
-O sistema atual usa JWT com autenticação por usuário/senha, mas pode ser estendido para suportar outros métodos de autenticação.
+The current system uses JWT with username/password authentication, but can be extended to support other authentication methods.
 
 ### 1. OAuth 2.0 / OpenID Connect
 
-Integração com provedores externos (Google, Microsoft, Facebook):
+Integration with external providers (Google, Microsoft, Facebook):
 
 ```csharp
 // Startup.cs
@@ -1030,7 +1030,7 @@ services.AddAuthentication(options =>
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options => { /* configuração JWT existente */ })
+.AddJwtBearer(options => { /* existing JWT configuration */ })
 .AddGoogle(options =>
 {
     options.ClientId = Configuration["Authentication:Google:ClientId"];
@@ -1043,20 +1043,20 @@ services.AddAuthentication(options =>
 });
 ```
 
-**Fluxo OAuth:**
+**OAuth Flow:**
 ```
-Cliente → Redireciona para Google
-Google → Usuário autentica
-Google → Redireciona de volta com código
-Servidor → Troca código por token
-Servidor → Cria conta/sessão do usuário
-Servidor → Gera JWT token próprio
-Cliente → Recebe JWT token
+Client → Redirect to Google
+Google → User authenticates
+Google → Redirect back with code
+Server → Exchange code for token
+Server → Create user account/session
+Server → Generate own JWT token
+Client → Receive JWT token
 ```
 
 ### 2. Two-Factor Authentication (2FA)
 
-Adicionar segunda camada de segurança:
+Add second layer of security:
 
 ```csharp
 public class TwoFactorAuthService
@@ -1064,7 +1064,7 @@ public class TwoFactorAuthService
     private readonly IMemoryCache _cache;
     private readonly IEmailService _emailService;
 
-    // Gerar código 2FA
+    // Generate 2FA code
     public string GenerateTwoFactorCode(string userName)
     {
         var code = new Random().Next(100000, 999999).ToString();
@@ -1072,15 +1072,15 @@ public class TwoFactorAuthService
         return code;
     }
 
-    // Enviar código por email
+    // Send code by email
     public async Task SendTwoFactorCodeAsync(string userName, string email)
     {
         var code = GenerateTwoFactorCode(userName);
-        await _emailService.SendEmailAsync(email, "Código de Verificação", 
-            $"Seu código de verificação é: {code}");
+        await _emailService.SendEmailAsync(email, "Verification Code", 
+            $"Your verification code is: {code}");
     }
 
-    // Validar código
+    // Validate code
     public bool ValidateTwoFactorCode(string userName, string code)
     {
         if (_cache.TryGetValue($"2fa:{userName}", out string cachedCode))
@@ -1095,30 +1095,30 @@ public class TwoFactorAuthService
 [HttpPost("GenerateToken")]
 public async Task<IActionResult> GenerateToken([FromBody] LoginRequestDTO request)
 {
-    // 1. Valida usuário/senha
+    // 1. Validate username/password
     var account = await _authService.ValidateCredentialsAsync(request);
     
-    // 2. Se 2FA está habilitado, envia código
+    // 2. If 2FA is enabled, send code
     if (account.TwoFactorEnabled)
     {
         await _twoFactorService.SendTwoFactorCodeAsync(account.UserName, account.Email);
         return Ok(new { requiresTwoFactor = true });
     }
     
-    // 3. Gera token normalmente se 2FA não está habilitado
+    // 3. Generate token normally if 2FA is not enabled
     return Ok(await _authService.GenerateTokenAsync(account));
 }
 
 [HttpPost("VerifyTwoFactor")]
 public async Task<IActionResult> VerifyTwoFactor([FromBody] TwoFactorRequestDTO request)
 {
-    // Valida código 2FA
+    // Validate 2FA code
     if (!_twoFactorService.ValidateTwoFactorCode(request.UserName, request.Code))
     {
-        return Unauthorized("Código inválido ou expirado");
+        return Unauthorized("Invalid or expired code");
     }
     
-    // Gera token JWT
+    // Generate JWT token
     var account = await _authService.GetAccountByUserNameAsync(request.UserName);
     return Ok(await _authService.GenerateTokenAsync(account));
 }
@@ -1126,7 +1126,7 @@ public async Task<IActionResult> VerifyTwoFactor([FromBody] TwoFactorRequestDTO 
 
 ### 3. API Keys
 
-Para autenticação de serviços externos:
+For external service authentication:
 
 ```csharp
 public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
@@ -1137,23 +1137,23 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthentic
     {
         if (!Request.Headers.TryGetValue(ApiKeyHeaderName, out var apiKeyHeaderValues))
         {
-            return AuthenticateResult.Fail("API Key header não encontrado");
+            return AuthenticateResult.Fail("API Key header not found");
         }
 
         var providedApiKey = apiKeyHeaderValues.FirstOrDefault();
         if (string.IsNullOrWhiteSpace(providedApiKey))
         {
-            return AuthenticateResult.Fail("API Key vazia");
+            return AuthenticateResult.Fail("Empty API Key");
         }
 
-        // Validar API Key no banco de dados
+        // Validate API Key in database
         var apiKey = await _apiKeyRepository.ValidateApiKeyAsync(providedApiKey);
         if (apiKey == null)
         {
-            return AuthenticateResult.Fail("API Key inválida");
+            return AuthenticateResult.Fail("Invalid API Key");
         }
 
-        // Criar claims e identity
+        // Create claims and identity
         var claims = new[] {
             new Claim(ClaimTypes.Name, apiKey.ClientName),
             new Claim("ApiKeyId", apiKey.Id.ToString())
@@ -1166,7 +1166,7 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthentic
     }
 }
 
-// Uso
+// Usage
 [ApiController]
 [Route("[controller]")]
 public class ExternalApiController : ControllerBase
@@ -1175,25 +1175,25 @@ public class ExternalApiController : ControllerBase
     [Authorize(AuthenticationSchemes = "ApiKey")]
     public IActionResult GetData()
     {
-        return Ok("Dados protegidos por API Key");
+        return Ok("Data protected by API Key");
     }
 }
 ```
 
 ### 4. Refresh Tokens
 
-Implementar tokens de longa duração para renovar access tokens:
+Implement long-duration tokens to renew access tokens:
 
 ```csharp
 public class TokenService
 {
-    // Gerar access token e refresh token
+    // Generate access token and refresh token
     public TokenResponseDTO GenerateTokens(Account account)
     {
-        // Access token (curta duração - 15 minutos)
+        // Access token (short duration - 15 minutes)
         var accessToken = GenerateJwtToken(account, TimeSpan.FromMinutes(15));
         
-        // Refresh token (longa duração - 7 dias)
+        // Refresh token (long duration - 7 days)
         var refreshToken = GenerateRefreshToken();
         StoreRefreshToken(account.Id, refreshToken, TimeSpan.FromDays(7));
         
@@ -1201,18 +1201,18 @@ public class TokenService
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            ExpiresIn = 900 // 15 minutos
+            ExpiresIn = 900 // 15 minutes
         };
     }
 
-    // Renovar access token usando refresh token
+    // Renew access token using refresh token
     public async Task<TokenResponseDTO> RefreshAccessTokenAsync(string refreshToken)
     {
         var storedToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
         
         if (storedToken == null || storedToken.ExpiresAt < DateTime.UtcNow)
         {
-            throw new UnauthorizedAccessException("Refresh token inválido ou expirado");
+            throw new UnauthorizedAccessException("Invalid or expired refresh token");
         }
 
         var account = await _accountRepository.GetByIdAsync(storedToken.AccountId);
@@ -1228,7 +1228,7 @@ public class TokenService
     }
 }
 
-// Endpoint para renovar token
+// Endpoint to renew token
 [HttpPost("RefreshToken")]
 public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDTO request)
 {
@@ -1239,14 +1239,14 @@ public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDTO 
     }
     catch (UnauthorizedAccessException)
     {
-        return Unauthorized("Refresh token inválido");
+        return Unauthorized("Invalid refresh token");
     }
 }
 ```
 
-### 5. Autenticação por Certificado (mTLS)
+### 5. Certificate Authentication (mTLS)
 
-Para comunicação segura entre serviços:
+For secure communication between services:
 
 ```csharp
 // Startup.cs
@@ -1260,7 +1260,7 @@ services.AddAuthentication()
         {
             OnCertificateValidated = context =>
             {
-                // Validar certificado personalizado
+                // Validate custom certificate
                 var claims = new[]
                 {
                     new Claim(ClaimTypes.Name, context.ClientCertificate.Subject),
@@ -1277,12 +1277,12 @@ services.AddAuthentication()
     });
 ```
 
-### 6. Biometria / WebAuthn
+### 6. Biometrics / WebAuthn
 
-Autenticação sem senha usando biometria:
+Passwordless authentication using biometrics:
 
 ```csharp
-// Requer biblioteca Fido2.AspNet
+// Requires Fido2.AspNet library
 services.AddFido2(options =>
 {
     options.ServerDomain = "localhost";
@@ -1294,7 +1294,7 @@ services.AddFido2(options =>
 [HttpPost("RegisterBiometric")]
 public async Task<IActionResult> RegisterBiometric([FromBody] BiometricRegistrationDTO request)
 {
-    // Cria desafio de registro
+    // Create registration challenge
     var options = _fido2.RequestNewCredential(
         user: request.User,
         excludeCredentials: new List<PublicKeyCredentialDescriptor>(),
@@ -1312,10 +1312,10 @@ public async Task<IActionResult> RegisterBiometric([FromBody] BiometricRegistrat
 
 ### 7. Single Sign-On (SSO)
 
-Integração com SAML ou OpenID Connect para SSO corporativo:
+Integration with SAML or OpenID Connect for corporate SSO:
 
 ```csharp
-// Adicionar Sustainsys.Saml2 ou IdentityServer
+// Add Sustainsys.Saml2 or IdentityServer
 services.AddAuthentication()
     .AddSaml2(options =>
     {
@@ -1330,53 +1330,53 @@ services.AddAuthentication()
     });
 ```
 
-### Comparação de Métodos
+### Method Comparison
 
-| Método | Segurança | Complexidade | Uso Recomendado |
+| Method | Security | Complexity | Recommended Use |
 |--------|-----------|--------------|-----------------|
-| **JWT (atual)** | ⭐⭐⭐⭐ | ⭐⭐ | APIs REST, SPAs |
-| **OAuth 2.0** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Login social, delegação |
-| **2FA** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Operações sensíveis |
-| **API Keys** | ⭐⭐⭐ | ⭐ | Integração B2B |
-| **Refresh Tokens** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Aplicações móveis |
-| **mTLS** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Microsserviços |
-| **WebAuthn** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Autenticação sem senha |
-| **SSO/SAML** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Empresas corporativas |
+| **JWT (current)** | ⭐⭐⭐⭐ | ⭐⭐ | REST APIs, SPAs |
+| **OAuth 2.0** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Social login, delegation |
+| **2FA** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Sensitive operations |
+| **API Keys** | ⭐⭐⭐ | ⭐ | B2B integration |
+| **Refresh Tokens** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Mobile applications |
+| **mTLS** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Microservices |
+| **WebAuthn** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Passwordless auth |
+| **SSO/SAML** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Corporate enterprises |
 
 ---
 
-## Recursos Adicionais
+## Additional Resources
 
-### Documentação Relacionada
+### Related Documentation
 
-- **[API.md](./API.md)** - Documentação completa da API
-- **[SECURITY.md](./SECURITY.md)** - Configuração de segurança detalhada
-- **[EXAMPLES.md](./EXAMPLES.md)** - Exemplos práticos de integração
-- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Guia de desenvolvimento
+- **[API.md](./API.md)** - Complete API documentation
+- **[SECURITY.md](../../SECURITY.md)** - Detailed security configuration
+- **[EXAMPLES.md](./EXAMPLES.md)** - Practical integration examples
+- **[DEVELOPMENT.md](../guides/DEVELOPMENT.md)** - Development guide
 
-### Links Externos
+### External Links
 
-- [JWT.io](https://jwt.io/) - Debugger e documentação JWT
-- [RFC 7519](https://tools.ietf.org/html/rfc7519) - Especificação JWT
+- [JWT.io](https://jwt.io/) - JWT Debugger and documentation
+- [RFC 7519](https://tools.ietf.org/html/rfc7519) - JWT Specification
 - [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
 - [ASP.NET Core Authentication](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/)
 - [Argon2 Password Hashing](https://github.com/P-H-C/phc-winner-argon2)
 
-### Ferramentas Úteis
+### Useful Tools
 
-- **Postman** - Testar API com autenticação JWT
-- **JWT.io Debugger** - Decodificar e validar tokens
-- **Azure Key Vault** - Gerenciamento seguro de chaves
-- **HashiCorp Vault** - Alternativa open-source para gerenciamento de secrets
-
----
-
-## Suporte
-
-Para questões, sugestões ou reportar problemas:
-- Abra uma [issue](https://github.com/maiconcardozo/HealthPlanSuite/issues)
-- Entre em contato através do GitHub
+- **Postman** - Test API with JWT authentication
+- **JWT.io Debugger** - Decode and validate tokens
+- **Azure Key Vault** - Secure key management
+- **HashiCorp Vault** - Open-source alternative for secrets management
 
 ---
 
-⭐ Se esta documentação foi útil, considere dar uma estrela no projeto!
+## Support
+
+For questions, suggestions, or to report issues:
+- Open an [issue](https://github.com/maiconcardozo/HealthPlanSuite/issues)
+- Contact through GitHub
+
+---
+
+⭐ If this documentation was helpful, consider giving the project a star!

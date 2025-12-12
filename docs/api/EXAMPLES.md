@@ -766,9 +766,9 @@ export function useAuth() {
 
 ## 🧪 Test Examples
 
-### Teste de Integração Completo
+### Complete Integration Test
 ```javascript
-// Exemplo usando Jest
+// Example using Jest
 describe('Authentication API Integration', () => {
   let authClient;
   let testToken;
@@ -779,54 +779,54 @@ describe('Authentication API Integration', () => {
     // Create test account
     await authClient.createAccount('testuser', 'TestPassword123!', 'test@example.com');
     
-    // Fazer login e obter token
+    // Login and obtain token
     const tokenData = await authClient.login('testuser', 'TestPassword123!');
     testToken = tokenData.accessToken;
   });
 
-  test('Deve criar e gerenciar claims', async () => {
-    // Criar claim
+  test('Should create and manage claims', async () => {
+    // Create claim
     const claimResponse = await authClient.createClaim('Role', 'TestRole', 'Test role');
     expect(claimResponse).toHaveProperty('id');
 
-    // Listar claims
+    // List claims
     const claims = await authClient.getClaims();
     expect(Array.isArray(claims)).toBe(true);
     expect(claims.some(c => c.value === 'TestRole')).toBe(true);
   });
 
-  test('Deve criar e gerenciar actions', async () => {
-    // Criar action
+  test('Should create and manage actions', async () => {
+    // Create action
     const actionResponse = await authClient.createAction('TestAction', 'Test action');
     expect(actionResponse).toHaveProperty('id');
 
-    // Listar actions
+    // List actions
     const actions = await authClient.getActions();
     expect(Array.isArray(actions)).toBe(true);
     expect(actions.some(a => a.name === 'TestAction')).toBe(true);
   });
 
-  test('Deve mapear claims para actions', async () => {
-    // Assumindo que temos IDs das operações anteriores
+  test('Should map claims to actions', async () => {
+    // Assuming we have IDs from previous operations
     const mappingResponse = await authClient.mapClaimToAction(1, 1);
     expect(mappingResponse).toHaveProperty('id');
   });
 
   afterAll(async () => {
-    // Cleanup se necessário
+    // Cleanup if necessary
     authClient.logout();
   });
 });
 ```
 
-## 📱 Exemplo Mobile (React Native)
+## 📱 Mobile Example (React Native)
 
 ```javascript
 // AuthService.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class MobileAuthService {
-  constructor(baseUrl = 'https://api.seudominio.com') {
+  constructor(baseUrl = 'https://api.yourdomain.com') {
     this.baseUrl = baseUrl;
   }
 

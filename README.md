@@ -112,7 +112,7 @@ src/
 **Everything about the API:**
 
 - **[API Reference](docs/api/API.md)** - Complete API documentation
-- **[Authentication Guide](docs/api/AUTENTICACAO.md)** - JWT authentication implementation
+- **[Authentication Guide](docs/api/AUTHENTICATION.md)** - JWT authentication implementation
 - **[Integration Examples](docs/api/EXAMPLES.md)** - Real-world integration examples
 - **[Swagger Configuration](docs/api/swagger-configuration.md)** - API documentation configuration
 
@@ -174,7 +174,7 @@ src/
 ### For API Users
 
 1. [API Reference](docs/api/API.md)
-2. [Authentication Guide](docs/api/AUTENTICACAO.md)
+2. [Authentication Guide](docs/api/AUTHENTICATION.md)
 3. [Integration Examples](docs/api/EXAMPLES.md)
 
 ### For System Administrators
@@ -219,7 +219,7 @@ docs/
 │
 ├── api/                      # API documentation
 │   ├── API.md                # Complete API reference
-│   ├── AUTENTICACAO.md       # Authentication guide
+│   ├── AUTHENTICATION.md     # Authentication guide
 │   ├── EXAMPLES.md           # Integration examples
 │   └── swagger-configuration.md # Swagger configuration
 │
