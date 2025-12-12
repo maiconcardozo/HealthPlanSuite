@@ -1,26 +1,26 @@
 # 🔧 Troubleshooting Guide
 
-Este guia aborda os problemas mais comuns encontrados ao configurar e usar o Authentication Service, com soluções detalhadas e dicas de prevenção.
+This guide addresses the most common problems encountered when configuring and using the Authentication Service, with detailed solutions and prevention tips.
 
 ## 🚨 Installation and Configuration Issues
 
-### ❌ Erro de Conexão com Banco de Dados
+### ❌ Database Connection Error
 
-**Erro:**
+**Error:**
 ```
 Unable to connect to any of the specified MySQL hosts
 MySqlConnector.MySqlException: Unable to connect to server
 ```
 
-**Causas Possíveis:**
-1. MySQL não está rodando
-2. Connection string incorreta
-3. Firewall bloqueando conexão
-4. Credenciais inválidas
+**Possible Causes:**
+1. MySQL is not running
+2. Incorrect connection string
+3. Firewall blocking connection
+4. Invalid credentials
 
-**Soluções:**
+**Solutions:**
 
-#### 1. Verificar Status do MySQL
+#### 1. Check MySQL Status
 ```bash
 # Linux/Mac
 sudo systemctl status mysql
@@ -32,13 +32,13 @@ net start | findstr mysql
 # ou via Services.msc
 ```
 
-#### 2. Testar Conexão Manual
+#### 2. Test Manual Connection
 ```bash
 mysql -h localhost -u authuser -p
-# Digite a senha quando solicitado
+# Enter password when prompted
 ```
 
-#### 3. Verificar Connection String
+#### 3. Verify Connection String
 ```json
 {
   "ConnectionStrings": {
@@ -47,23 +47,23 @@ mysql -h localhost -u authuser -p
 }
 ```
 
-#### 4. Recriar Usuário do Banco
+#### 4. Recreate Database User
 ```sql
 DROP USER IF EXISTS 'authuser'@'localhost';
 CREATE USER 'authuser'@'localhost' IDENTIFIED BY 'password123';
 GRANT ALL PRIVILEGES ON AuthenticationDB.* TO 'authuser'@'localhost';
-FLUSH PRIVILEGES;
+FLUSH PRIVILEGES';
 ```
 
-### ❌ Erro de Migração do Entity Framework
+### ❌ Entity Framework Migration Error
 
-**Erro:**
+**Error:**
 ```
 Unable to create an object of type 'ApiContextDevelopment'
 No database provider has been configured for this DbContext
 ```
 
-**Soluções:**
+**Solutions:**
 
 #### 1. Verificar Context Registration
 ```csharp
@@ -72,75 +72,75 @@ builder.Services.AddDbContext<ApiContextDevelopment>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 ```
 
-#### 2. Executar Migração com Verbose
+#### 2. Run Migration with Verbose
 ```bash
 cd Src/Authentication.API
 dotnet ef database update --context ApiContextDevelopment --verbose
 ```
 
-#### 3. Regenerar Migração se Necessário
+#### 3. Regenerate Migration if Necessary
 ```bash
-# Remove migração corrompida
+# Remove corrupted migration
 dotnet ef migrations remove --context ApiContextDevelopment
 
-# Cria nova migração
+# Create new migration
 dotnet ef migrations add InitialCreate --context ApiContextDevelopment
 
-# Aplica migração
+# Apply migration
 dotnet ef database update --context ApiContextDevelopment
 ```
 
-### ❌ Erro de Dependências/Packages
+### ❌ Dependencies/Packages Error
 
-**Erro:**
+**Error:**
 ```
 Package 'Package.Name' is incompatible with 'net9.0'
 Could not load file or assembly 'System.Text.Json'
 ```
 
-**Soluções:**
+**Solutions:**
 
-#### 1. Limpar Cache e Restaurar
+#### 1. Clear Cache and Restore
 ```bash
 dotnet nuget locals all --clear
 dotnet restore Solution/Authentication.sln --force
 dotnet build Solution/Authentication.sln --no-restore
 ```
 
-#### 2. Verificar Versões de Packages
+#### 2. Check Package Versions
 ```bash
 dotnet list package --outdated
 dotnet list package --vulnerable
 ```
 
-#### 3. Atualizar Packages Específicos
+#### 3. Update Specific Packages
 ```bash
 dotnet add package Microsoft.EntityFrameworkCore --version 8.0.13
 dotnet add package MySqlConnector --version 2.4.0
 ```
 
-## 🔐 Problemas de Autenticação e JWT
+## 🔐 Authentication and JWT Issues
 
-### ❌ Token Inválido ou Expirado
+### ❌ Invalid or Expired Token
 
-**Erro:**
+**Error:**
 ```
 401 Unauthorized
 {"type":"https://tools.ietf.org/html/rfc7231#section-6.3.1","title":"Unauthorized"}
 ```
 
-**Diagnóstico:**
+**Diagnosis:**
 
-#### 1. Verificar Formato do Token
+#### 1. Check Token Format
 ```bash
-# Token deve estar no formato: Bearer {token}
+# Token must be in format: Bearer {token}
 curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
-#### 2. Validar Token JWT Online
-- Acesse [jwt.io](https://jwt.io)
-- Cole seu token para verificar estrutura
-- Confirme se não está expirado
+#### 2. Validate JWT Token Online
+- Access [jwt.io](https://jwt.io)
+- Paste your token to check structure
+- Confirm it hasn't expired
 
 #### 3. Verify JWT Configuration
 ```json
@@ -154,40 +154,40 @@ curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
-**Importante:** `SecretKey` must have at least 32 characters.
+**Important:** `SecretKey` must have at least 32 characters.
 
-### ❌ Erro de Hash de Senha
+### ❌ Password Hash Error
 
-**Erro:**
+**Error:**
 ```
 Argon2 hashing failed
 Invalid password verification
 ```
 
-**Soluções:**
+**Solutions:**
 
-#### 1. Verificar Implementação Argon2
+#### 1. Verify Argon2 Implementation
 ```csharp
-// Correto
+// Correct
 var hashedPassword = StringHelper.ComputeArgon2Hash(plainPassword);
 var isValid = StringHelper.VerifyArgon2Hash(plainPassword, hashedPassword);
 ```
 
-#### 2. Verificar Encoding
-Certifique-se de que passwords estão em UTF-8:
+#### 2. Verify Encoding
+Make sure passwords are in UTF-8:
 ```csharp
 var passwordBytes = Encoding.UTF8.GetBytes(password);
 ```
 
-### ❌ Claims não Aparecem no Token
+### ❌ Claims Don't Appear in Token
 
-**Problema:** Token é gerado mas não contém claims/permissions esperadas.
+**Problem:** Token is generated but doesn't contain expected claims/permissions.
 
-**Diagnóstico:**
+**Diagnosis:**
 
-#### 1. Verificar Mapeamento RBAC
+#### 1. Check RBAC Mapping
 ```sql
--- Verificar se usuário tem claims associadas
+-- Check if user has associated claims
 SELECT a.UserName, c.Value, ac.Name 
 FROM Account a 
 JOIN AccountClaimAction aca ON a.Id = aca.IdAccount
@@ -210,17 +210,17 @@ foreach(var claim in accountClaimActions)
 }
 ```
 
-## 🌐 Problemas de API e HTTP
+## 🌐 API and HTTP Issues
 
 ### ❌ CORS Errors
 
-**Erro:**
+**Error:**
 ```
 Access to fetch at 'https://localhost:7001' from origin 'http://localhost:3000' 
 has been blocked by CORS policy
 ```
 
-**Soluções:**
+**Solutions:**
 
 #### 1. Verify CORS Configuration
 ```csharp
@@ -232,19 +232,19 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:3000", "https://yourfrontend.com")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); // Se usar cookies
+              .AllowCredentials(); // If using cookies
     });
 });
 
-// Aplicar middleware
+// Apply middleware
 app.UseCors("AllowSpecificOrigin");
 ```
 
-#### 2. Ordem dos Middlewares
+#### 2. Middleware Order
 ```csharp
-// Ordem correta
+// Correct order
 app.UseRouting();
-app.UseCors(); // ANTES de UseAuthorization
+app.UseCors(); // BEFORE UseAuthorization
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -252,21 +252,21 @@ app.MapControllers();
 
 ### ❌ SSL/HTTPS Issues
 
-**Erro:**
+**Error:**
 ```
 The SSL connection could not be established
 Certificate validation failed
 ```
 
-**Soluções:**
+**Solutions:**
 
-#### 1. Desenvolvimento Local
+#### 1. Local Development
 ```bash
-# Confiar no certificado de desenvolvimento
+# Trust development certificate
 dotnet dev-certs https --trust
 ```
 
-#### 2. Configurar HTTP para Desenvolvimento
+#### 2. Configure HTTP for Development
 ```json
 {
   "Kestrel": {
@@ -282,15 +282,15 @@ dotnet dev-certs https --trust
 }
 ```
 
-### ❌ Swagger não Carrega
+### ❌ Swagger Doesn't Load
 
-**Erro:**
+**Error:**
 ```
 Failed to load API definition
 Swagger UI not accessible
 ```
 
-**Soluções:**
+**Solutions:**
 
 #### 1. Verify Swagger Configuration
 ```csharp
@@ -312,7 +312,7 @@ if (app.Environment.IsDevelopment())
 }
 ```
 
-#### 2. Verificar XML Documentation
+#### 2. Verify XML Documentation
 ```xml
 <!-- Authentication.API.csproj -->
 <PropertyGroup>
@@ -321,19 +321,19 @@ if (app.Environment.IsDevelopment())
 </PropertyGroup>
 ```
 
-## 🧪 Problemas de Testes
+## 🧪 Testing Issues
 
-### ❌ Testes Falhando
+### ❌ Tests Failing
 
-**Erro:**
+**Error:**
 ```
 Failed: Test method TestName threw exception
 Connection string not found
 ```
 
-**Soluções:**
+**Solutions:**
 
-#### 1. Configurar Test Settings
+#### 1. Configure Test Settings
 ```json
 // appsettings.Testing.json
 {
@@ -367,13 +367,13 @@ public void Should_Authenticate_Valid_User()
 
 ### ❌ Integration Tests Failing
 
-**Erro:**
+**Error:**
 ```
 Database connection failed during integration test
 Service not registered
 ```
 
-**Soluções:**
+**Solutions:**
 
 #### 1. Test Database Setup
 ```csharp
@@ -397,16 +397,16 @@ public class IntegrationTestBase : IDisposable
 }
 ```
 
-## 📊 Problemas de Performance
+## 📊 Performance Issues
 
-### ❌ API Lenta
+### ❌ Slow API
 
-**Sintomas:**
-- Endpoints demoram mais que 2-3 segundos
-- Timeouts frequentes
-- Alto uso de CPU/memória
+**Symptoms:**
+- Endpoints take more than 2-3 seconds
+- Frequent timeouts
+- High CPU/memory usage
 
-**Diagnóstico:**
+**Diagnosis:**
 
 #### 1. Enable Detailed Logging
 ```json
@@ -420,9 +420,9 @@ public class IntegrationTestBase : IDisposable
 }
 ```
 
-#### 2. Analisar Queries SQL
+#### 2. Analyze SQL Queries
 ```bash
-# Logs mostrarão queries executadas
+# Logs will show executed queries
 dotnet run --verbosity detailed
 ```
 
@@ -440,7 +440,7 @@ app.Use(async (context, next) =>
 });
 ```
 
-**Otimizações:**
+**Optimizations:**
 
 #### 1. Database Indexing
 ```sql
@@ -456,7 +456,7 @@ builder.Services.AddDbContext<ApiContextDevelopment>(options =>
         mySqlOptions => mySqlOptions.EnableRetryOnFailure(3)));
 ```
 
-## 🛠️ Ferramentas de Debug
+## 🛠️ Debug Tools
 
 ### 📈 Monitoring
 ```bash
@@ -482,15 +482,15 @@ builder.Host.UseSerilog((context, config) =>
 # Application Insights Profiler
 ```
 
-## 📞 Quando Buscar Ajuda
+## 📞 When to Seek Help
 
-### 🆘 Antes de Abrir Issue
-1. ✅ Consultou este troubleshooting guide
-2. ✅ Verificou logs detalhados
-3. ✅ Testou em ambiente limpo
-4. ✅ Reproduziu o problema consistentemente
+### 🆘 Before Opening an Issue
+1. ✅ Consulted this troubleshooting guide
+2. ✅ Checked detailed logs
+3. ✅ Tested in clean environment
+4. ✅ Reproduced the problem consistently
 
-### 📝 Informações para Include
+### 📝 Information to Include
 ```
 **Environment:**
 - OS: Windows 11 / Ubuntu 22.04 / macOS 13
@@ -499,30 +499,30 @@ builder.Host.UseSerilog((context, config) =>
 - IDE: Visual Studio 2022 17.8.0
 
 **Issue:**
-[Descrição clara do problema]
+[Clear problem description]
 
 **Steps to Reproduce:**
-1. [Passo 1]
-2. [Passo 2]
-3. [Problema ocorre]
+1. [Step 1]
+2. [Step 2]
+3. [Problem occurs]
 
 **Expected vs Actual:**
-Expected: [Comportamento esperado]
-Actual: [O que realmente aconteceu]
+Expected: [Expected behavior]
+Actual: [What actually happened]
 
 **Logs:**
-[Cole logs relevantes aqui]
+[Paste relevant logs here]
 
 **Configuration:**
-[appsettings.json relevante]
+[Relevant appsettings.json]
 ```
 
-### 🔗 Recursos de Ajuda
-- **GitHub Issues**: [Criar nova issue](https://github.com/maiconcardozo/HealthPlanSuite/issues)
+### 🔗 Help Resources
+- **GitHub Issues**: [Create new issue](https://github.com/maiconcardozo/HealthPlanSuite/issues)
 - **Stack Overflow**: Tag `healthplan-suite`
 - **Documentation**: [docs/](../docs/)
-- **Community**: Discussões no GitHub
+- **Community**: GitHub Discussions
 
 ---
 
-💡 **Dica**: Mantenha logs estruturados e monitore métricas para detectar problemas antes que afetem usuários finais.
+💡 **Tip**: Maintain structured logs and monitor metrics to detect problems before they affect end users.
