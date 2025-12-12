@@ -1,35 +1,35 @@
 # 🤖 HealthPlan.AI.Assistant
 
-Assistente inteligente baseado em LangChain para gerenciar operações CRUD do HealthPlan Suite através de linguagem natural.
+Intelligent assistant based on LangChain to manage CRUD operations of HealthPlan Suite through natural language.
 
-## 📋 Visão Geral
+## 📋 Overview
 
-O HealthPlan.AI.Assistant é um agente conversacional que permite interagir com a API do HealthPlan Suite usando linguagem natural em português. Ele utiliza LangChain para processar comandos e executar operações CRUD em empresas, planos de saúde, beneficiários, cotações, coberturas, faixas etárias e acomodações.
+HealthPlan.AI.Assistant is a conversational agent that allows you to interact with the HealthPlan Suite API using natural language in English. It uses LangChain to process commands and execute CRUD operations on companies, health plans, beneficiaries, quotes, coverages, age ranges, and accommodations.
 
-## ✨ Funcionalidades
+## ✨ Features
 
-- 🗣️ **Interface conversacional**: Interaja com a API usando linguagem natural
-- 🔧 **CRUD completo**: Suporte para todas as entidades do sistema
-- 🧠 **LLM flexível**: Suporte para Ollama (local) e OpenAI
-- 💾 **Memória de conversa**: Mantém contexto durante a sessão
-- 🎨 **CLI colorida**: Interface de linha de comando amigável
-- ✅ **Validação**: Valida dados antes de enviar para a API
-- 🔍 **Formatação inteligente**: Respostas formatadas e legíveis
+- 🗣️ **Conversational interface**: Interact with the API using natural language
+- 🔧 **Complete CRUD**: Support for all system entities
+- 🧠 **Flexible LLM**: Support for Ollama (local) and OpenAI
+- 💾 **Conversation memory**: Maintains context during the session
+- 🎨 **Colored CLI**: User-friendly command line interface
+- ✅ **Validation**: Validates data before sending to the API
+- 🔍 **Smart formatting**: Formatted and readable responses
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
 ```
 HealthPlan.AI.Assistant/
-├── config/              # Configurações e prompts
-│   ├── settings.py      # Configurações do ambiente
-│   ├── prompts.py       # Templates de prompts
+├── config/              # Settings and prompts
+│   ├── settings.py      # Environment settings
+│   ├── prompts.py       # Prompt templates
 │   └── __init__.py
-├── utils/               # Utilitários
-│   ├── api_client.py    # Cliente HTTP para API
-│   ├── formatters.py    # Formatadores de resposta
-│   ├── validators.py    # Validadores de dados
+├── utils/               # Utilities
+│   ├── api_client.py    # HTTP client for API
+│   ├── formatters.py    # Response formatters
+│   ├── validators.py    # Data validators
 │   └── __init__.py
-├── tools/               # Ferramentas LangChain
+├── tools/               # LangChain tools
 │   ├── company_tools.py
 │   ├── healthplan_tools.py
 │   ├── beneficiary_tools.py
@@ -38,17 +38,17 @@ HealthPlan.AI.Assistant/
 │   ├── agerange_tools.py
 │   ├── accommodation_tools.py
 │   └── __init__.py
-├── agents/              # Agentes LangChain
+├── agents/              # LangChain agents
 │   ├── healthplan_agent.py
 │   └── __init__.py
-├── interfaces/          # Interfaces de usuário
+├── interfaces/          # User interfaces
 │   ├── cli.py
 │   └── __init__.py
-├── tests/               # Testes
+├── tests/               # Tests
 │   ├── conftest.py
 │   ├── test_api_client.py
 │   └── test_tools.py
-├── main.py              # Ponto de entrada
+├── main.py              # Entry point
 ├── requirements.txt
 ├── requirements-dev.txt
 ├── .env.example
@@ -56,141 +56,141 @@ HealthPlan.AI.Assistant/
 └── README.md
 ```
 
-## 🚀 Instalação
+## 🚀 Installation
 
-### Pré-requisitos
+### Prerequisites
 
-- Python 3.11 ou superior
-- API HealthPlan Suite rodando (padrão: http://localhost:5000)
-- Ollama (para LLM local) ou chave OpenAI API
+- Python 3.11 or higher
+- HealthPlan Suite API running (default: http://localhost:5000)
+- Ollama (for local LLM) or OpenAI API key
 
-### Instalação do Ollama (Opcional)
+### Ollama Installation (Optional)
 
-Se você deseja usar LLM local:
+If you want to use local LLM:
 
 ```bash
 # Linux/Mac
 curl -fsSL https://ollama.com/install.sh | sh
 
-# Iniciar Ollama
+# Start Ollama
 ollama serve
 
-# Baixar modelo (em outro terminal)
+# Download model (in another terminal)
 ollama pull llama2
 ```
 
-### Configuração do Projeto
+### Project Setup
 
 ```bash
-# 1. Navegar até o diretório
+# 1. Navigate to directory
 cd Src/HealthPlan.AI.Assistant
 
-# 2. Criar ambiente virtual
+# 2. Create virtual environment
 python -m venv venv
 
-# 3. Ativar ambiente virtual
+# 3. Activate virtual environment
 # Linux/Mac:
 source venv/bin/activate
 # Windows:
 venv\Scripts\activate
 
-# 4. Instalar dependências
+# 4. Install dependencies
 pip install -r requirements.txt
 
-# 5. Copiar arquivo de configuração
+# 5. Copy configuration file
 cp .env.example .env
 
-# 6. Editar .env com suas configurações
-nano .env  # ou seu editor preferido
+# 6. Edit .env with your settings
+nano .env  # or your preferred editor
 ```
 
-### Configuração do .env
+### .env Configuration
 
 ```bash
 # API Configuration
 API_BASE_URL=http://localhost:5000/api
 API_TIMEOUT=30
 
-# Para Ollama (LLM local)
+# For Ollama (local LLM)
 LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama2
 
-# OU para OpenAI
+# OR for OpenAI
 LLM_PROVIDER=openai
 OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-3.5-turbo
 ```
 
-## 💻 Uso
+## 💻 Usage
 
-### Iniciar o Assistente
+### Start the Assistant
 
 ```bash
 python main.py
 ```
 
-### Exemplos de Comandos
+### Command Examples
 
 ```
 🤖 HealthPlan AI Assistant
 
-Você: liste todas as empresas
-Assistente: Encontrei 3 empresas cadastradas:
+You: list all companies
+Assistant: Found 3 registered companies:
 1. Bradesco Saúde (ID: 1)
 2. Amil (ID: 2)
 3. SulAmérica (ID: 3)
 
-Você: crie uma nova empresa chamada Unimed
-Assistente: ✅ Empresa "Unimed" criada com sucesso! ID: 4
+You: create a new company called Unimed
+Assistant: ✅ Company "Unimed" created successfully! ID: 4
 
-Você: mostre os planos de saúde da empresa 1
-Assistente: Planos da empresa Bradesco Saúde:
-- Plano Executivo (ID: 10) - R$ 850,00
-- Plano Familiar (ID: 11) - R$ 1200,00
+You: show health plans for company 1
+Assistant: Plans for company Bradesco Saúde:
+- Executive Plan (ID: 10) - $850.00
+- Family Plan (ID: 11) - $1200.00
 
-Você: sair
-Assistente: Até logo! 👋
+You: exit
+Assistant: Goodbye! 👋
 ```
 
-### Comandos Especiais
+### Special Commands
 
-- `ajuda` ou `help`: Mostra comandos disponíveis
-- `limpar` ou `clear`: Limpa o histórico da conversa
-- `resetar` ou `reset`: Reinicia o agente
-- `sair` ou `exit`: Sai do programa
+- `help`: Shows available commands
+- `clear`: Clears conversation history
+- `reset`: Restarts the agent
+- `exit`: Exits the program
 
-## 🧪 Testes
+## 🧪 Tests
 
 ```bash
-# Instalar dependências de desenvolvimento
+# Install development dependencies
 pip install -r requirements-dev.txt
 
-# Executar todos os testes
+# Run all tests
 pytest
 
-# Com cobertura
+# With coverage
 pytest --cov=. --cov-report=html
 
-# Testes específicos
+# Specific tests
 pytest tests/test_api_client.py
 pytest tests/test_tools.py
 ```
 
-## 🔧 Desenvolvimento
+## 🔧 Development
 
-### Estrutura de Código
+### Code Structure
 
-- **Type hints**: Todas as funções incluem type hints
-- **Docstrings**: Documentação em PT-BR para todas as classes e funções
-- **Error handling**: Tratamento robusto de erros
-- **Logging**: Sistema de logs configurável
-- **Testing**: Testes com mocks para evitar requisições reais
+- **Type hints**: All functions include type hints
+- **Docstrings**: Documentation in English for all classes and functions
+- **Error handling**: Robust error handling
+- **Logging**: Configurable logging system
+- **Testing**: Tests with mocks to avoid real requests
 
 ### Code Quality
 
 ```bash
-# Formatação
+# Formatting
 black .
 
 # Linting
@@ -203,100 +203,100 @@ mypy .
 isort .
 ```
 
-## 📚 Entidades Suportadas
+## 📚 Supported Entities
 
-O assistente suporta operações CRUD para as seguintes entidades:
+The assistant supports CRUD operations for the following entities:
 
-### Entidades Principais
-- **Companies** (Empresas)
-- **HealthPlans** (Planos de Saúde)
-- **Beneficiaries** (Beneficiários)
-- **Quotes** (Cotações)
-- **Coverages** (Coberturas)
-- **AgeRanges** (Faixas Etárias)
-- **Accommodations** (Acomodações)
+### Main Entities
+- **Companies**
+- **HealthPlans**
+- **Beneficiaries**
+- **Quotes**
+- **Coverages**
+- **AgeRanges**
+- **Accommodations**
 
-### Entidades de Configuração de Planos
-- **PlanCoverages** (Coberturas de Planos) - Relaciona planos com coberturas
-- **AcceptanceRules** (Regras de Aceitação) - Define regras para aceitar beneficiários
-- **AdhesionFees** (Taxas de Adesão) - Taxas cobradas na adesão ao plano
-- **PromotionalDiscounts** (Descontos Promocionais) - Descontos temporários
-- **ProcedureCoparticipations** (Coparticipações) - Valores de coparticipação por procedimento
-- **PlanPriceRanges** (Faixas de Preços) - Preços por faixa etária e tipo de contrato
+### Plan Configuration Entities
+- **PlanCoverages** - Links plans with coverages
+- **AcceptanceRules** - Defines rules for accepting beneficiaries
+- **AdhesionFees** - Fees charged on plan adhesion
+- **PromotionalDiscounts** - Temporary discounts
+- **ProcedureCoparticipations** - Coparticipation values per procedure
+- **PlanPriceRanges** - Prices by age range and contract type
 
-**Total: 13 entidades com 65 ferramentas LangChain (5 operações CRUD × 13 entidades)**
+**Total: 13 entities with 65 LangChain tools (5 CRUD operations × 13 entities)**
 
-### Endpoints da API
+### API Endpoints
 
-Todos os endpoints seguem o padrão REST:
+All endpoints follow REST pattern:
 
-- `GET /{entity}` - Listar todos
-- `GET /{entity}/{id}` - Buscar por ID
-- `POST /{entity}` - Criar novo
-- `PUT /{entity}/{id}` - Atualizar
-- `DELETE /{entity}/{id}` - Deletar
+- `GET /{entity}` - List all
+- `GET /{entity}/{id}` - Fetch by ID
+- `POST /{entity}` - Create new
+- `PUT /{entity}/{id}` - Update
+- `DELETE /{entity}/{id}` - Delete
 
-## 🔐 Segurança
+## 🔐 Security
 
-- ❌ **Não inclua** chaves de API no código
-- ✅ Use arquivo `.env` para configurações sensíveis
-- ✅ O arquivo `.env` está no `.gitignore`
-- ✅ Use `.env.example` como template
+- ❌ **Do not include** API keys in code
+- ✅ Use `.env` file for sensitive settings
+- ✅ The `.env` file is in `.gitignore`
+- ✅ Use `.env.example` as template
 
 ## 🐛 Troubleshooting
 
-### API não está respondendo
+### API is not responding
 
 ```bash
-# Verificar se a API está rodando
+# Check if API is running
 curl http://localhost:5000/health
 
-# Verificar configuração no .env
+# Check configuration in .env
 cat .env | grep API_BASE_URL
 ```
 
-### Ollama não está funcionando
+### Ollama is not working
 
 ```bash
-# Verificar se Ollama está rodando
+# Check if Ollama is running
 curl http://localhost:11434/api/tags
 
-# Iniciar Ollama
+# Start Ollama
 ollama serve
 
-# Verificar modelo instalado
+# Check installed model
 ollama list
 ```
 
-### Erros de importação
+### Import errors
 
 ```bash
-# Reinstalar dependências
+# Reinstall dependencies
 pip install -r requirements.txt --upgrade
 ```
 
-## 📖 Documentação Adicional
+## 📖 Additional Documentation
 
-- [Documentação da API HealthPlan Suite](../../docs/API.md)
+- [HealthPlan Suite API Documentation](../../docs/API.md)
 - [LangChain Documentation](https://python.langchain.com/)
 - [Ollama Documentation](https://ollama.com/docs)
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-1. Siga as convenções de código existentes
-2. Adicione testes para novas funcionalidades
-3. Mantenha a documentação atualizada
-4. Use type hints e docstrings em PT-BR
+1. Follow existing code conventions
+2. Add tests for new features
+3. Keep documentation up to date
+4. Use type hints and docstrings in English
 
-## 📝 Licença
+## 📝 License
 
-Este projeto faz parte do HealthPlan Suite e está sob a mesma licença MIT.
+This project is part of HealthPlan Suite and is under the same MIT license.
 
 ## 🔗 Links
 
-- [HealthPlan Suite - Repositório Principal](https://github.com/maiconcardozo/HealthPlanSuite)
+- [HealthPlan Suite - Main Repository](https://github.com/maiconcardozo/HealthPlanSuite)
 - [Issue #43 - AI Assistant Implementation](https://github.com/maiconcardozo/HealthPlanSuite/issues/43)
 
 ---
 
-Desenvolvido com ❤️ por [Maicon Cardozo](https://github.com/maiconcardozo)
+Developed with ❤️ by [Maicon Cardozo](https://github.com/maiconcardozo)
