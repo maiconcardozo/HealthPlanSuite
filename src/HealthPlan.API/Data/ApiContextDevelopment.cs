@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace HealthPlan.API.Data
+﻿namespace HealthPlan.API.Data
 {
     public class ApiContextDevelopment : BaseApiContext
     {

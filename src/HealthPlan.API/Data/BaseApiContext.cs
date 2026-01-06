@@ -1,32 +1,31 @@
-using HealthPlan.Infrastructure.Persistence;
+﻿using HealthPlan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace HealthPlan.API.Data
 {
     public abstract class BaseApiContext : DbContext
     {
-        protected readonly IConfiguration _configuration;
+        private readonly IConfiguration configuration;
 
         protected BaseApiContext(IConfiguration configuration)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
                 if (!string.IsNullOrEmpty(connectionString))
                 {
-                    if (connectionString.Contains("InMemoryDbForTesting"))
+                    if (connectionString.Contains("InMemoryDbForTesting", StringComparison.OrdinalIgnoreCase))
                     {
                         optionsBuilder.UseInMemoryDatabase("InMemoryDbForTesting");
                     }
                     else
                     {
-                        optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                        optionsBuilder.UseMySQL(connectionString);
                     }
                 }
             }

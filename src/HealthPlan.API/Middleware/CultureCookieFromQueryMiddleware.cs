@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 
 namespace HealthPlan.API.Middleware
 {
@@ -7,13 +7,13 @@ namespace HealthPlan.API.Middleware
     /// This ensures that when Swagger UI makes subsequent requests for swagger.json,
     /// the correct culture is maintained via the cookie rather than falling back to Accept-Language.
     /// </summary>
-    public class CultureCookieFromQueryMiddleware
+    internal class CultureCookieFromQueryMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate next;
 
         public CultureCookieFromQueryMiddleware(RequestDelegate next)
         {
-            _next = next;
+            this.next = next;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -38,17 +38,16 @@ namespace HealthPlan.API.Middleware
                     Expires = DateTimeOffset.UtcNow.AddYears(1), // 1 year expiration
                     IsEssential = true, // Essential for functionality
                     Path = "/", // Available for all paths
-                    SameSite = SameSiteMode.Lax // Standard security setting
+                    SameSite = SameSiteMode.Lax, // Standard security setting
                 };
 
                 context.Response.Cookies.Append(
                     CookieRequestCultureProvider.DefaultCookieName,
                     cookieValue,
-                    cookieOptions
-                );
+                    cookieOptions);
             }
 
-            await _next(context);
+            await next(context);
         }
     }
 }

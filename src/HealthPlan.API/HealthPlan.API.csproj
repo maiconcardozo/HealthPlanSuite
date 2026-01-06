@@ -1,103 +1,113 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..\..</DockerfileContext>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<NoWarn>$(NoWarn);1591</NoWarn>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Compile Remove="publish\**" />
-		<Content Remove="publish\**" />
-		<EmbeddedResource Remove="publish\**" />
-		<None Remove="publish\**" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="publish\**" />
+    <Content Remove="publish\**" />
+    <EmbeddedResource Remove="publish\**" />
+    <None Remove="publish\**" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="13.0.1" />
-		<PackageReference Include="FluentValidation" Version="12.0.0" />
-		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-		<PackageReference Include="MediatR" Version="12.4.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="MySqlConnector" Version="2.3.7" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.8.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.8.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="Foundation.Base" Version="2.0.4" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.0-rc" />
+    <PackageReference Include="StackExchange.Redis" Version="2.10.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="10.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="10.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\HealthPlan.Application\HealthPlan.Application.csproj" />
-		<ProjectReference Include="..\HealthPlan.Infrastructure\HealthPlan.Infrastructure.csproj" />
-		<ProjectReference Include="..\HealthPlan.Shared\HealthPlan.Shared.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <!-- Direct reference to Microsoft.OpenApi DLL for .NET 10 compatibility -->
+    <Reference Include="Microsoft.OpenApi">
+      <HintPath>$(NuGetPackageRoot)microsoft.openapi/2.3.0/lib/net8.0/Microsoft.OpenApi.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Resource\Resource.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resource.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resource\ResourceAPI.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>ResourceAPI.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resource\ResourceRoutesAPI.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>ResourceRoutesAPI.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resource\ResourceStartup.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>ResourceStartup.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HealthPlan.Application\HealthPlan.Application.csproj" />
+    <ProjectReference Include="..\HealthPlan.Infrastructure\HealthPlan.Infrastructure.csproj" />
+    <ProjectReference Include="..\HealthPlan.Shared\HealthPlan.Shared.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Update="Resource\Resource.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resource.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resource\ResourceAPI.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>ResourceAPI.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resource\ResourceRoutesAPI.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>ResourceRoutesAPI.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resource\ResourceStartup.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>ResourceStartup.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resource\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resource\ResourceAPI.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceAPI.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resource\ResourceRoutesAPI.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceRoutesAPI.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resource\ResourceStartup.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceStartup.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Include="wwwroot\Style\custom-swagger.css" />
-	</ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resource\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\ResourceAPI.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceAPI.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\ResourceRoutesAPI.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceRoutesAPI.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\ResourceStartup.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceStartup.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Migrations\Development\" />
-	  <Folder Include="Migrations\Production\" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\Style\custom-swagger.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\Development\" />
+    <Folder Include="Migrations\Production\" />
+  </ItemGroup>
 
 
 

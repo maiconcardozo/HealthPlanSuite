@@ -1,87 +1,242 @@
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.OpenApi.Models;
+﻿using System.Globalization;
 using HealthPlan.API.Resource;
-using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace HealthPlan.API.Swagger
 {
-    /// <summary>
-    /// Swagger operation filter for localizing API operation documentation
-    /// </summary>
     public class LocalizedSwaggerOperationFilter : IOperationFilter
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        /// <summary>
-        /// Initializes a new instance of the LocalizedSwaggerOperationFilter
-        /// </summary>
-        /// <param name="httpContextAccessor">HTTP context accessor for accessing culture information</param>
         public LocalizedSwaggerOperationFilter(IHttpContextAccessor httpContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
-        /// <summary>
-        /// Applies localization to Swagger operation documentation
-        /// </summary>
-        /// <param name="operation">The Swagger operation</param>
-        /// <param name="context">The operation filter context</param>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            var culture = GetCurrentCulture();
-
-            // Localize operation summary
-            if (!string.IsNullOrEmpty(operation.Summary) && operation.Summary.StartsWith("ResourceAPI."))
+            switch (context.MethodInfo.Name)
             {
-                var key = operation.Summary.Substring("ResourceAPI.".Length);
-                var text = ResourceAPI.ResourceManager.GetString(key, culture);
-                if (!string.IsNullOrEmpty(text))
-                {
-                    operation.Summary = text;
-                }
-            }
+                // CompanyController
+                case "GetCompanies":
+                    operation.Summary = ResourceAPI.GetCompanies;
+                    operation.Description = ResourceAPI.DocumentationGetCompanys;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CompanysRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "GetCompany":
+                    operation.Summary = ResourceAPI.GetCompanyById;
+                    operation.Description = ResourceAPI.DocumentationGetCompanyById;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CompanysRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.CompanyNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "GetCompanyByCNPJ":
+                    operation.Summary = ResourceAPI.GetCompanyByCNPJ;
+                    operation.Description = ResourceAPI.DocumentationGetCompanyByCNPJ;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CompanysRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.CompanyNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "CreateCompany":
+                    operation.Summary = ResourceAPI.AddCompany;
+                    operation.Description = ResourceAPI.DocumentationAddCompany;
+                    SetResponseDescription(operation, StatusCodes.Status201Created, ResourceAPI.CompanyCreatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status409Conflict, ResourceAPI.CompanyAlreadyExists);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "UpdateCompany":
+                    operation.Summary = ResourceAPI.UpdateCompany;
+                    operation.Description = ResourceAPI.DocumentationUpdateCompany;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CompanyUpdatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.CompanyNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "DeleteCompany":
+                    operation.Summary = ResourceAPI.DeleteCompany;
+                    operation.Description = ResourceAPI.DocumentationDeleteCompany;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CompanyDeletedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.CompanyNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
 
-            // Localize operation description
-            if (!string.IsNullOrEmpty(operation.Description) && operation.Description.StartsWith("ResourceAPI."))
-            {
-                var key = operation.Description.Substring("ResourceAPI.".Length);
-                var text = ResourceAPI.ResourceManager.GetString(key, culture);
-                if (!string.IsNullOrEmpty(text))
-                {
-                    operation.Description = text;
-                }
-            }
+                // CoverageController
+                case "GetCoverages":
+                    operation.Summary = ResourceAPI.GetCoverages;
+                    operation.Description = ResourceAPI.DocumentationGetCoverages;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CoveragesRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "GetCoverage":
+                    operation.Summary = ResourceAPI.GetCoverageById;
+                    operation.Description = ResourceAPI.DocumentationGetCoverageById;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CoveragesRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.CoverageNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "GetCoveragesByType":
+                    operation.Summary = ResourceAPI.GetCoveragesByType;
+                    operation.Description = ResourceAPI.DocumentationGetCoveragesByType;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CoveragesRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "CreateCoverage":
+                    operation.Summary = ResourceAPI.AddCoverage;
+                    operation.Description = ResourceAPI.DocumentationAddCoverage;
+                    SetResponseDescription(operation, StatusCodes.Status201Created, ResourceAPI.CoverageCreatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status409Conflict, ResourceAPI.CoverageAlreadyExists);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "UpdateCoverage":
+                    operation.Summary = ResourceAPI.UpdateCoverage;
+                    operation.Description = ResourceAPI.DocumentationUpdateCoverage;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CoverageUpdatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.CoverageNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "DeleteCoverage":
+                    operation.Summary = ResourceAPI.DeleteCoverage;
+                    operation.Description = ResourceAPI.DocumentationDeleteCoverage;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.CoverageDeletedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.CoverageNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
 
-            // Localize response descriptions
-            foreach (var response in operation.Responses)
-            {
-                if (!string.IsNullOrEmpty(response.Value.Description) && response.Value.Description.StartsWith("ResourceAPI."))
-                {
-                    var key = response.Value.Description.Substring("ResourceAPI.".Length);
-                    var text = ResourceAPI.ResourceManager.GetString(key, culture);
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        response.Value.Description = text;
-                    }
-                }
+                // HealthPlanController
+                case "GetHealthPlans":
+                    operation.Summary = ResourceAPI.GetHealthPlans;
+                    operation.Description = ResourceAPI.DocumentationGetHealthPlans;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.HealthPlansRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "GetHealthPlan":
+                    operation.Summary = ResourceAPI.GetHealthPlanById;
+                    operation.Description = ResourceAPI.DocumentationGetHealthPlanById;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.HealthPlansRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.HealthPlanNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "CreateHealthPlan":
+                    operation.Summary = ResourceAPI.AddHealthPlan;
+                    operation.Description = ResourceAPI.DocumentationAddHealthPlan;
+                    SetResponseDescription(operation, StatusCodes.Status201Created, ResourceAPI.HealthPlanCreatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status409Conflict, ResourceAPI.HealthPlanAlreadyExists);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "UpdateHealthPlan":
+                    operation.Summary = ResourceAPI.UpdateHealthPlan;
+                    operation.Description = ResourceAPI.DocumentationUpdateHealthPlan;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.HealthPlanUpdatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.HealthPlanNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "DeleteHealthPlan":
+                    operation.Summary = ResourceAPI.DeleteHealthPlan;
+                    operation.Description = ResourceAPI.DocumentationDeleteHealthPlan;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.HealthPlanDeletedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.HealthPlanNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+
+                // QuoteController
+                case "GetQuotes":
+                    operation.Summary = ResourceAPI.GetQuotes;
+                    operation.Description = ResourceAPI.DocumentationGetQuotes;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.QuotesRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorized);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "GetQuote":
+                    operation.Summary = ResourceAPI.GetQuoteById;
+                    operation.Description = ResourceAPI.DocumentationGetQuoteById;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.QuoteRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.QuoteNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "GetQuotesByBeneficiary":
+                    operation.Summary = ResourceAPI.GetQuotesByBeneficiary;
+                    operation.Description = ResourceAPI.DocumentationGetQuotesByBeneficiary;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.QuotesRetrievedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "CreateQuote":
+                    operation.Summary = ResourceAPI.AddQuote;
+                    operation.Description = ResourceAPI.DocumentationAddQuote;
+                    SetResponseDescription(operation, StatusCodes.Status201Created, ResourceAPI.QuoteCreatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status409Conflict, ResourceAPI.QuoteAlreadyExists);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "UpdateQuote":
+                    operation.Summary = ResourceAPI.UpdateQuote;
+                    operation.Description = ResourceAPI.DocumentationUpdateQuote;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.QuoteUpdatedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.QuoteNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
+                case "DeleteQuote":
+                    operation.Summary = ResourceAPI.DeleteQuote;
+                    operation.Description = ResourceAPI.DocumentationDeleteQuote;
+                    SetResponseDescription(operation, StatusCodes.Status200OK, ResourceAPI.QuoteDeletedSuccessfully);
+                    SetResponseDescription(operation, StatusCodes.Status400BadRequest, ResourceAPI.ResponseInvalidRequestParameters);
+                    SetResponseDescription(operation, StatusCodes.Status401Unauthorized, ResourceAPI.ResponseUnauthorizedAccess);
+                    SetResponseDescription(operation, StatusCodes.Status404NotFound, ResourceAPI.QuoteNotFound);
+                    SetResponseDescription(operation, StatusCodes.Status500InternalServerError, ResourceAPI.InternalServerError);
+                    break;
             }
         }
 
-        private CultureInfo GetCurrentCulture()
+        private void SetResponseDescription(OpenApiOperation operation, int statusCode, string description)
         {
-            // Try to get culture from current HTTP request context first
-            if (_httpContextAccessor.HttpContext != null)
+            var key = statusCode.ToString();
+            if (operation.Responses.ContainsKey(key))
             {
-                var requestCultureFeature = _httpContextAccessor.HttpContext.Features.Get<IRequestCultureFeature>();
-                if (requestCultureFeature?.RequestCulture?.Culture != null)
-                {
-                    return requestCultureFeature.RequestCulture.Culture;
-                }
+                operation.Responses[key].Description = description;
             }
-
-            // Fall back to CurrentUICulture if no HTTP context or request culture available
-            return CultureInfo.CurrentUICulture;
         }
     }
 }

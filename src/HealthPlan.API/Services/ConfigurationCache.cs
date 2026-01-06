@@ -1,37 +1,51 @@
-using HealthPlan.Application.Constants;
+﻿using HealthPlan.Shared.Constants;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 
-namespace HealthPlan.API.Services
+namespace Authentication.API.Services
 {
-    public interface IConfigurationCache
+    internal interface IConfigurationCache
     {
         string GetConnectionString(string connectionName = ApplicationConstants.DefaultConnectionStringName);
+
+        IConfigurationSection GetJwtSettings();
     }
 
-    public class ConfigurationCache : IConfigurationCache
+    internal class ConfigurationCache : IConfigurationCache
     {
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _cache;
-        private readonly TimeSpan _cacheExpirationTime = TimeSpan.FromMinutes(30);
+        private readonly IConfiguration configuration;
+        private readonly IMemoryCache cache;
+        private readonly TimeSpan cacheExpirationTime = TimeSpan.FromMinutes(30);
 
         public ConfigurationCache(IConfiguration configuration, IMemoryCache cache)
         {
-            _configuration = configuration;
-            _cache = cache;
+            this.configuration = configuration;
+            this.cache = cache;
         }
 
         public string GetConnectionString(string connectionName = ApplicationConstants.DefaultConnectionStringName)
         {
             string cacheKey = $"ConnectionString_{connectionName}";
-            
-            if (!_cache.TryGetValue(cacheKey, out string? connectionString))
+
+            if (!cache.TryGetValue(cacheKey, out string? connectionString))
             {
-                connectionString = _configuration.GetConnectionString(connectionName) ?? string.Empty;
-                _cache.Set(cacheKey, connectionString, _cacheExpirationTime);
+                connectionString = configuration.GetConnectionString(connectionName) ?? string.Empty;
+                cache.Set(cacheKey, connectionString, cacheExpirationTime);
             }
 
             return connectionString ?? string.Empty;
+        }
+
+        public IConfigurationSection GetJwtSettings()
+        {
+            string cacheKey = "JwtSettings";
+
+            if (!cache.TryGetValue(cacheKey, out IConfigurationSection? jwtSettings))
+            {
+                jwtSettings = configuration.GetSection(ApplicationConstants.JwtSettingsSection);
+                cache.Set(cacheKey, jwtSettings, cacheExpirationTime);
+            }
+
+            return jwtSettings!;
         }
     }
 }

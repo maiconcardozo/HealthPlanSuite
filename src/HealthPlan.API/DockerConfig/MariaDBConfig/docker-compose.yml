@@ -1,17 +1,21 @@
-﻿services:
-  mariadb:
-    image: mariadb:11
-    container_name: mariadb_healthplan
+﻿version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: authentication-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: HealthPlan
+      MYSQL_ROOT_PASSWORD: ewufexop$
+      MYSQL_DATABASE: HealthPlanSuite
       MYSQL_USER: sa
-      MYSQL_PASSWORD: ewufexop$     
+      MYSQL_PASSWORD: ewufexop$
     ports:
       - "3306:3306"
-    volumes:
-      - mariadb_data:/var/lib/mysql
+    volumes: 
+      - mysql_data:/var/lib/mysql
+    command: --default-healthplansuite-plugin=mysql_native_password
 
 volumes:
-  mariadb_data:
+  mysql_data: 
+    driver: local
