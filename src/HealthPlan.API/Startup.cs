@@ -1,54 +1,30 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
-using HealthPlan.API.Data;
-using HealthPlan.API.Resource;
-using HealthPlan.API.Services;
+using Authentication.API.Services;
 using HealthPlan.API.Swagger;
 using HealthPlan.Application.Behaviors;
 using HealthPlan.Application.Commands;
 using HealthPlan.Application.Constants;
-using HealthPlan.Shared.Kernel;
+using HealthPlan.Shared.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace HealthPlan.API
 {
     /// <summary>
-    /// Class responsible for ASP.NET Core application initial configuration.
-    /// Organizes service configuration and middleware pipeline in a structured way.
+    /// Classe responsável pela configuração inicial da aplicação ASP.NET Core.
+    /// Organiza a configuração de serviços e do pipeline de middlewares de forma estruturada.
     /// </summary>
     public class Startup
     {
-        private readonly IConfiguration _configuration;
-        private readonly IWebHostEnvironment _environment;
-
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
-        {
-            _configuration = configuration;
-            _environment = environment;
-        }
+        private static readonly string[] configureOptions = new[] { "en", "pt-BR" };
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // ==============================
-            // ENVIRONMENT CONFIGURATION
-            // ==============================
-            // Detect if running under test (xUnit, NUnit, MSTest, etc.)
-            var isTest = AppDomain.CurrentDomain.GetAssemblies()
-                .Any(a => a.FullName.StartsWith("xunit", StringComparison.OrdinalIgnoreCase) ||
-                          a.FullName.StartsWith("nunit", StringComparison.OrdinalIgnoreCase) ||
-                          a.FullName.StartsWith("Microsoft.VisualStudio.TestPlatform", StringComparison.OrdinalIgnoreCase));
-
-            var environment = isTest
-                ? ApplicationConstants.Environment.Development
-                : Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? ApplicationConstants.Environment.Production;
-
-            var appsettings = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
-
+            var appsettings = DataConfigurationHelper.BuildConfiguration();
 
             // ==============================
             // CACHE
@@ -57,45 +33,42 @@ namespace HealthPlan.API
             services.AddSingleton<IConfigurationCache, ConfigurationCache>();
 
             // ==============================
-            // HTTP CONTEXT ACCESSOR (for Swagger localization)
+            // HTTP CONTEXT ACCESSOR (para localização do Swagger)
             // ==============================
             services.AddHttpContextAccessor();
 
             // ==============================
-            // LOCALIZATION
+            // LOCALIZAÇÃO
             // ==============================
             services.AddLocalization(options => options.ResourcesPath = "Resource");
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[] { "en", "pt-BR" };
-                options.SetDefaultCulture(supportedCultures[0])
-                       .AddSupportedCultures(supportedCultures)
-                       .AddSupportedUICultures(supportedCultures);
-
-                // Add the providers manually!
+                var culturasSuportadas = configureOptions;
+                options.SetDefaultCulture(culturasSuportadas[0])
+                       .AddSupportedCultures(culturasSuportadas)
+                       .AddSupportedUICultures(culturasSuportadas);
                 options.RequestCultureProviders = new List<IRequestCultureProvider>
                 {
                     new QueryStringRequestCultureProvider(),
                     new CookieRequestCultureProvider(),
-                    new AcceptLanguageHeaderRequestCultureProvider()
+                    new AcceptLanguageHeaderRequestCultureProvider(),
                 };
             });
 
             // ==============================
-            // JWT AUTHENTICATION
+            // AUTENTICAÇÃO JWT
             // ==============================
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
-            
-            // Validate that placeholder secret key has been replaced (skip validation in test environment)
-            if (!isTest && (secretKey.Contains("REPLACE-WITH") || secretKey.Length < 32))
+            var jwtSettings = appsettings.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey não configurada");
+
+            if ((secretKey.Contains("REPLACE-WITH") || secretKey.Length < 32))
             {
                 throw new InvalidOperationException(
-                    "JWT SecretKey must be replaced with a secure value. " +
-                    "Use environment variables (JwtSettings__SecretKey) or Azure Key Vault. " +
-                    "Secret key must be at least 32 characters long.");
+                    "A chave secreta do JWT deve ser substituída por um valor seguro. " +
+                    "Use variáveis de ambiente (JwtSettings__SecretKey) ou Azure Key Vault. " +
+                    "A chave deve ter pelo menos 32 caracteres.");
             }
-            
+
             var key = Encoding.UTF8.GetBytes(secretKey);
 
             services.AddAuthentication(options =>
@@ -105,7 +78,7 @@ namespace HealthPlan.API
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = !_environment.IsDevelopment();
+                options.RequireHttpsMetadata = !ambiente.IsDevelopment();
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -121,12 +94,12 @@ namespace HealthPlan.API
             });
 
             // ==============================
-            // AUTHENTICATION & DOMAIN
+            // AUTENTICAÇÃO & DOMÍNIO
             // ==============================
             services.AddAuthenticationLoginServices(HealthPlan.API.Helper.Utils.GetConnectionString(appsettings));
 
             // ==============================
-            // CONTROLLERS & VALIDATION
+            // CONTROLLERS & VALIDAÇÃO
             // ==============================
             services.AddControllers();
             services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.AcceptanceRulePayLoadDTO>, HealthPlan.Application.Validators.AcceptanceRulePayloadValidator>();
@@ -145,7 +118,7 @@ namespace HealthPlan.API
             services.AddTransient<FluentValidation.IValidator<HealthPlan.Application.DTOs.AdhesionFeePayLoadDTO>, HealthPlan.Application.Validators.AdhesionFeePayloadValidator>();
 
             // ==============================
-            // MEDIATR (CQRS Pattern)
+            // MEDIATR & BEHAVIORS
             // ==============================
             services.AddMediatR(cfg =>
             {
@@ -167,36 +140,36 @@ namespace HealthPlan.API
                 options.EnableAnnotations();
                 options.ExampleFilters();
 
-                // Filters for internationalization
+                // Filtros para internacionalização
                 options.OperationFilter<LocalizedSwaggerOperationFilter>();
                 options.DocumentFilter<LocalizedSwaggerDocumentFilter>();
 
-                // Configure Swagger for Health Plan API controllers
-                options.SwaggerDoc(ApplicationConstants.Api.SwaggerDefinitions.Authentication, new Microsoft.OpenApi.Models.OpenApiInfo
+                // Configura o Swagger para os controllers da API Health Plan
+                options.SwaggerDoc(ApplicationConstants.Api.SwaggerDefinitions.Authentication, new OpenApiInfo
                 {
                     Title = "Health Plan API",
                     Version = ApplicationConstants.Api.Version,
-                    Description = "API for managing health plan quotes, companies, coverages, and related operations"
+                    Description = "API para gestão de cotações, empresas, coberturas e operações relacionadas ao plano de saúde"
                 });
 
-                // Add JWT Authentication to Swagger
-                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                // Adiciona autenticação JWT ao Swagger
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
+                    Description = "JWT Authorization header usando o esquema Bearer. Digite 'Bearer' [espaço] e então seu token.",
                     Name = "Authorization",
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
 
-                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        new OpenApiSecurityScheme
                         {
-                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            Reference = new OpenApiReference
                             {
-                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
                         },
@@ -235,7 +208,6 @@ namespace HealthPlan.API
             services.AddSwaggerExamplesFromAssemblyOf<SucessDetailsExample>();
             services.AddSwaggerExamplesFromAssemblyOf<ProblemDetailsBadRequestExample>();
 
-
             // ==============================
             // CORS
             // ==============================
@@ -261,7 +233,7 @@ namespace HealthPlan.API
             }
 
             // ==============================
-            // SECURITY & STATIC FILES
+            // SEGURANÇA & ARQUIVOS ESTÁTICOS
             // ==============================
             app.UseMiddleware<HealthPlan.API.Middleware.SwaggerAuthMiddleware>();
             app.UseStaticFiles();
@@ -273,12 +245,12 @@ namespace HealthPlan.API
             app.UseCors(ApplicationConstants.Cors.AllowAllPolicy);
 
             // ==============================
-            // CULTURE COOKIE FROM QUERY (must come BEFORE localization!)
+            // CULTURE COOKIE FROM QUERY (deve vir ANTES da localização!)
             // ==============================
             app.UseMiddleware<HealthPlan.API.Middleware.CultureCookieFromQueryMiddleware>();
 
             // ==============================
-            // LOCALIZATION (must come BEFORE Swagger!)
+            // LOCALIZAÇÃO (deve vir ANTES do Swagger!)
             // ==============================
             app.UseRequestLocalization();
 
@@ -298,12 +270,12 @@ namespace HealthPlan.API
             });
 
             // ==============================
-            // EXCEPTIONS
+            // EXCEÇÕES
             // ==============================
             app.UseMiddleware<HealthPlan.API.Middleware.ExceptionHandlingMiddleware>();
 
             // ==============================
-            // ROUTING & AUTHORIZATION
+            // ROTEAMENTO & AUTORIZAÇÃO
             // ==============================
             app.UseRouting();
             app.UseAuthentication();
