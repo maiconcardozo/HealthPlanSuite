@@ -1,8 +1,8 @@
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.OpenApi.Models;
+﻿using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Globalization;
 using HealthPlan.API.Resource;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.OpenApi;
 
 namespace HealthPlan.API.Swagger
 {

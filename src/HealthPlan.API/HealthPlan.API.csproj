@@ -11,9 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\**" />
     <Compile Remove="publish\**" />
+    <Content Remove="Migrations\**" />
     <Content Remove="publish\**" />
+    <EmbeddedResource Remove="Migrations\**" />
     <EmbeddedResource Remove="publish\**" />
+    <None Remove="Migrations\**" />
     <None Remove="publish\**" />
   </ItemGroup>
 
@@ -22,7 +26,7 @@
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="Foundation.Base" Version="2.0.4" />
-    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.0.2" />
@@ -33,6 +37,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.OpenApi" Version="3.1.2" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.0-rc" />
     <PackageReference Include="StackExchange.Redis" Version="2.10.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
@@ -105,8 +110,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\Development\" />
-    <Folder Include="Migrations\Production\" />
+    <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.101" />
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.17.0.131074" />
   </ItemGroup>
 
 

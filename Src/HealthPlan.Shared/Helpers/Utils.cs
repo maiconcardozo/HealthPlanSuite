@@ -1,4 +1,5 @@
-using HealthPlan.Application.Constants;
+﻿using HealthPlan.Shared.Constants;
+using Microsoft.Extensions.Configuration;
 
 namespace HealthPlan.API.Helper
 {
@@ -17,7 +18,5 @@ namespace HealthPlan.API.Helper
             var configuration = appsettings.Build();
             return configuration.GetConnectionString(connectionName) ?? string.Empty;
         }
-
-
     }
 }
