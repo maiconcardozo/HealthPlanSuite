@@ -1,4 +1,4 @@
-# 🏥 HealthPlanSuite - .NET Health Plan Quote Management System
+# 🏥NET Health Plan Quote Management System
 
 <!-- Build and CI/CD Status Badges -->
 [![CI/CD Pipeline](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml/badge.svg)](https://github.com/maiconcardozo/HealthPlanSuite/actions/workflows/ci.yml)
