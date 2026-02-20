@@ -391,3 +391,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Environment-specific appsettings with sensitive data
+appsettings.*.json
+!appsettings.json
+.env

@@ -6,10 +6,10 @@ services:
     container_name: authentication-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ewufexop$
+      MYSQL_ROOT_PASSWORD: YOUR_MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: HealthPlanSuite
       MYSQL_USER: sa
-      MYSQL_PASSWORD: ewufexop$
+      MYSQL_PASSWORD: YOUR_MYSQL_PASSWORD
     ports:
       - "3306:3306"
     volumes: 
